@@ -86,7 +86,7 @@ interface RegionContextType {
 const RegionContext = createContext<RegionContextType | undefined>(undefined);
 
 export const RegionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [regionCode, setRegionCode] = useState<RegionCode>("IN");
+  const [regionCode, setRegionCode] = useState<RegionCode>("US");
   const region = regions[regionCode];
 
   const setRegion = useCallback((code: RegionCode) => setRegionCode(code), []);
