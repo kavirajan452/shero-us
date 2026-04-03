@@ -511,12 +511,12 @@ const Checkout = () => {
           />
         ) : (
           <>
-            <button onClick={() => setAttempted(true)} className="w-full py-4 rounded-2xl bg-gradient-shero text-primary-foreground font-semibold text-lg opacity-70 shadow-shero hover:opacity-80 transition-opacity">
+            <button onClick={() => { if (isLoggedIn) setAttempted(true); }} className="w-full py-4 rounded-2xl bg-gradient-shero text-primary-foreground font-semibold text-lg opacity-70 shadow-shero hover:opacity-80 transition-opacity">
               Pay {formatPrice(total)} & Place Order
             </button>
-            {isLoggedIn && (
-              <p className={`text-xs text-center mt-2 ${attempted ? "text-destructive font-medium" : "text-muted-foreground"}`}>
-                {attempted ? "⚠ Please fix the highlighted fields above" : "Please fill in all details and select a delivery slot"}
+            {isLoggedIn && attempted && (
+              <p className="text-xs text-center mt-2 text-destructive font-medium">
+                ⚠ Please fix the highlighted fields above
               </p>
             )}
           </>
