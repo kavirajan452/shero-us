@@ -6,12 +6,10 @@ import BottomNav from "@/components/BottomNav";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 
 const milestones = [
-  { year: "2021", title: "The Spark", desc: "Founded with 12 home chefs in Chicago — a mission to empower women through food." },
-  { year: "2022", title: "Growing Roots", desc: "Expanded to 5 cities, 200+ kitchens. Launched subscriptions & party orders." },
-  { year: "2023", title: "Scaling Up", desc: "Crossed 500K orders. Entered 30+ cities across 8 states. Launched Shero Classes." },
-  { year: "2024", title: "Recognition", desc: "Won 'Best Social Impact Startup' award. 1,500+ active home chefs onboarded." },
-  { year: "2025", title: "National Presence", desc: "72 cities, 14 states, 2,400+ kitchens. Crossed 1.4 million orders delivered." },
-  { year: "2026", title: "The Revolution Continues", desc: "India's largest home food platform. Expanding services, classes & experiences." },
+  { year: "2024", title: "The Spark", desc: "Founded with 5 home chefs in the DC Metro area — a mission to empower women through food." },
+  { year: "2025 Q1", title: "Growing Roots", desc: "Expanded to 3 cities, 50+ kitchens. Launched subscriptions & party orders." },
+  { year: "2025 Q3", title: "Scaling Up", desc: "Crossed 10K orders. Entered 12 cities across 5 states. Launched Shero Classes." },
+  { year: "2026", title: "The Revolution Continues", desc: "America's fastest-growing home food platform. Expanding services, classes & experiences." },
 ];
 
 const values = [
