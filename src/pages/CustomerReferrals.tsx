@@ -280,7 +280,7 @@ const CustomerReferrals = () => {
                 maxLength={50}
               />
               <div className="flex gap-2">
-                <span className="flex items-center px-3 bg-muted rounded-l-md border border-r-0 border-border text-sm text-muted-foreground">+91</span>
+                <span className="flex items-center px-3 bg-muted rounded-l-md border border-r-0 border-border text-sm text-muted-foreground">+1</span>
                 <Input
                   placeholder="10-digit phone"
                   value={friendPhone}
@@ -300,7 +300,7 @@ const CustomerReferrals = () => {
           ) : (
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                An OTP has been sent to <span className="font-semibold text-foreground">+91 {friendPhone}</span>.
+                An OTP has been sent to <span className="font-semibold text-foreground">+1 {friendPhone}</span>.
                 Ask {friendName} to share the code with you.
               </p>
               <div className="text-center">

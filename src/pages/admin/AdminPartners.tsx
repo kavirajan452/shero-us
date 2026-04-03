@@ -206,8 +206,8 @@ const ragColors: Record<RAGCategory, { bg: string; text: string; label: string; 
 
 export const mockLeads: EnrollmentLead[] = [
   {
-    id: "EL-001", fullName: "Kavitha S.", phone: "+91 99887 76655", email: "kavitha@email.com",
-    city: "Chennai", state: "Tamil Nadu", pincode: "600028", education: "Graduate",
+    id: "EL-001", fullName: "Kavitha S.", phone: "+1 (206) 555-0107", email: "kavitha@email.com",
+    city: "New York", state: "New York", pincode: "600028", education: "Graduate",
     cookingExperience: "8 years of home cooking, specializing in Chettinad cuisine",
     cuisinesKnown: "Chettinad, South Indian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 7, submittedAt: "2026-02-28", status: "new",
@@ -219,10 +219,10 @@ export const mockLeads: EnrollmentLead[] = [
     preferredTimings: ["Morning (6-10 AM)", "Lunch (10 AM-2 PM)", "Evening (4-7 PM)"],
   },
   {
-    id: "EL-002", fullName: "Sunitha R.", phone: "+91 88776 55443", email: "sunitha.r@email.com",
-    city: "Hyderabad", state: "Telangana", pincode: "500032", education: "Post Graduate",
-    cookingExperience: "12 years, Andhra & Telangana meals expert",
-    cuisinesKnown: "Andhra, Telangana, Biryani", kitchenSize: "large", hasFDA: true,
+    id: "EL-002", fullName: "Sunitha R.", phone: "+1 (305) 555-0108", email: "sunitha.r@email.com",
+    city: "Chicago", state: "Illinois", pincode: "500032", education: "Post Graduate",
+    cookingExperience: "12 years, Pennsylvania & Illinois meals expert",
+    cuisinesKnown: "Pennsylvania, Illinois, Biryani", kitchenSize: "large", hasFDA: true,
     photosUploaded: 7, submittedAt: "2026-02-26", status: "video_watched",
     amenities: ["Refrigerator", "Gas Stove", "Chimney", "AC"], houseType: "Independent House", familyMembers: 5,
     selectedServices: ["hcf", "party_orders", "subscription"],
@@ -232,8 +232,8 @@ export const mockLeads: EnrollmentLead[] = [
     preferredTimings: ["Morning (6-10 AM)", "Lunch (10 AM-2 PM)", "Evening (4-7 PM)", "Dinner (7-10 PM)"],
   },
   {
-    id: "EL-003", fullName: "Meenakshi P.", phone: "+91 77665 44332", email: "meenakshi@email.com",
-    city: "Bengaluru", state: "Karnataka", pincode: "560078", education: "12th Pass",
+    id: "EL-003", fullName: "Meenakshi P.", phone: "+1 77665 44332", email: "meenakshi@email.com",
+    city: "Bengaluru", state: "California", pincode: "560078", education: "12th Pass",
     cookingExperience: "5 years, North Indian & Punjabi",
     cuisinesKnown: "North Indian, Punjabi", kitchenSize: "small", hasFDA: false,
     photosUploaded: 5, submittedAt: "2026-02-25", status: "paid",
@@ -245,10 +245,10 @@ export const mockLeads: EnrollmentLead[] = [
     preferredTimings: ["Lunch (10 AM-2 PM)"],
   },
   {
-    id: "EL-004", fullName: "Radha K.", phone: "+91 66554 33221", email: "radha.k@email.com",
-    city: "Coimbatore", state: "Tamil Nadu", pincode: "641001", education: "Graduate",
-    cookingExperience: "15 years, Kerala & Tamil Nadu traditional",
-    cuisinesKnown: "Kerala, Tamil", kitchenSize: "large", hasFDA: true,
+    id: "EL-004", fullName: "Radha K.", phone: "+1 66554 33221", email: "radha.k@email.com",
+    city: "San Jose", state: "New York", pincode: "641001", education: "Graduate",
+    cookingExperience: "15 years, Florida & New York traditional",
+    cuisinesKnown: "Florida, Tamil", kitchenSize: "large", hasFDA: true,
     photosUploaded: 7, submittedAt: "2026-02-20", status: "approved",
     amenities: ["Refrigerator", "Gas Stove", "Chimney"], houseType: "Independent House", familyMembers: 6,
     selectedServices: ["sap", "subscription", "cookery_classes"],
@@ -258,8 +258,8 @@ export const mockLeads: EnrollmentLead[] = [
     preferredTimings: ["Morning (6-10 AM)", "Lunch (10 AM-2 PM)", "Evening (4-7 PM)"],
   },
   {
-    id: "EL-005", fullName: "Jaya M.", phone: "+91 55443 22110", email: "jaya.m@email.com",
-    city: "Mumbai", state: "Maharashtra", pincode: "400053", education: "Graduate",
+    id: "EL-005", fullName: "Jaya M.", phone: "+1 (503) 555-0109", email: "jaya.m@email.com",
+    city: "Houston", state: "Texas", pincode: "400053", education: "Graduate",
     cookingExperience: "3 years, Maharashtrian home food",
     cuisinesKnown: "Maharashtrian, Gujarati", kitchenSize: "small", hasFDA: false,
     photosUploaded: 4, submittedAt: "2026-02-22", status: "thinking",
@@ -271,8 +271,8 @@ export const mockLeads: EnrollmentLead[] = [
     preferredTimings: ["Evening (4-7 PM)"],
   },
   {
-    id: "EL-006", fullName: "Deepa V.", phone: "+91 44332 11009", email: "deepa.v@email.com",
-    city: "Delhi", state: "Delhi", pincode: "110001", education: "Post Graduate",
+    id: "EL-006", fullName: "Deepa V.", phone: "+1 (617) 555-0110", email: "deepa.v@email.com",
+    city: "Phoenix", state: "Phoenix", pincode: "110001", education: "Post Graduate",
     cookingExperience: "6 years, Continental & Italian",
     cuisinesKnown: "Continental, Italian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 6, submittedAt: "2026-02-18", status: "not_interested",
@@ -284,8 +284,8 @@ export const mockLeads: EnrollmentLead[] = [
     preferredTimings: ["Morning (6-10 AM)"],
   },
   {
-    id: "EL-007", fullName: "Lakshmi G.", phone: "+91 33221 00998", email: "lakshmi.g@email.com",
-    city: "Pune", state: "Maharashtra", pincode: "411001", education: "10th Pass",
+    id: "EL-007", fullName: "Lakshmi G.", phone: "+1 33221 00998", email: "lakshmi.g@email.com",
+    city: "San Antonio", state: "Texas", pincode: "411001", education: "10th Pass",
     cookingExperience: "20 years, traditional Marathi cuisine",
     cuisinesKnown: "Marathi, Konkani", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 7, submittedAt: "2026-03-01", status: "payment_pending",
@@ -298,8 +298,8 @@ export const mockLeads: EnrollmentLead[] = [
   },
   // ── Referred leads (via SHERO-MEERA24) ──
   {
-    id: "EL-R01", fullName: "Sunita Devi", phone: "+91 98xxx 12345", email: "sunita.d@email.com",
-    city: "Chennai", state: "Tamil Nadu", pincode: "600015", education: "Graduate",
+    id: "EL-R01", fullName: "Sunita Devi", phone: "+1 (212) 555-0111", email: "sunita.d@email.com",
+    city: "New York", state: "New York", pincode: "600015", education: "Graduate",
     cookingExperience: "10 years, South Indian home cooking",
     cuisinesKnown: "South Indian, Chettinad", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 6, submittedAt: "2026-01-15", status: "approved",
@@ -312,10 +312,10 @@ export const mockLeads: EnrollmentLead[] = [
     referralCode: "SHERO-MEERA24",
   },
   {
-    id: "EL-R02", fullName: "Kavitha Rao", phone: "+91 97xxx 67890", email: "kavitha.rao@email.com",
-    city: "Hyderabad", state: "Telangana", pincode: "500028", education: "Post Graduate",
-    cookingExperience: "7 years, Andhra specialties",
-    cuisinesKnown: "Andhra, Telugu", kitchenSize: "large", hasFDA: false,
+    id: "EL-R02", fullName: "Kavitha Rao", phone: "+1 (310) 555-0112", email: "kavitha.rao@email.com",
+    city: "Chicago", state: "Illinois", pincode: "500028", education: "Post Graduate",
+    cookingExperience: "7 years, Pennsylvania specialties",
+    cuisinesKnown: "Pennsylvania, Telugu", kitchenSize: "large", hasFDA: false,
     photosUploaded: 7, submittedAt: "2026-01-20", status: "approved",
     amenities: ["Refrigerator", "Gas Stove", "Chimney", "AC"], houseType: "Apartment", familyMembers: 3,
     selectedServices: ["hcf", "subscription"],
@@ -326,10 +326,10 @@ export const mockLeads: EnrollmentLead[] = [
     referralCode: "SHERO-MEERA24",
   },
   {
-    id: "EL-R03", fullName: "Lakshmi Nair", phone: "+91 96xxx 11223", email: "lakshmi.n@email.com",
-    city: "Kochi", state: "Kerala", pincode: "682001", education: "Graduate",
-    cookingExperience: "9 years, Kerala traditional",
-    cuisinesKnown: "Kerala, South Indian", kitchenSize: "medium", hasFDA: false,
+    id: "EL-R03", fullName: "Lakshmi Nair", phone: "+1 96xxx 11223", email: "lakshmi.n@email.com",
+    city: "San Diego", state: "Florida", pincode: "682001", education: "Graduate",
+    cookingExperience: "9 years, Florida traditional",
+    cuisinesKnown: "Florida, South Indian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 5, submittedAt: "2026-02-01", status: "approved",
     amenities: ["Refrigerator", "Gas Stove"], houseType: "Independent House", familyMembers: 5,
     selectedServices: ["sap"],
@@ -340,8 +340,8 @@ export const mockLeads: EnrollmentLead[] = [
     referralCode: "SHERO-MEERA24",
   },
   {
-    id: "EL-R04", fullName: "Anjali Sharma", phone: "+91 95xxx 44556", email: "anjali.s@email.com",
-    city: "Pune", state: "Maharashtra", pincode: "411028", education: "Graduate",
+    id: "EL-R04", fullName: "Anjali Sharma", phone: "+1 95xxx 44556", email: "anjali.s@email.com",
+    city: "San Antonio", state: "Texas", pincode: "411028", education: "Graduate",
     cookingExperience: "6 years, Maharashtrian & North Indian",
     cuisinesKnown: "Maharashtrian, North Indian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 6, submittedAt: "2026-02-05", status: "approved",
@@ -354,10 +354,10 @@ export const mockLeads: EnrollmentLead[] = [
     referralCode: "SHERO-MEERA24",
   },
   {
-    id: "EL-R05", fullName: "Preethi Kumari", phone: "+91 94xxx 77889", email: "preethi.k@email.com",
-    city: "Bengaluru", state: "Karnataka", pincode: "560034", education: "12th Pass",
-    cookingExperience: "8 years, South Indian & Karnataka cuisine",
-    cuisinesKnown: "Karnataka, South Indian", kitchenSize: "small", hasFDA: false,
+    id: "EL-R05", fullName: "Preethi Kumari", phone: "+1 94xxx 77889", email: "preethi.k@email.com",
+    city: "Bengaluru", state: "California", pincode: "560034", education: "12th Pass",
+    cookingExperience: "8 years, South Indian & California cuisine",
+    cuisinesKnown: "California, South Indian", kitchenSize: "small", hasFDA: false,
     photosUploaded: 5, submittedAt: "2026-02-10", status: "approved",
     amenities: ["Refrigerator", "Gas Stove"], houseType: "Apartment", familyMembers: 3,
     selectedServices: ["hcf"],
@@ -368,10 +368,10 @@ export const mockLeads: EnrollmentLead[] = [
     referralCode: "SHERO-MEERA24",
   },
   {
-    id: "EL-R06", fullName: "Radha Menon", phone: "+91 93xxx 00112", email: "radha.m@email.com",
-    city: "Trivandrum", state: "Kerala", pincode: "695001", education: "Graduate",
-    cookingExperience: "11 years, Kerala traditional",
-    cuisinesKnown: "Kerala", kitchenSize: "large", hasFDA: true,
+    id: "EL-R06", fullName: "Radha Menon", phone: "+1 93xxx 00112", email: "radha.m@email.com",
+    city: "Trivandrum", state: "Florida", pincode: "695001", education: "Graduate",
+    cookingExperience: "11 years, Florida traditional",
+    cuisinesKnown: "Florida", kitchenSize: "large", hasFDA: true,
     photosUploaded: 7, submittedAt: "2026-02-15", status: "approved",
     amenities: ["Refrigerator", "Gas Stove", "Chimney"], houseType: "Independent House", familyMembers: 5,
     selectedServices: ["sap", "hcf"],
@@ -382,10 +382,10 @@ export const mockLeads: EnrollmentLead[] = [
     referralCode: "SHERO-MEERA24",
   },
   {
-    id: "EL-R07", fullName: "Deepa Gowda", phone: "+91 92xxx 33445", email: "deepa.g@email.com",
-    city: "Mysuru", state: "Karnataka", pincode: "570001", education: "Graduate",
-    cookingExperience: "5 years, Karnataka cuisine",
-    cuisinesKnown: "Karnataka, South Indian", kitchenSize: "medium", hasFDA: false,
+    id: "EL-R07", fullName: "Deepa Gowda", phone: "+1 92xxx 33445", email: "deepa.g@email.com",
+    city: "Mysuru", state: "California", pincode: "570001", education: "Graduate",
+    cookingExperience: "5 years, California cuisine",
+    cuisinesKnown: "California, South Indian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 6, submittedAt: "2026-02-20", status: "paid",
     amenities: ["Refrigerator", "Gas Stove", "Chimney"], houseType: "Apartment", familyMembers: 3,
     selectedServices: ["hcf"],
@@ -396,10 +396,10 @@ export const mockLeads: EnrollmentLead[] = [
     referralCode: "SHERO-MEERA24",
   },
   {
-    id: "EL-R08", fullName: "Fatima Begum", phone: "+91 91xxx 66778", email: "fatima.b@email.com",
-    city: "Hyderabad", state: "Telangana", pincode: "500001", education: "12th Pass",
-    cookingExperience: "15 years, Hyderabadi Biryani specialist",
-    cuisinesKnown: "Hyderabadi, Mughlai", kitchenSize: "medium", hasFDA: false,
+    id: "EL-R08", fullName: "Fatima Begum", phone: "+1 (512) 555-0113", email: "fatima.b@email.com",
+    city: "Chicago", state: "Illinois", pincode: "500001", education: "12th Pass",
+    cookingExperience: "15 years, Chicagoi Biryani specialist",
+    cuisinesKnown: "Chicagoi, Mughlai", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 4, submittedAt: "2026-02-25", status: "video_watched",
     amenities: ["Refrigerator", "Gas Stove"], houseType: "Independent House", familyMembers: 6,
     selectedServices: ["hcf", "party_orders"],
@@ -410,10 +410,10 @@ export const mockLeads: EnrollmentLead[] = [
     referralCode: "SHERO-MEERA24",
   },
   {
-    id: "EL-R09", fullName: "Swathi Reddy", phone: "+91 90xxx 99001", email: "swathi.r@email.com",
-    city: "Vizag", state: "Andhra Pradesh", pincode: "530001", education: "Graduate",
-    cookingExperience: "4 years, Andhra home cooking",
-    cuisinesKnown: "Andhra, Telugu", kitchenSize: "small", hasFDA: false,
+    id: "EL-R09", fullName: "Swathi Reddy", phone: "+1 90xxx 99001", email: "swathi.r@email.com",
+    city: "Dallas", state: "Pennsylvania", pincode: "530001", education: "Graduate",
+    cookingExperience: "4 years, Pennsylvania home cooking",
+    cuisinesKnown: "Pennsylvania, Telugu", kitchenSize: "small", hasFDA: false,
     photosUploaded: 3, submittedAt: "2026-02-27", status: "new",
     amenities: ["Refrigerator", "Gas Stove"], houseType: "Apartment", familyMembers: 3,
     selectedServices: ["hcf"],
@@ -427,8 +427,8 @@ export const mockLeads: EnrollmentLead[] = [
 
 const mockPartners: MockPartner[] = [
   {
-    id: "P001", name: "Sujatha M.", rmn: "+91 98765 43210", status: "active",
-    city: "Chennai", state: "Tamil Nadu", country: "India", region: "South", zipcode: "600001",
+    id: "P001", name: "Sujatha M.", rmn: "+1 (212) 555-0101", status: "active",
+    city: "New York", state: "New York", country: "USA", region: "Northeast", zipcode: "600001",
     enrolledDate: "Dec 2025",
     kitchensList: [
       { skid: "SK-0001", name: "Shero Home Food – Chettinad (Veg)", type: "branded", cuisine: "Chettinad", foodPref: "Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "sap" },
@@ -437,51 +437,51 @@ const mockPartners: MockPartner[] = [
     ],
   },
   {
-    id: "P002", name: "Priya K.", rmn: "+91 87654 32109", status: "active",
-    city: "Bengaluru", state: "Karnataka", country: "India", region: "South", zipcode: "560001",
+    id: "P002", name: "Priya K.", rmn: "+1 (310) 555-0102", status: "active",
+    city: "Bengaluru", state: "California", country: "USA", region: "Northeast", zipcode: "560001",
     enrolledDate: "Jan 2026",
     kitchensList: [
       { skid: "SK-0004", name: "Priya's Kitchen", type: "own", cuisine: "North Indian", foodPref: "Veg", status: "active", stream: "HCF", assignedManager: "asst2@shero.in", serviceCategory: "hcf" },
     ],
   },
   {
-    id: "P003", name: "Lakshmi R.", rmn: "+91 76543 21098", status: "active",
-    city: "Hyderabad", state: "Telangana", country: "India", region: "South", zipcode: "500001",
+    id: "P003", name: "Lakshmi R.", rmn: "+1 (312) 555-0103", status: "active",
+    city: "Chicago", state: "Illinois", country: "USA", region: "Northeast", zipcode: "500001",
     enrolledDate: "Nov 2025",
     kitchensList: [
-      { skid: "SK-0005", name: "Shero Home Food – Andhra (Veg)", type: "branded", cuisine: "Andhra", foodPref: "Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "sap" },
-      { skid: "SK-0006", name: "Shero Home Food – Andhra (Non-Veg)", type: "branded", cuisine: "Andhra", foodPref: "Non-Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "party_orders" },
-      { skid: "SK-0018", name: "Lakshmi's Home Kitchen", type: "own", cuisine: "Andhra", foodPref: "Both", status: "active", stream: "HCF", assignedManager: "asst2@shero.in", serviceCategory: "hcf" },
+      { skid: "SK-0005", name: "Shero Home Food – Pennsylvania (Veg)", type: "branded", cuisine: "Pennsylvania", foodPref: "Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "sap" },
+      { skid: "SK-0006", name: "Shero Home Food – Pennsylvania (Non-Veg)", type: "branded", cuisine: "Pennsylvania", foodPref: "Non-Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "party_orders" },
+      { skid: "SK-0018", name: "Lakshmi's Home Kitchen", type: "own", cuisine: "Pennsylvania", foodPref: "Both", status: "active", stream: "HCF", assignedManager: "asst2@shero.in", serviceCategory: "hcf" },
     ],
   },
   {
-    id: "P004", name: "Meena S.", rmn: "+91 65432 10987", status: "active",
-    city: "Mumbai", state: "Maharashtra", country: "India", region: "West", zipcode: "400001",
+    id: "P004", name: "Meena S.", rmn: "+1 (713) 555-0104", status: "active",
+    city: "Houston", state: "Texas", country: "USA", region: "West", zipcode: "400001",
     enrolledDate: "Feb 2026",
     kitchensList: [
       { skid: "SK-0007", name: "Meena's Kitchen", type: "own", cuisine: "Gujarati", foodPref: "Veg", status: "active", stream: "HCF", assignedManager: "asst3@shero.in", serviceCategory: "hcf" },
     ],
   },
   {
-    id: "P005", name: "Anita D.", rmn: "+91 54321 09876", status: "active",
-    city: "Delhi", state: "Delhi", country: "India", region: "North", zipcode: "110001",
+    id: "P005", name: "Anita D.", rmn: "+1 (602) 555-0105", status: "active",
+    city: "Phoenix", state: "Phoenix", country: "USA", region: "Midwest", zipcode: "110001",
     enrolledDate: "Oct 2025",
     kitchensList: [
-      { skid: "SK-0008", name: "Shero Home Food – Kerala (Veg)", type: "branded", cuisine: "Kerala", foodPref: "Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "subscription" },
-      { skid: "SK-0009", name: "Shero Home Food – Kerala (Non-Veg)", type: "branded", cuisine: "Kerala", foodPref: "Non-Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "party_orders" },
+      { skid: "SK-0008", name: "Shero Home Food – Florida (Veg)", type: "branded", cuisine: "Florida", foodPref: "Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "subscription" },
+      { skid: "SK-0009", name: "Shero Home Food – Florida (Non-Veg)", type: "branded", cuisine: "Florida", foodPref: "Non-Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "party_orders" },
     ],
   },
   {
-    id: "P006", name: "Revathi N.", rmn: "+91 91234 56789", status: "active",
-    city: "Pune", state: "Maharashtra", country: "India", region: "West", zipcode: "411001",
+    id: "P006", name: "Revathi N.", rmn: "+1 (305) 555-0118", status: "active",
+    city: "San Antonio", state: "Texas", country: "USA", region: "West", zipcode: "411001",
     enrolledDate: "Jan 2026",
     kitchensList: [
       { skid: "SK-0010", name: "Revathi's Italian Corner", type: "own", cuisine: "Italian", foodPref: "Both", status: "active", stream: "HCF", assignedManager: "asst3@shero.in", serviceCategory: "cookery_classes" },
     ],
   },
   {
-    id: "P008", name: "Padma V.", rmn: "+91 71234 56789", status: "active",
-    city: "Nagpur", state: "Maharashtra", country: "India", region: "West", zipcode: "440001",
+    id: "P008", name: "Padma V.", rmn: "+1 (312) 555-0116", status: "active",
+    city: "Nagpur", state: "Texas", country: "USA", region: "West", zipcode: "440001",
     enrolledDate: "Dec 2025",
     kitchensList: [
       { skid: "SK-0011", name: "Padma's Marathi Bhojan", type: "own", cuisine: "Marathi", foodPref: "Both", status: "active", stream: "HCF", assignedManager: "asst3@shero.in", serviceCategory: "hcf" },
@@ -489,18 +489,18 @@ const mockPartners: MockPartner[] = [
     ],
   },
   {
-    id: "P009", name: "Saroja T.", rmn: "+91 61234 56789", status: "active",
-    city: "Coimbatore", state: "Tamil Nadu", country: "India", region: "South", zipcode: "641001",
+    id: "P009", name: "Saroja T.", rmn: "+1 (646) 555-0114", status: "active",
+    city: "San Jose", state: "New York", country: "USA", region: "Northeast", zipcode: "641001",
     enrolledDate: "Feb 2026",
     kitchensList: [
       { skid: "SK-0012", name: "Shero Home Food – Chettinad (Veg)", type: "branded", cuisine: "Chettinad", foodPref: "Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "subscription" },
-      { skid: "SK-0013", name: "Saroja's Wellness Kitchen", type: "own", cuisine: "Kerala", foodPref: "Veg", status: "active", stream: "HCF", assignedManager: "asst2@shero.in", serviceCategory: "shero_classes" },
+      { skid: "SK-0013", name: "Saroja's Wellness Kitchen", type: "own", cuisine: "Florida", foodPref: "Veg", status: "active", stream: "HCF", assignedManager: "asst2@shero.in", serviceCategory: "shero_classes" },
       { skid: "SK-0019", name: "Saroja's Home Meals", type: "own", cuisine: "Chettinad", foodPref: "Both", status: "active", stream: "HCF", assignedManager: "asst2@shero.in", serviceCategory: "hcf" },
     ],
   },
   {
-    id: "P010", name: "Kamala R.", rmn: "+91 51234 56789", status: "active",
-    city: "Lucknow", state: "Uttar Pradesh", country: "India", region: "North", zipcode: "226001",
+    id: "P010", name: "Kamala R.", rmn: "+1 (713) 555-0117", status: "active",
+    city: "Lucknow", state: "Uttar Pradesh", country: "USA", region: "Midwest", zipcode: "226001",
     enrolledDate: "Nov 2025",
     kitchensList: [
       { skid: "SK-0014", name: "Kamala's Mughlai Dawat", type: "own", cuisine: "Mughlai", foodPref: "Non-Veg", status: "active", stream: "HCF", assignedManager: "asst2@shero.in", serviceCategory: "hcf" },
@@ -1486,9 +1486,9 @@ interface LicenceKitchen {
 }
 
 const MOCK_LICENCE_KITCHENS: LicenceKitchen[] = [
-  { skid: "SAP-CHN-001", kitchenName: "SHF Chettinad Veg – Anna Nagar", partnerName: "Sujatha M.", rmn: "98765•••10", stream: "SAP", cuisine: "Chettinad", city: "Chennai", state: "TN", licenceNumber: "FDA-TN-2024-78901", licenceExpiry: new Date("2026-03-20"), status: "approved" },
-  { skid: "HCF-CHN-001", kitchenName: "Lakshmi's Kitchen", partnerName: "Lakshmi D.", rmn: "98765•••10", stream: "HCF", cuisine: "South Indian", city: "Chennai", state: "TN", licenceNumber: "FDA-TN-2025-44321", licenceExpiry: new Date("2026-03-25"), status: "approved" },
-  { skid: "HCF-HYD-012", kitchenName: "Fatima's Biryani House", partnerName: "Fatima B.", rmn: "91234•••45", stream: "HCF", cuisine: "Hyderabadi", city: "Hyderabad", state: "TS", licenceNumber: "FDA-TS-2024-11111", licenceExpiry: new Date("2026-02-15"), status: "closed", closedReason: "Licence expired" },
+  { skid: "SAP-CHN-001", kitchenName: "SHF Chettinad Veg – Anna Nagar", partnerName: "Sujatha M.", rmn: "98765•••10", stream: "SAP", cuisine: "Chettinad", city: "New York", state: "TN", licenceNumber: "FDA-TN-2024-78901", licenceExpiry: new Date("2026-03-20"), status: "approved" },
+  { skid: "HCF-CHN-001", kitchenName: "Lakshmi's Kitchen", partnerName: "Lakshmi D.", rmn: "98765•••10", stream: "HCF", cuisine: "South Indian", city: "New York", state: "TN", licenceNumber: "FDA-TN-2025-44321", licenceExpiry: new Date("2026-03-25"), status: "approved" },
+  { skid: "HCF-HYD-012", kitchenName: "Fatima's Biryani House", partnerName: "Fatima B.", rmn: "91234•••45", stream: "HCF", cuisine: "Chicagoi", city: "Chicago", state: "TS", licenceNumber: "FDA-TS-2024-11111", licenceExpiry: new Date("2026-02-15"), status: "closed", closedReason: "Licence expired" },
 ];
 
 function daysUntilExpiry(d: Date): number {
@@ -1641,13 +1641,13 @@ const HCF_MOCK = {
   totalKitchens: 312,
   totalMenuItems: 1845,
   stateWise: [
-    { state: "Tamil Nadu", code: "TN", kitchens: 78, items: 420 },
-    { state: "Karnataka", code: "KA", kitchens: 52, items: 310 },
-    { state: "Andhra Pradesh", code: "AP", kitchens: 44, items: 265 },
-    { state: "Maharashtra", code: "MH", kitchens: 38, items: 230 },
-    { state: "Kerala", code: "KL", kitchens: 32, items: 195 },
-    { state: "Telangana", code: "TS", kitchens: 28, items: 170 },
-    { state: "Delhi NCR", code: "DL", kitchens: 18, items: 110 },
+    { state: "New York", code: "TN", kitchens: 78, items: 420 },
+    { state: "California", code: "KA", kitchens: 52, items: 310 },
+    { state: "Pennsylvania", code: "AP", kitchens: 44, items: 265 },
+    { state: "Texas", code: "MH", kitchens: 38, items: 230 },
+    { state: "Florida", code: "KL", kitchens: 32, items: 195 },
+    { state: "Illinois", code: "TS", kitchens: 28, items: 170 },
+    { state: "Phoenix NCR", code: "DL", kitchens: 18, items: 110 },
     { state: "Gujarat", code: "GJ", kitchens: 12, items: 80 },
     { state: "Punjab", code: "PB", kitchens: 6, items: 40 },
     { state: "Rajasthan", code: "RJ", kitchens: 4, items: 25 },
@@ -1655,21 +1655,21 @@ const HCF_MOCK = {
   cuisineSplit: [
     { cuisine: "South Indian", count: 95, color: "hsl(var(--primary))" },
     { cuisine: "North Indian", count: 72, color: "hsl(var(--accent))" },
-    { cuisine: "Andhra / Telugu", count: 48, color: "hsl(25 95% 53%)" },
-    { cuisine: "Kerala", count: 35, color: "hsl(160 60% 45%)" },
+    { cuisine: "Pennsylvania / Telugu", count: 48, color: "hsl(25 95% 53%)" },
+    { cuisine: "Florida", count: 35, color: "hsl(160 60% 45%)" },
     { cuisine: "Mughlai", count: 28, color: "hsl(280 60% 50%)" },
     { cuisine: "Gujarati", count: 18, color: "hsl(45 90% 50%)" },
     { cuisine: "Others", count: 16, color: "hsl(var(--muted-foreground))" },
   ],
   cityWise: [
-    { city: "Chennai", kitchens: 42 },
-    { city: "Bangalore", kitchens: 36 },
-    { city: "Hyderabad", kitchens: 30 },
-    { city: "Mumbai", kitchens: 25 },
-    { city: "Pune", kitchens: 13 },
-    { city: "Kochi", kitchens: 18 },
-    { city: "Delhi", kitchens: 18 },
-    { city: "Coimbatore", kitchens: 15 },
+    { city: "New York", kitchens: 42 },
+    { city: "Los Angeles", kitchens: 36 },
+    { city: "Chicago", kitchens: 30 },
+    { city: "Houston", kitchens: 25 },
+    { city: "San Antonio", kitchens: 13 },
+    { city: "San Diego", kitchens: 18 },
+    { city: "Phoenix", kitchens: 18 },
+    { city: "San Jose", kitchens: 15 },
   ],
 };
 
@@ -1725,12 +1725,12 @@ function LeadFunnelSection() {
   ];
 
   const stateLeads = [
-    { state: "Tamil Nadu", leads: 38, approved: 18 },
-    { state: "Karnataka", leads: 28, approved: 14 },
-    { state: "Telangana", leads: 22, approved: 11 },
-    { state: "Maharashtra", leads: 20, approved: 9 },
-    { state: "Kerala", leads: 16, approved: 8 },
-    { state: "Delhi", leads: 10, approved: 4 },
+    { state: "New York", leads: 38, approved: 18 },
+    { state: "California", leads: 28, approved: 14 },
+    { state: "Illinois", leads: 22, approved: 11 },
+    { state: "Texas", leads: 20, approved: 9 },
+    { state: "Florida", leads: 16, approved: 8 },
+    { state: "Phoenix", leads: 10, approved: 4 },
     { state: "Others", leads: 8, approved: 3 },
   ];
 
@@ -2065,23 +2065,23 @@ interface KitchenRequest {
 
 const mockKitchenRequests: KitchenRequest[] = [
   {
-    id: "KR-001", partnerName: "Sujatha M.", rmn: "+91 98765 43210", partnerId: "P001",
+    id: "KR-001", partnerName: "Sujatha M.", rmn: "+1 (212) 555-0101", partnerId: "P001",
     requestType: "add", kitchenName: "Shero Home Food – Bengali", kitchenType: "branded",
     submittedAt: "2026-03-01", status: "pending",
   },
   {
-    id: "KR-002", partnerName: "Sujatha M.", rmn: "+91 98765 43210", partnerId: "P001",
+    id: "KR-002", partnerName: "Sujatha M.", rmn: "+1 (212) 555-0101", partnerId: "P001",
     requestType: "add", kitchenName: "Suji's Biryani Corner", kitchenType: "own",
     cuisines: ["Mughlai", "North Indian"], aiMenuRequested: true,
     submittedAt: "2026-03-02", status: "pending",
   },
   {
-    id: "KR-003", partnerName: "Lakshmi R.", rmn: "+91 76543 21098", partnerId: "P003",
-    requestType: "add", kitchenName: "Shero Home Food – Kerala", kitchenType: "branded",
+    id: "KR-003", partnerName: "Lakshmi R.", rmn: "+1 (312) 555-0103", partnerId: "P003",
+    requestType: "add", kitchenName: "Shero Home Food – Florida", kitchenType: "branded",
     submittedAt: "2026-02-28", status: "pending",
   },
   {
-    id: "KR-004", partnerName: "Priya K.", rmn: "+91 87654 32109", partnerId: "P002",
+    id: "KR-004", partnerName: "Priya K.", rmn: "+1 (310) 555-0102", partnerId: "P002",
     requestType: "delete", kitchenName: "Priya's Kitchen", kitchenType: "own",
     submittedAt: "2026-02-27", status: "approved",
   },
@@ -2224,12 +2224,12 @@ function KitchenRequestsSection() {
 type OnboardingStatus = "pending" | "approved" | "rejected";
 
 const mockOnboardingApplications = [
-  { id: "ONB-1001", name: "Priya Sharma", phone: "+91 98765 43210", city: "Chennai", cuisine: "South Indian", appliedAt: "2 hours ago", status: "pending" as OnboardingStatus, step: "Documents", hasPets: true, healthCondition: "None" },
-  { id: "ONB-1002", name: "Anitha Raj", phone: "+91 87654 32109", city: "Bangalore", cuisine: "North Indian", appliedAt: "5 hours ago", status: "pending" as OnboardingStatus, step: "Final Review", hasPets: false, healthCondition: "Diabetes" },
-  { id: "ONB-1003", name: "Deepa Kumari", phone: "+91 76543 21098", city: "Hyderabad", cuisine: "Andhra", appliedAt: "1 day ago", status: "approved" as OnboardingStatus, step: "Completed", hasPets: false, healthCondition: "None" },
-  { id: "ONB-1004", name: "Fatima Begum", phone: "+91 65432 10987", city: "Mumbai", cuisine: "Mughlai", appliedAt: "1 day ago", status: "rejected" as OnboardingStatus, step: "Kitchen Inspection", hasPets: true, healthCondition: "None" },
-  { id: "ONB-1005", name: "Geetha Reddy", phone: "+91 54321 09876", city: "Delhi", cuisine: "Chettinad", appliedAt: "2 days ago", status: "pending" as OnboardingStatus, step: "Training", hasPets: false, healthCondition: "Asthma" },
-  { id: "ONB-1006", name: "Hema Latha", phone: "+91 43210 98765", city: "Pune", cuisine: "Kerala", appliedAt: "3 days ago", status: "approved" as OnboardingStatus, step: "Completed", hasPets: true, healthCondition: "None" },
+  { id: "ONB-1001", name: "Priya Sharma", phone: "+1 (212) 555-0101", city: "New York", cuisine: "South Indian", appliedAt: "2 hours ago", status: "pending" as OnboardingStatus, step: "Documents", hasPets: true, healthCondition: "None" },
+  { id: "ONB-1002", name: "Anitha Raj", phone: "+1 (310) 555-0102", city: "Los Angeles", cuisine: "North Indian", appliedAt: "5 hours ago", status: "pending" as OnboardingStatus, step: "Final Review", hasPets: false, healthCondition: "Diabetes" },
+  { id: "ONB-1003", name: "Deepa Kumari", phone: "+1 (312) 555-0103", city: "Chicago", cuisine: "Pennsylvania", appliedAt: "1 day ago", status: "approved" as OnboardingStatus, step: "Completed", hasPets: false, healthCondition: "None" },
+  { id: "ONB-1004", name: "Fatima Begum", phone: "+1 (713) 555-0104", city: "Houston", cuisine: "Mughlai", appliedAt: "1 day ago", status: "rejected" as OnboardingStatus, step: "Kitchen Inspection", hasPets: true, healthCondition: "None" },
+  { id: "ONB-1005", name: "Geetha Reddy", phone: "+1 (602) 555-0105", city: "Phoenix", cuisine: "Chettinad", appliedAt: "2 days ago", status: "pending" as OnboardingStatus, step: "Training", hasPets: false, healthCondition: "Asthma" },
+  { id: "ONB-1006", name: "Hema Latha", phone: "+1 (215) 555-0106", city: "San Antonio", cuisine: "Florida", appliedAt: "3 days ago", status: "approved" as OnboardingStatus, step: "Completed", hasPets: true, healthCondition: "None" },
 ];
 
 const onboardingStatusConfig: Record<OnboardingStatus, { label: string; variant: "default" | "destructive" | "outline" | "secondary" }> = {

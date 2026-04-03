@@ -642,7 +642,7 @@ function StepFDAApplication({ kitchen, update }: any) {
             </div>
             <div>
               <Label className="text-xs">Mobile Number *</Label>
-              <Input value={app.mobile} onChange={(e) => updateApp({ mobile: e.target.value })} className="mt-1" placeholder="+91 XXXXX XXXXX" />
+              <Input value={app.mobile} onChange={(e) => updateApp({ mobile: e.target.value })} className="mt-1" placeholder="+1 XXXXX XXXXX" />
             </div>
             <div>
               <Label className="text-xs">Email *</Label>

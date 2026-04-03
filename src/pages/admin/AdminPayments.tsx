@@ -72,23 +72,23 @@ interface BulkPaymentUpload {
 /* ── Mock Data ── */
 
 const mockPaymentRecords: PartnerPaymentRecord[] = [
-  { id: "PP-001", partnerName: "Sujatha M.", rmn: "+91 98765 43210", state: "Tamil Nadu", city: "Chennai", cuisine: "Chettinad", stream: "SHF", totalOrders: 42, totalSales: 18200, totalPPP: 11830, penalties: 150, netPayable: 11680, status: "pending", weekEnding: "2026-03-01" },
-  { id: "PP-002", partnerName: "Priya K.", rmn: "+91 87654 32109", state: "Karnataka", city: "Bengaluru", cuisine: "North Indian", stream: "HCF", totalOrders: 28, totalSales: 12400, totalPPP: 8060, penalties: 0, netPayable: 8060, status: "pending", weekEnding: "2026-03-01" },
-  { id: "PP-003", partnerName: "Lakshmi R.", rmn: "+91 76543 21098", state: "Telangana", city: "Hyderabad", cuisine: "Andhra", stream: "SHF", totalOrders: 55, totalSales: 24800, totalPPP: 16120, penalties: 500, netPayable: 15620, status: "paid", weekEnding: "2026-02-22" },
-  { id: "PP-004", partnerName: "Meena S.", rmn: "+91 65432 10987", state: "Maharashtra", city: "Mumbai", cuisine: "Gujarati", stream: "HCF", totalOrders: 19, totalSales: 8200, totalPPP: 5330, penalties: 100, netPayable: 5230, status: "paid", weekEnding: "2026-02-22" },
-  { id: "PP-005", partnerName: "Anita D.", rmn: "+91 54321 09876", state: "Delhi", city: "Delhi", cuisine: "Kerala", stream: "SHF", totalOrders: 35, totalSales: 16500, totalPPP: 10725, penalties: 0, netPayable: 10725, status: "on_hold", weekEnding: "2026-03-01" },
-  { id: "PP-006", partnerName: "Padma V.", rmn: "+91 71234 56789", state: "Maharashtra", city: "Nagpur", cuisine: "Marathi", stream: "HCF", totalOrders: 22, totalSales: 9800, totalPPP: 6370, penalties: 250, netPayable: 6120, status: "pending", weekEnding: "2026-03-01" },
-  { id: "PP-007", partnerName: "Saroja T.", rmn: "+91 61234 56789", state: "Tamil Nadu", city: "Coimbatore", cuisine: "Chettinad", stream: "SHF", totalOrders: 31, totalSales: 14200, totalPPP: 9230, penalties: 0, netPayable: 9230, status: "pending", weekEnding: "2026-03-01" },
-  { id: "PP-008", partnerName: "Kamala R.", rmn: "+91 51234 56789", state: "Uttar Pradesh", city: "Lucknow", cuisine: "Mughlai", stream: "HCF", totalOrders: 17, totalSales: 7600, totalPPP: 4940, penalties: 25, netPayable: 4915, status: "paid", weekEnding: "2026-02-22" },
+  { id: "PP-001", partnerName: "Sujatha M.", rmn: "+1 (212) 555-0101", state: "New York", city: "New York", cuisine: "Chettinad", stream: "SHF", totalOrders: 42, totalSales: 18200, totalPPP: 11830, penalties: 150, netPayable: 11680, status: "pending", weekEnding: "2026-03-01" },
+  { id: "PP-002", partnerName: "Priya K.", rmn: "+1 (310) 555-0102", state: "California", city: "Bengaluru", cuisine: "North Indian", stream: "HCF", totalOrders: 28, totalSales: 12400, totalPPP: 8060, penalties: 0, netPayable: 8060, status: "pending", weekEnding: "2026-03-01" },
+  { id: "PP-003", partnerName: "Lakshmi R.", rmn: "+1 (312) 555-0103", state: "Illinois", city: "Chicago", cuisine: "Pennsylvania", stream: "SHF", totalOrders: 55, totalSales: 24800, totalPPP: 16120, penalties: 500, netPayable: 15620, status: "paid", weekEnding: "2026-02-22" },
+  { id: "PP-004", partnerName: "Meena S.", rmn: "+1 (713) 555-0104", state: "Texas", city: "Houston", cuisine: "Gujarati", stream: "HCF", totalOrders: 19, totalSales: 8200, totalPPP: 5330, penalties: 100, netPayable: 5230, status: "paid", weekEnding: "2026-02-22" },
+  { id: "PP-005", partnerName: "Anita D.", rmn: "+1 (602) 555-0105", state: "Phoenix", city: "Phoenix", cuisine: "Florida", stream: "SHF", totalOrders: 35, totalSales: 16500, totalPPP: 10725, penalties: 0, netPayable: 10725, status: "on_hold", weekEnding: "2026-03-01" },
+  { id: "PP-006", partnerName: "Padma V.", rmn: "+1 (312) 555-0116", state: "Texas", city: "Nagpur", cuisine: "Marathi", stream: "HCF", totalOrders: 22, totalSales: 9800, totalPPP: 6370, penalties: 250, netPayable: 6120, status: "pending", weekEnding: "2026-03-01" },
+  { id: "PP-007", partnerName: "Saroja T.", rmn: "+1 (646) 555-0114", state: "New York", city: "San Jose", cuisine: "Chettinad", stream: "SHF", totalOrders: 31, totalSales: 14200, totalPPP: 9230, penalties: 0, netPayable: 9230, status: "pending", weekEnding: "2026-03-01" },
+  { id: "PP-008", partnerName: "Kamala R.", rmn: "+1 (713) 555-0117", state: "Uttar Pradesh", city: "Lucknow", cuisine: "Mughlai", stream: "HCF", totalOrders: 17, totalSales: 7600, totalPPP: 4940, penalties: 25, netPayable: 4915, status: "paid", weekEnding: "2026-02-22" },
 ];
 
 const mockPenalties: PenaltyRecord[] = [
-  { id: "PEN-001", partnerName: "Sujatha M.", rmn: "+91 98765 43210", orderId: "SH4815", reason: "Order ready 18 min late (SLA: 10 min max)", amount: 50, date: "2026-02-28", type: "late_delivery" },
-  { id: "PEN-002", partnerName: "Sujatha M.", rmn: "+91 98765 43210", orderId: "SH4790", reason: "Customer complaint — cold food & missing item", amount: 100, date: "2026-02-27", type: "quality_complaint" },
-  { id: "PEN-003", partnerName: "Lakshmi R.", rmn: "+91 76543 21098", orderId: "SH4745", reason: "Partner-initiated cancellation after acceptance", amount: 500, date: "2026-02-24", type: "cancellation" },
-  { id: "PEN-004", partnerName: "Meena S.", rmn: "+91 65432 10987", orderId: "—", reason: "Attendance violation — committed session missed without notice", amount: 100, date: "2026-02-26", type: "attendance" },
-  { id: "PEN-005", partnerName: "Padma V.", rmn: "+91 71234 56789", orderId: "SH4802", reason: "3rd rejection this month — fine applied", amount: 250, date: "2026-02-25", type: "cancellation" },
-  { id: "PEN-006", partnerName: "Kamala R.", rmn: "+91 51234 56789", orderId: "SH4810", reason: "Customer reported hygiene issue — refund deducted", amount: 25, date: "2026-02-27", type: "disciplinary" },
+  { id: "PEN-001", partnerName: "Sujatha M.", rmn: "+1 (212) 555-0101", orderId: "SH4815", reason: "Order ready 18 min late (SLA: 10 min max)", amount: 50, date: "2026-02-28", type: "late_delivery" },
+  { id: "PEN-002", partnerName: "Sujatha M.", rmn: "+1 (212) 555-0101", orderId: "SH4790", reason: "Customer complaint — cold food & missing item", amount: 100, date: "2026-02-27", type: "quality_complaint" },
+  { id: "PEN-003", partnerName: "Lakshmi R.", rmn: "+1 (312) 555-0103", orderId: "SH4745", reason: "Partner-initiated cancellation after acceptance", amount: 500, date: "2026-02-24", type: "cancellation" },
+  { id: "PEN-004", partnerName: "Meena S.", rmn: "+1 (713) 555-0104", orderId: "—", reason: "Attendance violation — committed session missed without notice", amount: 100, date: "2026-02-26", type: "attendance" },
+  { id: "PEN-005", partnerName: "Padma V.", rmn: "+1 (312) 555-0116", orderId: "SH4802", reason: "3rd rejection this month — fine applied", amount: 250, date: "2026-02-25", type: "cancellation" },
+  { id: "PEN-006", partnerName: "Kamala R.", rmn: "+1 (713) 555-0117", orderId: "SH4810", reason: "Customer reported hygiene issue — refund deducted", amount: 25, date: "2026-02-27", type: "disciplinary" },
 ];
 
 const mockBulkUploads: BulkPaymentUpload[] = [
@@ -203,11 +203,11 @@ const mockOpenWeeks: PayoutWeek[] = [
     status: "open",
     financeApprover: null, financeApprovedAt: null, opsApprover: null, opsApprovedAt: null,
     partnerBreakdown: [
-      { rmn: "+91 98765 43210", name: "Sujatha M.", skid: "SK-TN-001", stream: "SHF", state: "Tamil Nadu", city: "Chennai", cuisine: "Chettinad", totalOrders: 42, totalMRP: 18200, totalPPP: 11830, penalties: 150, netPayable: 11680, pppRatio: 65.0, bankName: "HDFC Bank", accountNo: "****7842", ifsc: "HDFC0001234", upiId: "sujatha@hdfc" },
-      { rmn: "+91 87654 32109", name: "Priya K.", skid: "SK-KA-001", stream: "HCF", state: "Karnataka", city: "Bengaluru", cuisine: "North Indian", totalOrders: 28, totalMRP: 12400, totalPPP: 8060, penalties: 0, netPayable: 8060, pppRatio: 65.0, bankName: "SBI", accountNo: "****3291", ifsc: "SBIN0005678", upiId: "priya@sbi" },
-      { rmn: "+91 54321 09876", name: "Anita D.", skid: "SK-DL-001", stream: "SHF", state: "Delhi", city: "Delhi", cuisine: "Kerala", totalOrders: 35, totalMRP: 16500, totalPPP: 10725, penalties: 0, netPayable: 10725, pppRatio: 65.0, bankName: "ICICI Bank", accountNo: "****5610", ifsc: "ICIC0009012", upiId: "anita@icici" },
-      { rmn: "+91 71234 56789", name: "Padma V.", skid: "SK-MH-002", stream: "HCF", state: "Maharashtra", city: "Nagpur", cuisine: "Marathi", totalOrders: 22, totalMRP: 9800, totalPPP: 6370, penalties: 250, netPayable: 6120, pppRatio: 65.0, bankName: "Axis Bank", accountNo: "****8834", ifsc: "UTIB0003456", upiId: "padma@axis" },
-      { rmn: "+91 61234 56789", name: "Saroja T.", skid: "SK-TN-002", stream: "SHF", state: "Tamil Nadu", city: "Coimbatore", cuisine: "Chettinad", totalOrders: 31, totalMRP: 14200, totalPPP: 9230, penalties: 0, netPayable: 9230, pppRatio: 65.0, bankName: "Indian Bank", accountNo: "****2215", ifsc: "IDIB0007890", upiId: "saroja@iob" },
+      { rmn: "+1 (212) 555-0101", name: "Sujatha M.", skid: "SK-TN-001", stream: "SHF", state: "New York", city: "New York", cuisine: "Chettinad", totalOrders: 42, totalMRP: 18200, totalPPP: 11830, penalties: 150, netPayable: 11680, pppRatio: 65.0, bankName: "HDFC Bank", accountNo: "****7842", ifsc: "HDFC0001234", upiId: "sujatha@hdfc" },
+      { rmn: "+1 (310) 555-0102", name: "Priya K.", skid: "SK-KA-001", stream: "HCF", state: "California", city: "Bengaluru", cuisine: "North Indian", totalOrders: 28, totalMRP: 12400, totalPPP: 8060, penalties: 0, netPayable: 8060, pppRatio: 65.0, bankName: "SBI", accountNo: "****3291", ifsc: "SBIN0005678", upiId: "priya@sbi" },
+      { rmn: "+1 (602) 555-0105", name: "Anita D.", skid: "SK-DL-001", stream: "SHF", state: "Phoenix", city: "Phoenix", cuisine: "Florida", totalOrders: 35, totalMRP: 16500, totalPPP: 10725, penalties: 0, netPayable: 10725, pppRatio: 65.0, bankName: "ICICI Bank", accountNo: "****5610", ifsc: "ICIC0009012", upiId: "anita@icici" },
+      { rmn: "+1 (312) 555-0116", name: "Padma V.", skid: "SK-MH-002", stream: "HCF", state: "Texas", city: "Nagpur", cuisine: "Marathi", totalOrders: 22, totalMRP: 9800, totalPPP: 6370, penalties: 250, netPayable: 6120, pppRatio: 65.0, bankName: "Axis Bank", accountNo: "****8834", ifsc: "UTIB0003456", upiId: "padma@axis" },
+      { rmn: "+1 (646) 555-0114", name: "Saroja T.", skid: "SK-TN-002", stream: "SHF", state: "New York", city: "San Jose", cuisine: "Chettinad", totalOrders: 31, totalMRP: 14200, totalPPP: 9230, penalties: 0, netPayable: 9230, pppRatio: 65.0, bankName: "Indian Bank", accountNo: "****2215", ifsc: "IDIB0007890", upiId: "saroja@iob" },
     ],
   },
   {
@@ -218,9 +218,9 @@ const mockOpenWeeks: PayoutWeek[] = [
     status: "finance_approved",
     financeApprover: "Ganesh R.", financeApprovedAt: "24 Feb 2026, 10:30 AM", opsApprover: null, opsApprovedAt: null,
     partnerBreakdown: [
-      { rmn: "+91 76543 21098", name: "Lakshmi R.", skid: "SK-TS-001", stream: "SHF", state: "Telangana", city: "Hyderabad", cuisine: "Andhra", totalOrders: 55, totalMRP: 24800, totalPPP: 16120, penalties: 500, netPayable: 15620, pppRatio: 65.0, bankName: "SBI", accountNo: "****6701", ifsc: "SBIN0001234", upiId: "lakshmi@sbi" },
-      { rmn: "+91 65432 10987", name: "Meena S.", skid: "SK-MH-001", stream: "HCF", state: "Maharashtra", city: "Mumbai", cuisine: "Gujarati", totalOrders: 19, totalMRP: 8200, totalPPP: 5330, penalties: 100, netPayable: 5230, pppRatio: 65.0, bankName: "Kotak Bank", accountNo: "****4423", ifsc: "KKBK0005678", upiId: "meena@kotak" },
-      { rmn: "+91 51234 56789", name: "Kamala R.", skid: "SK-UP-001", stream: "HCF", state: "Uttar Pradesh", city: "Lucknow", cuisine: "Mughlai", totalOrders: 17, totalMRP: 7600, totalPPP: 4940, penalties: 25, netPayable: 4915, pppRatio: 65.0, bankName: "PNB", accountNo: "****9087", ifsc: "PUNB0009012", upiId: "kamala@pnb" },
+      { rmn: "+1 (312) 555-0103", name: "Lakshmi R.", skid: "SK-TS-001", stream: "SHF", state: "Illinois", city: "Chicago", cuisine: "Pennsylvania", totalOrders: 55, totalMRP: 24800, totalPPP: 16120, penalties: 500, netPayable: 15620, pppRatio: 65.0, bankName: "SBI", accountNo: "****6701", ifsc: "SBIN0001234", upiId: "lakshmi@sbi" },
+      { rmn: "+1 (713) 555-0104", name: "Meena S.", skid: "SK-MH-001", stream: "HCF", state: "Texas", city: "Houston", cuisine: "Gujarati", totalOrders: 19, totalMRP: 8200, totalPPP: 5330, penalties: 100, netPayable: 5230, pppRatio: 65.0, bankName: "Kotak Bank", accountNo: "****4423", ifsc: "KKBK0005678", upiId: "meena@kotak" },
+      { rmn: "+1 (713) 555-0117", name: "Kamala R.", skid: "SK-UP-001", stream: "HCF", state: "Uttar Pradesh", city: "Lucknow", cuisine: "Mughlai", totalOrders: 17, totalMRP: 7600, totalPPP: 4940, penalties: 25, netPayable: 4915, pppRatio: 65.0, bankName: "PNB", accountNo: "****9087", ifsc: "PUNB0009012", upiId: "kamala@pnb" },
     ],
   },
   {
@@ -231,8 +231,8 @@ const mockOpenWeeks: PayoutWeek[] = [
     status: "ops_approved",
     financeApprover: "Ganesh R.", financeApprovedAt: "17 Feb 2026, 09:15 AM", opsApprover: "Kavitha R.", opsApprovedAt: "17 Feb 2026, 02:45 PM",
     partnerBreakdown: [
-      { rmn: "+91 98765 43210", name: "Sujatha M.", skid: "SK-TN-001", stream: "SHF", state: "Tamil Nadu", city: "Chennai", cuisine: "Chettinad", totalOrders: 38, totalMRP: 16800, totalPPP: 10920, penalties: 0, netPayable: 10920, pppRatio: 65.0, bankName: "HDFC Bank", accountNo: "****7842", ifsc: "HDFC0001234", upiId: "sujatha@hdfc" },
-      { rmn: "+91 87654 32109", name: "Priya K.", skid: "SK-KA-001", stream: "HCF", state: "Karnataka", city: "Bengaluru", cuisine: "North Indian", totalOrders: 25, totalMRP: 11200, totalPPP: 7280, penalties: 100, netPayable: 7180, pppRatio: 65.0, bankName: "SBI", accountNo: "****3291", ifsc: "SBIN0005678", upiId: "priya@sbi" },
+      { rmn: "+1 (212) 555-0101", name: "Sujatha M.", skid: "SK-TN-001", stream: "SHF", state: "New York", city: "New York", cuisine: "Chettinad", totalOrders: 38, totalMRP: 16800, totalPPP: 10920, penalties: 0, netPayable: 10920, pppRatio: 65.0, bankName: "HDFC Bank", accountNo: "****7842", ifsc: "HDFC0001234", upiId: "sujatha@hdfc" },
+      { rmn: "+1 (310) 555-0102", name: "Priya K.", skid: "SK-KA-001", stream: "HCF", state: "California", city: "Bengaluru", cuisine: "North Indian", totalOrders: 25, totalMRP: 11200, totalPPP: 7280, penalties: 100, netPayable: 7180, pppRatio: 65.0, bankName: "SBI", accountNo: "****3291", ifsc: "SBIN0005678", upiId: "priya@sbi" },
     ],
   },
 ];

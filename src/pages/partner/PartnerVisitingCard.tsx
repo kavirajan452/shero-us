@@ -11,8 +11,8 @@ import WalletSection from "@/components/WalletSection";
 const partnerInfo = {
   name: "Kamala Devi",
   title: "Shero Business Partner",
-  phone: "+91 98XXX XX042",
-  address: "Shero HQ, Chennai",
+  phone: "+1 98XXX XX042",
+  address: "Shero HQ, New York",
   photo: "", // placeholder — picked from profile
   cuisines: ["South Indian", "Sweets"],
   rating: 4.7,

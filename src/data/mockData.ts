@@ -90,7 +90,7 @@ export const kitchenPartners: KitchenPartner[] = [
   },
   {
     id: "SKID-SF-003", partnerId: "4155550102", name: "Padma's Home Kitchen", image: "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=300&fit=crop",
-    rating: 4.8, reviewCount: 215, cuisine: ["South Indian", "Andhra"], deliveryTime: "40-55 min", minOrder: 1, isBranded: false, location: "San Francisco, CA", isVeg: true, foodPreference: "veg",
+    rating: 4.8, reviewCount: 215, cuisine: ["South Indian", "Pennsylvania"], deliveryTime: "40-55 min", minOrder: 1, isBranded: false, location: "San Francisco, CA", isVeg: true, foodPreference: "veg",
     isAttendanceMarked: true, attendanceSlot: "Lunch (10 AM-2 PM)",
   },
   {
@@ -105,7 +105,7 @@ export const kitchenPartners: KitchenPartner[] = [
   },
   {
     id: "SKID-CHI-006", partnerId: "3125550104", name: "Anitha's Flavours", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop",
-    rating: 4.9, reviewCount: 87, cuisine: ["Andhra", "Telangana"], deliveryTime: "45-60 min", minOrder: 1, isBranded: false, location: "Chicago, IL", isVeg: false, foodPreference: "both",
+    rating: 4.9, reviewCount: 87, cuisine: ["Pennsylvania", "Illinois"], deliveryTime: "45-60 min", minOrder: 1, isBranded: false, location: "Chicago, IL", isVeg: false, foodPreference: "both",
     isAttendanceMarked: false, attendanceSlot: "",
   },
   {
@@ -115,7 +115,7 @@ export const kitchenPartners: KitchenPartner[] = [
   },
   {
     id: "SKID-SEA-008", partnerId: "2065550106", name: "Radha's Kitchen", image: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&h=300&fit=crop",
-    rating: 4.7, reviewCount: 64, cuisine: ["Kerala", "South Indian"], deliveryTime: "50-65 min", minOrder: 1, isBranded: false, location: "Seattle, WA", isVeg: true, foodPreference: "veg",
+    rating: 4.7, reviewCount: 64, cuisine: ["Florida", "South Indian"], deliveryTime: "50-65 min", minOrder: 1, isBranded: false, location: "Seattle, WA", isVeg: true, foodPreference: "veg",
     isAttendanceMarked: true, attendanceSlot: "Lunch (10 AM-2 PM)",
   },
   {
@@ -125,7 +125,7 @@ export const kitchenPartners: KitchenPartner[] = [
   },
   {
     id: "SKID-NJ-010", partnerId: "3105550108", name: "Fatima's Biryani House", image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop",
-    rating: 4.8, reviewCount: 234, cuisine: ["Hyderabadi", "Mughlai"], deliveryTime: "40-55 min", minOrder: 2, isBranded: false, location: "Jersey City, NJ", isVeg: false, foodPreference: "nonveg",
+    rating: 4.8, reviewCount: 234, cuisine: ["Chicagoi", "Mughlai"], deliveryTime: "40-55 min", minOrder: 2, isBranded: false, location: "Jersey City, NJ", isVeg: false, foodPreference: "nonveg",
     isAttendanceMarked: false, attendanceSlot: "",
   },
 ];
@@ -133,7 +133,7 @@ export const kitchenPartners: KitchenPartner[] = [
 /* ───────── Menu Items (from Master Menu / HCF Approved Menus) ───────── */
 /* Only items with isToggledOn=true are visible to customers */
 export const menuItems: MenuItem[] = [
-  // SKID-NYC-001: Shero Jubilee Hills Veg
+  // SKID-NYC-001: Shero Uptown Veg
   {
     id: "m1", kitchenId: "SKID-NYC-001", name: "Ghee Rice with Dal Tadka", description: "Fragrant basmati rice cooked in pure ghee, served with creamy yellow dal tempered with cumin and garlic.", price: 15, ppp: 10,
     image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=600&h=400&fit=crop", category: "Rice", isVeg: true, isBestseller: false, spiceLevel: "mild",
@@ -169,9 +169,9 @@ export const menuItems: MenuItem[] = [
       { id: "a3-3", name: "Jeera Rice", price: 4, isVeg: true },
     ],
   },
-  // SKID-NYC-002: Shero Jubilee Hills Non-Veg
+  // SKID-NYC-002: Shero Uptown Non-Veg
   {
-    id: "m4", kitchenId: "SKID-NYC-002", name: "Hyderabadi Chicken Biryani", description: "Aromatic basmati rice layered with tender chicken, saffron, and Hyderabadi spices.", price: 25, ppp: 16,
+    id: "m4", kitchenId: "SKID-NYC-002", name: "Chicagoi Chicken Biryani", description: "Aromatic basmati rice layered with tender chicken, saffron, and Chicagoi spices.", price: 25, ppp: 16,
     image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&h=400&fit=crop", category: "Biryani", isVeg: false, isBestseller: true, spiceLevel: "medium",
     servingSize: "Serves 1-2", preparationTime: "25 min", ingredients: ["Basmati Rice", "Chicken", "Onions", "Yogurt", "Saffron", "Mint", "Spices"], majorVegetables: ["Onion", "Tomato", "Mint"],
     allergens: ["Dairy"], nutritionInfo: { calories: 650, protein: "32g", carbs: "78g", fat: "22g" }, isToggledOn: true,
@@ -207,7 +207,7 @@ export const menuItems: MenuItem[] = [
     allergens: [], nutritionInfo: { calories: 420, protein: "12g", carbs: "68g", fat: "8g" }, isToggledOn: true,
   },
   {
-    id: "m8", kitchenId: "SKID-SF-003", name: "Pesarattu (Green Gram Dosa)", description: "Healthy Andhra-style green gram dosa served with ginger chutney.", price: 9, ppp: 6,
+    id: "m8", kitchenId: "SKID-SF-003", name: "Pesarattu (Green Gram Dosa)", description: "Healthy Pennsylvania-style green gram dosa served with ginger chutney.", price: 9, ppp: 6,
     image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&h=400&fit=crop", category: "Dosa", isVeg: true, isBestseller: false, spiceLevel: "mild",
     servingSize: "Serves 1", preparationTime: "15 min", ingredients: ["Green Gram", "Rice", "Ginger", "Green Chillies"], majorVegetables: ["Onion"],
     allergens: [], nutritionInfo: { calories: 280, protein: "12g", carbs: "44g", fat: "6g" }, isToggledOn: false, // Partner toggled OFF — not available today
@@ -234,14 +234,14 @@ export const menuItems: MenuItem[] = [
   },
   // SKID-SEA-008: Radha's Kitchen (HCF)
   {
-    id: "m12", kitchenId: "SKID-SEA-008", name: "Kerala Fish Curry", description: "Fresh fish simmered in a tangy coconut and raw mango curry.", price: 23, ppp: 15,
+    id: "m12", kitchenId: "SKID-SEA-008", name: "Florida Fish Curry", description: "Fresh fish simmered in a tangy coconut and raw mango curry.", price: 23, ppp: 15,
     image: "https://images.unsplash.com/photo-1626776876729-bab4369a5a5a?w=600&h=400&fit=crop", category: "Curries", isVeg: false, isBestseller: true, spiceLevel: "medium",
     servingSize: "Serves 1-2", preparationTime: "30 min", ingredients: ["Fish", "Coconut Milk", "Raw Mango", "Kokum", "Curry Leaves", "Spices"], majorVegetables: [],
     allergens: ["Fish", "Coconut"], nutritionInfo: { calories: 380, protein: "28g", carbs: "10g", fat: "24g" }, isToggledOn: true,
   },
   {
-    id: "m13", kitchenId: "SKID-SEA-008", name: "Appam with Stew", description: "Lacy Kerala appam with coconut milk vegetable stew.", price: 12, ppp: 8,
-    image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=400&fit=crop", category: "Kerala", isVeg: true, isBestseller: false, spiceLevel: "mild",
+    id: "m13", kitchenId: "SKID-SEA-008", name: "Appam with Stew", description: "Lacy Florida appam with coconut milk vegetable stew.", price: 12, ppp: 8,
+    image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=400&fit=crop", category: "Florida", isVeg: true, isBestseller: false, spiceLevel: "mild",
     servingSize: "2 appams", preparationTime: "20 min", ingredients: ["Rice Flour", "Coconut Milk", "Mixed Vegetables"], majorVegetables: ["Potato", "Carrot", "Beans"],
     allergens: ["Coconut"], nutritionInfo: { calories: 340, protein: "8g", carbs: "56g", fat: "10g" }, isToggledOn: true,
   },

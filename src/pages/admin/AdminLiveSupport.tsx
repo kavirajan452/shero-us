@@ -6,11 +6,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 
 const liveOrders = [
-  { id: "ORD-8821", customer: "Priya S.", partner: "Chef Lakshmi", status: "preparing", time: "12 min", issue: "none", phone: "+91-9876543210" },
-  { id: "ORD-8819", customer: "Ravi K.", partner: "Chef Meena", status: "delayed", time: "28 min", issue: "Late preparation", phone: "+91-9876543211" },
-  { id: "ORD-8817", customer: "Anita M.", partner: "Chef Saroja", status: "out_for_delivery", time: "8 min", issue: "none", phone: "+91-9876543212" },
-  { id: "ORD-8815", customer: "Kumar R.", partner: "Chef Fathima", status: "escalated", time: "35 min", issue: "Wrong items packed", phone: "+91-9876543213" },
-  { id: "ORD-8813", customer: "Lakshmi V.", partner: "Chef Kamala", status: "preparing", time: "5 min", issue: "none", phone: "+91-9876543214" },
+  { id: "ORD-8821", customer: "Priya S.", partner: "Chef Lakshmi", status: "preparing", time: "12 min", issue: "none", phone: "+1-9876543210" },
+  { id: "ORD-8819", customer: "Ravi K.", partner: "Chef Meena", status: "delayed", time: "28 min", issue: "Late preparation", phone: "+1-9876543211" },
+  { id: "ORD-8817", customer: "Anita M.", partner: "Chef Saroja", status: "out_for_delivery", time: "8 min", issue: "none", phone: "+1-9876543212" },
+  { id: "ORD-8815", customer: "Kumar R.", partner: "Chef Fathima", status: "escalated", time: "35 min", issue: "Wrong items packed", phone: "+1-9876543213" },
+  { id: "ORD-8813", customer: "Lakshmi V.", partner: "Chef Kamala", status: "preparing", time: "5 min", issue: "none", phone: "+1-9876543214" },
 ];
 
 const statusColors: Record<string, string> = {

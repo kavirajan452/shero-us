@@ -72,7 +72,7 @@ const OrderTracking = () => {
     addDelayComplaint({
       orderId: order.orderId,
       customerName: "Customer",
-      customerPhone: "+91 98765 00000",
+      customerPhone: "+1 98765 00000",
       kitchenName: order.kitchenName,
       partnerName: "Kitchen Partner",
     });
@@ -91,7 +91,7 @@ const OrderTracking = () => {
     addOrderModification({
       orderId: order.orderId,
       customerName: "Customer",
-      customerPhone: "+91 98765 00000",
+      customerPhone: "+1 98765 00000",
       kitchenName: order.kitchenName,
       partnerName: "Kitchen Partner",
       modificationType: modType as any,

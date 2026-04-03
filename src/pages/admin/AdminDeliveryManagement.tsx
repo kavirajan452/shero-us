@@ -14,7 +14,7 @@ const deliveryPartners = [
 ];
 
 const liveOrders = [
-  { id: "DEL-4521", partner: "Own Fleet", rider: "Suresh K.", pickup: "Chef Lakshmi Kitchen", drop: "T. Nagar", status: "picked_up", eta: "8 min" },
+  { id: "DEL-4521", partner: "Own Fleet", rider: "Suresh K.", pickup: "Chef Lakshmi Kitchen", drop: "SoHo", status: "picked_up", eta: "8 min" },
   { id: "DEL-4522", partner: "Dunzo", rider: "Auto-assigned", pickup: "Chef Meena Kitchen", drop: "Adyar", status: "assigned", eta: "15 min" },
   { id: "DEL-4523", partner: "Shadowfax", rider: "Rajan M.", pickup: "Chef Saroja Kitchen", drop: "Velachery", status: "in_transit", eta: "5 min" },
   { id: "DEL-4524", partner: "Own Fleet", rider: "Deepak R.", pickup: "Chef Fathima Kitchen", drop: "Anna Nagar", status: "picked_up", eta: "12 min" },

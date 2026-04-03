@@ -21,7 +21,7 @@ let _modifications: SSCOrderModification[] = [
     id: "OM-001",
     orderId: "ORD-1001",
     customerName: "Ramesh K.",
-    customerPhone: "+91 98765 11111",
+    customerPhone: "+1 98765 11111",
     kitchenName: "Shero – Chettinad (Veg)",
     partnerName: "Sujatha M.",
     modificationType: "change_qty",

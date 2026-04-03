@@ -15,12 +15,12 @@ interface MenuUploadRecord {
 }
 
 const mockMenuUploads: MenuUploadRecord[] = [
-  { id: "MU001", planName: "Chettinad Veg Thali", uploadedBy: "Priya (Manager)", uploadDate: "2026-03-14", status: "active", approvedBy: "Vertical Head", verticalHeadApproval: true, managerApproval: true, zone: "Hyderabad", itemCount: 42 },
-  { id: "MU002", planName: "Kerala Sadya Box", uploadedBy: "Anitha (Manager)", uploadDate: "2026-03-13", status: "active", approvedBy: "Vertical Head", verticalHeadApproval: true, managerApproval: true, zone: "Hyderabad", itemCount: 35 },
-  { id: "MU003", planName: "Andhra Spice Box - Updated", uploadedBy: "Lakshmi (TL)", uploadDate: "2026-03-15", status: "pending_approval", managerApproval: false, verticalHeadApproval: false, zone: "Hyderabad", itemCount: 48 },
-  { id: "MU004", planName: "North Indian Dabba v2", uploadedBy: "Priya (Manager)", uploadDate: "2026-03-10", status: "rejected", zone: "Hyderabad", itemCount: 40 },
+  { id: "MU001", planName: "Chettinad Veg Thali", uploadedBy: "Priya (Manager)", uploadDate: "2026-03-14", status: "active", approvedBy: "Vertical Head", verticalHeadApproval: true, managerApproval: true, zone: "Chicago", itemCount: 42 },
+  { id: "MU002", planName: "Florida Sadya Box", uploadedBy: "Anitha (Manager)", uploadDate: "2026-03-13", status: "active", approvedBy: "Vertical Head", verticalHeadApproval: true, managerApproval: true, zone: "Chicago", itemCount: 35 },
+  { id: "MU003", planName: "Pennsylvania Spice Box - Updated", uploadedBy: "Lakshmi (TL)", uploadDate: "2026-03-15", status: "pending_approval", managerApproval: false, verticalHeadApproval: false, zone: "Chicago", itemCount: 48 },
+  { id: "MU004", planName: "North Indian Dabba v2", uploadedBy: "Priya (Manager)", uploadDate: "2026-03-10", status: "rejected", zone: "Chicago", itemCount: 40 },
   { id: "MU005", planName: "South Indian Breakfast", uploadedBy: "Anitha (Manager)", uploadDate: "2026-03-12", status: "inactive", approvedBy: "Vertical Head", verticalHeadApproval: true, managerApproval: true, zone: "All Zones", itemCount: 28 },
-  { id: "MU006", planName: "Old Chettinad Menu", uploadedBy: "System", uploadDate: "2026-02-01", status: "deleted", zone: "Hyderabad", itemCount: 38 },
+  { id: "MU006", planName: "Old Chettinad Menu", uploadedBy: "System", uploadDate: "2026-02-01", status: "deleted", zone: "Chicago", itemCount: 38 },
 ];
 
 const statusStyles: Record<string, { bg: string; text: string; icon: React.ElementType }> = {
@@ -74,7 +74,7 @@ const AdminSubMenus = () => {
             <Download className="w-3.5 h-3.5" /> Template
           </Button>
           <Button size="sm" className="text-xs h-8 gap-1.5 bg-action-accept text-action-accept-foreground hover:bg-action-accept/90" onClick={() => {
-            setMenuUploads(prev => [{ id: `MU${String(prev.length + 1).padStart(3, "0")}`, planName: "New Menu Upload", uploadedBy: "Current User", uploadDate: new Date().toISOString().split("T")[0], status: "pending_approval", managerApproval: false, verticalHeadApproval: false, zone: "Hyderabad", itemCount: 0 }, ...prev]);
+            setMenuUploads(prev => [{ id: `MU${String(prev.length + 1).padStart(3, "0")}`, planName: "New Menu Upload", uploadedBy: "Current User", uploadDate: new Date().toISOString().split("T")[0], status: "pending_approval", managerApproval: false, verticalHeadApproval: false, zone: "Chicago", itemCount: 0 }, ...prev]);
             toast({ title: "📤 Menu Uploaded", description: "Pending dual approval" });
           }}>
             <Upload className="w-3.5 h-3.5" /> Upload Menu

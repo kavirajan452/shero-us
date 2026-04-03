@@ -68,7 +68,7 @@ export async function createConversationAsync(data: { partnerName: string; partn
 // ── Legacy in-memory store (backward compat) ──
 let conversations: ChatConversation[] = [
   {
-    id: "conv-001", partnerName: "Sujatha M.", partnerRMN: "+91 98765 43210",
+    id: "conv-001", partnerName: "Sujatha M.", partnerRMN: "+1 (212) 555-0101",
     adminEmail: "ssc-exec@shero.in", adminName: "Preethi V.", adminRole: "SSC Executor",
     messages: [
       { id: "m1", text: "Hi, I have an issue with my order ORD-4521.", sender: "partner", senderName: "Sujatha M.", timestamp: new Date("2026-03-07T09:30:00") },

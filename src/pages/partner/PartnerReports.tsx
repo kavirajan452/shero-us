@@ -56,7 +56,7 @@ const monthlyTrend = [
 ];
 
 const topItems = [
-  { name: "Hyderabadi Biryani", orders: 86, earnings: 3610 },
+  { name: "Chicagoi Biryani", orders: 86, earnings: 3610 },
   { name: "Butter Chicken", orders: 72, earnings: 3024 },
   { name: "Masala Dosa", orders: 65, earnings: 1274 },
   { name: "Gulab Jamun (Box)", orders: 54, earnings: 1512 },
@@ -111,7 +111,7 @@ const offsetDate = (baseDate: string, weeksBack: number): string => {
 
 const ledgerEntries: LedgerEntry[] = [
   // Week 0 (current week)
-  { id: "L001", date: offsetDate("2026-02-28", 0), type: "income", description: "Order #SH4821 — Hyderabadi Biryani × 2, Raita × 2", amount: 598, runningBalance: 24300, orderId: "SH4821", orderItems: [{ name: "Hyderabadi Biryani", qty: 2, price: 249 }, { name: "Raita", qty: 2, price: 50 }], customerName: "Priya Sharma" },
+  { id: "L001", date: offsetDate("2026-02-28", 0), type: "income", description: "Order #SH4821 — Chicagoi Biryani × 2, Raita × 2", amount: 598, runningBalance: 24300, orderId: "SH4821", orderItems: [{ name: "Chicagoi Biryani", qty: 2, price: 249 }, { name: "Raita", qty: 2, price: 50 }], customerName: "Priya Sharma" },
   { id: "L002", date: offsetDate("2026-02-28", 0), type: "penalty", description: "Late preparation — Order #SH4815", amount: -50, runningBalance: 23702, orderId: "SH4815", penaltyReason: "Order was marked ready 18 minutes after the promised time. Platform SLA allows max 10 min delay. Penalty: $50 flat deduction." },
   { id: "L003", date: offsetDate("2026-02-27", 0), type: "income", description: "Order #SH4798 — Butter Chicken × 1, Naan × 3", amount: 420, runningBalance: 23752, orderId: "SH4798", orderItems: [{ name: "Butter Chicken", qty: 1, price: 299 }, { name: "Butter Naan", qty: 3, price: 40 }], customerName: "Rahul Verma" },
   { id: "L004", date: offsetDate("2026-02-27", 0), type: "income", description: "Order #SH4795 — Masala Dosa × 3, Coffee × 3", amount: 390, runningBalance: 24172, orderId: "SH4795", orderItems: [{ name: "Masala Dosa", qty: 3, price: 80 }, { name: "Filter Coffee", qty: 3, price: 50 }], customerName: "Kavitha S." },
@@ -146,7 +146,7 @@ const typeConfig: Record<LedgerType, { label: string; color: string; icon: React
 
 // ── Bad Reviews Mock Data ────────────────────────────────────────────
 const badReviewsData = [
-  { orderId: "SH4821", date: "2026-02-28", customer: "Priya Sharma", dish: "Hyderabadi Biryani", rating: 1, review: "Food was cold and lacked spice. Very disappointed.", week: "W3" },
+  { orderId: "SH4821", date: "2026-02-28", customer: "Priya Sharma", dish: "Chicagoi Biryani", rating: 1, review: "Food was cold and lacked spice. Very disappointed.", week: "W3" },
   { orderId: "SH4790", date: "2026-02-27", customer: "Rahul Verma", dish: "Butter Chicken", rating: 2, review: "Missing naan from order. Chicken was dry.", week: "W3" },
   { orderId: "SH4760", date: "2026-02-25", customer: "Meena Iyer", dish: "Veg Thali", rating: 1, review: "Sambar was too salty. Dal had no taste at all.", week: "W3" },
   { orderId: "SH4701", date: "2026-02-21", customer: "Anita Reddy", dish: "Masala Dosa", rating: 2, review: "Dosa was soggy and chutney was stale.", week: "W2" },

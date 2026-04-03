@@ -9,12 +9,12 @@ import { CheckCircle2, XCircle, Clock, Eye, Search, UserPlus, FileText, Phone } 
 type Status = "pending" | "approved" | "rejected";
 
 const mockApplications = [
-  { id: "ONB-1001", name: "Priya Sharma", phone: "+91 98765 43210", city: "Chennai", cuisine: "South Indian", appliedAt: "2 hours ago", status: "pending" as Status, step: "Documents", hasPets: true, healthCondition: "None" },
-  { id: "ONB-1002", name: "Anitha Raj", phone: "+91 87654 32109", city: "Bangalore", cuisine: "North Indian", appliedAt: "5 hours ago", status: "pending" as Status, step: "Final Review", hasPets: false, healthCondition: "Diabetes" },
-  { id: "ONB-1003", name: "Deepa Kumari", phone: "+91 76543 21098", city: "Hyderabad", cuisine: "Andhra", appliedAt: "1 day ago", status: "approved" as Status, step: "Completed", hasPets: false, healthCondition: "None" },
-  { id: "ONB-1004", name: "Fatima Begum", phone: "+91 65432 10987", city: "Mumbai", cuisine: "Mughlai", appliedAt: "1 day ago", status: "rejected" as Status, step: "Kitchen Inspection", hasPets: true, healthCondition: "None" },
-  { id: "ONB-1005", name: "Geetha Reddy", phone: "+91 54321 09876", city: "Delhi", cuisine: "Chettinad", appliedAt: "2 days ago", status: "pending" as Status, step: "Training", hasPets: false, healthCondition: "Asthma" },
-  { id: "ONB-1006", name: "Hema Latha", phone: "+91 43210 98765", city: "Pune", cuisine: "Kerala", appliedAt: "3 days ago", status: "approved" as Status, step: "Completed", hasPets: true, healthCondition: "None" },
+  { id: "ONB-1001", name: "Priya Sharma", phone: "+1 (212) 555-0101", city: "New York", cuisine: "South Indian", appliedAt: "2 hours ago", status: "pending" as Status, step: "Documents", hasPets: true, healthCondition: "None" },
+  { id: "ONB-1002", name: "Anitha Raj", phone: "+1 (310) 555-0102", city: "Los Angeles", cuisine: "North Indian", appliedAt: "5 hours ago", status: "pending" as Status, step: "Final Review", hasPets: false, healthCondition: "Diabetes" },
+  { id: "ONB-1003", name: "Deepa Kumari", phone: "+1 (312) 555-0103", city: "Chicago", cuisine: "Pennsylvania", appliedAt: "1 day ago", status: "approved" as Status, step: "Completed", hasPets: false, healthCondition: "None" },
+  { id: "ONB-1004", name: "Fatima Begum", phone: "+1 (713) 555-0104", city: "Houston", cuisine: "Mughlai", appliedAt: "1 day ago", status: "rejected" as Status, step: "Kitchen Inspection", hasPets: true, healthCondition: "None" },
+  { id: "ONB-1005", name: "Geetha Reddy", phone: "+1 (602) 555-0105", city: "Phoenix", cuisine: "Chettinad", appliedAt: "2 days ago", status: "pending" as Status, step: "Training", hasPets: false, healthCondition: "Asthma" },
+  { id: "ONB-1006", name: "Hema Latha", phone: "+1 (215) 555-0106", city: "San Antonio", cuisine: "Florida", appliedAt: "3 days ago", status: "approved" as Status, step: "Completed", hasPets: true, healthCondition: "None" },
 ];
 
 const statusConfig: Record<Status, { label: string; variant: "default" | "destructive" | "outline" | "secondary" }> = {

@@ -5,9 +5,9 @@ import { Globe } from "lucide-react";
 const partnerKitchens = [
   { id: "all", name: "All Kitchens" },
   { id: "k-shf-chettinad", name: "Shero Home Food – Chettinad" },
-  { id: "k-shf-andhra", name: "Shero Home Food – Andhra" },
+  { id: "k-shf-andhra", name: "Shero Home Food – Pennsylvania" },
   { id: "k-hcf-priya", name: "Priya's Home Kitchen" },
-  { id: "k-shf-kerala", name: "Shero Home Food – Kerala" },
+  { id: "k-shf-kerala", name: "Shero Home Food – Florida" },
 ];
 
 interface KitchenSelectorProps {

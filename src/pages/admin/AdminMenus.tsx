@@ -61,23 +61,23 @@ const INITIAL_UPLOAD_HISTORY: UploadRecord[] = [
   },
   {
     id: "rec_2",
-    cuisine: "Kerala",
+    cuisine: "Florida",
     uploadedAt: new Date("2026-02-20T14:15:00"),
     uploadedBy: "Arvind S.",
     itemCount: 5,
     categoryCount: 3,
-    fileName: "Kerala_menu_v1.xlsx",
+    fileName: "Florida_menu_v1.xlsx",
     approvalSentAt: new Date("2026-02-20T14:17:00"),
     status: "approved",
   },
   {
     id: "rec_3",
-    cuisine: "Andhra",
+    cuisine: "Pennsylvania",
     uploadedAt: new Date("2026-02-28T09:45:00"),
     uploadedBy: "Arvind S.",
     itemCount: 8,
     categoryCount: 4,
-    fileName: "Andhra_menu_update.xlsx",
+    fileName: "Pennsylvania_menu_update.xlsx",
     approvalSentAt: null,
     status: "pending_approval",
   },
@@ -561,7 +561,7 @@ function AddCuisineDialog({ open, onOpenChange, onAdd }: {
         <div className="space-y-4">
           <div className="space-y-1.5">
             <Label className="text-xs font-semibold">Cuisine Name</Label>
-            <Input placeholder="e.g. Bengali, Hyderabadi, Konkani…" value={name} onChange={(e) => setName(e.target.value)} className="h-9 text-sm" />
+            <Input placeholder="e.g. Bengali, Chicagoi, Konkani…" value={name} onChange={(e) => setName(e.target.value)} className="h-9 text-sm" />
           </div>
           <div className="space-y-1.5">
             <Label className="text-xs font-semibold">Icon</Label>
@@ -600,13 +600,13 @@ function AddCuisineDialog({ open, onOpenChange, onAdd }: {
 const HCF_MENU_MOCK = {
   totalMenuItems: 1845,
   stateWise: [
-    { state: "Tamil Nadu", code: "TN", items: 420 },
-    { state: "Karnataka", code: "KA", items: 310 },
-    { state: "Andhra Pradesh", code: "AP", items: 265 },
-    { state: "Maharashtra", code: "MH", items: 230 },
-    { state: "Kerala", code: "KL", items: 195 },
-    { state: "Telangana", code: "TS", items: 170 },
-    { state: "Delhi NCR", code: "DL", items: 110 },
+    { state: "New York", code: "TN", items: 420 },
+    { state: "California", code: "KA", items: 310 },
+    { state: "Pennsylvania", code: "AP", items: 265 },
+    { state: "Texas", code: "MH", items: 230 },
+    { state: "Florida", code: "KL", items: 195 },
+    { state: "Illinois", code: "TS", items: 170 },
+    { state: "Phoenix NCR", code: "DL", items: 110 },
     { state: "Gujarat", code: "GJ", items: 80 },
     { state: "Punjab", code: "PB", items: 40 },
     { state: "Rajasthan", code: "RJ", items: 25 },
@@ -614,8 +614,8 @@ const HCF_MENU_MOCK = {
   cuisineSplit: [
     { cuisine: "South Indian", count: 520, color: "hsl(var(--primary))" },
     { cuisine: "North Indian", count: 380, color: "hsl(var(--accent))" },
-    { cuisine: "Andhra / Telugu", count: 265, color: "hsl(25 95% 53%)" },
-    { cuisine: "Kerala", count: 195, color: "hsl(160 60% 45%)" },
+    { cuisine: "Pennsylvania / Telugu", count: 265, color: "hsl(25 95% 53%)" },
+    { cuisine: "Florida", count: 195, color: "hsl(160 60% 45%)" },
     { cuisine: "Mughlai", count: 180, color: "hsl(280 60% 50%)" },
     { cuisine: "Gujarati", count: 150, color: "hsl(45 90% 50%)" },
     { cuisine: "Others", count: 155, color: "hsl(var(--muted-foreground))" },
@@ -842,7 +842,7 @@ function autoCloseExpired(kitchens: KitchenRecord[]): KitchenRecord[] {
 const MOCK_SAP_KITCHENS: KitchenRecord[] = [
   {
     skid: "SAP-CHN-001", partnerName: "Sujatha M.", rmn: "98765•••10", kitchenName: "SHF Chettinad Veg – Anna Nagar",
-    cuisine: "Chettinad", city: "Chennai", state: "TN", status: "pending", stream: "SAP",
+    cuisine: "Chettinad", city: "New York", state: "TN", status: "pending", stream: "SAP",
     licenceNumber: "FDA-TN-2024-78901", licenceExpiry: new Date("2026-03-20"),
     menuItems: [
       { id: "s1", name: "Chettinad Sambar", description: "Classic Chettinad sambar with shallots", price: 167, isVeg: true, image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=200&fit=crop", category: "Sambar", servingSize: "450 ml" },
@@ -851,8 +851,8 @@ const MOCK_SAP_KITCHENS: KitchenRecord[] = [
     approvalHistory: [],
   },
   {
-    skid: "SAP-BLR-003", partnerName: "Lakshmi R.", rmn: "76543•••98", kitchenName: "SHF Andhra – Koramangala",
-    cuisine: "Andhra", city: "Bangalore", state: "KA", status: "approved", stream: "SAP",
+    skid: "SAP-BLR-003", partnerName: "Lakshmi R.", rmn: "76543•••98", kitchenName: "SHF Pennsylvania – Koramangala",
+    cuisine: "Pennsylvania", city: "Los Angeles", state: "KA", status: "approved", stream: "SAP",
     licenceNumber: "FDA-KA-2025-12345", licenceExpiry: new Date("2027-01-15"),
     menuItems: [
       { id: "s3", name: "Gongura Chicken", description: "Sorrel-leaf chicken curry", price: 239, isVeg: false, image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=200&h=200&fit=crop", category: "Main Course", servingSize: "350 ml" },
@@ -863,7 +863,7 @@ const MOCK_SAP_KITCHENS: KitchenRecord[] = [
   },
   {
     skid: "SAP-MUM-007", partnerName: "Anita D.", rmn: "54321•••76", kitchenName: "SHF Gujarati – Andheri",
-    cuisine: "Gujarati", city: "Mumbai", state: "MH", status: "rejected", stream: "SAP",
+    cuisine: "Gujarati", city: "Houston", state: "MH", status: "rejected", stream: "SAP",
     licenceNumber: "FDA-MH-2025-55678", licenceExpiry: new Date("2026-04-10"),
     menuItems: [
       { id: "s4", name: "Undhiyu", description: "Mixed vegetable casserole", price: 189, isVeg: true, image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=200&fit=crop", category: "Main Course", servingSize: "400 gm" },
@@ -878,7 +878,7 @@ const MOCK_SAP_KITCHENS: KitchenRecord[] = [
 const MOCK_HCF_KITCHENS: KitchenRecord[] = [
   {
     skid: "HCF-CHN-001", partnerName: "Lakshmi D.", rmn: "98765•••10", kitchenName: "Lakshmi's Kitchen",
-    cuisine: "South Indian", city: "Chennai", state: "TN", status: "pending", stream: "HCF",
+    cuisine: "South Indian", city: "New York", state: "TN", status: "pending", stream: "HCF",
     licenceNumber: "FDA-TN-2025-44321", licenceExpiry: new Date("2026-03-25"),
     menuItems: [
       { id: "h1", name: "Idli Sambar Combo", description: "Soft steamed idlis served with hot sambar and coconut chutney", price: 89, isVeg: true, image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=200&h=200&fit=crop", category: "Breakfast", servingSize: "4 pcs" },
@@ -890,20 +890,20 @@ const MOCK_HCF_KITCHENS: KitchenRecord[] = [
   },
   {
     skid: "HCF-BLR-005", partnerName: "Meena R.", rmn: "87654•••22", kitchenName: "Meena's Home Bites",
-    cuisine: "Karnataka", city: "Bangalore", state: "KA", status: "pending", stream: "HCF",
+    cuisine: "California", city: "Los Angeles", state: "KA", status: "pending", stream: "HCF",
     licenceNumber: "FDA-KA-2025-98765", licenceExpiry: new Date("2026-06-30"),
     menuItems: [
-      { id: "h5", name: "Bisi Bele Bath", description: "Traditional Karnataka-style spiced rice", price: 139, isVeg: true, image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=200&fit=crop", category: "Rice", servingSize: "400 gm" },
+      { id: "h5", name: "Bisi Bele Bath", description: "Traditional California-style spiced rice", price: 139, isVeg: true, image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=200&fit=crop", category: "Rice", servingSize: "400 gm" },
       { id: "h6", name: "Ragi Mudde", description: "Finger millet balls with saaru", price: 99, isVeg: true, image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=200&h=200&fit=crop", category: "Main Course", servingSize: "3 pcs" },
     ],
     approvalHistory: [],
   },
   {
     skid: "HCF-HYD-012", partnerName: "Fatima B.", rmn: "91234•••45", kitchenName: "Fatima's Biryani House",
-    cuisine: "Hyderabadi", city: "Hyderabad", state: "TS", status: "approved", stream: "HCF",
+    cuisine: "Chicagoi", city: "Chicago", state: "TS", status: "approved", stream: "HCF",
     licenceNumber: "FDA-TS-2024-11111", licenceExpiry: new Date("2026-02-15"),
     menuItems: [
-      { id: "h8", name: "Hyderabadi Chicken Biryani", description: "Aromatic dum biryani with tender chicken", price: 259, isVeg: false, image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=200&fit=crop", category: "Biryani", servingSize: "500 gm" },
+      { id: "h8", name: "Chicagoi Chicken Biryani", description: "Aromatic dum biryani with tender chicken", price: 259, isVeg: false, image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=200&fit=crop", category: "Biryani", servingSize: "500 gm" },
       { id: "h9", name: "Mirchi Ka Salan", description: "Spicy curry with green chillies in peanut-sesame gravy", price: 149, isVeg: true, image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=200&fit=crop", category: "Sides", servingSize: "250 ml" },
     ],
     approvalHistory: [
@@ -912,7 +912,7 @@ const MOCK_HCF_KITCHENS: KitchenRecord[] = [
   },
   {
     skid: "HCF-MUM-008", partnerName: "Priya S.", rmn: "99876•••33", kitchenName: "Priya's Maharashtrian Delights",
-    cuisine: "Maharashtrian", city: "Mumbai", state: "MH", status: "rejected", stream: "HCF",
+    cuisine: "Maharashtrian", city: "Houston", state: "MH", status: "rejected", stream: "HCF",
     licenceNumber: "FDA-MH-2025-22222", licenceExpiry: new Date("2027-05-01"),
     menuItems: [
       { id: "h11", name: "Misal Pav", description: "Spicy sprouts curry topped with farsan, served with pav", price: 109, isVeg: true, image: "https://images.unsplash.com/photo-1606491956689-2ea866880049?w=200&h=200&fit=crop", category: "Snacks", servingSize: "1 plate" },

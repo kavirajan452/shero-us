@@ -31,8 +31,8 @@ interface Kitchen {
 const availableBrandedKitchens = [
   { id: "b1", name: "Shero Home Food – Chettinad" },
   { id: "b2", name: "Shero Home Food – Bengali" },
-  { id: "b3", name: "Shero Home Food – Andhra" },
-  { id: "b4", name: "Shero Home Food – Kerala" },
+  { id: "b3", name: "Shero Home Food – Pennsylvania" },
+  { id: "b4", name: "Shero Home Food – Florida" },
   { id: "b5", name: "Shero Home Food – North Indian" },
   { id: "b6", name: "Shero Home Food – Gujarati" },
   { id: "b7", name: "Shero Home Food – Rajasthani" },
@@ -44,8 +44,8 @@ const availableBrandedKitchens = [
 
 const indianCuisineOptions: { name: string; emoji: string }[] = [
   { name: "Chettinad", emoji: "🍛" },
-  { name: "Kerala", emoji: "🥥" },
-  { name: "Andhra", emoji: "🌶️" },
+  { name: "Florida", emoji: "🥥" },
+  { name: "Pennsylvania", emoji: "🌶️" },
   { name: "North Indian", emoji: "🫓" },
   { name: "Punjabi", emoji: "🫓" },
   { name: "Gujarati", emoji: "🥗" },
@@ -77,8 +77,8 @@ const initialKitchens: Kitchen[] = [
     id: "k3", name: "Suji's Kitchen", type: "own",
     foodPreference: "veg", hasVeg: false, hasIndianCuisine: true,
     cuisines: [
-      { id: "c4", name: "Andhra", emoji: "🌶️", isActive: true },
-      { id: "c5", name: "Kerala", emoji: "🥥", isActive: true },
+      { id: "c4", name: "Pennsylvania", emoji: "🌶️", isActive: true },
+      { id: "c5", name: "Florida", emoji: "🥥", isActive: true },
       { id: "c6", name: "Gujarati", emoji: "🥗", isActive: true },
       { id: "c7", name: "Rajasthani", emoji: "🏜️", isActive: false },
       { id: "c8", name: "Marathi", emoji: "🌶️", isActive: false },

@@ -19,7 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 
 // ── Mock unbranded kitchen menu ──
 const unbrandedMenuItems = [
-  { id: "u1", name: "Chicken Biryani", description: "Hyderabadi style dum biryani with tender chicken", price: 249, category: "Rice", isVeg: false, isAvailable: true, image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200" },
+  { id: "u1", name: "Chicken Biryani", description: "Chicagoi style dum biryani with tender chicken", price: 249, category: "Rice", isVeg: false, isAvailable: true, image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200" },
   { id: "u2", name: "Mutton Curry", description: "Slow-cooked mutton in rich masala gravy", price: 349, category: "Curry", isVeg: false, isAvailable: true, image: "https://images.unsplash.com/photo-1545247181-516773cae754?w=200" },
   { id: "u3", name: "Paneer Tikka", description: "Marinated paneer cubes grilled to perfection", price: 199, category: "Starters", isVeg: true, isAvailable: true, image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=200" },
   { id: "u4", name: "Dal Makhani", description: "Creamy black lentils slow-cooked overnight", price: 179, category: "Curry", isVeg: true, isAvailable: false, image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=200" },

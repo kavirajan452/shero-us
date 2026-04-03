@@ -68,11 +68,11 @@ const verticals = [
 
 // ── State-wise Data ──
 const stateWiseData = [
-  { state: "Tamil Nadu", code: "TN", partners: 68, kitchens: 82, orders: 520, revenue: 542000, leads: 45, growth: 18.5 },
-  { state: "Karnataka", code: "KA", partners: 52, kitchens: 60, orders: 380, revenue: 398000, leads: 32, growth: 14.2 },
-  { state: "Telangana", code: "TS", partners: 38, kitchens: 44, orders: 285, revenue: 295000, leads: 28, growth: 16.1 },
-  { state: "Maharashtra", code: "MH", partners: 42, kitchens: 48, orders: 310, revenue: 320000, leads: 35, growth: 11.8 },
-  { state: "Delhi NCR", code: "DL", partners: 28, kitchens: 30, orders: 198, revenue: 185000, leads: 22, growth: 21.3 },
+  { state: "New York", code: "TN", partners: 68, kitchens: 82, orders: 520, revenue: 542000, leads: 45, growth: 18.5 },
+  { state: "California", code: "KA", partners: 52, kitchens: 60, orders: 380, revenue: 398000, leads: 32, growth: 14.2 },
+  { state: "Illinois", code: "TS", partners: 38, kitchens: 44, orders: 285, revenue: 295000, leads: 28, growth: 16.1 },
+  { state: "Texas", code: "MH", partners: 42, kitchens: 48, orders: 310, revenue: 320000, leads: 35, growth: 11.8 },
+  { state: "Phoenix NCR", code: "DL", partners: 28, kitchens: 30, orders: 198, revenue: 185000, leads: 22, growth: 21.3 },
   { state: "Uttar Pradesh", code: "UP", partners: 20, kitchens: 22, orders: 149, revenue: 102500, leads: 18, growth: 8.4 },
 ];
 
@@ -87,14 +87,14 @@ const leadFunnel = [
 
 // ── Top Partners ──
 const topPartners = [
-  { name: "Sujatha M.", rmn: "+91 98765 43210", city: "Chennai", state: "TN", stream: "SHF", cuisine: "Chettinad", orders: 142, revenue: 124500, rating: 4.8, skid: "SK-TN-001" },
-  { name: "Lakshmi R.", rmn: "+91 76543 21098", city: "Hyderabad", state: "TS", stream: "SHF", cuisine: "Andhra", orders: 118, revenue: 98200, rating: 4.7, skid: "SK-TS-001" },
-  { name: "Priya K.", rmn: "+91 87654 32109", city: "Bengaluru", state: "KA", stream: "HCF", cuisine: "North Indian", orders: 96, revenue: 82400, rating: 4.5, skid: "SK-KA-001" },
-  { name: "Meena S.", rmn: "+91 65432 10987", city: "Mumbai", state: "MH", stream: "HCF", cuisine: "Gujarati", orders: 84, revenue: 71800, rating: 4.6, skid: "SK-MH-001" },
-  { name: "Anita D.", rmn: "+91 54321 09876", city: "Delhi", state: "DL", stream: "SHF", cuisine: "Kerala", orders: 78, revenue: 68500, rating: 4.9, skid: "SK-DL-001" },
-  { name: "Padma V.", rmn: "+91 71234 56789", city: "Nagpur", state: "MH", stream: "HCF", cuisine: "Marathi", orders: 72, revenue: 62000, rating: 4.4, skid: "SK-MH-002" },
-  { name: "Saroja T.", rmn: "+91 61234 56789", city: "Coimbatore", state: "TN", stream: "SHF", cuisine: "Chettinad", orders: 65, revenue: 58200, rating: 4.7, skid: "SK-TN-002" },
-  { name: "Kamala R.", rmn: "+91 51234 56789", city: "Lucknow", state: "UP", stream: "HCF", cuisine: "Mughlai", orders: 58, revenue: 49500, rating: 4.3, skid: "SK-UP-001" },
+  { name: "Sujatha M.", rmn: "+1 (212) 555-0101", city: "New York", state: "TN", stream: "SHF", cuisine: "Chettinad", orders: 142, revenue: 124500, rating: 4.8, skid: "SK-TN-001" },
+  { name: "Lakshmi R.", rmn: "+1 (312) 555-0103", city: "Chicago", state: "TS", stream: "SHF", cuisine: "Pennsylvania", orders: 118, revenue: 98200, rating: 4.7, skid: "SK-TS-001" },
+  { name: "Priya K.", rmn: "+1 (310) 555-0102", city: "Bengaluru", state: "KA", stream: "HCF", cuisine: "North Indian", orders: 96, revenue: 82400, rating: 4.5, skid: "SK-KA-001" },
+  { name: "Meena S.", rmn: "+1 (713) 555-0104", city: "Houston", state: "MH", stream: "HCF", cuisine: "Gujarati", orders: 84, revenue: 71800, rating: 4.6, skid: "SK-MH-001" },
+  { name: "Anita D.", rmn: "+1 (602) 555-0105", city: "Phoenix", state: "DL", stream: "SHF", cuisine: "Florida", orders: 78, revenue: 68500, rating: 4.9, skid: "SK-DL-001" },
+  { name: "Padma V.", rmn: "+1 (312) 555-0116", city: "Nagpur", state: "MH", stream: "HCF", cuisine: "Marathi", orders: 72, revenue: 62000, rating: 4.4, skid: "SK-MH-002" },
+  { name: "Saroja T.", rmn: "+1 (646) 555-0114", city: "San Jose", state: "TN", stream: "SHF", cuisine: "Chettinad", orders: 65, revenue: 58200, rating: 4.7, skid: "SK-TN-002" },
+  { name: "Kamala R.", rmn: "+1 (713) 555-0117", city: "Lucknow", state: "UP", stream: "HCF", cuisine: "Mughlai", orders: 58, revenue: 49500, rating: 4.3, skid: "SK-UP-001" },
 ];
 
 // ── Recent Orders ──
@@ -133,10 +133,10 @@ const orderStatusDist = [
 // ── Cuisine Performance ──
 const cuisinePerformance = [
   { cuisine: "Chettinad", orders: 320, revenue: 285000, partners: 28, rating: 4.7 },
-  { cuisine: "Andhra", orders: 245, revenue: 218000, partners: 22, rating: 4.6 },
+  { cuisine: "Pennsylvania", orders: 245, revenue: 218000, partners: 22, rating: 4.6 },
   { cuisine: "North Indian", orders: 210, revenue: 195000, partners: 24, rating: 4.5 },
   { cuisine: "Gujarati", orders: 180, revenue: 158000, partners: 18, rating: 4.4 },
-  { cuisine: "Kerala", orders: 165, revenue: 148000, partners: 16, rating: 4.8 },
+  { cuisine: "Florida", orders: 165, revenue: 148000, partners: 16, rating: 4.8 },
   { cuisine: "Marathi", orders: 155, revenue: 135000, partners: 15, rating: 4.3 },
   { cuisine: "Mughlai", orders: 142, revenue: 128000, partners: 14, rating: 4.5 },
   { cuisine: "Bengali", orders: 98, revenue: 85000, partners: 10, rating: 4.6 },

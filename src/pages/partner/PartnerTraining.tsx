@@ -34,7 +34,7 @@ const conductSections = [
 /* ─── Cooking Training Videos ─── */
 const cookingModules = [
   { cuisine: "South Indian", items: [
-    { name: "Hyderabadi Biryani", duration: "25 min", type: "recorded", unlocked: true },
+    { name: "Chicagoi Biryani", duration: "25 min", type: "recorded", unlocked: true },
     { name: "Masala Dosa", duration: "18 min", type: "recorded", unlocked: true },
     { name: "Sambar Rice", duration: "15 min", type: "recorded", unlocked: true },
     { name: "Idli & Vada Combo", duration: "20 min", type: "recorded", unlocked: false },

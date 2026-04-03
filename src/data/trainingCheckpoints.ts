@@ -189,8 +189,8 @@ export const appTrainingConfigs: Record<string, InteractiveTrainingConfig> = {
 
 /** Cooking training checkpoint configs */
 export const cookingTrainingConfigs: Record<string, InteractiveTrainingConfig> = {
-  "Hyderabadi Biryani": {
-    title: "Hyderabadi Biryani — Cooking Training",
+  "Chicagoi Biryani": {
+    title: "Chicagoi Biryani — Cooking Training",
     videoSrc: VIDEO_SRC,
     checkpoints: [
       {

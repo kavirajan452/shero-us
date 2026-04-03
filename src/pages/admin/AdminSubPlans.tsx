@@ -39,8 +39,8 @@ const AdminSubPlans = () => {
           <DialogContent className="max-w-sm">
             <DialogHeader><DialogTitle className="text-sm">Create New Meal Plan</DialogTitle></DialogHeader>
             <div className="space-y-3">
-              <div><label className="text-xs font-medium text-foreground">Plan Name</label><Input value={newPlanName} onChange={e => setNewPlanName(e.target.value)} placeholder="e.g., Tamil Nadu Veg Thali" className="h-9 text-xs mt-1" /></div>
-              <div><label className="text-xs font-medium text-foreground">Cuisine</label><Input value={newPlanCuisine} onChange={e => setNewPlanCuisine(e.target.value)} placeholder="e.g., Tamil Nadu" className="h-9 text-xs mt-1" /></div>
+              <div><label className="text-xs font-medium text-foreground">Plan Name</label><Input value={newPlanName} onChange={e => setNewPlanName(e.target.value)} placeholder="e.g., New York Veg Thali" className="h-9 text-xs mt-1" /></div>
+              <div><label className="text-xs font-medium text-foreground">Cuisine</label><Input value={newPlanCuisine} onChange={e => setNewPlanCuisine(e.target.value)} placeholder="e.g., New York" className="h-9 text-xs mt-1" /></div>
               <div className="flex items-center gap-3">
                 <label className="text-xs font-medium text-foreground">Type:</label>
                 <button onClick={() => setNewPlanIsVeg(true)} className={`text-xs px-3 py-1.5 rounded-full transition-all ${newPlanIsVeg ? "bg-action-done/15 text-action-done font-bold ring-1 ring-action-done/30" : "bg-muted text-muted-foreground"}`}>🥬 Veg</button>

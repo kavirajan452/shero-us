@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Ban, Eye } from "lucide-react";
 
 const mockUsers = [
-  { id: "1", name: "Ramesh K.", rmn: "+91 98765 43210", role: "customer" as const, orders: 12, joined: "Jan 2026" },
-  { id: "2", name: "Sujatha M.", rmn: "+91 87654 32109", role: "partner" as const, orders: 0, joined: "Dec 2025" },
-  { id: "3", name: "Anita P.", rmn: "+91 76543 21098", role: "customer" as const, orders: 5, joined: "Feb 2026" },
-  { id: "4", name: "Priya K.", rmn: "+91 65432 10987", role: "partner" as const, orders: 0, joined: "Jan 2026" },
-  { id: "5", name: "Vijay S.", rmn: "+91 54321 09876", role: "customer" as const, orders: 28, joined: "Nov 2025" },
-  { id: "6", name: "Deepa M.", rmn: "+91 43210 98765", role: "customer" as const, orders: 3, joined: "Feb 2026" },
+  { id: "1", name: "Ramesh K.", rmn: "+1 (212) 555-0101", role: "customer" as const, orders: 12, joined: "Jan 2026" },
+  { id: "2", name: "Sujatha M.", rmn: "+1 (310) 555-0102", role: "partner" as const, orders: 0, joined: "Dec 2025" },
+  { id: "3", name: "Anita P.", rmn: "+1 (312) 555-0103", role: "customer" as const, orders: 5, joined: "Feb 2026" },
+  { id: "4", name: "Priya K.", rmn: "+1 (713) 555-0104", role: "partner" as const, orders: 0, joined: "Jan 2026" },
+  { id: "5", name: "Vijay S.", rmn: "+1 (602) 555-0105", role: "customer" as const, orders: 28, joined: "Nov 2025" },
+  { id: "6", name: "Deepa M.", rmn: "+1 (215) 555-0106", role: "customer" as const, orders: 3, joined: "Feb 2026" },
 ];
 
 const roleColors = {

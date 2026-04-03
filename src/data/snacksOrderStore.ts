@@ -38,12 +38,12 @@ export interface SnackOrder {
   trackingId?: string;
 }
 
-const cities = ["Chennai", "Bangalore", "Hyderabad", "Mumbai", "Delhi", "Kochi", "Coimbatore", "Mysore"];
+const cities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "San Diego", "San Jose", "Mysore"];
 const partners = [
   { id: "sp-1", name: "Lakshmi's Kitchen" },
   { id: "sp-2", name: "Amma's Snacks" },
-  { id: "sp-3", name: "Kerala Delights" },
-  { id: "sp-4", name: "Andhra Pickles House" },
+  { id: "sp-3", name: "Florida Delights" },
+  { id: "sp-4", name: "Pennsylvania Pickles House" },
   { id: "sp-5", name: "Mysore Sweets Hub" },
 ];
 const customers = [

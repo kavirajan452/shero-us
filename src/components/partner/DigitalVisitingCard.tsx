@@ -9,7 +9,7 @@ import sheroLogo from "@/assets/shero-logo.png";
 const partnerInfo = {
   name: "Chef Kamala Devi",
   sheroId: "SKID-TN-0042",
-  phone: "+91 98XXX XX042",  // masked
+  phone: "+1 98XXX XX042",  // masked
   photo: "👩‍🍳",
   cuisines: ["South Indian", "Sweets"],
   rating: 4.7,

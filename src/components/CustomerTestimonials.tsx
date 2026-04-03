@@ -2,13 +2,13 @@ import { useRef } from "react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonials = [
-  { name: "Madhavi Rao", city: "Hyderabad", rating: 5, text: "The Kudumulu tasted exactly like what my grandmother used to make. Brought back beautiful memories. Will order again for every festival!" },
-  { name: "Suchitra K", city: "Chennai", rating: 5, text: "Ordered the Festival Gift Hamper for Deepavali — the packaging was stunning and everything was so fresh. My relatives loved it!" },
-  { name: "Jyothi S", city: "Bangalore", rating: 5, text: "Nei Appam and Kozhukattai were divine. You can taste the pure ghee and jaggery. No artificial flavours at all." },
-  { name: "Dharani M", city: "Coimbatore", rating: 5, text: "Best Athirasam I have found online. Crispy outside, soft inside, and the jaggery flavour is perfect. 10/10!" },
-  { name: "Savitha R", city: "Chennai", rating: 5, text: "The Sundal combo was fresh and flavourful. Perfect for our Navaratri puja at home. Kids loved it too!" },
-  { name: "Anitha P", city: "Hyderabad", rating: 4, text: "Mango pickle is the real deal — tastes exactly like my mom's Avakaya. The sesame oil aroma is so authentic." },
-  { name: "Vaishnavi N", city: "Bangalore", rating: 5, text: "Paal Kozhukattai was heavenly! Delivered perfectly chilled. Such a comfort food — ordering monthly now." },
+  { name: "Madhavi Rao", city: "Chicago", rating: 5, text: "The Kudumulu tasted exactly like what my grandmother used to make. Brought back beautiful memories. Will order again for every festival!" },
+  { name: "Suchitra K", city: "New York", rating: 5, text: "Ordered the Festival Gift Hamper for Deepavali — the packaging was stunning and everything was so fresh. My relatives loved it!" },
+  { name: "Jyothi S", city: "Los Angeles", rating: 5, text: "Nei Appam and Kozhukattai were divine. You can taste the pure ghee and jaggery. No artificial flavours at all." },
+  { name: "Dharani M", city: "San Jose", rating: 5, text: "Best Athirasam I have found online. Crispy outside, soft inside, and the jaggery flavour is perfect. 10/10!" },
+  { name: "Savitha R", city: "New York", rating: 5, text: "The Sundal combo was fresh and flavourful. Perfect for our Navaratri puja at home. Kids loved it too!" },
+  { name: "Anitha P", city: "Chicago", rating: 4, text: "Mango pickle is the real deal — tastes exactly like my mom's Avakaya. The sesame oil aroma is so authentic." },
+  { name: "Vaishnavi N", city: "Los Angeles", rating: 5, text: "Paal Kozhukattai was heavenly! Delivered perfectly chilled. Such a comfort food — ordering monthly now." },
 ];
 
 const CustomerTestimonials = () => {

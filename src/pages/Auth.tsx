@@ -156,7 +156,7 @@ const Auth = () => {
                 <Label htmlFor="phone" className="text-xs font-medium">Phone Number</Label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input id="phone" type="tel" placeholder="+91 XXXXX XXXXX" value={phone} onChange={e => setPhone(e.target.value)} className="pl-10 h-12 rounded-xl" />
+                  <Input id="phone" type="tel" placeholder="+1 XXXXX XXXXX" value={phone} onChange={e => setPhone(e.target.value)} className="pl-10 h-12 rounded-xl" />
                 </div>
               </div>
               <div className="space-y-2">
@@ -237,7 +237,7 @@ const Auth = () => {
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     type="tel"
-                    placeholder="+91 XXXXX XXXXX"
+                    placeholder="+1 XXXXX XXXXX"
                     value={loginPhone}
                     onChange={e => setLoginPhone(e.target.value)}
                     className="pl-10 h-12 rounded-xl"

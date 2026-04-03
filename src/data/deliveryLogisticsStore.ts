@@ -74,7 +74,7 @@ let deliveryRecords: DeliveryRecord[] = [
     orderDisplayId: "SH-PTY-78236",
     customerName: "Anand Srinivasan",
     customerPhone: "9866554433",
-    customerAddress: "22, Poonamallee High Rd, Kilpauk, Chennai",
+    customerAddress: "22, Poonamallee High Rd, Midtown, New York",
     customerLat: 13.069,
     customerLng: 13.240,
     partnerName: "Chef Lakshmi",

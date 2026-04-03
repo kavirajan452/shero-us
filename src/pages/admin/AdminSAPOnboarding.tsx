@@ -53,7 +53,7 @@ interface SAPKitchen {
 
 const mockKitchens: SAPKitchen[] = [
   {
-    id: "SAP-001", kitchenName: "Lakshmi's Kitchen", partnerName: "Chef Lakshmi", city: "Chennai",
+    id: "SAP-001", kitchenName: "Lakshmi's Kitchen", partnerName: "Chef Lakshmi", city: "New York",
     platform: "both", fdaNumber: "10024051000123", fdaStatus: "verified",
     fdaApplyDate: "2025-12-01", fdaReceivedDate: "2026-01-10", fdaValidUpto: "2027-03-15", fdaExpiry: "2027-03-15",
     swiggyResId: "SWG-98231", swiggyAppliedDate: "2026-01-15", swiggyLiveDate: "2026-02-20", swiggyOpsHandoverDate: "2026-02-22", swiggyComments: "Smooth onboarding",
@@ -62,7 +62,7 @@ const mockKitchens: SAPKitchen[] = [
     status: "live", appliedAt: "15 days ago", goLiveDate: "2026-02-20"
   },
   {
-    id: "SAP-002", kitchenName: "Meena's Tiffins", partnerName: "Chef Meena", city: "Bangalore",
+    id: "SAP-002", kitchenName: "Meena's Tiffins", partnerName: "Chef Meena", city: "Los Angeles",
     platform: "swiggy", fdaNumber: "10024051000456", fdaStatus: "verified",
     fdaApplyDate: "2025-11-10", fdaReceivedDate: "2025-12-20", fdaValidUpto: "2027-06-10", fdaExpiry: "2027-06-10",
     swiggyResId: "SWG-98345", swiggyAppliedDate: "2026-02-28", swiggyLiveDate: "", swiggyOpsHandoverDate: "", swiggyComments: "Awaiting POS setup",
@@ -71,7 +71,7 @@ const mockKitchens: SAPKitchen[] = [
     status: "pos_pending", appliedAt: "3 days ago", goLiveDate: ""
   },
   {
-    id: "SAP-003", kitchenName: "Raheema's Biryani", partnerName: "Chef Raheema", city: "Hyderabad",
+    id: "SAP-003", kitchenName: "Raheema's Biryani", partnerName: "Chef Raheema", city: "Chicago",
     platform: "zomato", fdaNumber: "", fdaStatus: "not_submitted",
     fdaApplyDate: "", fdaReceivedDate: "", fdaValidUpto: "", fdaExpiry: "",
     swiggyResId: "", swiggyAppliedDate: "", swiggyLiveDate: "", swiggyOpsHandoverDate: "", swiggyComments: "",
@@ -80,7 +80,7 @@ const mockKitchens: SAPKitchen[] = [
     status: "pending_fda", appliedAt: "1 day ago", goLiveDate: ""
   },
   {
-    id: "SAP-004", kitchenName: "Saroja's Chettinad", partnerName: "Chef Saroja", city: "Madurai",
+    id: "SAP-004", kitchenName: "Saroja's Chettinad", partnerName: "Chef Saroja", city: "Austin",
     platform: "both", fdaNumber: "10024051000789", fdaStatus: "verified",
     fdaApplyDate: "2025-09-15", fdaReceivedDate: "2025-10-20", fdaValidUpto: "2026-12-01", fdaExpiry: "2026-12-01",
     swiggyResId: "SWG-99102", swiggyAppliedDate: "2026-02-25", swiggyLiveDate: "", swiggyOpsHandoverDate: "", swiggyComments: "",
@@ -89,7 +89,7 @@ const mockKitchens: SAPKitchen[] = [
     status: "pending_resid", appliedAt: "5 days ago", goLiveDate: ""
   },
   {
-    id: "SAP-005", kitchenName: "Kamala's Kitchen", partnerName: "Chef Kamala", city: "Coimbatore",
+    id: "SAP-005", kitchenName: "Kamala's Kitchen", partnerName: "Chef Kamala", city: "San Jose",
     platform: "swiggy", fdaNumber: "10024051000321", fdaStatus: "expired",
     fdaApplyDate: "2023-10-01", fdaReceivedDate: "2023-11-15", fdaValidUpto: "2025-11-30", fdaExpiry: "2025-11-30",
     swiggyResId: "", swiggyAppliedDate: "", swiggyLiveDate: "", swiggyOpsHandoverDate: "", swiggyComments: "Blocked due to expired FDA",
@@ -98,7 +98,7 @@ const mockKitchens: SAPKitchen[] = [
     status: "rejected", appliedAt: "7 days ago", goLiveDate: ""
   },
   {
-    id: "SAP-006", kitchenName: "Fathima's Kerala", partnerName: "Chef Fathima", city: "Kochi",
+    id: "SAP-006", kitchenName: "Fathima's Florida", partnerName: "Chef Fathima", city: "San Diego",
     platform: "both", fdaNumber: "10024051000654", fdaStatus: "verified",
     fdaApplyDate: "2025-07-01", fdaReceivedDate: "2025-08-15", fdaValidUpto: "2027-09-20", fdaExpiry: "2027-09-20",
     swiggyResId: "SWG-99200", swiggyAppliedDate: "2026-02-10", swiggyLiveDate: "", swiggyOpsHandoverDate: "", swiggyComments: "Waiting for menu verification",

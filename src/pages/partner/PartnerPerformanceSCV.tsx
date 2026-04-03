@@ -56,7 +56,7 @@ const getWeakMetrics = (week: typeof performanceWeeks[0]) => {
 };
 
 const badReviewsData = [
-  { orderId: "SH4821", date: "2026-02-28", customer: "Priya Sharma", dish: "Hyderabadi Biryani", rating: 1, review: "Food was cold and lacked spice.", week: "W3" },
+  { orderId: "SH4821", date: "2026-02-28", customer: "Priya Sharma", dish: "Chicagoi Biryani", rating: 1, review: "Food was cold and lacked spice.", week: "W3" },
   { orderId: "SH4790", date: "2026-02-27", customer: "Rahul Verma", dish: "Butter Chicken", rating: 2, review: "Missing naan. Chicken was dry.", week: "W3" },
   { orderId: "SH4760", date: "2026-02-25", customer: "Meena Iyer", dish: "Veg Thali", rating: 1, review: "Sambar was too salty.", week: "W3" },
   { orderId: "SH4701", date: "2026-02-21", customer: "Anita Reddy", dish: "Masala Dosa", rating: 2, review: "Dosa was soggy.", week: "W2" },

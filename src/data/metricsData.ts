@@ -119,8 +119,8 @@ function calcSCVBiz(scvMetrics: number, scvSales: number): number {
 }
 
 // ─── Mock Data Generator ───
-const REGIONS = ["Chennai North", "Chennai South", "Chennai Central", "Bangalore East", "Bangalore West", "Hyderabad"];
-const CUISINES = ["South Indian", "North Indian", "Multi-Cuisine", "Chinese", "Biryani", "Chettinad", "Kerala"];
+const REGIONS = ["New York North", "New York South", "New York Central", "Los Angeles East", "Los Angeles West", "Chicago"];
+const CUISINES = ["South Indian", "North Indian", "Multi-Cuisine", "Chinese", "Biryani", "Chettinad", "Florida"];
 const VERTICALS: Vertical[] = ["SHF", "HCF", "Subscriptions", "Party Orders", "Instant Delivery", "Sweets & Snacks"];
 const MONTHS = ["Oct 2025", "Nov 2025", "Dec 2025", "Jan 2026", "Feb 2026", "Mar 2026"];
 
@@ -169,7 +169,7 @@ function generatePartnerMetrics(): PartnerMetrics[] {
       data.push({
         partnerId: `P${String(idx + 1).padStart(3, "0")}`,
         partnerName: name,
-        rmn: `+91 ${String(9800000000 + idx * 1111).slice(0, 10)}`,
+        rmn: `+1 ${String(9800000000 + idx * 1111).slice(0, 10)}`,
         kitchenId: `SK${String(1000 + idx * 2).padStart(4, "0")}${kitchenType === "Branded" ? "-V" : ""}`,
         kitchenName: kitchenType === "Branded" ? `Shero ${cuisine}` : `${name}'s Kitchen`,
         kitchenType,

@@ -18,8 +18,8 @@ interface CustomerSettingsProps {
 type Section = "main" | "profile" | "addresses" | "notifications" | "language";
 
 const savedAddresses = [
-  { id: 1, label: "Home", address: "12, 3rd Cross St, Anna Nagar, Chennai 600040", isDefault: true },
-  { id: 2, label: "Office", address: "45, Cathedral Rd, Gopalapuram, Chennai 600086", isDefault: false },
+  { id: 1, label: "Home", address: "12, 3rd Cross St, Anna Nagar, New York 600040", isDefault: true },
+  { id: 2, label: "Office", address: "45, Cathedral Rd, Gopalapuram, New York 600086", isDefault: false },
 ];
 
 const languages = [
@@ -38,7 +38,7 @@ const CustomerSettings = ({ open, onOpenChange }: CustomerSettingsProps) => {
   const [profileForm, setProfileForm] = useState({
     name: "Priya Sharma",
     email: "priya@example.com",
-    phone: "+91 98765 43210",
+    phone: "+1 (212) 555-0101",
   });
 
   // OTP verification state
@@ -378,7 +378,7 @@ const CustomerSettings = ({ open, onOpenChange }: CustomerSettingsProps) => {
                 </Label>
                 <Input
                   type={changingField === "email" ? "email" : "tel"}
-                  placeholder={changingField === "email" ? "new@example.com" : "+91 XXXXX XXXXX"}
+                  placeholder={changingField === "email" ? "new@example.com" : "+1 XXXXX XXXXX"}
                   value={newFieldValue}
                   onChange={e => setNewFieldValue(e.target.value)}
                   autoFocus
