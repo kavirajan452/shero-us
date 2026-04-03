@@ -3,22 +3,28 @@ import jsPDF from "jspdf";
 export interface InvoiceData {
   invoiceNumber: string;
   generatedAt: string;
+  invoiceType: "customer_sale" | "partner_purchase";
   customerName: string;
   customerPhone: string;
   customerEmail: string;
-  items: { name: string; qty: string; amount: number; hsn?: string }[];
+  items: { name: string; qty: string; amount: number; purchasePrice?: number; hsn?: string }[];
   subtotal: number;
   taxAmount: number;
   taxRate: string;
+  federalTax: number;
+  stateTax: number;
+  localTax: number;
   deliveryFee: number;
   packingCharges: number;
   platformFee: number;
   discount: number;
+  tips: number;
   total: number;
   orderType: string;
   orderId: string;
   companySnapshot: {
     companyName?: string;
+    companyType?: string;
     ein?: string;
     address?: string;
     city?: string;
@@ -26,12 +32,15 @@ export interface InvoiceData {
     zipcode?: string;
     phone?: string;
     email?: string;
+    supportEmail?: string;
+    supportPhone?: string;
     bankName?: string;
     accountNumber?: string;
-    ifsc?: string;
+    routingNumber?: string;
     logoUrl?: string;
     termsAndConditions?: string;
     hsnSacCode?: string;
+    deliveryFee?: string;
   };
 }
 
@@ -42,27 +51,33 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   let y = 15;
 
   const co = data.companySnapshot;
-  const companyName = co.companyName || "Shero Home Food";
+  const companyName = co.companyName || "Shero USA INC";
+  const companyType = co.companyType || "Delaware C-Corporation";
   const ein = co.ein || "";
+  const isPartnerInvoice = data.invoiceType === "partner_purchase";
 
   // Header
   doc.setFillColor(26, 26, 46);
-  doc.rect(0, 0, pw, 28, "F");
+  doc.rect(0, 0, pw, 32, "F");
   doc.setTextColor(212, 165, 116);
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
-  doc.text(companyName, pw / 2, 12, { align: "center" });
-  doc.setFontSize(10);
+  doc.text(companyName, pw / 2, 11, { align: "center" });
+  doc.setFontSize(8);
   doc.setFont("helvetica", "normal");
-  doc.text("INVOICE", pw / 2, 20, { align: "center" });
-  y = 35;
+  doc.text(companyType, pw / 2, 17, { align: "center" });
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "bold");
+  doc.text(isPartnerInvoice ? "PURCHASE INVOICE" : "SALE INVOICE", pw / 2, 25, { align: "center" });
+  y = 38;
 
   // Company details
   doc.setTextColor(80, 80, 80);
   doc.setFontSize(8);
   if (ein) doc.text(`EIN: ${ein}`, m, y);
   if (co.address) doc.text(`${co.address}${co.city ? ", " + co.city : ""}${co.state ? ", " + co.state : ""} ${co.zipcode || ""}`, m, y + 4);
-  if (co.phone || co.email) doc.text(`${co.phone || ""} ${co.email ? "| " + co.email : ""}`, m, y + 8);
+  const contactLine = [co.supportPhone || co.phone, co.supportEmail || co.email].filter(Boolean).join(" | ");
+  if (contactLine) doc.text(contactLine, m, y + 8);
   y += 16;
 
   // Invoice meta
@@ -77,10 +92,10 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   doc.text(`Type: ${formatOrderType(data.orderType)}`, pw - m, y, { align: "right" });
   y += 8;
 
-  // Customer
+  // Bill To / From
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9);
-  doc.text("Bill To:", m, y);
+  doc.text(isPartnerInvoice ? "Purchased From (Kitchen Partner):" : "Bill To:", m, y);
   doc.setFont("helvetica", "normal");
   y += 5;
   doc.text(data.customerName, m, y);
@@ -91,15 +106,15 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
 
   // Items table header
   doc.setFillColor(245, 245, 245);
-  doc.rect(m, y, pw - m * 2, 7, "F");
+  const colWidth = pw - m * 2;
+  doc.rect(m, y, colWidth, 7, "F");
   doc.setFontSize(8);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(33, 33, 33);
   doc.text("#", m + 2, y + 5);
   doc.text("Item", m + 10, y + 5);
-  if (co.hsnSacCode) doc.text("HSN/SAC", pw - m - 55, y + 5);
   doc.text("Qty", pw - m - 35, y + 5);
-  doc.text("Amount", pw - m - 5, y + 5, { align: "right" });
+  doc.text(isPartnerInvoice ? "Purchase Price" : "Amount", pw - m - 5, y + 5, { align: "right" });
   y += 10;
 
   // Items
@@ -108,9 +123,9 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
     if (y > 260) { doc.addPage(); y = 15; }
     doc.text(`${idx + 1}`, m + 2, y);
     doc.text(item.name.substring(0, 40), m + 10, y);
-    if (item.hsn) doc.text(item.hsn, pw - m - 55, y);
     doc.text(item.qty, pw - m - 35, y);
-    doc.text(`$${item.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}`, pw - m - 5, y, { align: "right" });
+    const price = isPartnerInvoice && item.purchasePrice ? item.purchasePrice : item.amount;
+    doc.text(`$${price.toLocaleString("en-US", { minimumFractionDigits: 2 })}`, pw - m - 5, y, { align: "right" });
     y += 5;
   });
 
@@ -131,14 +146,24 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
 
   const fmt = (n: number) => `$${n.toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
   addLine("Subtotal", fmt(data.subtotal));
-  if (data.packingCharges > 0) addLine("Packing Charges", fmt(data.packingCharges));
   if (data.deliveryFee > 0) addLine("Delivery Fee", fmt(data.deliveryFee));
+  if (data.packingCharges > 0) addLine("Packing Charges", fmt(data.packingCharges));
   if (data.platformFee > 0) addLine("Platform Fee", fmt(data.platformFee));
   if (data.discount > 0) addLine("Discount", `-${fmt(data.discount)}`);
 
-  // Tax breakdown — US Sales Tax (single line)
-  const taxRate = parseFloat(data.taxRate) || 8.25;
-  addLine(`Sales Tax (${taxRate}%)`, fmt(data.taxAmount));
+  // Tax breakdown
+  if (data.federalTax > 0) addLine("Federal Tax", fmt(data.federalTax));
+  if (data.stateTax > 0) addLine(`State Tax (${co.state || "MD"})`, fmt(data.stateTax));
+  if (data.localTax > 0) addLine("Local Tax", fmt(data.localTax));
+  if (data.federalTax === 0 && data.stateTax === 0 && data.localTax === 0 && data.taxAmount > 0) {
+    const taxRate = parseFloat(data.taxRate) || 8.25;
+    addLine(`Sales Tax (${taxRate}%)`, fmt(data.taxAmount));
+  }
+
+  // Tips (customer invoice only)
+  if (!isPartnerInvoice && data.tips > 0) {
+    addLine("Tip", fmt(data.tips));
+  }
 
   y += 2;
   doc.line(pw - m - 65, y, pw - m, y);
@@ -155,7 +180,7 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
     y += 4;
     if (co.bankName) { doc.text(`Bank: ${co.bankName}`, m, y); y += 4; }
     if (co.accountNumber) { doc.text(`Account: ${co.accountNumber}`, m, y); y += 4; }
-    if (co.ifsc) { doc.text(`Routing: ${co.ifsc}`, m, y); y += 4; }
+    if (co.routingNumber) { doc.text(`Routing: ${co.routingNumber}`, m, y); y += 4; }
   }
 
   // Terms
