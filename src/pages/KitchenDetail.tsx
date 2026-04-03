@@ -89,8 +89,6 @@ const KitchenDetail = () => {
             </div>
             <h1 className="text-2xl font-serif font-bold text-white">{kitchen.name}</h1>
             <div className="flex items-center gap-3 mt-1 text-white/80 text-sm">
-              <span className="flex items-center gap-1"><Star className="w-4 h-4 text-yellow-400 fill-yellow-400" /> {kitchen.rating}</span>
-              <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {kitchen.delivery_time}</span>
               <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {kitchen.location}</span>
             </div>
           </div>
