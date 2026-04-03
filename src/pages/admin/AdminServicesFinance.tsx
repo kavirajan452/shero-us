@@ -90,7 +90,7 @@ export default function AdminServicesFinance() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
-        <KPICard label="Net Revenue" value={fmtFull(netRevenue)} icon={<IndianRupee className="w-4 h-4" />} accent="primary" />
+        <KPICard label="Net Revenue" value={fmtFull(netRevenue)} icon={<DollarSign className="w-4 h-4" />} accent="primary" />
         <KPICard label="CM 1 (Gross)" value={fmtFull(cm1)} icon={<PiggyBank className="w-4 h-4" />} accent="chart-2" />
         <KPICard label="CM 1.5 (Net)" value={fmtFull(cm15)} icon={<TrendingUp className="w-4 h-4" />} accent="chart-3" />
         <KPICard label="Sundry Debtors" value={fmtFull(totalReceivable)} icon={<CreditCard className="w-4 h-4" />} accent="action-cook" />
