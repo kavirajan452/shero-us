@@ -1,10 +1,11 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tag } from "lucide-react";
-import { ArrowLeft, Minus, Plus, Trash2, MapPin, Phone, User, Clock, Truck, Store, Package, Shield, Wallet } from "lucide-react";
+import { ArrowLeft, Minus, Plus, Trash2, MapPin, Phone, User, Clock, Truck, Store, Package, Shield, Wallet, AlertTriangle } from "lucide-react";
 import CheckoutAuth from "@/components/CheckoutAuth";
 import PaymentSection from "@/components/PaymentSection";
 import type { PaymentMethod } from "@/components/PaymentSection";
+import NonServiceableArea from "@/components/NonServiceableArea";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import { useCart } from "@/contexts/CartContext";
@@ -12,6 +13,7 @@ import { useRegion } from "@/contexts/RegionContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWallet } from "@/contexts/WalletContext";
 import { useCreateInstantOrder, useSaveIncompleteOrder } from "@/hooks/useSupabaseData";
+import { useServiceability } from "@/hooks/useServiceability";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 
