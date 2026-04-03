@@ -98,32 +98,36 @@ const Checkout = () => {
 
   const slots = useMemo(() => {
     const now = new Date();
-    const result: { label: string; value: string }[] = [];
-    const minTime = new Date(now.getTime() + region.minPrepMinutes * 60 * 1000);
+    const result: { label: string; value: string; day: string }[] = [];
+    const fmt = (d: Date) => d.toLocaleTimeString(region.locale, { hour: "2-digit", minute: "2-digit", hour12: true });
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-    for (let h = region.deliveryStartHour; h < region.deliveryEndHour; h++) {
-      for (const m of [0, 30]) {
-        const slot = new Date(now);
-        slot.setHours(h, m, 0, 0);
-        if (slot < now || slot < minTime) continue;
-        const end = new Date(slot.getTime() + 30 * 60 * 1000);
-        const fmt = (d: Date) => d.toLocaleTimeString(region.locale, { hour: "2-digit", minute: "2-digit", hour12: true });
-        result.push({ label: `${fmt(slot)} – ${fmt(end)}`, value: `${h}:${m.toString().padStart(2, "0")}` });
-      }
-    }
-    if (result.length === 0) {
-      for (let h = region.deliveryStartHour; h < region.deliveryEndHour; h++) {
-        for (const m of [0, 30]) {
-          const slot = new Date(now);
-          slot.setDate(slot.getDate() + 1);
-          slot.setHours(h, m, 0, 0);
-          const end = new Date(slot.getTime() + 30 * 60 * 1000);
-          const fmt = (d: Date) => d.toLocaleTimeString(region.locale, { hour: "2-digit", minute: "2-digit", hour12: true });
-          result.push({ label: `Tomorrow ${fmt(slot)} – ${fmt(end)}`, value: `tmr-${h}:${m.toString().padStart(2, "0")}` });
+    // Lunch: 12–1 PM, 1–2 PM, 2–3 PM  |  Dinner: 7–8 PM, 8–9 PM, 9–10 PM
+    const sessions: { name: string; hours: number[] }[] = [
+      { name: "Lunch", hours: [12, 13, 14] },
+      { name: "Dinner", hours: [19, 20, 21] },
+    ];
+
+    for (let d = 1; d <= 3; d++) {
+      const date = new Date(now);
+      date.setDate(date.getDate() + d);
+      const dayLabel = d === 1 ? "Tomorrow" : `${dayNames[date.getDay()]}, ${monthNames[date.getMonth()]} ${date.getDate()}`;
+
+      for (const session of sessions) {
+        for (const h of session.hours) {
+          const start = new Date(date);
+          start.setHours(h, 0, 0, 0);
+          const end = new Date(start.getTime() + 60 * 60 * 1000);
+          result.push({
+            label: `${fmt(start)} – ${fmt(end)}`,
+            value: `d${d}-${h}`,
+            day: `${dayLabel} · ${session.name}`,
+          });
         }
       }
     }
-    return result.slice(0, 8);
+    return result;
   }, [region]);
 
   // Debounced address search via Nominatim
@@ -371,20 +375,29 @@ const Checkout = () => {
               </div>
               <span className="text-sm font-semibold text-foreground">{formatPrice(configDeliveryFee)}</span>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-3">
               <p className="text-xs font-medium text-foreground">Choose delivery slot</p>
-              <div className="grid grid-cols-1 gap-2">
-                {slots.map((slot) => (
-                  <button
-                    key={slot.value}
-                    type="button"
-                    onClick={() => setSelectedSlot(slot.value)}
-                    className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition-colors ${selectedSlot === slot.value ? "border-primary bg-primary/5 text-primary" : "border-border text-foreground hover:border-primary/30"}`}
-                  >
-                    {slot.label}
-                  </button>
-                ))}
-              </div>
+              {(() => {
+                const grouped: Record<string, typeof slots> = {};
+                slots.forEach(s => { (grouped[s.day] ??= []).push(s); });
+                return Object.entries(grouped).map(([day, daySlots]) => (
+                  <div key={day} className="space-y-1.5">
+                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">{day}</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {daySlots.map((slot) => (
+                        <button
+                          key={slot.value}
+                          type="button"
+                          onClick={() => setSelectedSlot(slot.value)}
+                          className={`rounded-xl border px-2 py-2.5 text-center text-xs font-medium transition-colors ${selectedSlot === slot.value ? "border-primary bg-primary/5 text-primary" : "border-border text-foreground hover:border-primary/30"}`}
+                        >
+                          {slot.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ));
+              })()}
               {attempted && missingSlot && <p className="text-[11px] text-destructive">Please select a delivery slot</p>}
             </div>
           </section>
