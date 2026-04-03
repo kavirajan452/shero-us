@@ -463,10 +463,57 @@ const Profile = () => {
               )}
 
               {/* Regular Orders */}
-              <div className="space-y-3">
-                {(partyOrders.length > 0 || partyDrafts.length > 0) && (
+              {/* Live DB Orders */}
+              {liveOrders.length > 0 && (
+                <div className="space-y-3">
                   <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
-                    <Package className="w-4 h-4" /> Food Orders ({orderHistory.length})
+                    <Package className="w-4 h-4" /> Recent Orders ({liveOrders.length})
+                  </h4>
+                  {liveOrders.map((order) => {
+                    const items = (order.items as any[]) || [];
+                    const itemSummary = items.map((i: any) => `${i.name} × ${i.qty}`).join(", ");
+                    const isDelivered = order.status === "delivered";
+                    return (
+                      <Card key={order.id} className="border-border">
+                        <CardContent className="py-4 px-5">
+                          <div className="flex items-center gap-4">
+                            <span className="text-3xl">🍽️</span>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-0.5">
+                                <h4 className="font-semibold text-foreground text-sm">#{order.order_code}</h4>
+                                <Badge
+                                  variant={isDelivered ? "default" : order.status === "rejected" ? "destructive" : "secondary"}
+                                  className="text-[10px] capitalize"
+                                >
+                                  {order.status}
+                                </Badge>
+                              </div>
+                              <p className="text-xs text-muted-foreground truncate">{itemSummary || "Order items"}</p>
+                              <p className="text-xs text-muted-foreground">{order.kitchen_name || "Kitchen"} · {new Date(order.created_at).toLocaleDateString("en-US")}</p>
+                            </div>
+                            <div className="text-right shrink-0 space-y-1">
+                              <p className="font-bold text-foreground">{formatPrice(Number(order.total))}</p>
+                              {isDelivered ? (
+                                <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1 text-primary" onClick={() => downloadInvoice(order.id)}>
+                                  <Download className="w-3 h-3" /> Invoice
+                                </Button>
+                              ) : order.status !== "rejected" ? (
+                                <p className="text-[10px] text-muted-foreground italic">Invoice after delivery</p>
+                              ) : null}
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Mock/Sample Orders */}
+              <div className="space-y-3">
+                {(partyOrders.length > 0 || partyDrafts.length > 0 || liveOrders.length > 0) && (
+                  <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
+                    <Package className="w-4 h-4" /> Sample Orders ({orderHistory.length})
                   </h4>
                 )}
                 {orderHistory.map((order) => (
@@ -505,9 +552,9 @@ const Profile = () => {
 
               <div className="p-5 rounded-2xl bg-secondary/50 border border-border text-center">
                 <p className="text-muted-foreground text-sm">
-                  You've ordered <span className="font-bold text-foreground">{orderHistory.filter((o) => o.status === "Delivered").length} meals</span> totaling <span className="font-bold text-foreground">{formatPrice(totalSpent)}</span>
+                  You've ordered <span className="font-bold text-foreground">{orderHistory.filter((o) => o.status === "Delivered").length + liveOrders.filter((o) => o.status === "delivered").length} meals</span> totaling <span className="font-bold text-foreground">{formatPrice(totalSpent + liveOrders.reduce((s, o) => s + Number(o.total || 0), 0))}</span>
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">That's approximately {formatPrice(Math.round(totalSpent * 0.4))} saved vs restaurant meals 🎉</p>
+                <p className="text-xs text-muted-foreground mt-1">That's approximately {formatPrice(Math.round((totalSpent + liveOrders.reduce((s, o) => s + Number(o.total || 0), 0)) * 0.4))} saved vs restaurant meals 🎉</p>
               </div>
             </TabsContent>
 
