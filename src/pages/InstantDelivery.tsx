@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Search, SlidersHorizontal, Star, Clock, Leaf, X, Bike, AlertTriangle, MapPin } from "lucide-react";
+import { Search, SlidersHorizontal, Leaf, X, Bike, AlertTriangle, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
@@ -8,7 +8,7 @@ import { useNearbyKitchenPartners, useInstantMenuCategories, useKitchenVisibilit
 import { Badge } from "@/components/ui/badge";
 import { useRegion } from "@/contexts/RegionContext";
 
-const sortOptions = ["Relevance", "Rating", "Delivery Time", "Min Order"];
+const sortOptions = ["Relevance", "Distance"];
 
 const InstantDelivery = () => {
   const [searchParams] = useSearchParams();
@@ -60,9 +60,7 @@ const InstantDelivery = () => {
     if (vegOnly) {
       result = result.filter((k: any) => k.is_veg);
     }
-    if (sortBy === "Rating") result = [...result].sort((a: any, b: any) => b.rating - a.rating);
-    if (sortBy === "Delivery Time") result = [...result].sort((a: any, b: any) => parseInt(a.delivery_time) - parseInt(b.delivery_time));
-    if (sortBy === "Min Order") result = [...result].sort((a: any, b: any) => a.min_order - b.min_order);
+    if (sortBy === "Distance") result = [...result].sort((a: any, b: any) => (a.distance ?? 999) - (b.distance ?? 999));
     return result;
   }, [search, selectedCategory, vegOnly, sortBy, livePartners]);
 
@@ -143,12 +141,7 @@ const InstantDelivery = () => {
           </div>
         )}
 
-        <p className="text-sm text-muted-foreground mb-1">{filtered.length} live kitchen{filtered.length !== 1 ? "s" : ""} available now</p>
-        {unavailablePartners.length > 0 && (
-          <p className="text-[10px] text-muted-foreground/70 mb-4">
-            {unavailablePartners.length} kitchen{unavailablePartners.length > 1 ? "s" : ""} not available today
-          </p>
-        )}
+        <p className="text-sm text-muted-foreground mb-4">{filtered.length} live kitchen{filtered.length !== 1 ? "s" : ""} available now</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((kitchen: any) => (
@@ -157,22 +150,16 @@ const InstantDelivery = () => {
                 <img src={kitchen.image} alt={kitchen.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 {kitchen.is_branded && <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs">Shero Branded</Badge>}
                 <Badge className="absolute top-3 right-3 bg-accent/90 text-accent-foreground text-[10px]">🟢 Live</Badge>
-                <div className="absolute bottom-3 right-3 bg-card/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
-                  <Clock className="w-3 h-3 text-muted-foreground" />
-                  <span className="text-xs font-medium text-foreground">{kitchen.delivery_time}</span>
-                </div>
+                {kitchen.distance != null && (
+                  <div className="absolute bottom-3 right-3 bg-card/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
+                    <MapPin className="w-3 h-3 text-primary" />
+                    <span className="text-xs font-medium text-foreground">{kitchen.distance.toFixed(1)} km</span>
+                  </div>
+                )}
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{kitchen.name}</h3>
-                <p className="text-xs text-muted-foreground mb-2">{(kitchen.cuisine || []).join(" • ")} — {kitchen.location}</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                    <span className="text-sm font-semibold text-foreground">{kitchen.rating}</span>
-                    <span className="text-xs text-muted-foreground">({kitchen.review_count})</span>
-                  </div>
-                  <span className="text-xs text-muted-foreground">Min {formatPrice(kitchen.min_order)}</span>
-                </div>
+                <p className="text-xs text-muted-foreground">{(kitchen.cuisine || []).join(" • ")} — {kitchen.location}</p>
               </div>
             </Link>
           ))}
