@@ -96,39 +96,38 @@ const Checkout = () => {
   const walletUsable = useWalletBalance ? getUsableAmount(subtotalWithFees) : 0;
   const total = subtotalWithFees - walletUsable;
 
-  const slots = useMemo(() => {
+  const [selectedDay, setSelectedDay] = useState(0);
+  const [selectedSession, setSelectedSession] = useState<"Lunch" | "Dinner" | "">("");
+
+  const deliveryDays = useMemo(() => {
     const now = new Date();
-    const result: { label: string; value: string; day: string }[] = [];
-    const fmt = (d: Date) => d.toLocaleTimeString(region.locale, { hour: "2-digit", minute: "2-digit", hour12: true });
     const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    // Lunch: 12–1 PM, 1–2 PM, 2–3 PM  |  Dinner: 7–8 PM, 8–9 PM, 9–10 PM
-    const sessions: { name: string; hours: number[] }[] = [
-      { name: "Lunch", hours: [12, 13, 14] },
-      { name: "Dinner", hours: [19, 20, 21] },
-    ];
-
-    for (let d = 1; d <= 3; d++) {
+    return [1, 2, 3].map(d => {
       const date = new Date(now);
       date.setDate(date.getDate() + d);
-      const dayLabel = d === 1 ? "Tomorrow" : `${dayNames[date.getDay()]}, ${monthNames[date.getMonth()]} ${date.getDate()}`;
+      return {
+        index: d,
+        label: d === 1 ? "Tomorrow" : `${dayNames[date.getDay()]}`,
+        date: `${monthNames[date.getMonth()]} ${date.getDate()}`,
+        fullDate: date,
+      };
+    });
+  }, []);
 
-      for (const session of sessions) {
-        for (const h of session.hours) {
-          const start = new Date(date);
-          start.setHours(h, 0, 0, 0);
-          const end = new Date(start.getTime() + 60 * 60 * 1000);
-          result.push({
-            label: `${fmt(start)} – ${fmt(end)}`,
-            value: `d${d}-${h}`,
-            day: `${dayLabel} · ${session.name}`,
-          });
-        }
-      }
-    }
-    return result;
-  }, [region]);
+  const sessionSlots = useMemo(() => {
+    if (!selectedDay || !selectedSession) return [];
+    const hours = selectedSession === "Lunch" ? [12, 13, 14] : [19, 20, 21];
+    const day = deliveryDays.find(d => d.index === selectedDay);
+    if (!day) return [];
+    const fmt = (d: Date) => d.toLocaleTimeString(region.locale, { hour: "2-digit", minute: "2-digit", hour12: true });
+    return hours.map(h => {
+      const start = new Date(day.fullDate);
+      start.setHours(h, 0, 0, 0);
+      const end = new Date(start.getTime() + 60 * 60 * 1000);
+      return { label: `${fmt(start)} – ${fmt(end)}`, value: `d${selectedDay}-${h}` };
+    });
+  }, [selectedDay, selectedSession, deliveryDays, region]);
 
   // Debounced address search via Nominatim
   useEffect(() => {
