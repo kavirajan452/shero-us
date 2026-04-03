@@ -42,7 +42,7 @@ const AboutSheroCTA = () => {
             {/* Right: trust metrics */}
             <div className="flex flex-col gap-3">
               {[
-                { icon: Heart, label: "Genuinely Homemade", value: "100%", color: "text-red-500", bg: "bg-red-500/8 border-red-500/15" },
+                { icon: Heart, label: "Cooked in real homes, not commercial kitchens", value: "Not Restaurant Food", color: "text-red-500", bg: "bg-red-500/8 border-red-500/15" },
                 { icon: ChefHat, label: "Home Chefs", value: "50+", color: "text-primary", bg: "bg-primary/8 border-primary/15" },
                 { icon: Shield, label: "Quality Assured", value: "FSSAI", color: "text-amber-600", bg: "bg-amber-500/8 border-amber-500/15" },
               ].map((pill) => (
