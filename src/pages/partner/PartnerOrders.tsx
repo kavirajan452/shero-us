@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { addStockAlert } from "@/data/sscStockAlerts";
 import { getUnacknowledgedCancellations, acknowledgeCancellation, subscribe as subscribeCancellations, type CustomerCancellation } from "@/data/customerCancellations";
 import { getUnacknowledgedDelayComplaints, acknowledgeDelayComplaint, subscribeDelayComplaints, type DelayComplaint } from "@/data/delayComplaints";
-import { Clock, CheckCircle2, Truck, XCircle, ChefHat, Package, Timer, AlertTriangle, UtensilsCrossed, Volume2, VolumeX, Youtube } from "lucide-react";
+import { Clock, CheckCircle2, Truck, XCircle, ChefHat, Package, Timer, AlertTriangle, UtensilsCrossed, Volume2, VolumeX, Youtube, FileText } from "lucide-react";
+import { downloadInvoiceForOrder } from "@/utils/invoiceService";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -593,6 +594,19 @@ const PartnerOrders = () => {
                               <Truck className="w-3 h-3" /> Mark Delivered
                             </Button>
                           </div>
+                        )}
+                        {(order.status === "delivered" || order.status === "ready") && order.status === "delivered" && (
+                          <Button size="sm" variant="outline" onClick={async () => {
+                            toast({ title: "⏳ Generating Purchase Invoice..." });
+                            const success = await downloadInvoiceForOrder(order.id, "partner_purchase");
+                            if (success) {
+                              toast({ title: "📄 Purchase Invoice Downloaded" });
+                            } else {
+                              toast({ title: "ℹ️ Invoice Not Available Yet", description: "Invoice will be generated after order completion.", variant: "destructive" });
+                            }
+                          }} className="text-xs gap-1">
+                            <FileText className="w-3 h-3" /> Purchase Invoice
+                          </Button>
                         )}
                       </div>
                     </div>
