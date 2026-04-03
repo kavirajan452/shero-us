@@ -138,7 +138,7 @@ const Checkout = () => {
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addressQuery)}&format=json&limit=5&addressdetails=1&countrycodes=us`);
         const data = await res.json();
-        setAddressSuggestions(data.map((d: any) => ({ display: d.display_name, lat: d.lat, lon: d.lon })));
+        setAddressSuggestions(data.map((d: any) => ({ display: d.display_name, lat: d.lat, lon: d.lon, state: d.address?.state || "" })));
         setShowSuggestions(true);
       } catch { setAddressSuggestions([]); }
       setSearchingAddress(false);
