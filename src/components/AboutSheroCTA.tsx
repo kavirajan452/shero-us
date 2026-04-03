@@ -5,39 +5,43 @@ const AboutSheroCTA = () => {
   return (
     <section className="py-6">
       <div className="container mx-auto px-4 max-w-6xl">
-        <div className="rounded-2xl bg-card border border-border p-5 md:p-8">
-          <div className="flex flex-col md:flex-row md:items-center gap-5">
-            {/* Left: headline + description */}
+        <div className="rounded-2xl bg-card border border-border p-6 md:p-10">
+          <div className="flex flex-col md:flex-row md:items-center gap-6">
+            {/* Left: emotional hook */}
             <div className="flex-1">
-              <h3 className="text-lg md:text-xl font-serif font-bold text-foreground mb-2">
-                Know the Story Behind Your Food
+              <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-2">
+                Why We Exist
+              </p>
+              <h3 className="text-xl md:text-2xl font-serif font-bold text-foreground leading-snug mb-3">
+                Because everyone deserves<br className="hidden md:block" />
+                <span className="text-primary"> a home-cooked meal.</span>
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-lg">
-                From 5 home chefs in the DC Metro area to America's fastest-growing home food platform — discover how Shero empowers women and transforms meals.
+              <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
+                Real homes. Real kitchens. Real women cooking with love — no factories, no shortcuts. That's the Shero promise.
               </p>
               <Link
                 to="/about"
-                className="inline-flex items-center gap-1.5 mt-4 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center gap-1.5 mt-5 px-6 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
               >
-                About Shero <ArrowRight className="w-4 h-4" />
+                Our Story <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
-            {/* Right: mini stat pills */}
-            <div className="flex md:flex-col gap-3 shrink-0">
+            {/* Right: trust pills */}
+            <div className="flex flex-row md:flex-col gap-2 flex-wrap">
               {[
-                { icon: Heart, label: "Genuinely Homemade", color: "text-rose-500" },
+                { icon: Heart, label: "Genuinely Homemade", color: "text-red-500" },
                 { icon: ChefHat, label: "50+ Home Chefs", color: "text-primary" },
                 { icon: Shield, label: "Quality Assured", color: "text-amber-500" },
-              ].map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <div key={i} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-secondary/60">
-                    <Icon className={`w-4 h-4 ${item.color} shrink-0`} />
-                    <span className="text-xs font-medium text-foreground whitespace-nowrap">{item.label}</span>
-                  </div>
-                );
-              })}
+              ].map((pill) => (
+                <div
+                  key={pill.label}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary border border-border"
+                >
+                  <pill.icon className={`w-4 h-4 ${pill.color} shrink-0`} />
+                  <span className="text-xs font-medium text-foreground whitespace-nowrap">{pill.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
