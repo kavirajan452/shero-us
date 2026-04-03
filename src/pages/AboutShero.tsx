@@ -20,12 +20,12 @@ const values = [
 ];
 
 const defaultStats = [
-  { key: "stat_kitchens", number: "2,400+", label: "Home Kitchens", icon: ChefHat },
-  { key: "stat_cities", number: "72", label: "Cities", icon: MapPin },
-  { key: "stat_states", number: "14", label: "States", icon: Globe },
-  { key: "stat_orders", number: "1.4M+", label: "Orders Delivered", icon: TrendingUp },
-  { key: "stat_dishes", number: "500+", label: "Dish Varieties", icon: Star },
-  { key: "stat_years", number: "5", label: "Years of Love", icon: Heart },
+  { key: "stat_kitchens", number: "50+", label: "Home Kitchens", icon: ChefHat },
+  { key: "stat_cities", number: "12", label: "Cities", icon: MapPin },
+  { key: "stat_states", number: "5", label: "States", icon: Globe },
+  { key: "stat_orders", number: "10K+", label: "Orders Delivered", icon: TrendingUp },
+  { key: "stat_dishes", number: "200+", label: "Dish Varieties", icon: Star },
+  { key: "stat_years", number: "1", label: "Year of Love", icon: Heart },
 ];
 
 const awards = [
