@@ -31,7 +31,7 @@ const Index = () => {
       <DesktopNav />
       <main>
         <HeroSection />
-        
+        <TrustBar />
         <CategoryCards />
         <TrendingDishesCarousel />
         <AboutSheroCTA />
