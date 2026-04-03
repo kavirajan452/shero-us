@@ -117,6 +117,8 @@ const Subscriptions = () => {
   const [searchParams] = useSearchParams();
   const isMarketingLead = searchParams.get("source") === "marketing" || searchParams.get("utm_source") !== null;
   const mainRef = useRef<HTMLElement>(null);
+  const { data: subContent } = useScreenContent("subscription");
+  const sc = contentMap(subContent || []);
 
   // Fetch meal plans from DB
   const { data: dbMealPlans, isLoading: plansLoading } = useSubscriptionMealPlans();

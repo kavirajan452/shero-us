@@ -215,6 +215,8 @@ const PartyOrders = () => {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const { user: authUser } = useAuth();
+  const { data: partyContent } = useScreenContent("party");
+  const pc = contentMap(partyContent || []);
 
   // Lead gate
   const [leadVerified, setLeadVerified] = useState(() => !!getCurrentLead());
