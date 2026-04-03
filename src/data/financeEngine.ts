@@ -993,7 +993,7 @@ export function generateServicesPL(): PLLineItem[] {
     { label: "NET REVENUE", amount: 129300, type: "subtotal", bold: true },
     { label: "", amount: 0, type: "header" },
     { label: "TAX COLLECTED (Liability)", amount: 0, type: "header" },
-    { label: "GST Output 18% — Services", amount: -19729, type: "expense", indent: 1 },
+    { label: "Sales Tax — Services", amount: -19729, type: "expense", indent: 1 },
     { label: "", amount: 0, type: "header" },
     { label: "DIRECT COSTS", amount: 0, type: "header" },
     { label: "Service Provider Payouts (60%)", amount: -76800, type: "expense", indent: 1 },
@@ -1066,7 +1066,7 @@ export function generateCookeryPL(): PLLineItem[] {
     { label: "NET REVENUE", amount: 151100, type: "subtotal", bold: true },
     { label: "", amount: 0, type: "header" },
     { label: "TAX COLLECTED (Liability)", amount: 0, type: "header" },
-    { label: "GST Output 18% — Education", amount: -23050, type: "expense", indent: 1 },
+    { label: "Sales Tax — Education", amount: -23050, type: "expense", indent: 1 },
     { label: "", amount: 0, type: "header" },
     { label: "DIRECT COSTS", amount: 0, type: "header" },
     { label: "Instructor Payouts (40%)", amount: -56800, type: "expense", indent: 1 },
@@ -1103,7 +1103,7 @@ export function generateSheroClassesPL(): PLLineItem[] {
     { label: "NET REVENUE", amount: 134000, type: "subtotal", bold: true },
     { label: "", amount: 0, type: "header" },
     { label: "TAX COLLECTED (Liability)", amount: 0, type: "header" },
-    { label: "GST Output 18% — Services", amount: -20441, type: "expense", indent: 1 },
+    { label: "Sales Tax — Services", amount: -20441, type: "expense", indent: 1 },
     { label: "", amount: 0, type: "header" },
     { label: "DIRECT COSTS", amount: 0, type: "header" },
     { label: "Instructor Payouts (40%)", amount: -53600, type: "expense", indent: 1 },
@@ -1182,14 +1182,14 @@ export function generateReceivablesPayables(sv: SubVertical): ReceivablePayable[
 export const financialGaps: FinancialGap[] = [
   { id: "FG-001", category: "revenue_leakage", severity: "critical", title: "Paused Subscriptions Counted as Revenue", description: "3 paused subscriptions ($8,100) still recognized as revenue. Must be deferred until resumed.", impact: "P&L overstated by $8,100", suggestion: "Auto-journal: On pause → reverse remaining sessions to Deferred Revenue", subVertical: "subscription" },
   { id: "FG-002", category: "liability_missing", severity: "critical", title: "Skip Credits Not Recorded as Liability", description: "28 skip credits ($4,200) have no liability entry. Meals still owed.", impact: "Understated liabilities by $4,200", suggestion: "Auto-journal: On skip → Cr Skip Credit Liability, Dr Revenue Deferred", subVertical: "subscription" },
-  { id: "FG-003", category: "tax_gap", severity: "critical", title: "GST Liability Not Reconciled with GSTR-3B", description: "GST Output collected $1,51,484 but no reconciliation with filed GSTR-3B. Risk of penalty.", impact: "Tax compliance risk — $1.5L unreconciled", suggestion: "Monthly GSTR-3B reconciliation report; auto-match with Sales Register", subVertical: "all" },
+  { id: "FG-003", category: "tax_gap", severity: "critical", title: "Sales Tax Liability Not Reconciled with State Filings", description: "Sales Tax collected but no reconciliation with state filings. Risk of penalty.", impact: "Tax compliance risk — unreconciled state tax", suggestion: "Monthly state tax reconciliation report; auto-match with Sales Register", subVertical: "all" },
   { id: "FG-004", category: "reconciliation", severity: "high", title: "Overdue Sundry Debtors > 7 Days", description: "$32,325 receivable overdue from 3 customers across sub-verticals.", impact: "Cash collection delay, working capital stress", suggestion: "Auto-SMS/email reminder > 3 days overdue; escalate > 7 days to Team Leader", subVertical: "all" },
   { id: "FG-005", category: "expense_untracked", severity: "high", title: "Party Advances Not Parked as Liability", description: "Advances received (50%) recognized as revenue immediately instead of Advance from Customer.", impact: "Revenue recognized before service delivery", suggestion: "Receipt → Cr Advance from Customer; On delivery → Journal to clear advance vs receivable", subVertical: "party" },
   { id: "FG-006", category: "compliance", severity: "high", title: "TDS Not Deducted on All Partner Payouts", description: "Withholding 1% under Sec 194C mandatory on all PPP payouts > $30,000/year. Only 40% partners have TDS deducted.", impact: "Non-compliance penalty risk", suggestion: "Auto-deduct TDS on all Payment vouchers; maintain Withholding Tax Payable ledger", subVertical: "all" },
   { id: "FG-007", category: "revenue_leakage", severity: "medium", title: "Instant Delivery Surge Not Tracked Separately", description: "Surge charges mixed with food revenue. Cannot analyze surge contribution.", impact: "Revenue analysis incomplete", suggestion: "Separate Sales — Surge Pricing ledger; auto-post on surge orders", subVertical: "instant" },
   { id: "FG-008", category: "expense_untracked", severity: "medium", title: "Delivery Return Costs Untracked", description: "Failed deliveries incur return costs not recorded. Estimated $3,200/month.", impact: "Hidden expense", suggestion: "Track delivery failures; Journal return costs to Delivery Return account", subVertical: "all" },
   { id: "FG-009", category: "reconciliation", severity: "medium", title: "Partner Settlement Mismatch > 7 Days", description: "2 partners show outstanding payables > 7 days past agreed settlement date.", impact: "Partner relationship risk", suggestion: "Weekly auto-reconciliation; flag overdue settlements", subVertical: "all" },
-  { id: "FG-010", category: "tax_gap", severity: "high", title: "Services GST @ 18% vs Food GST @ 5% Mixed", description: "Service bookings taxed at 18% but no separate GST Output account. Risk of under-reporting.", impact: "Mixed GST rates = wrong GSTR filing", suggestion: "Maintain separate Sales Tax 8.25% and GST Output 18% ledgers", subVertical: "services" },
+  { id: "FG-010", category: "tax_gap", severity: "high", title: "Services Tax vs Food Tax Mixed", description: "Service bookings tax not separated from food tax. Risk of under-reporting.", impact: "Mixed tax rates = wrong state filing", suggestion: "Maintain separate Sales Tax ledgers by category", subVertical: "services" },
 ];
 
 // ═══════════════════════════════════════════
