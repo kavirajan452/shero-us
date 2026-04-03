@@ -165,7 +165,7 @@ const AboutShero = () => {
         <div className="container mx-auto px-4 max-w-4xl">
           <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground text-center mb-3">Awards & Recognition</h2>
           <p className="text-muted-foreground text-center mb-8 max-w-xl mx-auto">
-            Our impact has been recognised by India's top institutions.
+            Our impact has been recognized by leading institutions.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {awards.map((a, i) => (
