@@ -4,7 +4,8 @@
    ═══════════════════════════════════════════════════════════════ */
 
 // Re-export shared types from canonical location
-export type { PartnerProfile, KitchenPartner, AddOn, MenuItem } from "@/types/menu";
+import type { PartnerProfile, KitchenPartner, AddOn, MenuItem } from "@/types/menu";
+export type { PartnerProfile, KitchenPartner, AddOn, MenuItem };
 
 /* ───────── Active Partners (from Admin Partner Management) ───────── */
 export const activePartners: PartnerProfile[] = [
