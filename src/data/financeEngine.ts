@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════
-// SHERO Finance Engine — Tally-Standard Indian Double-Entry Bookkeeping
+// SHERO Finance Engine — US GAAP-Standard Double-Entry Bookkeeping
 // Covers: Subscriptions, Party Orders, Instant Delivery, Services
 // Books: Day Book, Cash Book, Bank Book, Sales Register, Purchase Register,
 //        Journal Register, Trial Balance, P&L Statement, Ledger
