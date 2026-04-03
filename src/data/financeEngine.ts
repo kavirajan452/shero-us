@@ -316,7 +316,7 @@ export function generateSubscriptionVouchers(): Voucher[] {
     entries: [
       entry(s1, "sales", "new_subscription", "accounts_receivable", 4500, 0, "Subscription receivable", "SUB-1001", "subscription", "2026-03-01"),
       entry(s1, "sales", "new_subscription", "sales_meal_subscription", 0, 4286, "Meal revenue (excl GST 5%)", "SUB-1001", "subscription", "2026-03-01"),
-      entry(s1, "sales", "new_subscription", "gst_output_5", 0, 214, "GST 5% on food", "SUB-1001", "subscription", "2026-03-01"),
+      entry(s1, "sales", "new_subscription", "sales_tax_food", 0, 214, "GST 5% on food", "SUB-1001", "subscription", "2026-03-01"),
     ],
   });
 
@@ -361,7 +361,7 @@ export function generateSubscriptionVouchers(): Voucher[] {
     narration: "Subscription paused — 18 remaining meals frozen as deferred revenue",
     entries: [
       entry(s5, "journal", "subscription_paused", "sales_meal_subscription", 2571, 0, "Reverse undelivered revenue (18 × $143)", "SUB-1003", "subscription", "2026-03-10"),
-      entry(s5, "journal", "subscription_paused", "gst_output_5", 129, 0, "Reverse GST on undelivered", "SUB-1003", "subscription", "2026-03-10"),
+      entry(s5, "journal", "subscription_paused", "sales_tax_food", 129, 0, "Reverse GST on undelivered", "SUB-1003", "subscription", "2026-03-10"),
       entry(s5, "journal", "subscription_paused", "revenue_deferred", 0, 2700, "Park as deferred revenue", "SUB-1003", "subscription", "2026-03-10"),
     ],
   });
@@ -436,7 +436,7 @@ export function generateSubscriptionVouchers(): Voucher[] {
     narration: "Monthly packing material — eco-friendly containers",
     entries: [
       entry(s12, "purchase", "packing_purchased", "purchase_packing_material", 12712, 0, "Packing material (excl GST)", "PO-PACK-001", "subscription", "2026-03-03"),
-      entry(s12, "purchase", "packing_purchased", "gst_input_credit", 2288, 0, "GST 18% input credit", "PO-PACK-001", "subscription", "2026-03-03"),
+      entry(s12, "purchase", "packing_purchased", "tax_input_credit", 2288, 0, "GST 18% input credit", "PO-PACK-001", "subscription", "2026-03-03"),
       entry(s12, "purchase", "packing_purchased", "accounts_payable_vendor", 0, 15000, "Vendor payable", "PO-PACK-001", "subscription", "2026-03-03"),
     ],
   });
@@ -486,7 +486,7 @@ export function generatePartyVouchers(): Voucher[] {
     entries: [
       entry(p1, "sales", "party_order_placed", "accounts_receivable", 42500, 0, "Party order receivable", "PO-3421", "party", "2026-03-08"),
       entry(p1, "sales", "party_order_placed", "sales_meal_party", 0, 38636, "MRP revenue (excl GST 5% + ancillary)", "PO-3421", "party", "2026-03-08"),
-      entry(p1, "sales", "party_order_placed", "gst_output_5", 0, 2024, "GST 5% on food", "PO-3421", "party", "2026-03-08"),
+      entry(p1, "sales", "party_order_placed", "sales_tax_food", 0, 2024, "GST 5% on food", "PO-3421", "party", "2026-03-08"),
       entry(p1, "sales", "party_order_placed", "sales_packaging_charge", 0, 850, "Packaging charge", "PO-3421", "party", "2026-03-08"),
       entry(p1, "sales", "party_order_placed", "sales_transport_charge", 0, 500, "Transport charge", "PO-3421", "party", "2026-03-08"),
       entry(p1, "sales", "party_order_placed", "discount_contra", 490, 0, "Early bird discount", "PO-3421", "party", "2026-03-08"),
@@ -579,7 +579,7 @@ export function generateInstantVouchers(): Voucher[] {
     entries: [
       entry(i1, "sales", "instant_order_placed", "accounts_receivable", 380, 0, "Order receivable", "INS-7801", "instant", "2026-03-15"),
       entry(i1, "sales", "instant_order_placed", "sales_meal_instant", 0, 310, "Food MRP (excl GST + delivery)", "INS-7801", "instant", "2026-03-15"),
-      entry(i1, "sales", "instant_order_placed", "gst_output_5", 0, 16, "GST 5%", "INS-7801", "instant", "2026-03-15"),
+      entry(i1, "sales", "instant_order_placed", "sales_tax_food", 0, 16, "GST 5%", "INS-7801", "instant", "2026-03-15"),
       entry(i1, "sales", "instant_order_placed", "sales_delivery_fee", 0, 35, "Delivery fee", "INS-7801", "instant", "2026-03-15"),
       entry(i1, "sales", "instant_order_placed", "sales_packaging_charge", 0, 19, "Packaging", "INS-7801", "instant", "2026-03-15"),
     ],
@@ -641,7 +641,7 @@ export function generateServicesVouchers(): Voucher[] {
     entries: [
       entry(sv1, "sales", "service_booked", "accounts_receivable", 1500, 0, "Service receivable", "SVC-501", "services", "2026-03-10"),
       entry(sv1, "sales", "service_booked", "sales_service_booking", 0, 1271, "Service revenue (excl GST 18%)", "SVC-501", "services", "2026-03-10"),
-      entry(sv1, "sales", "service_booked", "gst_output_18", 0, 229, "GST 18% on services", "SVC-501", "services", "2026-03-10"),
+      entry(sv1, "sales", "service_booked", "sales_tax_services", 0, 229, "GST 18% on services", "SVC-501", "services", "2026-03-10"),
     ],
   });
 
@@ -699,7 +699,7 @@ export function generateSnacksVouchers(): Voucher[] {
     entries: [
       entry(sk1, "sales", "snack_order_placed", "accounts_receivable", 850, 0, "Snack order receivable", "SNK-201", "snacks", "2026-03-10"),
       entry(sk1, "sales", "snack_order_placed", "sales_meal_instant", 0, 810, "Snacks revenue (excl GST 5%)", "SNK-201", "snacks", "2026-03-10"),
-      entry(sk1, "sales", "snack_order_placed", "gst_output_5", 0, 40, "GST 5%", "SNK-201", "snacks", "2026-03-10"),
+      entry(sk1, "sales", "snack_order_placed", "sales_tax_food", 0, 40, "GST 5%", "SNK-201", "snacks", "2026-03-10"),
     ],
   });
 
@@ -759,7 +759,7 @@ export function generateCookeryVouchers(): Voucher[] {
     entries: [
       entry(ck1, "sales", "cookery_class_booked", "accounts_receivable", 1200, 0, "Class booking receivable", "CKC-101", "cookery", "2026-03-05"),
       entry(ck1, "sales", "cookery_class_booked", "sales_service_booking", 0, 1017, "Class fee (excl GST 18%)", "CKC-101", "cookery", "2026-03-05"),
-      entry(ck1, "sales", "cookery_class_booked", "gst_output_18", 0, 183, "GST 18% on education", "CKC-101", "cookery", "2026-03-05"),
+      entry(ck1, "sales", "cookery_class_booked", "sales_tax_services", 0, 183, "GST 18% on education", "CKC-101", "cookery", "2026-03-05"),
     ],
   });
 
@@ -819,7 +819,7 @@ export function generateSheroClassesVouchers(): Voucher[] {
     entries: [
       entry(sh1, "sales", "shero_class_booked", "accounts_receivable", 600, 0, "Class booking receivable", "SHC-301", "shero_classes", "2026-03-07"),
       entry(sh1, "sales", "shero_class_booked", "sales_service_booking", 0, 508, "Class fee (excl GST 18%)", "SHC-301", "shero_classes", "2026-03-07"),
-      entry(sh1, "sales", "shero_class_booked", "gst_output_18", 0, 92, "GST 18%", "SHC-301", "shero_classes", "2026-03-07"),
+      entry(sh1, "sales", "shero_class_booked", "sales_tax_services", 0, 92, "GST 18%", "SHC-301", "shero_classes", "2026-03-07"),
     ],
   });
 
