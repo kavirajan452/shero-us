@@ -141,12 +141,7 @@ const InstantDelivery = () => {
           </div>
         )}
 
-        <p className="text-sm text-muted-foreground mb-1">{filtered.length} live kitchen{filtered.length !== 1 ? "s" : ""} available now</p>
-        {unavailablePartners.length > 0 && (
-          <p className="text-[10px] text-muted-foreground/70 mb-4">
-            {unavailablePartners.length} kitchen{unavailablePartners.length > 1 ? "s" : ""} not available today
-          </p>
-        )}
+        <p className="text-sm text-muted-foreground mb-4">{filtered.length} live kitchen{filtered.length !== 1 ? "s" : ""} available now</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((kitchen: any) => (
