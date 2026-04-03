@@ -38,6 +38,8 @@ const awards = [
 ];
 
 const AboutShero = () => {
+  const { data: aboutContent } = useScreenContent("about");
+  const ac = contentMap(aboutContent || []);
   return (
     <div className="min-h-screen bg-background">
       <DesktopNav />

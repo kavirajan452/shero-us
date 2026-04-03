@@ -104,6 +104,8 @@ const experiences = [
 ];
 
 const Experiences = () => {
+  const { data: expContent } = useScreenContent("experiences");
+  const ec = contentMap(expContent || []);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
