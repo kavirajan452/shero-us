@@ -353,8 +353,8 @@ const Checkout = () => {
           </section>
         )}
 
-        {/* Delivery Schedule — hide for snacks */}
-        {!isSnacksOnly && (
+        {/* Delivery Schedule — hide for snacks and non-serviceable */}
+        {!isSnacksOnly && !isNotServiceable && (
           <section className="bg-card border border-border rounded-2xl p-5 mb-5">
             <h2 className={`font-semibold mb-1 flex items-center gap-2 ${attempted && missingSlot ? "text-destructive" : "text-foreground"}`}>
               <Clock className={`w-4 h-4 ${attempted && missingSlot ? "text-destructive" : "text-primary"}`} /> Delivery Schedule
