@@ -126,15 +126,21 @@ const Checkout = () => {
     return result.slice(0, 8);
   }, [region]);
 
-  const handleAddressChange = (val: string) => {
-    setAddress(val);
-    if (val.length > 2) {
-      setFilteredSuggestions(region.addressSuggestions.filter((a) => a.toLowerCase().includes(val.toLowerCase())));
-      setShowSuggestions(true);
-    } else {
-      setShowSuggestions(false);
-    }
-  };
+  // Debounced address search via Nominatim
+  useEffect(() => {
+    if (addressQuery.length < 3) { setAddressSuggestions([]); return; }
+    const timer = setTimeout(async () => {
+      setSearchingAddress(true);
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addressQuery)}&format=json&limit=5&addressdetails=1&countrycodes=us`);
+        const data = await res.json();
+        setAddressSuggestions(data.map((d: any) => ({ display: d.display_name, lat: d.lat, lon: d.lon })));
+        setShowSuggestions(true);
+      } catch { setAddressSuggestions([]); }
+      setSearchingAddress(false);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [addressQuery]);
 
   const { toast } = useToast();
 
