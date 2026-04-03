@@ -79,54 +79,54 @@ export const activePartners: PartnerProfile[] = [
 /* ───────── Active Kitchens (SKIDs - from Partner Management) ───────── */
 export const kitchenPartners: KitchenPartner[] = [
   {
-    id: "SKID-HYD-001", partnerId: "9876543210", name: "Shero Kitchen - Jubilee Hills (Veg)", image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&h=300&fit=crop",
-    rating: 4.6, reviewCount: 342, cuisine: ["South Indian", "North Indian"], deliveryTime: "30-45 min", minOrder: 149, isBranded: true, location: "Jubilee Hills", isVeg: true, foodPreference: "veg",
+    id: "SKID-NYC-001", partnerId: "2125550101", name: "Shero Kitchen - Manhattan (Veg)", image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&h=300&fit=crop",
+    rating: 4.6, reviewCount: 342, cuisine: ["South Indian", "North Indian"], deliveryTime: "30-45 min", minOrder: 15, isBranded: true, location: "Manhattan, NY", isVeg: true, foodPreference: "veg",
     isAttendanceMarked: true, attendanceSlot: "Morning (6-10 AM)",
   },
   {
-    id: "SKID-HYD-002", partnerId: "9876543210", name: "Shero Kitchen - Jubilee Hills (Non-Veg)", image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&h=300&fit=crop",
-    rating: 4.6, reviewCount: 342, cuisine: ["South Indian", "North Indian"], deliveryTime: "30-45 min", minOrder: 149, isBranded: true, location: "Jubilee Hills", isVeg: false, foodPreference: "nonveg",
+    id: "SKID-NYC-002", partnerId: "2125550101", name: "Shero Kitchen - Manhattan (Non-Veg)", image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&h=300&fit=crop",
+    rating: 4.6, reviewCount: 342, cuisine: ["South Indian", "North Indian"], deliveryTime: "30-45 min", minOrder: 15, isBranded: true, location: "Manhattan, NY", isVeg: false, foodPreference: "nonveg",
     isAttendanceMarked: true, attendanceSlot: "Morning (6-10 AM)",
   },
   {
-    id: "SKID-HYD-003", partnerId: "9876543211", name: "Padma's Home Kitchen", image: "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=300&fit=crop",
-    rating: 4.8, reviewCount: 215, cuisine: ["South Indian", "Andhra"], deliveryTime: "40-55 min", minOrder: 99, isBranded: false, location: "Banjara Hills", isVeg: true, foodPreference: "veg",
+    id: "SKID-SF-003", partnerId: "4155550102", name: "Padma's Home Kitchen", image: "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=400&h=300&fit=crop",
+    rating: 4.8, reviewCount: 215, cuisine: ["South Indian", "Andhra"], deliveryTime: "40-55 min", minOrder: 12, isBranded: false, location: "San Francisco, CA", isVeg: true, foodPreference: "veg",
     isAttendanceMarked: true, attendanceSlot: "Lunch (10 AM-2 PM)",
   },
   {
-    id: "SKID-HYD-004", partnerId: "9876543212", name: "Shero Kitchen - Gachibowli (Veg)", image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
-    rating: 4.5, reviewCount: 189, cuisine: ["South Indian", "Chinese"], deliveryTime: "25-40 min", minOrder: 149, isBranded: true, location: "Gachibowli", isVeg: true, foodPreference: "veg",
+    id: "SKID-AUS-004", partnerId: "5125550103", name: "Shero Kitchen - Austin (Veg)", image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
+    rating: 4.5, reviewCount: 189, cuisine: ["South Indian", "Chinese"], deliveryTime: "25-40 min", minOrder: 15, isBranded: true, location: "Austin, TX", isVeg: true, foodPreference: "veg",
     isAttendanceMarked: true, attendanceSlot: "Morning (6-10 AM)",
   },
   {
-    id: "SKID-HYD-005", partnerId: "9876543212", name: "Shero Kitchen - Gachibowli (Non-Veg)", image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
-    rating: 4.5, reviewCount: 189, cuisine: ["South Indian", "Chinese"], deliveryTime: "25-40 min", minOrder: 149, isBranded: true, location: "Gachibowli", isVeg: false, foodPreference: "nonveg",
-    isAttendanceMarked: false, attendanceSlot: "", // Not checked in today
+    id: "SKID-AUS-005", partnerId: "5125550103", name: "Shero Kitchen - Austin (Non-Veg)", image: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&h=300&fit=crop",
+    rating: 4.5, reviewCount: 189, cuisine: ["South Indian", "Chinese"], deliveryTime: "25-40 min", minOrder: 15, isBranded: true, location: "Austin, TX", isVeg: false, foodPreference: "nonveg",
+    isAttendanceMarked: false, attendanceSlot: "",
   },
   {
-    id: "SKID-HYD-006", partnerId: "9876543213", name: "Anitha's Flavours", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop",
-    rating: 4.9, reviewCount: 87, cuisine: ["Andhra", "Telangana"], deliveryTime: "45-60 min", minOrder: 129, isBranded: false, location: "Madhapur", isVeg: false, foodPreference: "both",
-    isAttendanceMarked: false, attendanceSlot: "", // Not checked in today
+    id: "SKID-CHI-006", partnerId: "3125550104", name: "Anitha's Flavours", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop",
+    rating: 4.9, reviewCount: 87, cuisine: ["Andhra", "Telangana"], deliveryTime: "45-60 min", minOrder: 13, isBranded: false, location: "Chicago, IL", isVeg: false, foodPreference: "both",
+    isAttendanceMarked: false, attendanceSlot: "",
   },
   {
-    id: "SKID-HYD-007", partnerId: "9876543214", name: "Shero Kitchen - Kondapur (Veg)", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop",
-    rating: 4.4, reviewCount: 156, cuisine: ["South Indian", "North Indian"], deliveryTime: "30-45 min", minOrder: 149, isBranded: true, location: "Kondapur", isVeg: true, foodPreference: "veg",
+    id: "SKID-HOU-007", partnerId: "7135550105", name: "Shero Kitchen - Houston (Veg)", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop",
+    rating: 4.4, reviewCount: 156, cuisine: ["South Indian", "North Indian"], deliveryTime: "30-45 min", minOrder: 15, isBranded: true, location: "Houston, TX", isVeg: true, foodPreference: "veg",
     isAttendanceMarked: true, attendanceSlot: "Morning (6-10 AM)",
   },
   {
-    id: "SKID-HYD-008", partnerId: "9876543215", name: "Radha's Kitchen", image: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&h=300&fit=crop",
-    rating: 4.7, reviewCount: 64, cuisine: ["Kerala", "South Indian"], deliveryTime: "50-65 min", minOrder: 99, isBranded: false, location: "HITEC City", isVeg: true, foodPreference: "veg",
+    id: "SKID-SEA-008", partnerId: "2065550106", name: "Radha's Kitchen", image: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&h=300&fit=crop",
+    rating: 4.7, reviewCount: 64, cuisine: ["Kerala", "South Indian"], deliveryTime: "50-65 min", minOrder: 12, isBranded: false, location: "Seattle, WA", isVeg: true, foodPreference: "veg",
     isAttendanceMarked: true, attendanceSlot: "Lunch (10 AM-2 PM)",
   },
   {
-    id: "SKID-HYD-009", partnerId: "9876543216", name: "Shero Kitchen - Miyapur (Veg)", image: "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=400&h=300&fit=crop",
-    rating: 4.3, reviewCount: 98, cuisine: ["South Indian", "North Indian"], deliveryTime: "35-50 min", minOrder: 149, isBranded: true, location: "Miyapur", isVeg: true, foodPreference: "veg",
+    id: "SKID-DAL-009", partnerId: "4695550107", name: "Shero Kitchen - Dallas (Veg)", image: "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=400&h=300&fit=crop",
+    rating: 4.3, reviewCount: 98, cuisine: ["South Indian", "North Indian"], deliveryTime: "35-50 min", minOrder: 15, isBranded: true, location: "Dallas, TX", isVeg: true, foodPreference: "veg",
     isAttendanceMarked: true, attendanceSlot: "Morning (6-10 AM)",
   },
   {
-    id: "SKID-HYD-010", partnerId: "9876543217", name: "Fatima's Biryani House", image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop",
-    rating: 4.8, reviewCount: 234, cuisine: ["Hyderabadi", "Mughlai"], deliveryTime: "40-55 min", minOrder: 179, isBranded: false, location: "Tolichowki", isVeg: false, foodPreference: "nonveg",
-    isAttendanceMarked: false, attendanceSlot: "", // Not checked in today
+    id: "SKID-NJ-010", partnerId: "3105550108", name: "Fatima's Biryani House", image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop",
+    rating: 4.8, reviewCount: 234, cuisine: ["Hyderabadi", "Mughlai"], deliveryTime: "40-55 min", minOrder: 18, isBranded: false, location: "Jersey City, NJ", isVeg: false, foodPreference: "nonveg",
+    isAttendanceMarked: false, attendanceSlot: "",
   },
 ];
 
