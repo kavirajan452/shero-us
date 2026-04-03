@@ -87,7 +87,7 @@ const Checkout = () => {
 
   const deliveryFee = isSnacksOnly ? (subtotal >= 599 ? 0 : 49) : configDeliveryFee;
   const tax = calcTax(subtotal - promoDiscount);
-  const subtotalWithFees = subtotal - promoDiscount + deliveryFee + region.platformFee + tax + tipAmount;
+  const subtotalWithFees = subtotal - promoDiscount + deliveryFee + tax + tipAmount;
   const walletUsable = useWalletBalance ? getUsableAmount(subtotalWithFees) : 0;
   const total = subtotalWithFees - walletUsable;
 
@@ -146,7 +146,7 @@ const Checkout = () => {
       subtotal,
       discount: promoDiscount,
       delivery_fee: deliveryFee,
-      platform_fee: region.platformFee,
+      platform_fee: 0,
       tax,
       wallet_used: walletUsable,
       total,
@@ -466,7 +466,7 @@ const Checkout = () => {
               </div>
             )}
             <div className="flex justify-between"><span className="text-muted-foreground">Delivery Fee</span><span className="text-foreground">{deliveryFee === 0 ? "Free" : formatPrice(deliveryFee)}</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Platform Fee</span><span className="text-foreground">{formatPrice(region.platformFee)}</span></div>
+            
             <div className="flex justify-between"><span className="text-muted-foreground">{region.taxLabel}</span><span className="text-foreground">{formatPrice(tax)}</span></div>
             {tipAmount > 0 && (
               <div className="flex justify-between text-primary">
