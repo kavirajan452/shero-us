@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { CheckCircle, Home, Navigation, Truck, CalendarClock, Clock } from "lucide-react";
+import { CheckCircle, Home, Navigation, Truck, CalendarClock, Clock, FileText } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import mascotGreeting from "@/assets/shero-mascot-greeting.png";
 
@@ -65,6 +65,14 @@ const OrderConfirmation = () => {
                 <div className="flex-1">
                   <p className="text-xs text-muted-foreground">
                     A delivery partner will be assigned closer to your slot. You'll be notified when your meal is on its way.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 bg-accent/5 border border-accent/20 rounded-xl p-3">
+                <FileText className="w-4 h-4 text-accent shrink-0" />
+                <div className="flex-1">
+                  <p className="text-xs text-muted-foreground">
+                    📄 Invoice will be available for download from <span className="font-medium text-foreground">Profile → Orders</span> after your meal is delivered.
                   </p>
                 </div>
               </div>
