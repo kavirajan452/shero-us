@@ -201,7 +201,7 @@ const Checkout = () => {
 
   const missingName = !name.trim();
   const missingPhone = phone.trim().length < region.phoneMaxLength;
-  const missingAddress = deliveryType !== "self-pickup" && !address.trim();
+  const missingAddress = !address.trim();
   const missingSlot = !isSnacksOnly && !selectedSlot;
   const missingZipCode = isSnacksOnly && zipCode.trim().length < 5;
 
