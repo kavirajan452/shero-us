@@ -141,8 +141,8 @@ const HeroSection = () => {
           <div className="absolute bottom-12 left-8 w-32 h-32 rounded-full bg-primary/8 blur-3xl" />
           <div className="absolute top-1/3 left-4 w-2 h-2 rounded-full bg-primary/30" />
           <div className="absolute bottom-1/4 right-20 w-3 h-3 rounded-full bg-primary/20" />
-          <div className="flex items-center gap-4 mb-8">
-            <img src={sheroLogo} alt="Shero" className="h-14 lg:h-16" />
+          <div className="flex items-center gap-4 mb-6">
+            <img src={sheroLogo} alt="Shero" className="h-16 lg:h-20 drop-shadow-md" />
             {!langSet && <LanguageSwitcher />}
           </div>
           <h1 className="text-foreground font-serif text-5xl lg:text-6xl font-bold leading-tight">
