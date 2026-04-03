@@ -27,7 +27,7 @@ const CheckoutAuth = () => {
 
   const phoneToEmail = (ph: string) => {
     const digits = ph.replace(/\D/g, "").slice(-10);
-    return `${digits}@shero.dev`;
+    return `${digits}@shero.phone`;
   };
 
   const handleSignup = async () => {
@@ -36,28 +36,35 @@ const CheckoutAuth = () => {
     if (!phone.trim() || phone.replace(/\D/g, "").length < 10) { toast({ title: "Valid phone number required", variant: "destructive" }); return; }
 
     setIsSubmitting(true);
-    const { error } = await supabase.auth.signUp({
-      email,
-      password: DEV_OTP,
-      options: {
-        data: { full_name: fullName, phone: phone.replace(/\D/g, "") },
-        emailRedirectTo: window.location.origin,
-      },
-    });
-    setIsSubmitting(false);
+    try {
+      // Try signup first
+      const { error: signupError } = await supabase.auth.signUp({
+        email,
+        password: DEV_OTP,
+        options: {
+          data: { full_name: fullName, phone: phone.replace(/\D/g, "") },
+          emailRedirectTo: window.location.origin,
+        },
+      });
 
-    if (error && !error.message.toLowerCase().includes("already")) {
-      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
-      return;
+      if (signupError && !signupError.message.toLowerCase().includes("already")) {
+        toast({ title: "Signup failed", description: signupError.message, variant: "destructive" });
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Auto-login after signup (works for both new and existing accounts)
+      const { error: loginError } = await supabase.auth.signInWithPassword({ email, password: DEV_OTP });
+      if (loginError) {
+        toast({ title: "Login failed", description: loginError.message, variant: "destructive" });
+        setIsSubmitting(false);
+        return;
+      }
+      toast({ title: "Welcome!", description: "You can now place your order." });
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
     }
-    // Auto-login after signup
-    const { error: loginError } = await supabase.auth.signInWithPassword({ email, password: DEV_OTP });
-    if (loginError) {
-      toast({ title: "Account created!", description: "Please log in with your phone number." });
-      setMode("login");
-      return;
-    }
-    toast({ title: "Account created!", description: "You can now place your order." });
+    setIsSubmitting(false);
   };
 
   const handleSendOtp = async () => {
@@ -67,33 +74,38 @@ const CheckoutAuth = () => {
       return;
     }
     setIsSubmitting(true);
-    const devEmail = phoneToEmail(loginPhone);
-    const { error } = await supabase.auth.signUp({
-      email: devEmail,
-      password: DEV_OTP,
-      options: { data: { phone: digits }, emailRedirectTo: window.location.origin },
-    });
-    if (error && !error.message.toLowerCase().includes("already")) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-      setIsSubmitting(false);
-      return;
+    try {
+      const devEmail = phoneToEmail(loginPhone);
+      // Ensure account exists (idempotent)
+      await supabase.auth.signUp({
+        email: devEmail,
+        password: DEV_OTP,
+        options: { data: { phone: digits }, emailRedirectTo: window.location.origin },
+      });
+      setLoginStep("otp");
+      toast({ title: "OTP Sent!", description: `Dev OTP: ${DEV_OTP}` });
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
     }
     setIsSubmitting(false);
-    setLoginStep("otp");
-    toast({ title: "OTP Sent!", description: `Dev OTP: ${DEV_OTP}` });
   };
 
   const handleVerifyOtp = async () => {
     if (otp.length < 6) { toast({ title: "Enter 6-digit OTP", variant: "destructive" }); return; }
     setIsSubmitting(true);
-    const devEmail = phoneToEmail(loginPhone);
-    const { error } = await supabase.auth.signInWithPassword({ email: devEmail, password: DEV_OTP });
-    setIsSubmitting(false);
-    if (error) {
-      toast({ title: "Invalid OTP", description: error.message, variant: "destructive" });
-      return;
+    try {
+      const devEmail = phoneToEmail(loginPhone);
+      const { error } = await supabase.auth.signInWithPassword({ email: devEmail, password: DEV_OTP });
+      if (error) {
+        toast({ title: "Login failed", description: error.message, variant: "destructive" });
+        setIsSubmitting(false);
+        return;
+      }
+      toast({ title: "Logged in!", description: "You can now place your order." });
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
     }
-    toast({ title: "Logged in!", description: "You can now place your order." });
+    setIsSubmitting(false);
   };
 
   return (
