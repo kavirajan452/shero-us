@@ -191,9 +191,9 @@ function formatOrderType(type: string): string {
   return map[type] || type;
 }
 
-export function generateInvoiceNumber(prefix: string = "SHERO"): string {
+export function generateInvoiceNumber(prefix: string = "SHERO-US"): string {
   const now = new Date();
-  const fy = now.getMonth() >= 3 ? `${now.getFullYear() % 100}${(now.getFullYear() + 1) % 100}` : `${(now.getFullYear() - 1) % 100}${now.getFullYear() % 100}`;
+  const year = now.getFullYear();
   const seq = Date.now().toString().slice(-6);
-  return `${prefix}/${fy}/${seq}`;
+  return `${prefix}/${year}/${seq}`;
 }
