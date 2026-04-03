@@ -49,7 +49,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="border-t border-primary-foreground/10 pt-6 text-center text-sm text-primary-foreground/40">
-          {c["footer.copyright"] || "© 2026 Shero Home Food Inc. All rights reserved."}
+          {c["footer.copyright"] || "© 2026 Shero USA INC. All rights reserved."}
         </div>
       </div>
     </footer>
