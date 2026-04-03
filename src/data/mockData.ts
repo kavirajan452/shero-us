@@ -66,14 +66,14 @@ export interface MenuItem {
 
 /* ───────── Active Partners (from Admin Partner Management) ───────── */
 export const activePartners: PartnerProfile[] = [
-  { rmn: "9876543210", name: "Lakshmi Devi", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["sap-branded", "subscriptions"] },
-  { rmn: "9876543211", name: "Padma Reddy", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["hcf-marketplace"] },
-  { rmn: "9876543212", name: "Kavitha Sharma", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["sap-branded", "party-orders"] },
-  { rmn: "9876543213", name: "Anitha Kumari", avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["hcf-marketplace", "sweets-snacks"] },
-  { rmn: "9876543214", name: "Sunitha Rao", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["sap-branded"] },
-  { rmn: "9876543215", name: "Radha Menon", avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["hcf-marketplace"] },
-  { rmn: "9876543216", name: "Meena Iyer", avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["sap-branded", "subscriptions"] },
-  { rmn: "9876543217", name: "Fatima Begum", avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["hcf-marketplace", "party-orders"] },
+  { rmn: "2125550101", name: "Lakshmi Devi", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["sap-branded", "subscriptions"] },
+  { rmn: "4155550102", name: "Padma Reddy", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["hcf-marketplace"] },
+  { rmn: "5125550103", name: "Kavitha Sharma", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["sap-branded", "party-orders"] },
+  { rmn: "3125550104", name: "Anitha Kumari", avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["hcf-marketplace", "sweets-snacks"] },
+  { rmn: "7135550105", name: "Sunitha Rao", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["sap-branded"] },
+  { rmn: "2065550106", name: "Radha Menon", avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["hcf-marketplace"] },
+  { rmn: "4695550107", name: "Meena Iyer", avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["sap-branded", "subscriptions"] },
+  { rmn: "3105550108", name: "Fatima Begum", avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["hcf-marketplace", "party-orders"] },
 ];
 
 /* ───────── Active Kitchens (SKIDs - from Partner Management) ───────── */
