@@ -62,10 +62,15 @@ const Checkout = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [addressQuery, setAddressQuery] = useState("");
+  const [addressSuggestions, setAddressSuggestions] = useState<{ display: string; lat: string; lon: string }[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [searchingAddress, setSearchingAddress] = useState(false);
+  const [flatDoor, setFlatDoor] = useState("");
+  const [floorBlock, setFloorBlock] = useState("");
+  const [addressExtra, setAddressExtra] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [city, setCity] = useState("");
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [attempted, setAttempted] = useState(false);
 
   // Auto-check serviceability on mount via GPS (non-blocking)
