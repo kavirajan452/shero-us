@@ -154,10 +154,10 @@ export const accountMeta: Record<LedgerAccount, { label: string; group: LedgerGr
   expense_delivery_return:    { label: "Delivery Return / Failed Delivery", group: "expense_indirect", nature: "Dr" },
   // CURRENT ASSETS
   cash_in_hand:               { label: "Cash-in-Hand",                      group: "current_asset", nature: "Dr" },
-  bank_account_primary:       { label: "Bank A/c — Primary (HDFC)",         group: "current_asset", nature: "Dr" },
-  bank_account_settlement:    { label: "Bank A/c — Settlement (SBI)",       group: "current_asset", nature: "Dr" },
-  accounts_receivable:        { label: "Sundry Debtors",                    group: "current_asset", nature: "Dr" },
-  tds_receivable:             { label: "TDS Receivable",                    group: "current_asset", nature: "Dr" },
+  bank_account_primary:       { label: "Bank A/c — Primary (Chase)",        group: "current_asset", nature: "Dr" },
+  bank_account_settlement:    { label: "Bank A/c — Settlement (BofA)",      group: "current_asset", nature: "Dr" },
+  accounts_receivable:        { label: "Accounts Receivable",               group: "current_asset", nature: "Dr" },
+  tds_receivable:             { label: "Withholding Tax Receivable",        group: "current_asset", nature: "Dr" },
   advance_to_partner:         { label: "Advance to Partner",                group: "current_asset", nature: "Dr" },
   prepaid_expense:            { label: "Prepaid Expenses",                  group: "current_asset", nature: "Dr" },
   // CURRENT LIABILITIES
