@@ -183,7 +183,7 @@ const HeroSection = () => {
                   ) : (
                     <div className="px-4 py-3 space-y-2">
                       <div className="flex items-center gap-2">
-                        <input type="text" value={manualInput} onChange={(e) => setManualInput(e.target.value.slice(0, 100))} onKeyDown={(e) => e.key === "Enter" && handleManualSave()} placeholder="e.g. Adyar, Chennai" className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors" autoFocus maxLength={100} />
+                        <input type="text" value={manualInput} onChange={(e) => setManualInput(e.target.value.slice(0, 100))} onKeyDown={(e) => e.key === "Enter" && handleManualSave()} placeholder="e.g. Manhattan, New York" className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors" autoFocus maxLength={100} />
                         <button onClick={() => { setShowManual(false); setManualInput(""); }} className="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><X className="w-3.5 h-3.5" /></button>
                       </div>
                       <button onClick={handleManualSave} disabled={manualInput.trim().length === 0} className="w-full text-xs font-medium bg-primary text-primary-foreground rounded-lg py-2 hover:bg-primary/90 transition-colors disabled:opacity-40">Save</button>
