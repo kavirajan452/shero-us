@@ -106,7 +106,7 @@ const STEPS = [
 
 const OBG_TEAM = [
   { name: "Anitha S.", speciality: "fda" },
-  { name: "Rekha M.", speciality: "pos" },
+  { name: "Rachel M.", speciality: "pos" },
   { name: "Preethi V.", speciality: "location" },
   { name: "Gomathi R.", speciality: "pos" },
 ];
@@ -1130,7 +1130,7 @@ function StepAutoAssign({ kitchen, update }: any) {
         <CardContent className="p-4 space-y-2">
           <p className="text-sm font-medium">Auto-Assignment Rules</p>
           <div className="text-xs text-muted-foreground space-y-1">
-            <p>• <strong>POS Issues</strong> → Rekha M. / Gomathi R.</p>
+            <p>• <strong>POS Issues</strong> → Rachel M. / Gomathi R.</p>
             <p>• <strong>Location Issues</strong> → Preethi V.</p>
             <p>• <strong>FDA Issues</strong> → Anitha S.</p>
             <p>• TAT exceeded → Auto-flag with <Badge variant="destructive" className="text-[9px] py-0 px-1">TAT Breached</Badge></p>

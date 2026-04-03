@@ -73,7 +73,7 @@ export const activePartners: PartnerProfile[] = [
   { rmn: "7135550105", name: "Sunitha Rao", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["sap-branded"] },
   { rmn: "2065550106", name: "Radha Menon", avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["hcf-marketplace"] },
   { rmn: "4695550107", name: "Meena Iyer", avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["sap-branded", "subscriptions"] },
-  { rmn: "3105550108", name: "Fatima Begum", avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["hcf-marketplace", "party-orders"] },
+  { rmn: "3105550108", name: "Fatima Brown", avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=100&h=100&fit=crop", enrollmentStatus: "approved", approvedVerticals: ["hcf-marketplace", "party-orders"] },
 ];
 
 /* ───────── Active Kitchens (SKIDs - from Partner Management) ───────── */

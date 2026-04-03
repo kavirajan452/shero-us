@@ -187,7 +187,7 @@ export const serviceBookings: ServiceBooking[] = [
   },
   {
     id: "SRV-007", serviceCategory: "cookery", serviceName: "Chicagoi Biryani Workshop",
-    customerName: "Fatima Begum", date: today, time: "11:00 AM", duration: "120 min",
+    customerName: "Fatima Brown", date: today, time: "11:00 AM", duration: "120 min",
     mode: "in_person", status: "completed", price: 1999,
     address: "Partner Kitchen, Downtown", studentsCount: 6,
   },

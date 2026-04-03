@@ -325,7 +325,7 @@ const PartnerOrders = () => {
         if (item) {
           addStockAlert({
             orderId: rejectDialogOrder.id,
-            partnerName: "Sujatha M.",
+            partnerName: "Maria T.",
             partnerId: "P001",
             kitchenName: "Sujatha's Chettinad Kitchen",
             itemName: item.name,

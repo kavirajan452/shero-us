@@ -23,7 +23,7 @@ export interface InvoiceData {
     address?: string;
     city?: string;
     state?: string;
-    pincode?: string;
+    zipcode?: string;
     phone?: string;
     email?: string;
     bankName?: string;
@@ -61,7 +61,7 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   doc.setTextColor(80, 80, 80);
   doc.setFontSize(8);
   if (ein) doc.text(`EIN: ${ein}`, m, y);
-  if (co.address) doc.text(`${co.address}${co.city ? ", " + co.city : ""}${co.state ? ", " + co.state : ""} ${co.pincode || ""}`, m, y + 4);
+  if (co.address) doc.text(`${co.address}${co.city ? ", " + co.city : ""}${co.state ? ", " + co.state : ""} ${co.zipcode || ""}`, m, y + 4);
   if (co.phone || co.email) doc.text(`${co.phone || ""} ${co.email ? "| " + co.email : ""}`, m, y + 8);
   y += 16;
 

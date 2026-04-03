@@ -126,12 +126,12 @@ interface CallLog {
 // ── Mock Partner Profiles ──
 const partnerProfiles: PartnerProfile[] = [
   {
-    name: "Sujatha M.", rmn: "+1 (212) 555-0101", partnerId: "P001",
+    name: "Maria T.", rmn: "+1 (212) 555-0101", partnerId: "P001",
     kitchens: [
       { skid: "SK-TN-001", name: "Sujatha's Chettinad Kitchen", type: "SHF", cuisine: "Chettinad", city: "New York", status: "active" },
       { skid: "SK-TN-002", name: "Sujatha's Florida Kitchen", type: "SHF", cuisine: "Florida", city: "New York", status: "active" },
     ],
-    joinedDate: "Jan 2025", region: "Northeast", manager: "Nithya P.", grade: "A", scvBiz: 87,
+    joinedDate: "Jan 2025", region: "Northeast", manager: "Nicole P.", grade: "A", scvBiz: 87,
     metrics: { attendance: 95, badRating: 3, delayedDelivery: 5, cancellations: 2, ratingReviews: 4.6 },
     salesTarget: 200, salesAchieved: 185, bankName: "HDFC Bank", accountNo: "****7842",
     pendingGrievances: 1, totalOrders: 1245, activeTickets: 1,
@@ -145,9 +145,9 @@ const partnerProfiles: PartnerProfile[] = [
     ],
   },
   {
-    name: "Priya K.", rmn: "+1 (310) 555-0102", partnerId: "P002",
+    name: "Patricia K.", rmn: "+1 (310) 555-0102", partnerId: "P002",
     kitchens: [{ skid: "SK-KA-001", name: "Priya's Home Kitchen", type: "HCF", cuisine: "North Indian", city: "Bengaluru", status: "active" }],
-    joinedDate: "Feb 2025", region: "Northeast", manager: "Madhavi K.", grade: "B", scvBiz: 72,
+    joinedDate: "Feb 2025", region: "Northeast", manager: "Michelle K.", grade: "B", scvBiz: 72,
     metrics: { attendance: 88, badRating: 8, delayedDelivery: 12, cancellations: 5, ratingReviews: 4.1 },
     salesTarget: 150, salesAchieved: 120, bankName: "SBI", accountNo: "****3291",
     pendingGrievances: 1, totalOrders: 680, activeTickets: 1,
@@ -159,9 +159,9 @@ const partnerProfiles: PartnerProfile[] = [
     ],
   },
   {
-    name: "Lakshmi R.", rmn: "+1 (312) 555-0103", partnerId: "P003",
+    name: "Laura R.", rmn: "+1 (312) 555-0103", partnerId: "P003",
     kitchens: [{ skid: "SK-TS-001", name: "Lakshmi's Pennsylvania Kitchen", type: "SHF", cuisine: "Pennsylvania", city: "Chicago", status: "paused" }],
-    joinedDate: "Mar 2025", region: "Northeast", manager: "Harish G.", grade: "A", scvBiz: 91,
+    joinedDate: "Mar 2025", region: "Northeast", manager: "Henry G.", grade: "A", scvBiz: 91,
     metrics: { attendance: 92, badRating: 2, delayedDelivery: 3, cancellations: 1, ratingReviews: 4.8 },
     salesTarget: 250, salesAchieved: 248, bankName: "SBI", accountNo: "****6701",
     pendingGrievances: 0, totalOrders: 2100, activeTickets: 0,
@@ -172,9 +172,9 @@ const partnerProfiles: PartnerProfile[] = [
     ],
   },
   {
-    name: "Meena S.", rmn: "+1 (713) 555-0104", partnerId: "P004",
+    name: "Lisa S.", rmn: "+1 (713) 555-0104", partnerId: "P004",
     kitchens: [{ skid: "SK-MH-001", name: "Meena's Marathi Kitchen", type: "HCF", cuisine: "Marathi", city: "Houston", status: "active" }],
-    joinedDate: "Apr 2025", region: "West", manager: "Preeti J.", grade: "C", scvBiz: 58,
+    joinedDate: "Apr 2025", region: "West", manager: "Patricia J.", grade: "C", scvBiz: 58,
     metrics: { attendance: 78, badRating: 15, delayedDelivery: 18, cancellations: 10, ratingReviews: 3.6 },
     salesTarget: 100, salesAchieved: 65, bankName: "ICICI", accountNo: "****4512",
     pendingGrievances: 1, totalOrders: 340, activeTickets: 0,
@@ -189,7 +189,7 @@ const partnerProfiles: PartnerProfile[] = [
 const orderRecords: OrderRecord[] = [
   {
     orderId: "ORD-4520", customerName: "Rahul S.", customerRMN: "+1 99887 77665",
-    partnerName: "Sujatha M.", partnerRMN: "+1 (212) 555-0101", skid: "SK-TN-001",
+    partnerName: "Maria T.", partnerRMN: "+1 (212) 555-0101", skid: "SK-TN-001",
     items: [{ name: "Chettinad Chicken Curry", qty: 1, price: 220 }, { name: "Sambar Rice", qty: 2, price: 150 }, { name: "Rasam", qty: 1, price: 60 }],
     status: "delivered", orderTime: "2026-03-03 12:30 PM", deliveryTime: "2026-03-03 1:15 PM",
     totalMRP: 580, totalPPP: 380, paymentStatus: "paid",
@@ -197,7 +197,7 @@ const orderRecords: OrderRecord[] = [
   },
   {
     orderId: "ORD-4521", customerName: "Priya M.", customerRMN: "+1 (305) 555-0108",
-    partnerName: "Priya K.", partnerRMN: "+1 (310) 555-0102", skid: "SK-KA-001",
+    partnerName: "Patricia K.", partnerRMN: "+1 (310) 555-0102", skid: "SK-KA-001",
     items: [{ name: "Paneer Butter Masala", qty: 1, price: 180 }, { name: "Butter Naan", qty: 4, price: 40 }],
     status: "preparing", orderTime: "2026-03-03 1:00 PM", deliveryTime: "—",
     totalMRP: 340, totalPPP: 220, paymentStatus: "paid",
@@ -205,7 +205,7 @@ const orderRecords: OrderRecord[] = [
   },
   {
     orderId: "ORD-4522", customerName: "Karthik R.", customerRMN: "+1 77665 44332",
-    partnerName: "Sujatha M.", partnerRMN: "+1 (212) 555-0101", skid: "SK-TN-002",
+    partnerName: "Maria T.", partnerRMN: "+1 (212) 555-0101", skid: "SK-TN-002",
     items: [{ name: "Florida Fish Curry", qty: 1, price: 250 }, { name: "Appam", qty: 3, price: 30 }],
     status: "accepted", orderTime: "2026-03-03 1:15 PM", deliveryTime: "—",
     totalMRP: 340, totalPPP: 225, paymentStatus: "paid",
@@ -213,7 +213,7 @@ const orderRecords: OrderRecord[] = [
   },
   {
     orderId: "ORD-4523", customerName: "Deepa N.", customerRMN: "+1 66554 33221",
-    partnerName: "Meena S.", partnerRMN: "+1 (713) 555-0104", skid: "SK-MH-001",
+    partnerName: "Lisa S.", partnerRMN: "+1 (713) 555-0104", skid: "SK-MH-001",
     items: [{ name: "Vada Pav", qty: 4, price: 50 }, { name: "Misal Pav", qty: 2, price: 120 }],
     status: "pending", orderTime: "2026-03-03 1:30 PM", deliveryTime: "—",
     totalMRP: 440, totalPPP: 290, paymentStatus: "pending",
@@ -221,7 +221,7 @@ const orderRecords: OrderRecord[] = [
   },
   {
     orderId: "ORD-4519", customerName: "Arun K.", customerRMN: "+1 (503) 555-0109",
-    partnerName: "Lakshmi R.", partnerRMN: "+1 (312) 555-0103", skid: "SK-TS-001",
+    partnerName: "Laura R.", partnerRMN: "+1 (312) 555-0103", skid: "SK-TS-001",
     items: [{ name: "Chicagoi Biryani", qty: 2, price: 280 }],
     status: "cancelled", orderTime: "2026-03-02 7:00 PM", deliveryTime: "—",
     totalMRP: 560, totalPPP: 370, paymentStatus: "refunded",
@@ -231,21 +231,21 @@ const orderRecords: OrderRecord[] = [
 
 // ── Mock Tickets ──
 const mockTickets: Ticket[] = [
-  { id: "TKT-001", type: "profile_edit", priority: "medium", referenceId: "+1 (212) 555-0101", referenceType: "partner", partnerId: "P001", partnerName: "Sujatha M.", partnerRMN: "+1 (212) 555-0101", subject: "Update partner address — moved to SoHo", description: "Partner called to update kitchen address.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "KOBTL", status: "open", createdAt: "2026-03-02 10:15 AM", updatedAt: "2026-03-02 10:15 AM", comments: [] } as Ticket & { partnerId: string },
-  { id: "TKT-002", type: "order_edit", priority: "high", referenceId: "ORD-4521", referenceType: "order", partnerId: "P002", partnerName: "Priya K.", partnerRMN: "+1 (310) 555-0102", subject: "Customer wants to add 2 Garlic Naan to order", description: "Customer Priya M. called to modify active order ORD-4521.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "OPS", status: "in_progress", createdAt: "2026-03-03 1:10 PM", updatedAt: "2026-03-03 1:15 PM", comments: [{ author: "Preethi V.", role: "SSC Executor", text: "Order is in preparing status. Contacted kitchen for modification.", at: "2026-03-03 1:15 PM" }] } as Ticket & { partnerId: string },
-  { id: "TKT-003", type: "refund_request", priority: "high", referenceId: "ORD-4519", referenceType: "order", partnerId: "P003", partnerName: "Lakshmi R.", partnerRMN: "+1 (312) 555-0103", subject: "Customer requests full refund — cancelled after prep started", description: "Customer Arun K. wants refund. Partner had started cooking.", raisedBy: "Anitha S.", raisedByRole: "SSC Team Lead", assignedTo: "PPP", status: "open", createdAt: "2026-03-02 7:30 PM", updatedAt: "2026-03-02 7:30 PM", comments: [] } as Ticket & { partnerId: string },
-  { id: "TKT-004", type: "kitchen_add", priority: "medium", referenceId: "+1 (212) 555-0101", referenceType: "partner", partnerId: "P001", partnerName: "Sujatha M.", partnerRMN: "+1 (212) 555-0101", subject: "Request to add New York Veg kitchen", description: "Partner wants a 3rd kitchen — Tamil Veg.", raisedBy: "Gomathi R.", raisedByRole: "SSC Executor", assignedTo: "KOBTL", status: "open", createdAt: "2026-03-01 4:00 PM", updatedAt: "2026-03-01 4:00 PM", comments: [] } as Ticket & { partnerId: string },
-  { id: "TKT-005", type: "payment_query", priority: "low", referenceId: "+1 (713) 555-0104", referenceType: "partner", partnerId: "P004", partnerName: "Meena S.", partnerRMN: "+1 (713) 555-0104", subject: "Partner asking about delayed payout for CW08", description: "Meena S. called about CW08 payout not received.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "PPP", status: "resolved", createdAt: "2026-02-27 3:00 PM", updatedAt: "2026-02-28 10:00 AM", comments: [{ author: "Vijay K.", role: "PPP TL", text: "Payout was delayed due to bank holiday. Processed now.", at: "2026-02-28 10:00 AM" }] } as Ticket & { partnerId: string },
+  { id: "TKT-001", type: "profile_edit", priority: "medium", referenceId: "+1 (212) 555-0101", referenceType: "partner", partnerId: "P001", partnerName: "Maria T.", partnerRMN: "+1 (212) 555-0101", subject: "Update partner address — moved to SoHo", description: "Partner called to update kitchen address.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "KOBTL", status: "open", createdAt: "2026-03-02 10:15 AM", updatedAt: "2026-03-02 10:15 AM", comments: [] } as Ticket & { partnerId: string },
+  { id: "TKT-002", type: "order_edit", priority: "high", referenceId: "ORD-4521", referenceType: "order", partnerId: "P002", partnerName: "Patricia K.", partnerRMN: "+1 (310) 555-0102", subject: "Customer wants to add 2 Garlic Naan to order", description: "Customer Priya M. called to modify active order ORD-4521.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "OPS", status: "in_progress", createdAt: "2026-03-03 1:10 PM", updatedAt: "2026-03-03 1:15 PM", comments: [{ author: "Preethi V.", role: "SSC Executor", text: "Order is in preparing status. Contacted kitchen for modification.", at: "2026-03-03 1:15 PM" }] } as Ticket & { partnerId: string },
+  { id: "TKT-003", type: "refund_request", priority: "high", referenceId: "ORD-4519", referenceType: "order", partnerId: "P003", partnerName: "Laura R.", partnerRMN: "+1 (312) 555-0103", subject: "Customer requests full refund — cancelled after prep started", description: "Customer Arun K. wants refund. Partner had started cooking.", raisedBy: "Anitha S.", raisedByRole: "SSC Team Lead", assignedTo: "PPP", status: "open", createdAt: "2026-03-02 7:30 PM", updatedAt: "2026-03-02 7:30 PM", comments: [] } as Ticket & { partnerId: string },
+  { id: "TKT-004", type: "kitchen_add", priority: "medium", referenceId: "+1 (212) 555-0101", referenceType: "partner", partnerId: "P001", partnerName: "Maria T.", partnerRMN: "+1 (212) 555-0101", subject: "Request to add New York Veg kitchen", description: "Partner wants a 3rd kitchen — Tamil Veg.", raisedBy: "Gomathi R.", raisedByRole: "SSC Executor", assignedTo: "KOBTL", status: "open", createdAt: "2026-03-01 4:00 PM", updatedAt: "2026-03-01 4:00 PM", comments: [] } as Ticket & { partnerId: string },
+  { id: "TKT-005", type: "payment_query", priority: "low", referenceId: "+1 (713) 555-0104", referenceType: "partner", partnerId: "P004", partnerName: "Lisa S.", partnerRMN: "+1 (713) 555-0104", subject: "Partner asking about delayed payout for CW08", description: "Lisa S. called about CW08 payout not received.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "PPP", status: "resolved", createdAt: "2026-02-27 3:00 PM", updatedAt: "2026-02-28 10:00 AM", comments: [{ author: "Vijay K.", role: "PPP TL", text: "Payout was delayed due to bank holiday. Processed now.", at: "2026-02-28 10:00 AM" }] } as Ticket & { partnerId: string },
   { id: "TKT-006", type: "complaint", priority: "high", referenceId: "+1 (305) 555-0108", referenceType: "customer", partnerId: "", partnerName: "", partnerRMN: "", subject: "Customer Priya M. — wrong item received in ORD-4521", description: "Customer says ordered Paneer but got Dal Makhani.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "OPS", status: "in_progress", createdAt: "2026-03-03 1:30 PM", updatedAt: "2026-03-03 1:35 PM", comments: [{ author: "Preethi V.", role: "SSC Executor", text: "Contacted kitchen. They confirm wrong item packed. Replacement being prepared.", at: "2026-03-03 1:35 PM" }] } as Ticket & { partnerId: string },
 ];
 
 // ── Mock Call Logs ──
 const callLogs: CallLog[] = [
-  { id: "CL-001", callerType: "partner", callerName: "Sujatha M.", callerRMN: "+1 (212) 555-0101", type: "inbound", category: "Order Query", duration: "4:32", agent: "Preethi V.", outcome: "resolved", time: "10:15 AM", notes: "Partner asked about pending order count for today." },
-  { id: "CL-002", callerType: "partner", callerName: "Meena S.", callerRMN: "+1 (713) 555-0104", type: "inbound", category: "Payment Query", duration: "6:10", agent: "Gomathi R.", outcome: "ticket_raised", linkedTicket: "TKT-005", time: "10:45 AM", notes: "Partner inquiring about delayed payout. Ticket raised." },
+  { id: "CL-001", callerType: "partner", callerName: "Maria T.", callerRMN: "+1 (212) 555-0101", type: "inbound", category: "Order Query", duration: "4:32", agent: "Preethi V.", outcome: "resolved", time: "10:15 AM", notes: "Partner asked about pending order count for today." },
+  { id: "CL-002", callerType: "partner", callerName: "Lisa S.", callerRMN: "+1 (713) 555-0104", type: "inbound", category: "Payment Query", duration: "6:10", agent: "Gomathi R.", outcome: "ticket_raised", linkedTicket: "TKT-005", time: "10:45 AM", notes: "Partner inquiring about delayed payout. Ticket raised." },
   { id: "CL-003", callerType: "customer", callerName: "Rahul S.", callerRMN: "+1 99887 77665", type: "inbound", category: "Delivery Status", duration: "2:15", agent: "Preethi V.", outcome: "resolved", time: "11:00 AM", notes: "Customer tracking ORD-4520. Confirmed delivered." },
   { id: "CL-004", callerType: "customer", callerName: "Priya M.", callerRMN: "+1 (305) 555-0108", type: "inbound", category: "Wrong Item", duration: "5:40", agent: "Preethi V.", outcome: "ticket_raised", linkedTicket: "TKT-006", time: "1:30 PM", notes: "Customer received wrong item. Ticket + complaint raised." },
-  { id: "CL-005", callerType: "partner", callerName: "Priya K.", callerRMN: "+1 (310) 555-0102", type: "outbound", category: "Kitchen Follow-up", duration: "3:20", agent: "Anitha S.", outcome: "resolved", time: "2:00 PM", notes: "Follow-up on quality complaint. Partner acknowledged." },
+  { id: "CL-005", callerType: "partner", callerName: "Patricia K.", callerRMN: "+1 (310) 555-0102", type: "outbound", category: "Kitchen Follow-up", duration: "3:20", agent: "Anitha S.", outcome: "resolved", time: "2:00 PM", notes: "Follow-up on quality complaint. Partner acknowledged." },
   { id: "CL-006", callerType: "customer", callerName: "Deepa N.", callerRMN: "+1 66554 33221", type: "inbound", category: "Order Edit", duration: "3:50", agent: "Gomathi R.", outcome: "ticket_raised", linkedTicket: "TKT-002", time: "2:30 PM", notes: "Customer wants to add items. Ticket raised for order modification." },
 ];
 
@@ -1175,7 +1175,7 @@ export default function AdminTickets() {
                     { agent: "Preethi V.", calls: 128, resolved: 115, csat: 4.6 },
                     { agent: "Anitha S.", calls: 112, resolved: 98, csat: 4.4 },
                     { agent: "Gomathi R.", calls: 96, resolved: 82, csat: 4.2 },
-                    { agent: "Rekha M.", calls: 45, resolved: 42, csat: 4.7 },
+                    { agent: "Rachel M.", calls: 45, resolved: 42, csat: 4.7 },
                   ].sort((a, b) => b.csat - a.csat).map((a, i) => (
                     <div key={a.agent} className="flex items-center justify-between p-2.5 rounded-lg bg-muted/30">
                       <div className="flex items-center gap-2">

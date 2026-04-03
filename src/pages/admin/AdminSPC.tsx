@@ -266,7 +266,7 @@ export default function AdminSPC() {
             <CardContent>
               <div className="grid md:grid-cols-3 gap-3">
                 {[
-                  { icon: "🚨", title: "Harassment Escalation", text: "Partner Meena S. (P004) has a critical harassment grievance. Immediate action required — delivery partner suspension and partner counselling.", type: "critical" },
+                  { icon: "🚨", title: "Harassment Escalation", text: "Partner Lisa S. (P004) has a critical harassment grievance. Immediate action required — delivery partner suspension and partner counselling.", type: "critical" },
                   { icon: "📊", title: "Payment Grievances Trending Up", text: "35% of all grievances are payment-related. Recommend tighter PPP SLA and proactive payout status notifications.", type: "warning" },
                   { icon: "💚", title: "Friend Program Impact", text: "Partners with active Friend assignments show 23% higher retention and 15% better SCV scores. Recommend expanding the program.", type: "positive" },
                 ].map((insight, i) => (

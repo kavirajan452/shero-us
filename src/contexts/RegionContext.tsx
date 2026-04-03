@@ -34,7 +34,7 @@ const regions: Record<RegionCode, RegionConfig> = {
     phonePrefix: "+1",
     phonePlaceholder: "10-digit mobile number",
     phoneMaxLength: 10,
-    addressPlaceholder: "Flat/House No, Street, Area, City, Pincode",
+    addressPlaceholder: "Flat/House No, Street, Area, City, ZIP Code",
     addressSuggestions: [
       "Flat 302, Lakshmi Towers, Road No. 12, Downtown, Chicago",
       "Plot 45, Cyber Towers, Financial District, Chicago",

@@ -84,7 +84,7 @@ export const SPC_KPIS: SPCKpi[] = [
 // ── Mock Grievances ──
 export const MOCK_GRIEVANCES: Grievance[] = [
   {
-    id: "GRV001", partnerId: "P001", partnerName: "Sujatha M.", category: "payment",
+    id: "GRV001", partnerId: "P001", partnerName: "Maria T.", category: "payment",
     subject: "Weekly payout delayed by 3 days",
     description: "My weekly payout for week ending Feb 22 has not been credited. Usually arrives by Monday but it's Thursday now.",
     priority: "high", status: "in_progress", assignedTo: "SPC-Anitha",
@@ -96,7 +96,7 @@ export const MOCK_GRIEVANCES: Grievance[] = [
     ],
   },
   {
-    id: "GRV002", partnerId: "P002", partnerName: "Priya K.", category: "order_dispute",
+    id: "GRV002", partnerId: "P002", partnerName: "Patricia K.", category: "order_dispute",
     subject: "Customer falsely reported food quality issue",
     description: "A customer claimed the food was stale but I prepared it fresh. My rating dropped. Please review.",
     priority: "medium", status: "open", assignedTo: "SPC-Rekha",
@@ -106,7 +106,7 @@ export const MOCK_GRIEVANCES: Grievance[] = [
     ],
   },
   {
-    id: "GRV003", partnerId: "P003", partnerName: "Lakshmi R.", category: "personal",
+    id: "GRV003", partnerId: "P003", partnerName: "Laura R.", category: "personal",
     subject: "Need leave for family emergency",
     description: "My mother is hospitalized. I need to take 2 weeks off but worried about my kitchen status.",
     priority: "high", status: "resolved", assignedTo: "SPC-Anitha",
@@ -120,7 +120,7 @@ export const MOCK_GRIEVANCES: Grievance[] = [
     ],
   },
   {
-    id: "GRV004", partnerId: "P004", partnerName: "Meena S.", category: "harassment",
+    id: "GRV004", partnerId: "P004", partnerName: "Lisa S.", category: "harassment",
     subject: "Delivery person was rude and threatening",
     description: "The delivery partner used abusive language when I asked him to wait 2 minutes for the food to be packed.",
     priority: "critical", status: "escalated", assignedTo: "SPC-Manager",
@@ -144,7 +144,7 @@ export const MOCK_GRIEVANCES: Grievance[] = [
     ],
   },
   {
-    id: "GRV006", partnerId: "P006", partnerName: "Revathi N.", category: "policy",
+    id: "GRV006", partnerId: "P006", partnerName: "Rachel N.", category: "policy",
     subject: "Unfair penalty for order cancellation by customer",
     description: "Customer cancelled after I started cooking. I was penalized $150. This is unfair as I incurred costs.",
     priority: "medium", status: "in_progress", assignedTo: "SPC-Anitha",
@@ -170,12 +170,12 @@ export const WELFARE_PROGRAMS: WelfareProgram[] = [
 
 // ── Friend to Partner ──
 export const FRIEND_TO_PARTNER: FriendToPartner[] = [
-  { id: "FTP001", partnerId: "P001", partnerName: "Sujatha M.", friendName: "Anitha S.", friendRole: "SPC Counsellor", status: "active", assignedDate: "2026-01-15", lastInteraction: "2026-03-01", sessionsCompleted: 6, notes: "Partner adjusting well. Occasional stress about order volumes.", mood: "happy" },
-  { id: "FTP002", partnerId: "P004", partnerName: "Meena S.", friendName: "Preethi V.", friendRole: "SPC Counsellor", status: "active", assignedDate: "2026-02-01", lastInteraction: "2026-03-02", sessionsCompleted: 4, notes: "Recent harassment incident. Needs extra support. Counselling escalated.", mood: "stressed" },
-  { id: "FTP003", partnerId: "P003", partnerName: "Lakshmi R.", friendName: "Rekha M.", friendRole: "SPC Senior", status: "active", assignedDate: "2026-01-20", lastInteraction: "2026-02-28", sessionsCompleted: 5, notes: "Mother recovering. Partner returning to work. Positive outlook.", mood: "neutral" },
-  { id: "FTP004", partnerId: "P006", partnerName: "Revathi N.", friendName: "Anitha S.", friendRole: "SPC Counsellor", status: "active", assignedDate: "2026-02-10", lastInteraction: "2026-03-01", sessionsCompleted: 3, notes: "Financial stress. Connected to Financial Literacy program.", mood: "stressed" },
-  { id: "FTP005", partnerId: "P002", partnerName: "Priya K.", friendName: "Gomathi R.", friendRole: "SPC Buddy", status: "active", assignedDate: "2026-02-15", lastInteraction: "2026-02-27", sessionsCompleted: 2, notes: "New partner. Onboarding support. Adjusting to platform.", mood: "neutral" },
-  { id: "FTP006", partnerId: "P009", partnerName: "Saroja T.", friendName: "Preethi V.", friendRole: "SPC Counsellor", status: "completed", assignedDate: "2025-11-01", lastInteraction: "2026-01-30", sessionsCompleted: 8, notes: "Completed cycle. Partner is thriving. Grade A performer now.", mood: "happy" },
+  { id: "FTP001", partnerId: "P001", partnerName: "Maria T.", friendName: "Anitha S.", friendRole: "SPC Counsellor", status: "active", assignedDate: "2026-01-15", lastInteraction: "2026-03-01", sessionsCompleted: 6, notes: "Partner adjusting well. Occasional stress about order volumes.", mood: "happy" },
+  { id: "FTP002", partnerId: "P004", partnerName: "Lisa S.", friendName: "Preethi V.", friendRole: "SPC Counsellor", status: "active", assignedDate: "2026-02-01", lastInteraction: "2026-03-02", sessionsCompleted: 4, notes: "Recent harassment incident. Needs extra support. Counselling escalated.", mood: "stressed" },
+  { id: "FTP003", partnerId: "P003", partnerName: "Laura R.", friendName: "Rachel M.", friendRole: "SPC Senior", status: "active", assignedDate: "2026-01-20", lastInteraction: "2026-02-28", sessionsCompleted: 5, notes: "Mother recovering. Partner returning to work. Positive outlook.", mood: "neutral" },
+  { id: "FTP004", partnerId: "P006", partnerName: "Rachel N.", friendName: "Anitha S.", friendRole: "SPC Counsellor", status: "active", assignedDate: "2026-02-10", lastInteraction: "2026-03-01", sessionsCompleted: 3, notes: "Financial stress. Connected to Financial Literacy program.", mood: "stressed" },
+  { id: "FTP005", partnerId: "P002", partnerName: "Patricia K.", friendName: "Gomathi R.", friendRole: "SPC Buddy", status: "active", assignedDate: "2026-02-15", lastInteraction: "2026-02-27", sessionsCompleted: 2, notes: "New partner. Onboarding support. Adjusting to platform.", mood: "neutral" },
+  { id: "FTP006", partnerId: "P009", partnerName: "Sharon T.", friendName: "Preethi V.", friendRole: "SPC Counsellor", status: "completed", assignedDate: "2025-11-01", lastInteraction: "2026-01-30", sessionsCompleted: 8, notes: "Completed cycle. Partner is thriving. Grade A performer now.", mood: "happy" },
 ];
 
 // ── Stress Buster Resources ──

@@ -68,10 +68,10 @@ export async function createConversationAsync(data: { partnerName: string; partn
 // ── Legacy in-memory store (backward compat) ──
 let conversations: ChatConversation[] = [
   {
-    id: "conv-001", partnerName: "Sujatha M.", partnerRMN: "+1 (212) 555-0101",
+    id: "conv-001", partnerName: "Maria T.", partnerRMN: "+1 (212) 555-0101",
     adminEmail: "ssc-exec@shero.in", adminName: "Preethi V.", adminRole: "SSC Executor",
     messages: [
-      { id: "m1", text: "Hi, I have an issue with my order ORD-4521.", sender: "partner", senderName: "Sujatha M.", timestamp: new Date("2026-03-07T09:30:00") },
+      { id: "m1", text: "Hi, I have an issue with my order ORD-4521.", sender: "partner", senderName: "Maria T.", timestamp: new Date("2026-03-07T09:30:00") },
       { id: "m2", text: "Hi Sujatha! Let me check order ORD-4521 for you.", sender: "admin", senderName: "Preethi V.", timestamp: new Date("2026-03-07T09:31:00") },
     ],
     status: "active", createdAt: new Date("2026-03-07T09:30:00"), lastActivity: new Date("2026-03-07T09:34:00"),

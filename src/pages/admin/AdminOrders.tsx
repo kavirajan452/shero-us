@@ -44,7 +44,7 @@ interface AdminOrder {
   cuisine: string;
   state: string;
   city: string;
-  pincode: string;
+  zipcode: string;
   kitchenAddress: string;
   kitchenMapUrl: string;
   items: OrderItem[];
@@ -62,9 +62,9 @@ interface AdminOrder {
 
 const mockOrders: AdminOrder[] = [
   {
-    id: "ORD-1001", customer: "Ramesh K.", customerPhone: "+1 98765 11111",
-    partner: "Sujatha M.", partnerRMN: "+1 (212) 555-0101", kitchen: "Shero – Chettinad (Veg)",
-    skid: "SK-0001", cuisine: "Chettinad", state: "New York", city: "New York", pincode: "600001",
+    id: "ORD-1001", customer: "Robert K.", customerPhone: "+1 98765 11111",
+    partner: "Maria T.", partnerRMN: "+1 (212) 555-0101", kitchen: "Shero – Chettinad (Veg)",
+    skid: "SK-0001", cuisine: "Chettinad", state: "New York", city: "New York", zipcode: "600001",
     kitchenAddress: "12/3, 2nd Cross, Anna Nagar, New York - 600040",
     kitchenMapUrl: "https://maps.google.com/?q=13.0850,80.2101",
     items: [{ name: "Chinna Vengayam Sambar", qty: 2, price: 167 }, { name: "Carrot Beans Poriyal", qty: 1, price: 196 }],
@@ -73,8 +73,8 @@ const mockOrders: AdminOrder[] = [
   },
   {
     id: "ORD-1002", customer: "Anita P.", customerPhone: "+1 87654 22222",
-    partner: "Priya K.", partnerRMN: "+1 (310) 555-0102", kitchen: "Priya's Kitchen",
-    skid: "SK-0004", cuisine: "North Indian", state: "California", city: "Bengaluru", pincode: "560001",
+    partner: "Patricia K.", partnerRMN: "+1 (310) 555-0102", kitchen: "Priya's Kitchen",
+    skid: "SK-0004", cuisine: "North Indian", state: "California", city: "Bengaluru", zipcode: "560001",
     kitchenAddress: "45, 1st Main Rd, Koramangala, Bengaluru - 560034",
     kitchenMapUrl: "https://maps.google.com/?q=12.9352,77.6245",
     items: [{ name: "Paneer Butter Masala", qty: 1, price: 229 }, { name: "Dal Makhani", qty: 1, price: 199 }, { name: "Butter Naan", qty: 3, price: 40 }],
@@ -83,8 +83,8 @@ const mockOrders: AdminOrder[] = [
   },
   {
     id: "ORD-1003", customer: "Vijay S.", customerPhone: "+1 76543 33333",
-    partner: "Lakshmi R.", partnerRMN: "+1 (312) 555-0103", kitchen: "Shero – Pennsylvania (Non-Veg)",
-    skid: "SK-0006", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", pincode: "500032",
+    partner: "Laura R.", partnerRMN: "+1 (312) 555-0103", kitchen: "Shero – Pennsylvania (Non-Veg)",
+    skid: "SK-0006", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", zipcode: "500032",
     kitchenAddress: "78, Uptown, Chicago - 500033",
     kitchenMapUrl: "https://maps.google.com/?q=17.4325,78.4073",
     items: [{ name: "Gutti Vankaya Kura", qty: 2, price: 220 }, { name: "Pappu (Dal)", qty: 1, price: 155 }],
@@ -93,8 +93,8 @@ const mockOrders: AdminOrder[] = [
   },
   {
     id: "ORD-1004", customer: "Deepa M.", customerPhone: "+1 65432 44444",
-    partner: "Sujatha M.", partnerRMN: "+1 (212) 555-0101", kitchen: "Suji's Kitchen",
-    skid: "SK-0003", cuisine: "North Indian", state: "New York", city: "New York", pincode: "600028",
+    partner: "Maria T.", partnerRMN: "+1 (212) 555-0101", kitchen: "Suji's Kitchen",
+    skid: "SK-0003", cuisine: "North Indian", state: "New York", city: "New York", zipcode: "600028",
     kitchenAddress: "12/3, 2nd Cross, Anna Nagar, New York - 600040",
     kitchenMapUrl: "https://maps.google.com/?q=13.0850,80.2101",
     items: [{ name: "Chole", qty: 1, price: 179 }, { name: "Aloo Gobi", qty: 1, price: 165 }],
@@ -103,8 +103,8 @@ const mockOrders: AdminOrder[] = [
   },
   {
     id: "ORD-1005", customer: "Karthik R.", customerPhone: "+1 54321 55555",
-    partner: "Meena S.", partnerRMN: "+1 (713) 555-0104", kitchen: "Meena's Kitchen",
-    skid: "SK-0007", cuisine: "Gujarati", state: "Texas", city: "Houston", pincode: "400001",
+    partner: "Lisa S.", partnerRMN: "+1 (713) 555-0104", kitchen: "Meena's Kitchen",
+    skid: "SK-0007", cuisine: "Gujarati", state: "Texas", city: "Houston", zipcode: "400001",
     kitchenAddress: "23, Marine Lines, Houston - 400020",
     kitchenMapUrl: "https://maps.google.com/?q=18.9433,72.8235",
     items: [{ name: "Undhiyu", qty: 1, price: 230 }, { name: "Kadhi", qty: 1, price: 155 }],
@@ -113,8 +113,8 @@ const mockOrders: AdminOrder[] = [
   },
   {
     id: "ORD-1006", customer: "Priya L.", customerPhone: "+1 43210 66666",
-    partner: "Kamala R.", partnerRMN: "+1 (713) 555-0117", kitchen: "Kamala's Subscription Meals",
-    skid: "SK-0017", cuisine: "Mughlai", state: "Uttar Pradesh", city: "Lucknow", pincode: "226001",
+    partner: "Kim R.", partnerRMN: "+1 (713) 555-0117", kitchen: "Kamala's Subscription Meals",
+    skid: "SK-0017", cuisine: "Mughlai", state: "Uttar Pradesh", city: "Lucknow", zipcode: "226001",
     kitchenAddress: "56, Hazratganj, Lucknow - 226001",
     kitchenMapUrl: "https://maps.google.com/?q=26.8467,80.9462",
     items: [{ name: "Shahi Paneer", qty: 1, price: 245 }, { name: "Dal Mughlai", qty: 1, price: 199 }],
@@ -123,8 +123,8 @@ const mockOrders: AdminOrder[] = [
   },
   {
     id: "ORD-1007", customer: "Suresh V.", customerPhone: "+1 32109 77777",
-    partner: "Padma V.", partnerRMN: "+1 (312) 555-0116", kitchen: "Padma's Party Kitchen",
-    skid: "SK-0015", cuisine: "Marathi", state: "Texas", city: "Nagpur", pincode: "440001",
+    partner: "Paula V.", partnerRMN: "+1 (312) 555-0116", kitchen: "Padma's Party Kitchen",
+    skid: "SK-0015", cuisine: "Marathi", state: "Texas", city: "Nagpur", zipcode: "440001",
     kitchenAddress: "99, Dharampeth, Nagpur - 440010",
     kitchenMapUrl: "https://maps.google.com/?q=21.1458,79.0882",
     items: [{ name: "Bharli Vangi", qty: 5, price: 195 }, { name: "Puran Poli", qty: 10, price: 140 }, { name: "Amti Dal", qty: 5, price: 160 }],
@@ -133,8 +133,8 @@ const mockOrders: AdminOrder[] = [
   },
   {
     id: "ORD-1008", customer: "Meera T.", customerPhone: "+1 21098 88888",
-    partner: "Lakshmi R.", partnerRMN: "+1 (312) 555-0103", kitchen: "Lakshmi's Home Kitchen",
-    skid: "SK-0018", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", pincode: "500001",
+    partner: "Laura R.", partnerRMN: "+1 (312) 555-0103", kitchen: "Lakshmi's Home Kitchen",
+    skid: "SK-0018", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", zipcode: "500001",
     kitchenAddress: "78, Uptown, Chicago - 500033",
     kitchenMapUrl: "https://maps.google.com/?q=17.4325,78.4073",
     items: [{ name: "Bendakaya Vepudu", qty: 1, price: 190 }],
@@ -143,8 +143,8 @@ const mockOrders: AdminOrder[] = [
   },
   {
     id: "SWG-2001", customer: "Arun D.", customerPhone: "+1 91234 99901",
-    partner: "Sujatha M.", partnerRMN: "+1 (212) 555-0101", kitchen: "Shero – Chettinad (Veg)",
-    skid: "SK-0001", cuisine: "Chettinad", state: "New York", city: "New York", pincode: "600040",
+    partner: "Maria T.", partnerRMN: "+1 (212) 555-0101", kitchen: "Shero – Chettinad (Veg)",
+    skid: "SK-0001", cuisine: "Chettinad", state: "New York", city: "New York", zipcode: "600040",
     kitchenAddress: "12/3, 2nd Cross, Anna Nagar, New York - 600040",
     kitchenMapUrl: "https://maps.google.com/?q=13.0850,80.2101",
     items: [{ name: "Veg Meals Combo", qty: 2, price: 189 }],
@@ -153,8 +153,8 @@ const mockOrders: AdminOrder[] = [
   },
   {
     id: "SWG-2002", customer: "Neha R.", customerPhone: "+1 91234 99902",
-    partner: "Priya K.", partnerRMN: "+1 (310) 555-0102", kitchen: "Priya's Kitchen",
-    skid: "SK-0004", cuisine: "North Indian", state: "California", city: "Bengaluru", pincode: "560034",
+    partner: "Patricia K.", partnerRMN: "+1 (310) 555-0102", kitchen: "Priya's Kitchen",
+    skid: "SK-0004", cuisine: "North Indian", state: "California", city: "Bengaluru", zipcode: "560034",
     kitchenAddress: "45, 1st Main Rd, Koramangala, Bengaluru - 560034",
     kitchenMapUrl: "https://maps.google.com/?q=12.9352,77.6245",
     items: [{ name: "Rajma Chawal", qty: 1, price: 179 }, { name: "Raita", qty: 1, price: 49 }],
@@ -163,8 +163,8 @@ const mockOrders: AdminOrder[] = [
   },
   {
     id: "ZMT-3001", customer: "Farhan S.", customerPhone: "+1 91234 99903",
-    partner: "Lakshmi R.", partnerRMN: "+1 (312) 555-0103", kitchen: "Shero – Pennsylvania (Non-Veg)",
-    skid: "SK-0006", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", pincode: "500032",
+    partner: "Laura R.", partnerRMN: "+1 (312) 555-0103", kitchen: "Shero – Pennsylvania (Non-Veg)",
+    skid: "SK-0006", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", zipcode: "500032",
     kitchenAddress: "78, Uptown, Chicago - 500033",
     kitchenMapUrl: "https://maps.google.com/?q=17.4325,78.4073",
     items: [{ name: "Chicken Biryani", qty: 2, price: 249 }, { name: "Mirchi Ka Salan", qty: 1, price: 99 }],
@@ -173,8 +173,8 @@ const mockOrders: AdminOrder[] = [
   },
   {
     id: "ZMT-3002", customer: "Sneha M.", customerPhone: "+1 91234 99904",
-    partner: "Meena S.", partnerRMN: "+1 (713) 555-0104", kitchen: "Meena's Kitchen",
-    skid: "SK-0007", cuisine: "Gujarati", state: "Texas", city: "Houston", pincode: "400020",
+    partner: "Lisa S.", partnerRMN: "+1 (713) 555-0104", kitchen: "Meena's Kitchen",
+    skid: "SK-0007", cuisine: "Gujarati", state: "Texas", city: "Houston", zipcode: "400020",
     kitchenAddress: "23, Marine Lines, Houston - 400020",
     kitchenMapUrl: "https://maps.google.com/?q=18.9433,72.8235",
     items: [{ name: "Thali Special", qty: 1, price: 299 }],
@@ -232,7 +232,7 @@ export default function AdminOrders() {
       if (dateTo && o.date > format(dateTo, "yyyy-MM-dd")) return false;
       if (search) {
         const q = search.toLowerCase();
-        if (!o.id.toLowerCase().includes(q) && !o.customer.toLowerCase().includes(q) && !o.partner.toLowerCase().includes(q) && !o.kitchen.toLowerCase().includes(q) && !o.pincode.includes(q)) return false;
+        if (!o.id.toLowerCase().includes(q) && !o.customer.toLowerCase().includes(q) && !o.partner.toLowerCase().includes(q) && !o.kitchen.toLowerCase().includes(q) && !o.zipcode.includes(q)) return false;
       }
       return true;
     });
@@ -445,7 +445,7 @@ export default function AdminOrders() {
                   </TableCell>
                   <TableCell>
                     <p className="text-[10px] text-muted-foreground">{o.city}, {o.state}</p>
-                    <p className="text-[10px] text-muted-foreground">PIN: {o.pincode}</p>
+                    <p className="text-[10px] text-muted-foreground">PIN: {o.zipcode}</p>
                   </TableCell>
                   <TableCell>
                     <Badge variant="outline" className={`text-[9px] capitalize ${o.serviceType === "swiggy" ? "border-orange-500 text-orange-600 bg-orange-50 dark:bg-orange-950" : o.serviceType === "zomato" ? "border-red-500 text-red-600 bg-red-50 dark:bg-red-950" : ""}`}>{o.serviceType}</Badge>
@@ -577,7 +577,7 @@ export default function AdminOrders() {
                   <span>Placed: {selectedOrder.placedAt}</span>
                   <span>Payment: {selectedOrder.paymentMode.toUpperCase()}</span>
                   <span>Service: {selectedOrder.serviceType}</span>
-                  <span>PIN: {selectedOrder.pincode}</span>
+                  <span>PIN: {selectedOrder.zipcode}</span>
                 </div>
               </div>
             </>

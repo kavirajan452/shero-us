@@ -36,7 +36,7 @@ const CustomerSettings = ({ open, onOpenChange }: CustomerSettingsProps) => {
   const { toast } = useToast();
 
   const [profileForm, setProfileForm] = useState({
-    name: "Priya Sharma",
+    name: "Patricia Sharma",
     email: "priya@example.com",
     phone: "+1 (212) 555-0101",
   });

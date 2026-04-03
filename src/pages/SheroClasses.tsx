@@ -17,7 +17,7 @@ const categories = [
     iconBg: "bg-[hsl(280,40%,88%)]",
     iconColor: "text-[hsl(280,50%,40%)]",
     classCount: 24,
-    topInstructor: "Priya Sharma",
+    topInstructor: "Patricia Sharma",
     rating: 4.9,
   },
   {
@@ -127,7 +127,7 @@ const categories = [
 ];
 
 const featuredExperts = [
-  { name: "Priya Sharma", specialty: "Yoga & Meditation", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face", rating: 4.9, sessions: 1200 },
+  { name: "Patricia Sharma", specialty: "Yoga & Meditation", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face", rating: 4.9, sessions: 1200 },
   { name: "Coach Arjun", specialty: "Fitness & HIIT", image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=200&h=200&fit=crop&crop=face", rating: 4.9, sessions: 800 },
   { name: "Dr. Ananya", specialty: "Diet & Nutrition", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face", rating: 4.7, sessions: 650 },
   { name: "Meera Kapoor", specialty: "Zumba & Dance", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face", rating: 4.8, sessions: 950 },

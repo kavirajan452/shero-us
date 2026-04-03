@@ -18,7 +18,7 @@ const recentTransactions = [
   { id: "pay_Q1e6f7g8h9", amount: 3500, status: "captured", method: "Card", customer: "Ravi K.", time: "8 min ago" },
   { id: "pay_Q1i0j1k2l3", amount: 890, status: "refunded", method: "UPI", customer: "Anitha S.", time: "15 min ago" },
   { id: "pay_Q1m4n5o6p7", amount: 4200, status: "failed", method: "Net Banking", customer: "Kumar R.", time: "22 min ago" },
-  { id: "pay_Q1q8r9s0t1", amount: 1800, status: "captured", method: "UPI", customer: "Lakshmi D.", time: "30 min ago" },
+  { id: "pay_Q1q8r9s0t1", amount: 1800, status: "captured", method: "UPI", customer: "Laura D.", time: "30 min ago" },
 ];
 
 const webhookEvents = [

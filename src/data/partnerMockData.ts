@@ -380,13 +380,13 @@ export const referralStats = {
 };
 
 export const referralHistory: Referral[] = [
-  { id: "R001", name: "Sunita Devi", phone: "917-xxx-2345", status: "active", referredDate: "Jan 15, 2026", joinedDate: "Jan 22, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R01", enrollmentStatus: "approved" },
-  { id: "R002", name: "Kavitha Rao", phone: "646-xxx-7890", status: "active", referredDate: "Jan 20, 2026", joinedDate: "Jan 28, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R02", enrollmentStatus: "approved" },
+  { id: "R001", name: "Sandra Davis", phone: "917-xxx-2345", status: "active", referredDate: "Jan 15, 2026", joinedDate: "Jan 22, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R01", enrollmentStatus: "approved" },
+  { id: "R002", name: "Karen Rodriguez", phone: "646-xxx-7890", status: "active", referredDate: "Jan 20, 2026", joinedDate: "Jan 28, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R02", enrollmentStatus: "approved" },
   { id: "R003", name: "Lakshmi Nair", phone: "718-xxx-1223", status: "active", referredDate: "Feb 01, 2026", joinedDate: "Feb 08, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R03", enrollmentStatus: "approved" },
   { id: "R004", name: "Anjali Sharma", phone: "415-xxx-4556", status: "active", referredDate: "Feb 05, 2026", joinedDate: "Feb 12, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R04", enrollmentStatus: "approved" },
   { id: "R005", name: "Preethi Kumari", phone: "512-xxx-7889", status: "active", referredDate: "Feb 10, 2026", joinedDate: "Feb 18, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R05", enrollmentStatus: "approved" },
   { id: "R006", name: "Radha Menon", phone: "312-xxx-0112", status: "onboarded", referredDate: "Feb 15, 2026", joinedDate: "Feb 22, 2026", listedReward: 75, totalReward: 75, enrollmentLeadId: "EL-R06", enrollmentStatus: "approved" },
   { id: "R007", name: "Deepa Gowda", phone: "206-xxx-3445", status: "paid", referredDate: "Feb 20, 2026", joinedDate: "Feb 26, 2026", listedReward: 75, totalReward: 75, enrollmentLeadId: "EL-R07", enrollmentStatus: "paid" },
-  { id: "R008", name: "Fatima Begum", phone: "713-xxx-6778", status: "under_review", referredDate: "Feb 25, 2026", totalReward: 0, enrollmentLeadId: "EL-R08", enrollmentStatus: "video_watched" },
+  { id: "R008", name: "Fatima Brown", phone: "713-xxx-6778", status: "under_review", referredDate: "Feb 25, 2026", totalReward: 0, enrollmentLeadId: "EL-R08", enrollmentStatus: "video_watched" },
   { id: "R009", name: "Swathi Reddy", phone: "469-xxx-9001", status: "pending", referredDate: "Feb 27, 2026", totalReward: 0, enrollmentLeadId: "EL-R09", enrollmentStatus: "new" },
 ];

@@ -841,7 +841,7 @@ function autoCloseExpired(kitchens: KitchenRecord[]): KitchenRecord[] {
 /* ── Mock SAP Kitchens ── */
 const MOCK_SAP_KITCHENS: KitchenRecord[] = [
   {
-    skid: "SAP-CHN-001", partnerName: "Sujatha M.", rmn: "98765•••10", kitchenName: "SHF Chettinad Veg – Anna Nagar",
+    skid: "SAP-CHN-001", partnerName: "Maria T.", rmn: "98765•••10", kitchenName: "SHF Chettinad Veg – Anna Nagar",
     cuisine: "Chettinad", city: "New York", state: "TN", status: "pending", stream: "SAP",
     licenceNumber: "FDA-TN-2024-78901", licenceExpiry: new Date("2026-03-20"),
     menuItems: [
@@ -851,7 +851,7 @@ const MOCK_SAP_KITCHENS: KitchenRecord[] = [
     approvalHistory: [],
   },
   {
-    skid: "SAP-BLR-003", partnerName: "Lakshmi R.", rmn: "76543•••98", kitchenName: "SHF Pennsylvania – Koramangala",
+    skid: "SAP-BLR-003", partnerName: "Laura R.", rmn: "76543•••98", kitchenName: "SHF Pennsylvania – Koramangala",
     cuisine: "Pennsylvania", city: "Los Angeles", state: "KA", status: "approved", stream: "SAP",
     licenceNumber: "FDA-KA-2025-12345", licenceExpiry: new Date("2027-01-15"),
     menuItems: [
@@ -877,7 +877,7 @@ const MOCK_SAP_KITCHENS: KitchenRecord[] = [
 /* ── Mock HCF Kitchens ── */
 const MOCK_HCF_KITCHENS: KitchenRecord[] = [
   {
-    skid: "HCF-CHN-001", partnerName: "Lakshmi D.", rmn: "98765•••10", kitchenName: "Lakshmi's Kitchen",
+    skid: "HCF-CHN-001", partnerName: "Laura D.", rmn: "98765•••10", kitchenName: "Lakshmi's Kitchen",
     cuisine: "South Indian", city: "New York", state: "TN", status: "pending", stream: "HCF",
     licenceNumber: "FDA-TN-2025-44321", licenceExpiry: new Date("2026-03-25"),
     menuItems: [

@@ -91,7 +91,7 @@ const PartnerEnrollment = () => {
     totalFamilyMembers: "", kidsCount: "", kidsAges: "",
     elderlyMembers: "", familyDescription: "",
     // Step 2: House & Location
-    address: "", city: "", pincode: "", landmark: "",
+    address: "", city: "", zipcode: "", landmark: "",
     googlePinUrl: "", floor: "", houseType: "", kitchenSize: "",
     locationLat: 0, locationLng: 0,
     hasAC: false, hasRefrigerator: false, hasGas: false, hasChimneyHouse: false,
@@ -231,8 +231,8 @@ const PartnerEnrollment = () => {
       case "house":
         if (!form.address.trim()) errors.push("Address is required");
         if (!form.city.trim()) errors.push("City is required");
-        if (!form.pincode.trim()) errors.push("Pincode is required");
-        else if (!/^\d{5,6}$/.test(form.pincode.trim())) errors.push("Enter a valid pincode");
+        if (!form.zipcode.trim()) errors.push("ZIP Code is required");
+        else if (!/^\d{5,6}$/.test(form.zipcode.trim())) errors.push("Enter a valid zipcode");
         break;
       case "verticals":
         if (form.selectedVerticals.length === 0) errors.push("Select at least one business vertical");
@@ -732,7 +732,7 @@ const PartnerEnrollment = () => {
               <LocationPicker
                 address={form.address}
                 city={form.city}
-                pincode={form.pincode}
+                zipcode={form.zipcode}
                 landmark={form.landmark}
                 googlePinUrl={form.googlePinUrl}
                 lat={form.locationLat || undefined}

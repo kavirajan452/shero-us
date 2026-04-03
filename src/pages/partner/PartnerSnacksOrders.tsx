@@ -55,7 +55,7 @@ export default function PartnerSnacksOrders() {
         <TableCell>
           <div>
             <p className="text-sm font-medium text-foreground">{order.customerName}</p>
-            <p className="text-[10px] text-muted-foreground">{order.city} · {order.pincode}</p>
+            <p className="text-[10px] text-muted-foreground">{order.city} · {order.zipcode}</p>
           </div>
         </TableCell>
         <TableCell>

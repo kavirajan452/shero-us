@@ -14,7 +14,7 @@ interface InvoiceSettings {
   address: string;
   city: string;
   state: string;
-  pincode: string;
+  zipcode: string;
   country: string;
   ein: string;
   hsnSacCode: string;
@@ -34,7 +34,7 @@ const defaultSettings: InvoiceSettings = {
   address: "",
   city: "New York",
   state: "New York",
-  pincode: "",
+  zipcode: "",
   country: "USA",
   ein: "",
   hsnSacCode: "996331",
@@ -126,7 +126,7 @@ const AdminInvoiceSettings = () => {
               <div><Label className="text-xs">State</Label><Input value={settings.state} onChange={e => update("state", e.target.value)} /></div>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div><Label className="text-xs">Pincode</Label><Input value={settings.pincode} onChange={e => update("pincode", e.target.value)} /></div>
+              <div><Label className="text-xs">ZIP Code</Label><Input value={settings.zipcode} onChange={e => update("zipcode", e.target.value)} /></div>
               <div><Label className="text-xs">Country</Label><Input value={settings.country} onChange={e => update("country", e.target.value)} /></div>
             </div>
             <div><Label className="text-xs">Logo URL</Label><Input value={settings.logoUrl} onChange={e => update("logoUrl", e.target.value)} placeholder="https://..." /></div>

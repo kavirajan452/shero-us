@@ -68,12 +68,12 @@ const teamMembers: TeamMember[] = [
 
   // ─ Regional Managers (P&L owners) ─
   {
-    id: "TM003", name: "Deepak M.", rem: "rm-south@shero.in", role: "regional_manager",
+    id: "TM003", name: "David M.", rem: "rm-south@shero.in", role: "regional_manager",
     phone: "+1 90000 00003", city: "Chicago", region: "Northeast", country: "USA",
     department: "Operations – South", reportsTo: "TM002", assignedPartners: [], status: "active", joinedDate: "Oct 2024",
   },
   {
-    id: "TM004", name: "Radhika V.", rem: "rm-west@shero.in", role: "regional_manager",
+    id: "TM004", name: "Rebecca V.", rem: "rm-west@shero.in", role: "regional_manager",
     phone: "+1 90000 00008", city: "Houston", region: "West", country: "USA",
     department: "Operations – West", reportsTo: "TM002", assignedPartners: [], status: "active", joinedDate: "Nov 2024",
   },
@@ -90,56 +90,56 @@ const teamMembers: TeamMember[] = [
 
   // ─ SHF (Shero Home Food / Branded) Cuisine Managers under South RM ─
   {
-    id: "TM005", name: "Nithya P.", rem: "shf-south-chettinad@shero.in", role: "shf_manager",
+    id: "TM005", name: "Nicole P.", rem: "shf-south-chettinad@shero.in", role: "shf_manager",
     phone: "+1 90000 00004", city: "New York", region: "Northeast", country: "USA",
     department: "SHF – South", reportsTo: "TM003",
     assignedCuisines: ["Chettinad", "Florida"],
     assignedPartners: [
-      { id: "P001", name: "Sujatha M.", rmn: "+1 (212) 555-0101", kitchenType: "branded" },
-      { id: "P009", name: "Saroja T.", rmn: "+1 (646) 555-0114", kitchenType: "branded" },
+      { id: "P001", name: "Maria T.", rmn: "+1 (212) 555-0101", kitchenType: "branded" },
+      { id: "P009", name: "Sharon T.", rmn: "+1 (646) 555-0114", kitchenType: "branded" },
     ],
     status: "active", joinedDate: "Jan 2025",
   },
   {
-    id: "TM006", name: "Harish G.", rem: "shf-south-andhra@shero.in", role: "shf_manager",
+    id: "TM006", name: "Henry G.", rem: "shf-south-andhra@shero.in", role: "shf_manager",
     phone: "+1 90000 00009", city: "Chicago", region: "Northeast", country: "USA",
     department: "SHF – South", reportsTo: "TM003",
     assignedCuisines: ["Pennsylvania", "Udupi"],
     assignedPartners: [
-      { id: "P003", name: "Lakshmi R.", rmn: "+1 (312) 555-0103", kitchenType: "branded" },
+      { id: "P003", name: "Laura R.", rmn: "+1 (312) 555-0103", kitchenType: "branded" },
     ],
     status: "active", joinedDate: "Feb 2025",
   },
 
   // Asst Managers under SHF South
   {
-    id: "TM007", name: "Suresh K.", rem: "asst-shf-south1@shero.in", role: "asst_manager",
+    id: "TM007", name: "Steven K.", rem: "asst-shf-south1@shero.in", role: "asst_manager",
     phone: "+1 90000 00005", city: "New York", region: "Northeast", country: "USA",
     department: "SHF – South", reportsTo: "TM005",
     assignedPartners: [
-      { id: "P001", name: "Sujatha M.", rmn: "+1 (212) 555-0101", kitchenType: "branded" },
+      { id: "P001", name: "Maria T.", rmn: "+1 (212) 555-0101", kitchenType: "branded" },
     ],
     status: "active", joinedDate: "Mar 2025",
   },
   {
-    id: "TM008", name: "Lakshmi D.", rem: "asst-shf-south2@shero.in", role: "asst_manager",
+    id: "TM008", name: "Laura D.", rem: "asst-shf-south2@shero.in", role: "asst_manager",
     phone: "+1 90000 00010", city: "Chicago", region: "Northeast", country: "USA",
     department: "SHF – South", reportsTo: "TM006",
     assignedPartners: [
-      { id: "P003", name: "Lakshmi R.", rmn: "+1 (312) 555-0103", kitchenType: "branded" },
-      { id: "P007", name: "Geetha B.", rmn: "+1 (415) 555-0115", kitchenType: "branded" },
+      { id: "P003", name: "Laura R.", rmn: "+1 (312) 555-0103", kitchenType: "branded" },
+      { id: "P007", name: "Gloria B.", rmn: "+1 (415) 555-0115", kitchenType: "branded" },
     ],
     status: "active", joinedDate: "Apr 2025",
   },
 
   // ─ HCF (Home Chef Kitchen / Unbranded) Manager under South RM ─
   {
-    id: "TM013", name: "Madhavi K.", rem: "hcf-south@shero.in", role: "hcf_manager",
+    id: "TM013", name: "Michelle K.", rem: "hcf-south@shero.in", role: "hcf_manager",
     phone: "+1 90000 00015", city: "New York", region: "Northeast", country: "USA",
     department: "HCF – South", reportsTo: "TM003",
     assignedPartners: [
-      { id: "P002", name: "Priya K.", rmn: "+1 (310) 555-0102", kitchenType: "own" },
-      { id: "P006", name: "Revathi N.", rmn: "+1 (305) 555-0118", kitchenType: "own" },
+      { id: "P002", name: "Patricia K.", rmn: "+1 (310) 555-0102", kitchenType: "own" },
+      { id: "P006", name: "Rachel N.", rmn: "+1 (305) 555-0118", kitchenType: "own" },
     ],
     status: "active", joinedDate: "Feb 2025",
   },
@@ -148,7 +148,7 @@ const teamMembers: TeamMember[] = [
     phone: "+1 90000 00016", city: "New York", region: "Northeast", country: "USA",
     department: "HCF – South", reportsTo: "TM013",
     assignedPartners: [
-      { id: "P002", name: "Priya K.", rmn: "+1 (310) 555-0102", kitchenType: "own" },
+      { id: "P002", name: "Patricia K.", rmn: "+1 (310) 555-0102", kitchenType: "own" },
     ],
     status: "active", joinedDate: "Apr 2025",
   },
@@ -167,13 +167,13 @@ const teamMembers: TeamMember[] = [
 
   // ─ HCF Manager under West RM ─
   {
-    id: "TM011", name: "Preeti J.", rem: "hcf-west@shero.in", role: "hcf_manager",
+    id: "TM011", name: "Patricia J.", rem: "hcf-west@shero.in", role: "hcf_manager",
     phone: "+1 90000 00013", city: "Houston", region: "West", country: "USA",
     department: "HCF – West", reportsTo: "TM004",
     assignedPartners: [
-      { id: "P004", name: "Meena S.", rmn: "+1 (713) 555-0104", kitchenType: "own" },
-      { id: "P008", name: "Padma V.", rmn: "+1 (312) 555-0116", kitchenType: "own" },
-      { id: "P010", name: "Kamala R.", rmn: "+1 (713) 555-0117", kitchenType: "own" },
+      { id: "P004", name: "Lisa S.", rmn: "+1 (713) 555-0104", kitchenType: "own" },
+      { id: "P008", name: "Paula V.", rmn: "+1 (312) 555-0116", kitchenType: "own" },
+      { id: "P010", name: "Kim R.", rmn: "+1 (713) 555-0117", kitchenType: "own" },
     ],
     status: "active", joinedDate: "Mar 2025",
   },
@@ -182,7 +182,7 @@ const teamMembers: TeamMember[] = [
     phone: "+1 90000 00011", city: "Houston", region: "West", country: "USA",
     department: "HCF – West", reportsTo: "TM011",
     assignedPartners: [
-      { id: "P004", name: "Meena S.", rmn: "+1 (713) 555-0104", kitchenType: "own" },
+      { id: "P004", name: "Lisa S.", rmn: "+1 (713) 555-0104", kitchenType: "own" },
     ],
     status: "active", joinedDate: "May 2025",
   },
@@ -211,7 +211,7 @@ const teamMembers: TeamMember[] = [
   },
   // ─ Operations Manager (reports to Vertical Head) ─
   {
-    id: "TM040", name: "Shankar V.", rem: "ops-mgr@shero.in", role: "ops_manager",
+    id: "TM040", name: "Steven V.", rem: "ops-mgr@shero.in", role: "ops_manager",
     phone: "+1 90000 00040", city: "New York", region: "Nationwide", country: "USA",
     department: "Operations", reportsTo: "TM002", assignedPartners: [], status: "active", joinedDate: "Jan 2025",
   },
@@ -253,7 +253,7 @@ const teamMembers: TeamMember[] = [
   },
   // ─ SSC (Shero Support Center) Vertical ─
   {
-    id: "TM027", name: "Rekha M.", rem: "ssc-mgr@shero.in", role: "ssc_manager",
+    id: "TM027", name: "Rachel M.", rem: "ssc-mgr@shero.in", role: "ssc_manager",
     phone: "+1 90000 00027", city: "New York", region: "Nationwide", country: "USA",
     department: "SSC", reportsTo: "TM002", assignedPartners: [], status: "active", joinedDate: "Apr 2025",
   },

@@ -17,7 +17,7 @@ L.Icon.Default.mergeOptions({
 interface LocationPickerProps {
   address: string;
   city: string;
-  pincode: string;
+  zipcode: string;
   landmark: string;
   googlePinUrl: string;
   lat?: number;
@@ -25,7 +25,7 @@ interface LocationPickerProps {
   onUpdate: (fields: Record<string, any>) => void;
 }
 
-const LocationPicker = ({ address, city, pincode, landmark, googlePinUrl, lat, lng, onUpdate }: LocationPickerProps) => {
+const LocationPicker = ({ address, city, zipcode, landmark, googlePinUrl, lat, lng, onUpdate }: LocationPickerProps) => {
   const [showPanel, setShowPanel] = useState(false);
   const [detecting, setDetecting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -60,7 +60,7 @@ const LocationPicker = ({ address, city, pincode, landmark, googlePinUrl, lat, l
       onUpdate({
         address: data.display_name || "",
         city: cityName,
-        pincode: pin,
+        zipcode: pin,
         locationLat: latitude,
         locationLng: longitude,
         googlePinUrl: `https://www.google.com/maps?q=${latitude},${longitude}`,
@@ -165,8 +165,8 @@ const LocationPicker = ({ address, city, pincode, landmark, googlePinUrl, lat, l
           <Input id="loc-city" placeholder="New York" value={city} onChange={(e) => onUpdate({ city: e.target.value })} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="loc-pincode">ZIP Code</Label>
-          <Input id="loc-pincode" placeholder="10001" value={pincode} onChange={(e) => onUpdate({ pincode: e.target.value })} maxLength={5} />
+          <Label htmlFor="loc-zipcode">ZIP Code</Label>
+          <Input id="loc-zipcode" placeholder="10001" value={zipcode} onChange={(e) => onUpdate({ zipcode: e.target.value })} maxLength={5} />
         </div>
       </div>
       <div className="space-y-2">

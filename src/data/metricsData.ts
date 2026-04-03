@@ -126,7 +126,7 @@ const MONTHS = ["Oct 2025", "Nov 2025", "Dec 2025", "Jan 2026", "Feb 2026", "Mar
 
 const partnerNames = [
   "Lakshmi Devi", "Saroja Bai", "Kamala M.", "Fathima S.", "Meena K.", "Raheema B.",
-  "Priya R.", "Anitha S.", "Deepa V.", "Revathi N.", "Sunitha P.", "Geetha L.",
+  "Priya R.", "Anitha S.", "Diana V.", "Rachel N.", "Sunitha P.", "Geetha L.",
   "Vasanthi M.", "Padma R.", "Jaya K.", "Uma S.", "Radha N.", "Shanti B.",
   "Kavitha D.", "Mallika T.", "Bhavani G.", "Rani M.", "Devi P.", "Selvi R.",
   "Indira K.", "Gomathi S.", "Suguna V.", "Thilaga M.", "Ponni R.", "Valli N."
