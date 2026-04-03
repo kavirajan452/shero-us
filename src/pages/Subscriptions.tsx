@@ -12,7 +12,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useSubscriptionMealPlans } from "@/hooks/useSupabaseData";
-import type { SubscriptionDuration, SubscriptionSlot } from "@/data/subscriptionPlansData";
+import { standardMealPlans as localMealPlans } from "@/data/subscriptionPlansData";
+import type { SubscriptionDuration, SubscriptionSlot, StandardMealPlan } from "@/data/subscriptionPlansData";
 
 const subscriptionDurations = [
   { duration: "trial" as SubscriptionDuration, label: "3-Day Trial", days: 3, discountPct: 0, badge: "Try First" },
