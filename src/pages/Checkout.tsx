@@ -40,7 +40,7 @@ const Checkout = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [pincode, setPincode] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [city, setCity] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);

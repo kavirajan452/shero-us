@@ -68,7 +68,7 @@ const Welcome = () => {
         </h1>
 
         <p className="text-muted-foreground text-base mb-8 leading-relaxed">
-          Fresh meals by home chefs & branded kitchens — from daily tiffins to party orders, all in one app.
+          India's #1 home food platform — now in the USA. Authentic meals by home chefs & branded kitchens, delivered fresh to your door.
         </p>
 
         {/* Role Selection */}
