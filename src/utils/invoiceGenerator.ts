@@ -129,21 +129,16 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
     y += 5;
   };
 
-  addLine("Subtotal", `₹${data.subtotal.toLocaleString("en-IN")}`);
-  if (data.packingCharges > 0) addLine("Packing Charges", `₹${data.packingCharges.toLocaleString("en-IN")}`);
-  if (data.deliveryFee > 0) addLine("Delivery Fee", `₹${data.deliveryFee.toLocaleString("en-IN")}`);
-  if (data.platformFee > 0) addLine("Platform Fee", `₹${data.platformFee.toLocaleString("en-IN")}`);
-  if (data.discount > 0) addLine("Discount", `-₹${data.discount.toLocaleString("en-IN")}`);
+  const fmt = (n: number) => `$${n.toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
+  addLine("Subtotal", fmt(data.subtotal));
+  if (data.packingCharges > 0) addLine("Packing Charges", fmt(data.packingCharges));
+  if (data.deliveryFee > 0) addLine("Delivery Fee", fmt(data.deliveryFee));
+  if (data.platformFee > 0) addLine("Platform Fee", fmt(data.platformFee));
+  if (data.discount > 0) addLine("Discount", `-${fmt(data.discount)}`);
 
-  // Tax breakdown
-  const taxRate = parseFloat(data.taxRate) || 5;
-  const isInterState = false; // simplified — always intra-state for now
-  if (!isInterState) {
-    addLine(`CGST (${taxRate / 2}%)`, `₹${Math.round(data.taxAmount / 2).toLocaleString("en-IN")}`);
-    addLine(`SGST (${taxRate / 2}%)`, `₹${Math.round(data.taxAmount / 2).toLocaleString("en-IN")}`);
-  } else {
-    addLine(`IGST (${taxRate}%)`, `₹${data.taxAmount.toLocaleString("en-IN")}`);
-  }
+  // Tax breakdown — US Sales Tax (single line)
+  const taxRate = parseFloat(data.taxRate) || 8.25;
+  addLine(`Sales Tax (${taxRate}%)`, fmt(data.taxAmount));
 
   y += 2;
   doc.line(pw - m - 65, y, pw - m, y);
