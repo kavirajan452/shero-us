@@ -16,7 +16,7 @@ const values = [
   { icon: Heart, title: "Genuinely Homemade", desc: "Zero chemicals, quality oils & ingredients. Cooked fresh by real home chefs, just like they cook for their own families.", color: "text-rose-500", bg: "bg-rose-50 dark:bg-rose-950/30" },
   { icon: Users, title: "Women Empowerment", desc: "Creating financial independence for 50+ women through their culinary talents. Managed entirely by our all-women operations team.", color: "text-violet-500", bg: "bg-violet-50 dark:bg-violet-950/30" },
   { icon: Shield, title: "Transparent & Honest", desc: "No hidden charges, no cloud kitchens. Decentralised home kitchens you can trust. What you see is what you get.", color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-950/30" },
-  { icon: Leaf, title: "Fresh & Sustainable", desc: "Locally sourced ingredients, minimal packaging waste. 500+ varieties of wholesome dishes delivered fresh daily.", color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-950/30" },
+  { icon: Leaf, title: "Fresh & Sustainable", desc: "Locally sourced ingredients, minimal packaging waste. 200+ varieties of wholesome dishes delivered fresh daily.", color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-950/30" },
 ];
 
 const defaultStats = [
