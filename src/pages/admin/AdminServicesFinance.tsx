@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import {
-  IndianRupee, TrendingUp, Download, PiggyBank, BookOpen, FileText,
+  IndianRupee as DollarSign, TrendingUp, Download, PiggyBank, BookOpen, FileText,
   AlertTriangle, CheckCircle2, Clock, CreditCard, Users, Brain, Lightbulb, Receipt,
   Wallet, Scale, BookMarked, ShoppingCart, CalendarCheck,
 } from "lucide-react";
