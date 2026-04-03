@@ -87,7 +87,7 @@ import AdminPartnerComms from "./pages/admin/AdminPartnerComms";
 import AdminAITower from "./pages/admin/AdminAITower";
 import AdminChatbot from "./pages/admin/AdminChatbot";
 import AdminDebitCredit from "./pages/admin/AdminDebitCredit";
-import AdminStripeIntegration from "./pages/admin/AdminRazorpayIntegration";
+import AdminPaymentGateway from "./pages/admin/AdminPaymentGateway";
 import AdminTechDashboard from "./pages/admin/AdminTechDashboard";
 import AdminDeliveryManagement from "./pages/admin/AdminDeliveryManagement";
 import AdminAPIConnections from "./pages/admin/AdminAPIConnections";
