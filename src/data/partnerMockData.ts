@@ -221,18 +221,18 @@ export const partnerMenu: PartnerMenuItem[] = [
 ];
 
 export const earningsSummary: EarningsSummary = {
-  today: 2340,
-  thisWeek: 14580,
-  thisMonth: 52430,
+  today: 234,
+  thisWeek: 1458,
+  thisMonth: 5243,
   totalOrders: 287,
   avgRating: 4.7,
   completionRate: 96.5,
-  totalSales: 187500,
-  pppEarnings: 52430,
+  totalSales: 18750,
+  pppEarnings: 5243,
   pppPercentage: 27.96,
-  totalPenalties: 1275,
+  totalPenalties: 128,
   penaltyCount: 14,
-  netPayout: 51155,
+  netPayout: 5115,
   inductionDate: "2025-08-15",
 };
 

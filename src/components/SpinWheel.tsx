@@ -174,7 +174,7 @@ const SpinWheel = ({ open, onClose, onReward, friendName }: SpinWheelProps) => {
         {result !== null ? (
           <div className="text-center space-y-3">
             <div className="text-3xl font-bold text-accent animate-pulse">
-              🎉 You won ₹{result}!
+              🎉 You won ${result}!
             </div>
             <p className="text-sm text-muted-foreground">
               Added to your Shero Wallet. Keep referring to win more!
