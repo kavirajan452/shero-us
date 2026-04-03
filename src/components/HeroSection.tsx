@@ -146,10 +146,11 @@ const HeroSection = () => {
             {!langSet && <LanguageSwitcher />}
           </div>
           <h1 className="text-foreground font-serif text-5xl lg:text-6xl font-bold leading-tight">
-            {c["home.hero_title"] || "Authentic Home Food, Delivered Fresh"}
+            {c["home.hero_title"] || "India's Home Kitchens,"}<br />
+            {c["home.hero_title_line2"] || "Now Closer to You."}
           </h1>
-          <p className="text-foreground/80 text-base mt-4 max-w-[440px] leading-relaxed">
-            {c["home.hero_subtitle"] || "From our certified home kitchens to your doorstep. The taste of home, made in America."}
+          <p className="text-foreground/70 text-lg mt-4 max-w-[440px] leading-relaxed">
+            {c["home.hero_subtitle"] || "Real women. Real recipes. Authentic home food."}
           </p>
 
           {/* CTA Button */}
