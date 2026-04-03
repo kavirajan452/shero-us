@@ -152,7 +152,7 @@ const SweetsSnacks = () => {
       <main className="pt-20 pb-24">
         {/* Free Shipping Banner */}
         <div className="bg-primary text-primary-foreground text-center py-2 text-xs font-semibold tracking-wide">
-          🚚 FREE SHIPPING above {formatPrice(599)} · Code <span className="underline">FIRST100</span> for $100 OFF
+          🚚 FREE SHIPPING above {formatPrice(99)} · Code <span className="underline">FIRST10</span> for $10 OFF
         </div>
 
         {/* Hero Banner */}
