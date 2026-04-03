@@ -745,17 +745,17 @@ const AdminKitchenCategories = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <Label className="text-xs">Location / Area</Label>
-                    <Input value={kLocation} onChange={(e) => setKLocation(e.target.value)} placeholder="e.g., T Nagar, Chennai" />
+                    <Input value={kLocation} onChange={(e) => setKLocation(e.target.value)} placeholder="e.g., Midtown, Manhattan" />
                   </div>
                   <div>
-                    <Label className="text-xs">Pincode / Zip Code *</Label>
-                    <Input value={kPincode} onChange={(e) => setKPincode(e.target.value)} placeholder="e.g., 600017" />
+                    <Label className="text-xs">ZIP Code *</Label>
+                    <Input value={kPincode} onChange={(e) => setKPincode(e.target.value)} placeholder="e.g., 10001" />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <Label className="text-xs">Latitude</Label>
-                    <Input type="number" step="any" value={kLatitude} onChange={(e) => setKLatitude(e.target.value)} placeholder="e.g., 13.0418" />
+                    <Input type="number" step="any" value={kLatitude} onChange={(e) => setKLatitude(e.target.value)} placeholder="e.g., 40.7128" />
                   </div>
                   <div>
                     <Label className="text-xs">Longitude</Label>
@@ -824,17 +824,17 @@ const AdminKitchenCategories = () => {
               </div>
               <div>
                 <Label className="text-xs">Partner Phone</Label>
-                <Input value={locPartnerPhone} onChange={(e) => setLocPartnerPhone(e.target.value)} placeholder="e.g., 9876543210" />
+                <Input value={locPartnerPhone} onChange={(e) => setLocPartnerPhone(e.target.value)} placeholder="e.g., (212) 555-0100" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label className="text-xs">Pincode *</Label>
-                <Input value={locPincode} onChange={(e) => setLocPincode(e.target.value)} placeholder="e.g., 600001" />
+                <Label className="text-xs">ZIP Code *</Label>
+                <Input value={locPincode} onChange={(e) => setLocPincode(e.target.value)} placeholder="e.g., 10001" />
               </div>
               <div>
                 <Label className="text-xs">Area / Location</Label>
-                <Input value={locLocation} onChange={(e) => setLocLocation(e.target.value)} placeholder="e.g., T Nagar, Chennai" />
+                <Input value={locLocation} onChange={(e) => setLocLocation(e.target.value)} placeholder="e.g., Midtown, Manhattan" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">

@@ -31,7 +31,7 @@ const LocationPicker = ({ address, city, pincode, landmark, googlePinUrl, lat, l
   const [searchQuery, setSearchQuery] = useState("");
   const [searching, setSearching] = useState(false);
   const [showMap, setShowMap] = useState(false);
-  const [position, setPosition] = useState<[number, number]>([lat || 13.0827, lng || 80.2707]);
+  const [position, setPosition] = useState<[number, number]>([lat || 40.7128, lng || -74.006]);
   const panelRef = useRef<HTMLDivElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -152,7 +152,7 @@ const LocationPicker = ({ address, city, pincode, landmark, googlePinUrl, lat, l
         <Label htmlFor="loc-address">Full Address *</Label>
         <textarea
           id="loc-address"
-          placeholder="House/Flat No, Street, Area"
+          placeholder="Street Address, Apt/Suite, City"
           value={address}
           onChange={(e) => onUpdate({ address: e.target.value })}
           rows={2}
@@ -162,11 +162,11 @@ const LocationPicker = ({ address, city, pincode, landmark, googlePinUrl, lat, l
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
           <Label htmlFor="loc-city">City *</Label>
-          <Input id="loc-city" placeholder="Chennai" value={city} onChange={(e) => onUpdate({ city: e.target.value })} />
+          <Input id="loc-city" placeholder="New York" value={city} onChange={(e) => onUpdate({ city: e.target.value })} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="loc-pincode">Pincode</Label>
-          <Input id="loc-pincode" placeholder="600076" value={pincode} onChange={(e) => onUpdate({ pincode: e.target.value })} />
+          <Label htmlFor="loc-pincode">ZIP Code</Label>
+          <Input id="loc-pincode" placeholder="10001" value={pincode} onChange={(e) => onUpdate({ pincode: e.target.value })} maxLength={5} />
         </div>
       </div>
       <div className="space-y-2">

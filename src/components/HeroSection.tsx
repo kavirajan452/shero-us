@@ -11,7 +11,7 @@ const HeroSection = () => {
   const c = contentMap(contentItems || []);
 
   const [showDropdown, setShowDropdown] = useState(false);
-  const [address, setAddress] = useState("Anna Nagar");
+  const [address, setAddress] = useState("Midtown");
   const [addressLabel, setAddressLabel] = useState("Home");
   const [detecting, setDetecting] = useState(false);
   const [manualInput, setManualInput] = useState("");
@@ -92,7 +92,7 @@ const HeroSection = () => {
     }
     const recognition = new SpeechRecognition();
     recognitionRef.current = recognition;
-    recognition.lang = "en-IN";
+    recognition.lang = "en-US";
     recognition.interimResults = true;
     recognition.continuous = false;
     recognition.onresult = (event: any) => {
@@ -122,7 +122,7 @@ const HeroSection = () => {
             <span className="text-primary">{c["hero.title_line2"] || "Revolution"}</span>
           </h1>
           <p className="text-foreground/80 text-[13px] mt-1.5 max-w-[280px] leading-snug drop-shadow-sm">
-            {c["hero.subtitle"] || "India's largest home food platform. 2,400+ kitchens. 12 cities. 1.4M+ orders delivered."}
+            {c["hero.subtitle"] || "India's #1 home food platform — now in the USA. Authentic home-cooked meals delivered to your door."}
           </p>
         </div>
       </div>
@@ -145,7 +145,7 @@ const HeroSection = () => {
             <span className="text-primary">{c["hero.title_line2"] || "Revolution"}</span>
           </h1>
           <p className="text-foreground/80 text-base mt-4 max-w-[440px] leading-relaxed">
-            {c["hero.subtitle"] || "India's largest home food platform. 2,400+ kitchens. 12 cities. 1.4M+ orders delivered."}
+            {c["hero.subtitle"] || "India's #1 home food platform — now in the USA. Authentic home-cooked meals delivered to your door."}
           </p>
 
           {/* CTA Button */}
@@ -183,7 +183,7 @@ const HeroSection = () => {
                   ) : (
                     <div className="px-4 py-3 space-y-2">
                       <div className="flex items-center gap-2">
-                        <input type="text" value={manualInput} onChange={(e) => setManualInput(e.target.value.slice(0, 100))} onKeyDown={(e) => e.key === "Enter" && handleManualSave()} placeholder="e.g. Adyar, Chennai" className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors" autoFocus maxLength={100} />
+                        <input type="text" value={manualInput} onChange={(e) => setManualInput(e.target.value.slice(0, 100))} onKeyDown={(e) => e.key === "Enter" && handleManualSave()} placeholder="e.g. Manhattan, New York" className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors" autoFocus maxLength={100} />
                         <button onClick={() => { setShowManual(false); setManualInput(""); }} className="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><X className="w-3.5 h-3.5" /></button>
                       </div>
                       <button onClick={handleManualSave} disabled={manualInput.trim().length === 0} className="w-full text-xs font-medium bg-primary text-primary-foreground rounded-lg py-2 hover:bg-primary/90 transition-colors disabled:opacity-40">Save</button>
@@ -238,7 +238,7 @@ const HeroSection = () => {
                 ) : (
                   <div className="px-4 py-3 space-y-2">
                     <div className="flex items-center gap-2">
-                      <input type="text" value={manualInput} onChange={(e) => setManualInput(e.target.value.slice(0, 100))} onKeyDown={(e) => e.key === "Enter" && handleManualSave()} placeholder="e.g. Adyar, Chennai" className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors" autoFocus maxLength={100} />
+                      <input type="text" value={manualInput} onChange={(e) => setManualInput(e.target.value.slice(0, 100))} onKeyDown={(e) => e.key === "Enter" && handleManualSave()} placeholder="e.g. Manhattan, New York" className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors" autoFocus maxLength={100} />
                       <button onClick={() => { setShowManual(false); setManualInput(""); }} className="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><X className="w-3.5 h-3.5" /></button>
                     </div>
                     <button onClick={handleManualSave} disabled={manualInput.trim().length === 0} className="w-full text-xs font-medium bg-primary text-primary-foreground rounded-lg py-2 hover:bg-primary/90 transition-colors disabled:opacity-40">Save</button>

@@ -54,13 +54,13 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   doc.text(companyName, pw / 2, 12, { align: "center" });
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  doc.text("TAX INVOICE", pw / 2, 20, { align: "center" });
+  doc.text("INVOICE", pw / 2, 20, { align: "center" });
   y = 35;
 
   // Company details
   doc.setTextColor(80, 80, 80);
   doc.setFontSize(8);
-  if (gstin) doc.text(`GSTIN: ${gstin}`, m, y);
+  if (gstin) doc.text(`EIN: ${gstin}`, m, y);
   if (co.address) doc.text(`${co.address}${co.city ? ", " + co.city : ""}${co.state ? ", " + co.state : ""} ${co.pincode || ""}`, m, y + 4);
   if (co.phone || co.email) doc.text(`${co.phone || ""} ${co.email ? "| " + co.email : ""}`, m, y + 8);
   y += 16;
@@ -70,7 +70,7 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   doc.setTextColor(33, 33, 33);
   doc.setFont("helvetica", "bold");
   doc.text(`Invoice No: ${data.invoiceNumber}`, m, y);
-  doc.text(`Date: ${new Date(data.generatedAt).toLocaleDateString("en-IN")}`, pw - m, y, { align: "right" });
+  doc.text(`Date: ${new Date(data.generatedAt).toLocaleDateString("en-US")}`, pw - m, y, { align: "right" });
   y += 5;
   doc.setFont("helvetica", "normal");
   doc.text(`Order: #${data.orderId}`, m, y);
@@ -110,7 +110,7 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
     doc.text(item.name.substring(0, 40), m + 10, y);
     if (item.hsn) doc.text(item.hsn, pw - m - 55, y);
     doc.text(item.qty, pw - m - 35, y);
-    doc.text(`₹${item.amount.toLocaleString("en-IN")}`, pw - m - 5, y, { align: "right" });
+    doc.text(`$${item.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}`, pw - m - 5, y, { align: "right" });
     y += 5;
   });
 
@@ -129,38 +129,33 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
     y += 5;
   };
 
-  addLine("Subtotal", `₹${data.subtotal.toLocaleString("en-IN")}`);
-  if (data.packingCharges > 0) addLine("Packing Charges", `₹${data.packingCharges.toLocaleString("en-IN")}`);
-  if (data.deliveryFee > 0) addLine("Delivery Fee", `₹${data.deliveryFee.toLocaleString("en-IN")}`);
-  if (data.platformFee > 0) addLine("Platform Fee", `₹${data.platformFee.toLocaleString("en-IN")}`);
-  if (data.discount > 0) addLine("Discount", `-₹${data.discount.toLocaleString("en-IN")}`);
+  const fmt = (n: number) => `$${n.toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
+  addLine("Subtotal", fmt(data.subtotal));
+  if (data.packingCharges > 0) addLine("Packing Charges", fmt(data.packingCharges));
+  if (data.deliveryFee > 0) addLine("Delivery Fee", fmt(data.deliveryFee));
+  if (data.platformFee > 0) addLine("Platform Fee", fmt(data.platformFee));
+  if (data.discount > 0) addLine("Discount", `-${fmt(data.discount)}`);
 
-  // Tax breakdown
-  const taxRate = parseFloat(data.taxRate) || 5;
-  const isInterState = false; // simplified — always intra-state for now
-  if (!isInterState) {
-    addLine(`CGST (${taxRate / 2}%)`, `₹${Math.round(data.taxAmount / 2).toLocaleString("en-IN")}`);
-    addLine(`SGST (${taxRate / 2}%)`, `₹${Math.round(data.taxAmount / 2).toLocaleString("en-IN")}`);
-  } else {
-    addLine(`IGST (${taxRate}%)`, `₹${data.taxAmount.toLocaleString("en-IN")}`);
-  }
+  // Tax breakdown — US Sales Tax (single line)
+  const taxRate = parseFloat(data.taxRate) || 8.25;
+  addLine(`Sales Tax (${taxRate}%)`, fmt(data.taxAmount));
 
   y += 2;
   doc.line(pw - m - 65, y, pw - m, y);
   y += 5;
-  addLine("TOTAL", `₹${Math.round(data.total).toLocaleString("en-IN")}`, true);
+  addLine("TOTAL", fmt(Math.round(data.total * 100) / 100), true);
 
   // Bank details
   if (co.bankName || co.accountNumber) {
     y += 8;
     doc.setFontSize(8);
     doc.setFont("helvetica", "bold");
-    doc.text("Bank Details:", m, y);
+    doc.text("Bank / Payment Details:", m, y);
     doc.setFont("helvetica", "normal");
     y += 4;
     if (co.bankName) { doc.text(`Bank: ${co.bankName}`, m, y); y += 4; }
-    if (co.accountNumber) { doc.text(`A/C: ${co.accountNumber}`, m, y); y += 4; }
-    if (co.ifsc) { doc.text(`IFSC: ${co.ifsc}`, m, y); y += 4; }
+    if (co.accountNumber) { doc.text(`Account: ${co.accountNumber}`, m, y); y += 4; }
+    if (co.ifsc) { doc.text(`Routing: ${co.ifsc}`, m, y); y += 4; }
   }
 
   // Terms
@@ -196,9 +191,9 @@ function formatOrderType(type: string): string {
   return map[type] || type;
 }
 
-export function generateInvoiceNumber(prefix: string = "SHERO"): string {
+export function generateInvoiceNumber(prefix: string = "SHERO-US"): string {
   const now = new Date();
-  const fy = now.getMonth() >= 3 ? `${now.getFullYear() % 100}${(now.getFullYear() + 1) % 100}` : `${(now.getFullYear() - 1) % 100}${now.getFullYear() % 100}`;
+  const year = now.getFullYear();
   const seq = Date.now().toString().slice(-6);
-  return `${prefix}/${fy}/${seq}`;
+  return `${prefix}/${year}/${seq}`;
 }

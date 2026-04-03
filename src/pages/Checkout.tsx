@@ -40,7 +40,7 @@ const Checkout = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [pincode, setPincode] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [city, setCity] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
@@ -169,10 +169,10 @@ const Checkout = () => {
   const missingPhone = phone.trim().length < region.phoneMaxLength;
   const missingAddress = deliveryType !== "self-pickup" && !address.trim();
   const missingSlot = !isSnacksOnly && !selectedSlot;
-  const missingPincode = isSnacksOnly && pincode.trim().length < 6;
+  const missingZipCode = isSnacksOnly && zipCode.trim().length < 5;
 
   const canPlaceOrder = isSnacksOnly
-    ? !missingName && !missingPhone && !missingAddress && !missingPincode && isLoggedIn
+    ? !missingName && !missingPhone && !missingAddress && !missingZipCode && isLoggedIn
     : !missingName && !missingPhone && !missingAddress && !missingSlot && isLoggedIn;
 
   return (
@@ -257,10 +257,10 @@ const Checkout = () => {
                 )}
               </div>
             )}
-            {/* Snacks-specific: pincode + city */}
+            {/* Snacks-specific: ZIP code + city */}
             {isSnacksOnly && (
               <div className="grid grid-cols-2 gap-3">
-                <input value={pincode} onChange={(e) => setPincode(e.target.value)} type="text" placeholder="Pincode" maxLength={6} className={`w-full px-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted-foreground outline-none transition-colors ${attempted && missingPincode ? "border-destructive focus:border-destructive" : "border-border focus:border-primary"}`} />
+                <input value={zipCode} onChange={(e) => setZipCode(e.target.value)} type="text" placeholder="ZIP Code" maxLength={5} className={`w-full px-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted-foreground outline-none transition-colors ${attempted && missingZipCode ? "border-destructive focus:border-destructive" : "border-border focus:border-primary"}`} />
                 <input value={city} onChange={(e) => setCity(e.target.value)} type="text" placeholder="City" className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors" />
               </div>
             )}

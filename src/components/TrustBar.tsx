@@ -1,10 +1,10 @@
 import { Star, ChefHat, MapPin, Package } from "lucide-react";
 
 const stats = [
-  { icon: ChefHat, value: "2,400+", label: "Home Kitchens" },
-  { icon: MapPin, value: "12", label: "Cities" },
-  { icon: Package, value: "1.4M+", label: "Orders Delivered" },
-  { icon: Star, value: "4.8★", label: "Avg Rating" },
+  { icon: ChefHat, value: "500+", label: "Home Kitchens" },
+  { icon: MapPin, value: "12", label: "US Cities" },
+  { icon: Package, value: "50K+", label: "Orders Delivered" },
+  { icon: Star, value: "4.9★", label: "Avg Rating" },
 ];
 
 const TrustBar = () => {
