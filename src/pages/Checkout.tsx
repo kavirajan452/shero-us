@@ -169,7 +169,7 @@ const Checkout = () => {
   const missingPhone = phone.trim().length < region.phoneMaxLength;
   const missingAddress = deliveryType !== "self-pickup" && !address.trim();
   const missingSlot = !isSnacksOnly && !selectedSlot;
-  const missingPincode = isSnacksOnly && pincode.trim().length < 6;
+  const missingZipCode = isSnacksOnly && zipCode.trim().length < 5;
 
   const canPlaceOrder = isSnacksOnly
     ? !missingName && !missingPhone && !missingAddress && !missingPincode && isLoggedIn
