@@ -108,20 +108,26 @@ const HeroSection = () => {
   return (
     <section className="relative">
       {/* === MOBILE HERO (< md) === */}
-      <div className="md:hidden relative h-[340px] overflow-hidden">
-        <img src={heroMascot} alt="Shero Home Chef" className="absolute inset-0 w-full h-full object-cover z-[1]" />
-        <div className="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-background via-background/80 to-transparent z-[2]" />
+      <div className="md:hidden relative h-[400px] overflow-hidden">
+        <img src={heroMascot} alt="Shero Home Chef" className="absolute inset-0 w-full h-full object-cover object-top z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent z-[2]" />
+
+        {/* Top bar: language + logo */}
         <div className="relative z-10 container mx-auto px-4 pt-3 pb-2 flex items-center justify-between">
           {!langSet && <LanguageSwitcher />}
           {langSet && <div />}
-          <img src={sheroLogo} alt="Shero" className="h-12" />
+          <img src={sheroLogo} alt="Shero" className="h-10 drop-shadow-md" />
         </div>
-        <div className="absolute bottom-6 left-0 z-10 container mx-auto px-4">
-          <h1 className="text-foreground font-serif text-[24px] font-bold leading-tight drop-shadow-sm">
-            {c["home.hero_title"] || "Authentic Home Food, Delivered Fresh"}
+
+        {/* Bottom text block */}
+        <div className="absolute bottom-8 left-0 right-0 z-10 container mx-auto px-5">
+          <h1 className="text-foreground font-serif text-[22px] font-bold leading-[1.25] drop-shadow-sm">
+            {c["home.hero_title"] || "India's Home Kitchens,"}
+            <br />
+            {c["home.hero_title_line2"] || "Now Closer to You."}
           </h1>
-          <p className="text-foreground/80 text-[13px] mt-1.5 max-w-[280px] leading-snug drop-shadow-sm">
-            {c["home.hero_subtitle"] || "From our certified home kitchens to your doorstep. The taste of home, made in America."}
+          <p className="text-foreground/70 text-[13px] mt-2 max-w-[300px] leading-relaxed drop-shadow-sm">
+            {c["home.hero_subtitle"] || "Real women. Real recipes. Authentic home food."}
           </p>
         </div>
       </div>
