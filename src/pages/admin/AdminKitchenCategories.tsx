@@ -745,11 +745,11 @@ const AdminKitchenCategories = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <Label className="text-xs">Location / Area</Label>
-                    <Input value={kLocation} onChange={(e) => setKLocation(e.target.value)} placeholder="e.g., T Nagar, Chennai" />
+                    <Input value={kLocation} onChange={(e) => setKLocation(e.target.value)} placeholder="e.g., Midtown, Manhattan" />
                   </div>
                   <div>
-                    <Label className="text-xs">Pincode / Zip Code *</Label>
-                    <Input value={kPincode} onChange={(e) => setKPincode(e.target.value)} placeholder="e.g., 600017" />
+                    <Label className="text-xs">ZIP Code *</Label>
+                    <Input value={kPincode} onChange={(e) => setKPincode(e.target.value)} placeholder="e.g., 10001" />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
