@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { CheckCircle, Home, Navigation, Truck, CalendarClock, Clock } from "lucide-react";
+import { CheckCircle, Home, Navigation, Truck, CalendarClock, Clock, FileText } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import mascotGreeting from "@/assets/shero-mascot-greeting.png";
 
