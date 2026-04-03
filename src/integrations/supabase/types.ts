@@ -979,10 +979,12 @@ export type Database = {
           customer_phone: string | null
           delivery_fee: number
           discount: number
+          ein: string | null
           generated_at: string
           gstin: string | null
           id: string
           invoice_number: string
+          invoice_type: string
           items_snapshot: Json
           order_id: string
           order_type: string
@@ -992,6 +994,7 @@ export type Database = {
           subtotal: number
           tax_amount: number
           tax_rate: string | null
+          tips: number
           total: number
         }
         Insert: {
@@ -1003,10 +1006,12 @@ export type Database = {
           customer_phone?: string | null
           delivery_fee?: number
           discount?: number
+          ein?: string | null
           generated_at?: string
           gstin?: string | null
           id?: string
           invoice_number: string
+          invoice_type?: string
           items_snapshot?: Json
           order_id: string
           order_type?: string
@@ -1016,6 +1021,7 @@ export type Database = {
           subtotal?: number
           tax_amount?: number
           tax_rate?: string | null
+          tips?: number
           total?: number
         }
         Update: {
@@ -1027,10 +1033,12 @@ export type Database = {
           customer_phone?: string | null
           delivery_fee?: number
           discount?: number
+          ein?: string | null
           generated_at?: string
           gstin?: string | null
           id?: string
           invoice_number?: string
+          invoice_type?: string
           items_snapshot?: Json
           order_id?: string
           order_type?: string
@@ -1040,6 +1048,7 @@ export type Database = {
           subtotal?: number
           tax_amount?: number
           tax_rate?: string | null
+          tips?: number
           total?: number
         }
         Relationships: []
