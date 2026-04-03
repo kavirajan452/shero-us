@@ -227,8 +227,8 @@ const Subscriptions = () => {
 
   const filteredPlans = useMemo(() => {
     let plans = standardMealPlans;
-    if (foodType === "veg") plans = plans.filter(p => p.is_veg);
-    if (foodType === "nonveg") plans = plans.filter(p => !p.is_veg);
+    if (foodType === "veg") plans = plans.filter(p => p.isVeg);
+    if (foodType === "nonveg") plans = plans.filter(p => !p.isVeg);
     if (selectedSlots.length > 0) {
       plans = plans.filter(p => selectedSlots.some(s => p.slots.includes(s)));
     }
