@@ -88,7 +88,7 @@ export function PartnerLocationsTab({
       if (!map[l.kitchen_id]) map[l.kitchen_id] = { total: 0, active: 0, zipcodes: new Set() };
       map[l.kitchen_id].total++;
       if (l.is_active) map[l.kitchen_id].active++;
-      if (l.pincode) map[l.kitchen_id].pincodes.add(l.pincode);
+      if (l.pincode) map[l.kitchen_id].zipcodes.add(l.pincode);
     });
     return map;
   }, [allLocations]);
@@ -186,7 +186,7 @@ export function PartnerLocationsTab({
                     <div className="flex items-center gap-2 mt-0.5">
                       <span className="text-muted-foreground">{stats.total.toLocaleString()} partners</span>
                       <span className="text-green-600">{stats.active} active</span>
-                      <span className="text-muted-foreground/70">{stats.pincodes.size} zipcodes</span>
+                      <span className="text-muted-foreground/70">{stats.zipcodes.size} zipcodes</span>
                     </div>
                     <div className="w-full h-1 bg-muted rounded-full mt-1">
                       <div className="h-1 bg-primary/60 rounded-full transition-all" style={{ width: `${fillPct}%` }} />
