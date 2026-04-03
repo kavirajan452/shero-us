@@ -33,6 +33,8 @@ const Checkout = () => {
   const createOrder = useCreateInstantOrder();
   const saveIncomplete = useSaveIncompleteOrder();
   const [useWalletBalance, setUseWalletBalance] = useState(true);
+  const { detectAndCheck, checkByZip, detectedLocation, checking: geoChecking, radiusMiles, hasKitchens } = useServiceability();
+  const [serviceableStatus, setServiceableStatus] = useState<"unknown" | "checking" | "serviceable" | "not_serviceable">("unknown");
 
   // Detect if cart is snacks-only (shipped items, no time slots needed)
   const isSnacksOnly = items.length > 0 && items.every((ci) => ci.item.kitchenId === "snacks");
@@ -47,6 +49,23 @@ const Checkout = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [attempted, setAttempted] = useState(false);
+
+  // Auto-check serviceability on mount via GPS (non-blocking)
+  useEffect(() => {
+    if (isSnacksOnly || serviceableStatus !== "unknown" || !hasKitchens) return;
+    setServiceableStatus("checking");
+    detectAndCheck().then((result) => {
+      setServiceableStatus(result.serviceable ? "serviceable" : "not_serviceable");
+    });
+  }, [hasKitchens]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Also check when ZIP code is entered (for snacks or manual entry)
+  useEffect(() => {
+    if (zipCode.length === 5 && hasKitchens) {
+      const isServiceable = checkByZip(zipCode);
+      setServiceableStatus(isServiceable ? "serviceable" : "not_serviceable");
+    }
+  }, [zipCode, hasKitchens, checkByZip]);
 
   const deliveryFees: Record<string, Record<string, number>> = {
     IN: { "self-pickup": 0, "self-delivery": 30, "third-party": 50 },
