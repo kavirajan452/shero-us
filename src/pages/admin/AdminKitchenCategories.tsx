@@ -85,7 +85,7 @@ const AdminKitchenCategories = () => {
   const [locKitchenId, setLocKitchenId] = useState("");
   const [locPartnerName, setLocPartnerName] = useState("");
   const [locPartnerPhone, setLocPartnerPhone] = useState("");
-  const [locZIP Code, setLocZIP Code] = useState("");
+  const [locZipCode, setLocZipCode] = useState("");
   const [locLatitude, setLocLatitude] = useState("");
   const [locLongitude, setLocLongitude] = useState("");
   const [locLocation, setLocLocation] = useState("");
@@ -101,7 +101,7 @@ const AdminKitchenCategories = () => {
   const [kDeliveryTime, setKDeliveryTime] = useState("30-40 min");
   const [kFoodPref, setKFoodPref] = useState("both");
   // For unbranded only (single-partner kitchen)
-  const [kZIP Code, setKZIP Code] = useState("");
+  const [kZipCode, setKZipCode] = useState("");
   const [kLatitude, setKLatitude] = useState("");
   const [kLongitude, setKLongitude] = useState("");
 
@@ -147,7 +147,7 @@ const AdminKitchenCategories = () => {
       const q = locSearch.toLowerCase();
       result = result.filter((l: any) =>
         l.partner_name.toLowerCase().includes(q) ||
-        (l.zipcode || "").includes(q) ||
+        (l.pincode || "").includes(q) ||
         (l.location || "").toLowerCase().includes(q) ||
         (l.kitchen_id || "").toLowerCase().includes(q)
       );
@@ -168,7 +168,7 @@ const AdminKitchenCategories = () => {
       };
       // For unbranded kitchens, location is on the kitchen itself
       if (!kIsBranded) {
-        insertData.zipcode = kZIP Code || null;
+        insertData.pincode = kZipCode || null;
         insertData.latitude = kLatitude ? parseFloat(kLatitude) : null;
         insertData.longitude = kLongitude ? parseFloat(kLongitude) : null;
       }
@@ -194,7 +194,7 @@ const AdminKitchenCategories = () => {
         food_preference: kFoodPref,
       };
       if (!kIsBranded) {
-        updateData.zipcode = kZIP Code || null;
+        updateData.pincode = kZipCode || null;
         updateData.latitude = kLatitude ? parseFloat(kLatitude) : null;
         updateData.longitude = kLongitude ? parseFloat(kLongitude) : null;
       }
@@ -239,7 +239,7 @@ const AdminKitchenCategories = () => {
         kitchen_id: locKitchenId,
         partner_name: locPartnerName,
         partner_phone: locPartnerPhone || null,
-        zipcode: locZIP Code,
+        pincode: locZipCode,
         latitude: locLatitude ? parseFloat(locLatitude) : null,
         longitude: locLongitude ? parseFloat(locLongitude) : null,
         location: locLocation || null,
@@ -260,7 +260,7 @@ const AdminKitchenCategories = () => {
       const { error } = await supabase.from("kitchen_partner_locations").update({
         partner_name: locPartnerName,
         partner_phone: locPartnerPhone || null,
-        zipcode: locZIP Code,
+        pincode: locZipCode,
         latitude: locLatitude ? parseFloat(locLatitude) : null,
         longitude: locLongitude ? parseFloat(locLongitude) : null,
         location: locLocation || null,
@@ -357,7 +357,7 @@ const AdminKitchenCategories = () => {
   // ═══ DIALOG HELPERS ═══
   const resetKitchenForm = () => {
     setKName(""); setKCuisine(""); setKLocation("");
-    setKZIP Code(""); setKLatitude(""); setKLongitude("");
+    setKZipCode(""); setKLatitude(""); setKLongitude("");
     setKIsBranded(true); setKIsVeg(false); setKMinOrder("199");
     setKDeliveryTime("30-40 min"); setKFoodPref("both");
   };
@@ -372,7 +372,7 @@ const AdminKitchenCategories = () => {
     setEditingKitchen(k);
     setKName(k.name); setKCuisine((k.cuisine || []).join(", "));
     setKLocation(k.location || "");
-    setKZIP Code(k.zipcode || ""); setKLatitude(k.latitude ? String(k.latitude) : "");
+    setKZipCode(k.pincode || ""); setKLatitude(k.latitude ? String(k.latitude) : "");
     setKLongitude(k.longitude ? String(k.longitude) : "");
     setKIsBranded(k.is_branded);
     setKIsVeg(k.is_veg); setKMinOrder(String(k.min_order));
@@ -409,7 +409,7 @@ const AdminKitchenCategories = () => {
 
   const resetLocationForm = () => {
     setLocKitchenId(""); setLocPartnerName(""); setLocPartnerPhone("");
-    setLocZIP Code(""); setLocLatitude(""); setLocLongitude(""); setLocLocation("");
+    setLocZipCode(""); setLocLatitude(""); setLocLongitude(""); setLocLocation("");
   };
 
   const closeLocationDialog = () => {
@@ -423,7 +423,7 @@ const AdminKitchenCategories = () => {
     setLocKitchenId(loc.kitchen_id);
     setLocPartnerName(loc.partner_name);
     setLocPartnerPhone(loc.partner_phone || "");
-    setLocZIP Code(loc.zipcode || "");
+    setLocZipCode(loc.pincode || "");
     setLocLatitude(loc.latitude ? String(loc.latitude) : "");
     setLocLongitude(loc.longitude ? String(loc.longitude) : "");
     setLocLocation(loc.location || "");
@@ -567,7 +567,7 @@ const AdminKitchenCategories = () => {
                       ) : (
                         <>
                           {" — "}{kitchen.location || "No location"}
-                          {kitchen.zipcode && <span className="ml-1">📍 {kitchen.zipcode}</span>}
+                          {kitchen.pincode && <span className="ml-1">📍 {kitchen.pincode}</span>}
                         </>
                       )}
                     </p>
@@ -749,7 +749,7 @@ const AdminKitchenCategories = () => {
                   </div>
                   <div>
                     <Label className="text-xs">ZIP Code *</Label>
-                    <Input value={kZIP Code} onChange={(e) => setKZIP Code(e.target.value)} placeholder="e.g., 10001" />
+                    <Input value={kZipCode} onChange={(e) => setKZipCode(e.target.value)} placeholder="e.g., 10001" />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -830,7 +830,7 @@ const AdminKitchenCategories = () => {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label className="text-xs">ZIP Code *</Label>
-                <Input value={locZIP Code} onChange={(e) => setLocZIP Code(e.target.value)} placeholder="e.g., 10001" />
+                <Input value={locZipCode} onChange={(e) => setLocZipCode(e.target.value)} placeholder="e.g., 10001" />
               </div>
               <div>
                 <Label className="text-xs">Area / Location</Label>
@@ -850,7 +850,7 @@ const AdminKitchenCategories = () => {
             <p className="text-[10px] text-muted-foreground -mt-2">
               This partner's location will make <strong>{locKitchenId ? getKitchenName(locKitchenId) : "the brand"}</strong> visible to customers within <strong className="text-primary">{radiusConfig || 7} km</strong>.
             </p>
-            <Button className="w-full" disabled={!locKitchenId || !locPartnerName.trim() || !locZIP Code.trim()}
+            <Button className="w-full" disabled={!locKitchenId || !locPartnerName.trim() || !locZipCode.trim()}
               onClick={() => editingLocation ? updateLocation.mutate() : createLocation.mutate()}>
               {editingLocation ? "Update Location" : "Add Partner Location"}
             </Button>

@@ -7,7 +7,7 @@ import heroMascot from "@/assets/shero-mascot-cooking.jpeg";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 
 const HeroSection = () => {
-  const { data: contentItems } = useScreenContent("hero");
+  const { data: contentItems } = useScreenContent("home");
   const c = contentMap(contentItems || []);
 
   const [showDropdown, setShowDropdown] = useState(false);
@@ -118,11 +118,10 @@ const HeroSection = () => {
         </div>
         <div className="absolute bottom-6 left-0 z-10 container mx-auto px-4">
           <h1 className="text-foreground font-serif text-[24px] font-bold leading-tight drop-shadow-sm">
-            {c["hero.title_line1"] || "A Home-Food"}{" "}
-            <span className="text-primary">{c["hero.title_line2"] || "Revolution"}</span>
+            {c["home.hero_title"] || "Authentic Indian Home Food, Delivered Fresh"}
           </h1>
           <p className="text-foreground/80 text-[13px] mt-1.5 max-w-[280px] leading-snug drop-shadow-sm">
-            {c["hero.subtitle"] || "India's #1 home food platform — now in the USA. Authentic home-cooked meals delivered to your door."}
+            {c["home.hero_subtitle"] || "From our certified home kitchens to your doorstep. The taste of India, made in America."}
           </p>
         </div>
       </div>
@@ -141,16 +140,15 @@ const HeroSection = () => {
             {!langSet && <LanguageSwitcher />}
           </div>
           <h1 className="text-foreground font-serif text-5xl lg:text-6xl font-bold leading-tight">
-            {c["hero.title_line1"] || "A Home-Food"}{" "}
-            <span className="text-primary">{c["hero.title_line2"] || "Revolution"}</span>
+            {c["home.hero_title"] || "Authentic Indian Home Food, Delivered Fresh"}
           </h1>
           <p className="text-foreground/80 text-base mt-4 max-w-[440px] leading-relaxed">
-            {c["hero.subtitle"] || "India's #1 home food platform — now in the USA. Authentic home-cooked meals delivered to your door."}
+            {c["home.hero_subtitle"] || "From our certified home kitchens to your doorstep. The taste of India, made in America."}
           </p>
 
           {/* CTA Button */}
           <Link to="/instant-delivery" className="mt-6 inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-full text-base font-semibold hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] w-fit">
-            Explore Menu
+            {c["home.hero_cta"] || "Order Now"}
             <ArrowRight className="w-4 h-4" />
           </Link>
 

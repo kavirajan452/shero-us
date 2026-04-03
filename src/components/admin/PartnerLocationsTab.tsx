@@ -66,7 +66,7 @@ export function PartnerLocationsTab({
       const q = search.toLowerCase();
       result = result.filter((l: any) =>
         l.partner_name.toLowerCase().includes(q) ||
-        (l.zipcode || "").includes(q) ||
+        (l.pincode || "").includes(q) ||
         (l.location || "").toLowerCase().includes(q) ||
         (l.partner_phone || "").includes(q)
       );
@@ -88,14 +88,14 @@ export function PartnerLocationsTab({
       if (!map[l.kitchen_id]) map[l.kitchen_id] = { total: 0, active: 0, zipcodes: new Set() };
       map[l.kitchen_id].total++;
       if (l.is_active) map[l.kitchen_id].active++;
-      if (l.zipcode) map[l.kitchen_id].zipcodes.add(l.zipcode);
+      if (l.pincode) map[l.kitchen_id].zipcodes.add(l.pincode);
     });
     return map;
   }, [allLocations]);
 
-  const uniqueZIP Codes = useMemo(() => {
+  const uniqueZipCodes = useMemo(() => {
     const set = new Set<string>();
-    allLocations.forEach((l: any) => { if (l.zipcode) set.add(l.zipcode); });
+    allLocations.forEach((l: any) => { if (l.pincode) set.add(l.pincode); });
     return set.size;
   }, [allLocations]);
 
@@ -107,7 +107,7 @@ export function PartnerLocationsTab({
     const headers = ["Partner Name", "Phone", "Kitchen Brand", "ZIP Code", "Location", "Latitude", "Longitude", "Active", "Created"];
     const rows = filtered.map((l: any) => [
       l.partner_name, l.partner_phone || "", getKitchenName(l.kitchen_id),
-      l.zipcode || "", l.location || "",
+      l.pincode || "", l.location || "",
       l.latitude || "", l.longitude || "",
       l.is_active ? "Yes" : "No",
       new Date(l.created_at).toLocaleDateString(),
@@ -139,7 +139,7 @@ export function PartnerLocationsTab({
         </Card>
         <Card>
           <CardContent className="p-3 text-center">
-            <p className="text-2xl font-bold text-foreground">{uniqueZIP Codes.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-foreground">{uniqueZipCodes.toLocaleString()}</p>
             <p className="text-[10px] text-muted-foreground">Unique ZIP Codes</p>
           </CardContent>
         </Card>
@@ -267,7 +267,7 @@ export function PartnerLocationsTab({
                       <span className="text-xs text-foreground truncate max-w-[150px]">{getKitchenName(loc.kitchen_id)}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-xs font-mono text-foreground">{loc.zipcode || "—"}</TableCell>
+                  <TableCell className="text-xs font-mono text-foreground">{loc.pincode || "—"}</TableCell>
                   <TableCell className="text-xs text-muted-foreground truncate max-w-[150px]">{loc.location || "—"}</TableCell>
                   <TableCell>
                     {loc.latitude && loc.longitude ? (

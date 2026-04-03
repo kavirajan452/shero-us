@@ -427,8 +427,8 @@ export const othersSpecialPrices: Record<string, number> = {
 export const packingChargePerItem = 25;
 
 // ── Regional menu imports ──
-import { keralaMenuTypes, keralaOthersSpecialPrices } from "./partyMenuFlorida";
-import { andhraMenuTypes, andhraOthersSpecialPrices } from "./partyMenuPennsylvania";
+import { keralaMenuTypes, keralaOthersSpecialPrices } from "./partyMenuKerala";
+import { andhraMenuTypes, andhraOthersSpecialPrices } from "./partyMenuAndhra";
 
 // Merge all special prices
 Object.assign(othersSpecialPrices, keralaOthersSpecialPrices, andhraOthersSpecialPrices);
