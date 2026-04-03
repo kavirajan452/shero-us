@@ -54,7 +54,7 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   doc.text(companyName, pw / 2, 12, { align: "center" });
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  doc.text("TAX INVOICE", pw / 2, 20, { align: "center" });
+  doc.text("INVOICE", pw / 2, 20, { align: "center" });
   y = 35;
 
   // Company details
