@@ -121,25 +121,31 @@ const Subscriptions = () => {
   const { data: subContent } = useScreenContent("subscription");
   const sc = contentMap(subContent || []);
 
-  // Fetch meal plans from DB, fallback to local data
-  const { data: dbMealPlans, isLoading: plansLoading } = useSubscriptionMealPlans();
-  const standardMealPlans: StandardMealPlan[] = (dbMealPlans && dbMealPlans.length > 0)
-    ? dbMealPlans
-    : localMealPlans.map(p => ({
-        id: p.id,
-        name: p.name,
-        cuisine: p.cuisine,
-        emoji: p.emoji,
-        description: p.description,
-        is_veg: p.isVeg,
-        slots: p.slots,
-        price_per_day: p.pricePerDay,
-        highlights: p.highlights,
-        image: p.image,
-        rating: p.rating,
-        subscribers: p.subscribers,
-        weekly_menu: p.weeklyMenu,
-      } as any));
+  // Fetch meal plans from backend, but always keep seeded fallback plans available
+  const { data: dbMealPlans } = useSubscriptionMealPlans();
+
+  const seededMealPlans = useMemo<StandardMealPlan[]>(() => (
+    localMealPlans.map((p) => ({
+      id: p.id,
+      name: p.name,
+      cuisine: p.cuisine,
+      emoji: p.emoji,
+      description: p.description,
+      is_veg: p.isVeg,
+      slots: p.slots,
+      price_per_day: p.pricePerDay,
+      highlights: p.highlights,
+      image: p.image,
+      rating: p.rating,
+      subscribers: p.subscribers,
+      weekly_menu: p.weeklyMenu,
+    }))
+  ), []);
+
+  const standardMealPlans: StandardMealPlan[] = useMemo(() => {
+    if (dbMealPlans && dbMealPlans.length > 0) return dbMealPlans as StandardMealPlan[];
+    return seededMealPlans;
+  }, [dbMealPlans, seededMealPlans]);
 
   // Lead capture state
   const [customerVerified, setCustomerVerified] = useState(!isMarketingLead);
