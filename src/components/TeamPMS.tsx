@@ -236,7 +236,7 @@ function generatePMSData(members: TeamMember[]): Map<string, PMSTarget[]> {
     const tierTargets = TIER_KPI_TARGETS[tier];
     const targets: PMSTarget[] = [];
     const managedPartnerIds = member.assignedPartners.map((p) => p.id);
-    const regionMetrics = latestMetrics.filter((m) => m.region.includes(member.region.split(" ")[0]) || member.region === "All India");
+    const regionMetrics = latestMetrics.filter((m) => m.region.includes(member.region.split(" ")[0]) || member.region === "Nationwide");
     const directMetrics = managedPartnerIds.length > 0
       ? latestMetrics.filter((m) => managedPartnerIds.some((pid) => m.partnerId === pid))
       : regionMetrics;

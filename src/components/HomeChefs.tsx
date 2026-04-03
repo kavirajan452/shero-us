@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 
 const chefs = [
   { id: "lakshmi-amma", name: "Lakshmi Amma", specialty: "Vegetarian Meals", rating: 4.9, orders: 1200, area: "Anna Nagar", emoji: "👩‍🍳" },
-  { id: "fathima-akka", name: "Fathima Akka", specialty: "Biryani Specials", rating: 4.8, orders: 980, area: "T. Nagar", emoji: "👩‍🍳" },
-  { id: "kamala-paatti", name: "Kamala Paatti", specialty: "Dosa & Idli", rating: 4.9, orders: 2100, area: "Mylapore", emoji: "👵" },
+  { id: "fathima-akka", name: "Fathima Akka", specialty: "Biryani Specials", rating: 4.8, orders: 980, area: "SoHo", emoji: "👩‍🍳" },
+  { id: "kamala-paatti", name: "Kamala Paatti", specialty: "Dosa & Idli", rating: 4.9, orders: 2100, area: "West Village", emoji: "👵" },
   { id: "meena-aunty", name: "Meena Aunty", specialty: "Seafood", rating: 4.7, orders: 750, area: "Adyar", emoji: "👩‍🍳" },
 ];
 

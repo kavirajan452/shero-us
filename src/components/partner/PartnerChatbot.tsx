@@ -58,7 +58,7 @@ const sscTeam = MOCK_ADMIN_ACCOUNTS.filter((a) =>
 }));
 
 // Mock partner identity
-const MOCK_PARTNER = { name: "Current Partner", rmn: "+91 99999 00001" };
+const MOCK_PARTNER = { name: "Current Partner", rmn: "+1 99999 00001" };
 
 export default function PartnerChatbot() {
   const [isOpen, setIsOpen] = useState(false);

@@ -19,11 +19,11 @@ export interface InvoiceData {
   orderId: string;
   companySnapshot: {
     companyName?: string;
-    gstin?: string;
+    ein?: string;
     address?: string;
     city?: string;
     state?: string;
-    pincode?: string;
+    zipcode?: string;
     phone?: string;
     email?: string;
     bankName?: string;
@@ -43,7 +43,7 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
 
   const co = data.companySnapshot;
   const companyName = co.companyName || "Shero Home Food";
-  const gstin = co.gstin || "";
+  const ein = co.ein || "";
 
   // Header
   doc.setFillColor(26, 26, 46);
@@ -60,8 +60,8 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   // Company details
   doc.setTextColor(80, 80, 80);
   doc.setFontSize(8);
-  if (gstin) doc.text(`EIN: ${gstin}`, m, y);
-  if (co.address) doc.text(`${co.address}${co.city ? ", " + co.city : ""}${co.state ? ", " + co.state : ""} ${co.pincode || ""}`, m, y + 4);
+  if (ein) doc.text(`EIN: ${ein}`, m, y);
+  if (co.address) doc.text(`${co.address}${co.city ? ", " + co.city : ""}${co.state ? ", " + co.state : ""} ${co.zipcode || ""}`, m, y + 4);
   if (co.phone || co.email) doc.text(`${co.phone || ""} ${co.email ? "| " + co.email : ""}`, m, y + 8);
   y += 16;
 

@@ -66,7 +66,7 @@ export function PartnerLocationsTab({
       const q = search.toLowerCase();
       result = result.filter((l: any) =>
         l.partner_name.toLowerCase().includes(q) ||
-        (l.pincode || "").includes(q) ||
+        (l.zipcode || "").includes(q) ||
         (l.location || "").toLowerCase().includes(q) ||
         (l.partner_phone || "").includes(q)
       );
@@ -83,19 +83,19 @@ export function PartnerLocationsTab({
 
   // ═══ REPORTING AGGREGATES ═══
   const perBrandCounts = useMemo(() => {
-    const map: Record<string, { total: number; active: number; pincodes: Set<string> }> = {};
+    const map: Record<string, { total: number; active: number; zipcodes: Set<string> }> = {};
     allLocations.forEach((l: any) => {
-      if (!map[l.kitchen_id]) map[l.kitchen_id] = { total: 0, active: 0, pincodes: new Set() };
+      if (!map[l.kitchen_id]) map[l.kitchen_id] = { total: 0, active: 0, zipcodes: new Set() };
       map[l.kitchen_id].total++;
       if (l.is_active) map[l.kitchen_id].active++;
-      if (l.pincode) map[l.kitchen_id].pincodes.add(l.pincode);
+      if (l.zipcode) map[l.kitchen_id].zipcodes.add(l.zipcode);
     });
     return map;
   }, [allLocations]);
 
-  const uniquePincodes = useMemo(() => {
+  const uniqueZIP Codes = useMemo(() => {
     const set = new Set<string>();
-    allLocations.forEach((l: any) => { if (l.pincode) set.add(l.pincode); });
+    allLocations.forEach((l: any) => { if (l.zipcode) set.add(l.zipcode); });
     return set.size;
   }, [allLocations]);
 
@@ -104,10 +104,10 @@ export function PartnerLocationsTab({
   const getKitchenName = (id: string) => brandedKitchens.find((k: any) => k.id === id)?.name || id;
 
   const handleExportCSV = () => {
-    const headers = ["Partner Name", "Phone", "Kitchen Brand", "Pincode", "Location", "Latitude", "Longitude", "Active", "Created"];
+    const headers = ["Partner Name", "Phone", "Kitchen Brand", "ZIP Code", "Location", "Latitude", "Longitude", "Active", "Created"];
     const rows = filtered.map((l: any) => [
       l.partner_name, l.partner_phone || "", getKitchenName(l.kitchen_id),
-      l.pincode || "", l.location || "",
+      l.zipcode || "", l.location || "",
       l.latitude || "", l.longitude || "",
       l.is_active ? "Yes" : "No",
       new Date(l.created_at).toLocaleDateString(),
@@ -139,8 +139,8 @@ export function PartnerLocationsTab({
         </Card>
         <Card>
           <CardContent className="p-3 text-center">
-            <p className="text-2xl font-bold text-foreground">{uniquePincodes.toLocaleString()}</p>
-            <p className="text-[10px] text-muted-foreground">Unique Pincodes</p>
+            <p className="text-2xl font-bold text-foreground">{uniqueZIP Codes.toLocaleString()}</p>
+            <p className="text-[10px] text-muted-foreground">Unique ZIP Codes</p>
           </CardContent>
         </Card>
         <Card>
@@ -175,7 +175,7 @@ export function PartnerLocationsTab({
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {brandedKitchens.map((k: any) => {
-              const stats = perBrandCounts[k.id] || { total: 0, active: 0, pincodes: new Set() };
+              const stats = perBrandCounts[k.id] || { total: 0, active: 0, zipcodes: new Set() };
               const capacity = 10000;
               const fillPct = Math.min(100, (stats.total / capacity) * 100);
               return (
@@ -186,7 +186,7 @@ export function PartnerLocationsTab({
                     <div className="flex items-center gap-2 mt-0.5">
                       <span className="text-muted-foreground">{stats.total.toLocaleString()} partners</span>
                       <span className="text-green-600">{stats.active} active</span>
-                      <span className="text-muted-foreground/70">{stats.pincodes.size} pincodes</span>
+                      <span className="text-muted-foreground/70">{stats.zipcodes.size} zipcodes</span>
                     </div>
                     <div className="w-full h-1 bg-muted rounded-full mt-1">
                       <div className="h-1 bg-primary/60 rounded-full transition-all" style={{ width: `${fillPct}%` }} />
@@ -203,7 +203,7 @@ export function PartnerLocationsTab({
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search partner, pincode, phone, location..." className="pl-9" />
+          <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search partner, zipcode, phone, location..." className="pl-9" />
         </div>
         <Select value={kitchenFilter} onValueChange={setKitchenFilter}>
           <SelectTrigger className="w-[200px] h-9 text-xs"><SelectValue placeholder="All Brands" /></SelectTrigger>
@@ -238,7 +238,7 @@ export function PartnerLocationsTab({
               <TableRow>
                 <TableHead className="text-[11px] w-[180px]">Partner</TableHead>
                 <TableHead className="text-[11px] w-[180px]">Kitchen Brand</TableHead>
-                <TableHead className="text-[11px] w-[90px]">Pincode</TableHead>
+                <TableHead className="text-[11px] w-[90px]">ZIP Code</TableHead>
                 <TableHead className="text-[11px]">Location</TableHead>
                 <TableHead className="text-[11px] w-[60px]">GPS</TableHead>
                 <TableHead className="text-[11px] w-[70px]">Status</TableHead>
@@ -267,7 +267,7 @@ export function PartnerLocationsTab({
                       <span className="text-xs text-foreground truncate max-w-[150px]">{getKitchenName(loc.kitchen_id)}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-xs font-mono text-foreground">{loc.pincode || "—"}</TableCell>
+                  <TableCell className="text-xs font-mono text-foreground">{loc.zipcode || "—"}</TableCell>
                   <TableCell className="text-xs text-muted-foreground truncate max-w-[150px]">{loc.location || "—"}</TableCell>
                   <TableCell>
                     {loc.latitude && loc.longitude ? (

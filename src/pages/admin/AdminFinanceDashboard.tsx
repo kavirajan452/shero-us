@@ -99,7 +99,7 @@ function useConsolidatedFinance() {
           { label: "Cash & Bank Balances", amount: 1845000 },
           { label: "Sundry Debtors", amount: 425000 },
           { label: "TDS Receivable", amount: 68000 },
-          { label: "GST Input Credit", amount: 142000 },
+          { label: "Tax Input Credit", amount: 142000 },
           { label: "Advance to Partners", amount: 85000 },
           { label: "Prepaid Expenses", amount: 32000 },
         ],
@@ -113,7 +113,7 @@ function useConsolidatedFinance() {
         current: [
           { label: "Sundry Creditors — Partners", amount: 680000 },
           { label: "Sundry Creditors — Vendors", amount: 125000 },
-          { label: "GST Payable", amount: 198000 },
+          { label: "Sales Tax Payable", amount: 198000 },
           { label: "TDS Payable", amount: 92000 },
           { label: "Deferred Revenue", amount: 315000 },
           { label: "Customer Wallet Liability", amount: 142000 },
@@ -130,7 +130,7 @@ function useConsolidatedFinance() {
     const statutory = {
       gst: {
         output5: 198000, output18: 42000, inputCredit: 142000, netPayable: 98000,
-        lastFiled: "GSTR-3B Feb 2026", nextDue: "20 Apr 2026",
+        lastFiled: "Sales TaxR-3B Feb 2026", nextDue: "20 Apr 2026",
       },
       tds: {
         deducted: 92000, deposited: 78000, pending: 14000,
@@ -142,8 +142,8 @@ function useConsolidatedFinance() {
         nextDue: "07 Apr 2026 (Q4 deposit)",
       },
       compliance: [
-        { item: "GSTR-1 (Mar 2026)", due: "11 Apr 2026", status: "pending" },
-        { item: "GSTR-3B (Mar 2026)", due: "20 Apr 2026", status: "pending" },
+        { item: "Sales TaxR-1 (Mar 2026)", due: "11 Apr 2026", status: "pending" },
+        { item: "Sales TaxR-3B (Mar 2026)", due: "20 Apr 2026", status: "pending" },
         { item: "TDS Return 26Q (Q4)", due: "31 May 2026", status: "upcoming" },
         { item: "Advance Tax (Q1 FY27)", due: "15 Jun 2026", status: "upcoming" },
         { item: "PF/ESI (Mar 2026)", due: "15 Apr 2026", status: "pending" },
@@ -252,7 +252,7 @@ export default function AdminFinanceDashboard() {
           <p className="text-xs text-muted-foreground">{pct(data.totalCM15, data.totalRevenue)} margin</p>
         </CardContent></Card>
         <Card><CardContent className="pt-4">
-          <p className="text-[10px] text-muted-foreground uppercase tracking-wider">GST Payable</p>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Sales Tax Payable</p>
           <p className="text-xl font-bold text-foreground">{fmt(data.statutory.gst.netPayable)}</p>
           <p className="text-xs text-muted-foreground">Due: {data.statutory.gst.nextDue}</p>
         </CardContent></Card>
@@ -466,14 +466,14 @@ export default function AdminFinanceDashboard() {
         {/* ───── STATUTORY & TAX ───── */}
         <TabsContent value="statutory" className="space-y-4 mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* GST Summary */}
+            {/* Sales Tax Summary */}
             <Card>
-              <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><Building2 className="w-4 h-4" /> GST Summary</CardTitle></CardHeader>
+              <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><Building2 className="w-4 h-4" /> Sales Tax Summary</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                <div className="flex justify-between py-2 border-b text-sm"><span>Output GST @ 5% (Food)</span><span className="font-medium">{fmtFull(data.statutory.gst.output5)}</span></div>
-                <div className="flex justify-between py-2 border-b text-sm"><span>Output GST @ 18% (Services)</span><span className="font-medium">{fmtFull(data.statutory.gst.output18)}</span></div>
+                <div className="flex justify-between py-2 border-b text-sm"><span>Output Sales Tax @ 5% (Food)</span><span className="font-medium">{fmtFull(data.statutory.gst.output5)}</span></div>
+                <div className="flex justify-between py-2 border-b text-sm"><span>Output Sales Tax @ 18% (Services)</span><span className="font-medium">{fmtFull(data.statutory.gst.output18)}</span></div>
                 <div className="flex justify-between py-2 border-b text-sm"><span>Input Tax Credit (ITC)</span><span className="font-medium text-green-600">({fmtFull(data.statutory.gst.inputCredit)})</span></div>
-                <div className="flex justify-between py-2 text-sm font-bold"><span>Net GST Payable</span><span>{fmtFull(data.statutory.gst.netPayable)}</span></div>
+                <div className="flex justify-between py-2 text-sm font-bold"><span>Net Sales Tax Payable</span><span>{fmtFull(data.statutory.gst.netPayable)}</span></div>
                 <Badge variant="outline" className="text-xs mt-2">Last Filed: {data.statutory.gst.lastFiled}</Badge>
               </CardContent>
             </Card>
@@ -558,7 +558,7 @@ export default function AdminFinanceDashboard() {
                     { label: "Chart of Accounts (Masters)", desc: "All ledger accounts with groups" },
                     { label: "Trial Balance", desc: "Opening balances for all accounts" },
                     { label: "Vouchers (Journal Entries)", desc: "All transactions for the period" },
-                    { label: "Sales Register", desc: "All sales invoices with GST" },
+                    { label: "Sales Register", desc: "All sales invoices with Sales Tax" },
                     { label: "Purchase Register", desc: "All purchase & expense vouchers" },
                   ].map(item => (
                     <div key={item.label} className="flex items-center justify-between py-2 border-b last:border-0">
@@ -610,7 +610,7 @@ export default function AdminFinanceDashboard() {
               { icon: Scale, label: "Balance Sheet", desc: "Assets, Liabilities, Capital with schedules & notes", for: "Auditors & CS" },
               { icon: BookMarked, label: "Trial Balance", desc: "All ledger accounts with debit & credit balances", for: "Accountants & Auditors" },
               { icon: Receipt, label: "Cash Flow Statement", desc: "Operating, Investing & Financing activities", for: "Management & Investors" },
-              { icon: Building2, label: "GST Returns Package", desc: "GSTR-1, GSTR-3B, GSTR-9 ready data with HSN summary", for: "Tax Consultants" },
+              { icon: Building2, label: "Sales Tax Returns Package", desc: "Sales TaxR-1, Sales TaxR-3B, Sales TaxR-9 ready data with HSN summary", for: "Tax Consultants" },
               { icon: Shield, label: "TDS Returns Package", desc: "Form 26Q, 27Q data with challan reconciliation", for: "Tax Consultants" },
               { icon: Calculator, label: "Income Tax Computation", desc: "Taxable income computation under new/old regime", for: "CA & Tax Consultants" },
               { icon: Gavel, label: "ROC Filing Package", desc: "AOC-4, MGT-7 data extracts for annual filing", for: "Company Secretary" },

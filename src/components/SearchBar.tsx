@@ -20,8 +20,8 @@ const popularSuggestions = [
   { label: "Snacks", icon: "🍘", category: "Category" },
   { label: "South Indian", icon: "🌿", category: "Cuisine" },
   { label: "North Indian", icon: "🫓", category: "Cuisine" },
-  { label: "Andhra", icon: "🌶️", category: "Cuisine" },
-  { label: "Kerala", icon: "🥥", category: "Cuisine" },
+  { label: "Pennsylvania", icon: "🌶️", category: "Cuisine" },
+  { label: "Florida", icon: "🥥", category: "Cuisine" },
   { label: "Party Orders", icon: "🎉", category: "Service" },
   { label: "Subscriptions", icon: "📦", category: "Service" },
 ];
@@ -212,7 +212,7 @@ const SearchBar = () => {
                         value={manualInput}
                         onChange={(e) => setManualInput(e.target.value.slice(0, 100))}
                         onKeyDown={(e) => e.key === "Enter" && handleManualSave()}
-                        placeholder="e.g. Adyar, Chennai"
+                        placeholder="e.g. Adyar, New York"
                         className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors"
                         autoFocus
                         maxLength={100}

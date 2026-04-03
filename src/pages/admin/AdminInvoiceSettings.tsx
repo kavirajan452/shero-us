@@ -14,9 +14,9 @@ interface InvoiceSettings {
   address: string;
   city: string;
   state: string;
-  pincode: string;
+  zipcode: string;
   country: string;
-  gstin: string;
+  ein: string;
   hsnSacCode: string;
   defaultTaxRate: string;
   bankName: string;
@@ -32,18 +32,18 @@ interface InvoiceSettings {
 const defaultSettings: InvoiceSettings = {
   companyName: "Shero Home Food Pvt Ltd",
   address: "",
-  city: "Chennai",
-  state: "Tamil Nadu",
-  pincode: "",
-  country: "India",
-  gstin: "",
+  city: "New York",
+  state: "New York",
+  zipcode: "",
+  country: "USA",
+  ein: "",
   hsnSacCode: "996331",
   defaultTaxRate: "5",
   bankName: "",
   accountNumber: "",
   ifsc: "",
   invoicePrefix: "SHERO",
-  termsAndConditions: "1. This is a computer-generated invoice.\n2. All disputes subject to Chennai jurisdiction.\n3. E&OE (Errors and Omissions Excepted).",
+  termsAndConditions: "1. This is a computer-generated invoice.\n2. All disputes subject to New York jurisdiction.\n3. E&OE (Errors and Omissions Excepted).",
   logoUrl: "",
   supportEmail: "",
   supportPhone: "",
@@ -126,7 +126,7 @@ const AdminInvoiceSettings = () => {
               <div><Label className="text-xs">State</Label><Input value={settings.state} onChange={e => update("state", e.target.value)} /></div>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <div><Label className="text-xs">Pincode</Label><Input value={settings.pincode} onChange={e => update("pincode", e.target.value)} /></div>
+              <div><Label className="text-xs">ZIP Code</Label><Input value={settings.zipcode} onChange={e => update("zipcode", e.target.value)} /></div>
               <div><Label className="text-xs">Country</Label><Input value={settings.country} onChange={e => update("country", e.target.value)} /></div>
             </div>
             <div><Label className="text-xs">Logo URL</Label><Input value={settings.logoUrl} onChange={e => update("logoUrl", e.target.value)} placeholder="https://..." /></div>
@@ -143,18 +143,18 @@ const AdminInvoiceSettings = () => {
             <CardTitle className="text-base flex items-center gap-2"><Receipt className="w-4 h-4 text-primary" /> Tax Configuration</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div><Label className="text-xs">GSTIN Number</Label><Input value={settings.gstin} onChange={e => update("gstin", e.target.value)} placeholder="22AAAAA0000A1Z5" /></div>
+            <div><Label className="text-xs">EIN Number</Label><Input value={settings.ein} onChange={e => update("ein", e.target.value)} placeholder="22AAAAA0000A1Z5" /></div>
             <div><Label className="text-xs">HSN / SAC Code</Label><Input value={settings.hsnSacCode} onChange={e => update("hsnSacCode", e.target.value)} placeholder="996331" /></div>
             <div>
-              <Label className="text-xs">Default GST Rate (%)</Label>
+              <Label className="text-xs">Default Sales Tax Rate (%)</Label>
               <Input type="number" value={settings.defaultTaxRate} onChange={e => update("defaultTaxRate", e.target.value)} />
-              <p className="text-[10px] text-muted-foreground mt-1">Split as CGST + SGST (intra-state) or IGST (inter-state)</p>
+              <p className="text-[10px] text-muted-foreground mt-1">Split as CSales Tax + SSales Tax (intra-state) or ISales Tax (inter-state)</p>
             </div>
             <div className="p-3 rounded-lg bg-secondary/50 border border-border text-xs text-muted-foreground space-y-1">
               <p className="font-medium text-foreground">ℹ️ Tax Calculation</p>
-              <p>• GST is applied on (subtotal + packing + delivery - discount)</p>
-              <p>• For intra-state: CGST {parseFloat(settings.defaultTaxRate) / 2}% + SGST {parseFloat(settings.defaultTaxRate) / 2}%</p>
-              <p>• For inter-state: IGST {settings.defaultTaxRate}%</p>
+              <p>• Sales Tax is applied on (subtotal + packing + delivery - discount)</p>
+              <p>• For intra-state: CSales Tax {parseFloat(settings.defaultTaxRate) / 2}% + SSales Tax {parseFloat(settings.defaultTaxRate) / 2}%</p>
+              <p>• For inter-state: ISales Tax {settings.defaultTaxRate}%</p>
             </div>
           </CardContent>
         </Card>

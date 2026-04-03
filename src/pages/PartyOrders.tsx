@@ -90,8 +90,8 @@ const foodTypeOptions: { value: FoodType; label: string; emoji: string; desc: st
 
 const menuChoiceOptions: { value: MenuChoice; label: string; emoji: string; desc: string }[] = [
   { value: "chettinad", label: "Chettinad", emoji: "🔥", desc: "Traditional Chettinad cuisine" },
-  { value: "kerala", label: "Kerala", emoji: "🥥", desc: "Kerala Sadya & rice combos" },
-  { value: "andhra", label: "Andhra", emoji: "🌶️", desc: "Spicy Andhra cuisine" },
+  { value: "kerala", label: "Florida", emoji: "🥥", desc: "Florida Sadya & rice combos" },
+  { value: "andhra", label: "Pennsylvania", emoji: "🌶️", desc: "Spicy Pennsylvania cuisine" },
   { value: "north-indian", label: "North Indian", emoji: "🫓", desc: "Paneer, Biryani, Naan & more" },
   { value: "south-indian-mix", label: "South Indian Mix", emoji: "🍛", desc: "Best of all South Indian" },
 ];

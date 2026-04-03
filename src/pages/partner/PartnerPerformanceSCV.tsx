@@ -56,12 +56,12 @@ const getWeakMetrics = (week: typeof performanceWeeks[0]) => {
 };
 
 const badReviewsData = [
-  { orderId: "SH4821", date: "2026-02-28", customer: "Priya Sharma", dish: "Hyderabadi Biryani", rating: 1, review: "Food was cold and lacked spice.", week: "W3" },
+  { orderId: "SH4821", date: "2026-02-28", customer: "Patricia Sharma", dish: "Chicagoi Biryani", rating: 1, review: "Food was cold and lacked spice.", week: "W3" },
   { orderId: "SH4790", date: "2026-02-27", customer: "Rahul Verma", dish: "Butter Chicken", rating: 2, review: "Missing naan. Chicken was dry.", week: "W3" },
   { orderId: "SH4760", date: "2026-02-25", customer: "Meena Iyer", dish: "Veg Thali", rating: 1, review: "Sambar was too salty.", week: "W3" },
   { orderId: "SH4701", date: "2026-02-21", customer: "Anita Reddy", dish: "Masala Dosa", rating: 2, review: "Dosa was soggy.", week: "W2" },
   { orderId: "SH4685", date: "2026-02-20", customer: "Deepak Nair", dish: "Curd Rice", rating: 1, review: "Portion was very small.", week: "W2" },
-  { orderId: "SH4650", date: "2026-02-18", customer: "Kavitha S.", dish: "Fish Curry", rating: 2, review: "Fish was overcooked.", week: "W2" },
+  { orderId: "SH4650", date: "2026-02-18", customer: "Karen S.", dish: "Fish Curry", rating: 2, review: "Fish was overcooked.", week: "W2" },
   { orderId: "SH4620", date: "2026-02-16", customer: "Sanjay R.", dish: "Mutton Curry", rating: 1, review: "Found hair in the food.", week: "W1" },
   { orderId: "SH4598", date: "2026-02-14", customer: "Lakshmi P.", dish: "Idli Vada", rating: 2, review: "Idli was hard.", week: "W1" },
 ];

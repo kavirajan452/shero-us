@@ -126,12 +126,12 @@ interface CallLog {
 // ── Mock Partner Profiles ──
 const partnerProfiles: PartnerProfile[] = [
   {
-    name: "Sujatha M.", rmn: "+91 98765 43210", partnerId: "P001",
+    name: "Maria T.", rmn: "+1 (212) 555-0101", partnerId: "P001",
     kitchens: [
-      { skid: "SK-TN-001", name: "Sujatha's Chettinad Kitchen", type: "SHF", cuisine: "Chettinad", city: "Chennai", status: "active" },
-      { skid: "SK-TN-002", name: "Sujatha's Kerala Kitchen", type: "SHF", cuisine: "Kerala", city: "Chennai", status: "active" },
+      { skid: "SK-TN-001", name: "Sujatha's Chettinad Kitchen", type: "SHF", cuisine: "Chettinad", city: "New York", status: "active" },
+      { skid: "SK-TN-002", name: "Sujatha's Florida Kitchen", type: "SHF", cuisine: "Florida", city: "New York", status: "active" },
     ],
-    joinedDate: "Jan 2025", region: "South", manager: "Nithya P.", grade: "A", scvBiz: 87,
+    joinedDate: "Jan 2025", region: "Northeast", manager: "Nicole P.", grade: "A", scvBiz: 87,
     metrics: { attendance: 95, badRating: 3, delayedDelivery: 5, cancellations: 2, ratingReviews: 4.6 },
     salesTarget: 200, salesAchieved: 185, bankName: "HDFC Bank", accountNo: "****7842",
     pendingGrievances: 1, totalOrders: 1245, activeTickets: 1,
@@ -139,48 +139,48 @@ const partnerProfiles: PartnerProfile[] = [
       { sl: 1, date: "2026-03-01", week: "CW09", description: "Weekly sales earnings — 42 orders", debit: 0, credit: 11830, balance: 11830, type: "income" },
       { sl: 2, date: "2026-02-28", week: "CW09", description: "Penalty: Late delivery (18 min)", debit: 50, credit: 0, balance: 11780, type: "penalty" },
       { sl: 3, date: "2026-02-27", week: "CW09", description: "Penalty: Quality complaint (cold food)", debit: 100, credit: 0, balance: 11680, type: "penalty" },
-      { sl: 4, date: "2026-02-23", week: "CW08", description: "Weekly payout — NEFT to HDFC ****7842", debit: 10920, credit: 0, balance: 760, type: "payout" },
+      { sl: 4, date: "2026-02-23", week: "CW08", description: "Weekly payout — ACH to HDFC ****7842", debit: 10920, credit: 0, balance: 760, type: "payout" },
       { sl: 5, date: "2026-02-22", week: "CW08", description: "Weekly sales earnings — 38 orders", debit: 0, credit: 10920, balance: 11680, type: "income" },
-      { sl: 6, date: "2026-02-16", week: "CW07", description: "Weekly payout — NEFT to HDFC ****7842", debit: 9800, credit: 0, balance: 760, type: "payout" },
+      { sl: 6, date: "2026-02-16", week: "CW07", description: "Weekly payout — ACH to HDFC ****7842", debit: 9800, credit: 0, balance: 760, type: "payout" },
     ],
   },
   {
-    name: "Priya K.", rmn: "+91 87654 32109", partnerId: "P002",
+    name: "Patricia K.", rmn: "+1 (310) 555-0102", partnerId: "P002",
     kitchens: [{ skid: "SK-KA-001", name: "Priya's Home Kitchen", type: "HCF", cuisine: "North Indian", city: "Bengaluru", status: "active" }],
-    joinedDate: "Feb 2025", region: "South", manager: "Madhavi K.", grade: "B", scvBiz: 72,
+    joinedDate: "Feb 2025", region: "Northeast", manager: "Michelle K.", grade: "B", scvBiz: 72,
     metrics: { attendance: 88, badRating: 8, delayedDelivery: 12, cancellations: 5, ratingReviews: 4.1 },
     salesTarget: 150, salesAchieved: 120, bankName: "SBI", accountNo: "****3291",
     pendingGrievances: 1, totalOrders: 680, activeTickets: 1,
     ledger: [
       { sl: 1, date: "2026-03-01", week: "CW09", description: "Weekly sales earnings — 28 orders", debit: 0, credit: 8060, balance: 8060, type: "income" },
-      { sl: 2, date: "2026-02-23", week: "CW08", description: "Weekly payout — NEFT to SBI ****3291", debit: 7180, credit: 0, balance: 880, type: "payout" },
+      { sl: 2, date: "2026-02-23", week: "CW08", description: "Weekly payout — ACH to SBI ****3291", debit: 7180, credit: 0, balance: 880, type: "payout" },
       { sl: 3, date: "2026-02-22", week: "CW08", description: "Weekly sales earnings — 25 orders", debit: 0, credit: 7280, balance: 8060, type: "income" },
       { sl: 4, date: "2026-02-21", week: "CW08", description: "Penalty: Quality complaint — cold food", debit: 100, credit: 0, balance: 780, type: "penalty" },
     ],
   },
   {
-    name: "Lakshmi R.", rmn: "+91 76543 21098", partnerId: "P003",
-    kitchens: [{ skid: "SK-TS-001", name: "Lakshmi's Andhra Kitchen", type: "SHF", cuisine: "Andhra", city: "Hyderabad", status: "paused" }],
-    joinedDate: "Mar 2025", region: "South", manager: "Harish G.", grade: "A", scvBiz: 91,
+    name: "Laura R.", rmn: "+1 (312) 555-0103", partnerId: "P003",
+    kitchens: [{ skid: "SK-TS-001", name: "Lakshmi's Pennsylvania Kitchen", type: "SHF", cuisine: "Pennsylvania", city: "Chicago", status: "paused" }],
+    joinedDate: "Mar 2025", region: "Northeast", manager: "Henry G.", grade: "A", scvBiz: 91,
     metrics: { attendance: 92, badRating: 2, delayedDelivery: 3, cancellations: 1, ratingReviews: 4.8 },
     salesTarget: 250, salesAchieved: 248, bankName: "SBI", accountNo: "****6701",
     pendingGrievances: 0, totalOrders: 2100, activeTickets: 0,
     ledger: [
       { sl: 1, date: "2026-02-22", week: "CW08", description: "Weekly sales earnings — 55 orders", debit: 0, credit: 16120, balance: 16120, type: "income" },
       { sl: 2, date: "2026-02-24", week: "CW08", description: "Penalty: Partner cancellation", debit: 500, credit: 0, balance: 15620, type: "penalty" },
-      { sl: 3, date: "2026-02-23", week: "CW08", description: "Weekly payout — NEFT to SBI ****6701", debit: 15620, credit: 0, balance: 0, type: "payout" },
+      { sl: 3, date: "2026-02-23", week: "CW08", description: "Weekly payout — ACH to SBI ****6701", debit: 15620, credit: 0, balance: 0, type: "payout" },
     ],
   },
   {
-    name: "Meena S.", rmn: "+91 65432 10987", partnerId: "P004",
-    kitchens: [{ skid: "SK-MH-001", name: "Meena's Marathi Kitchen", type: "HCF", cuisine: "Marathi", city: "Mumbai", status: "active" }],
-    joinedDate: "Apr 2025", region: "West", manager: "Preeti J.", grade: "C", scvBiz: 58,
+    name: "Lisa S.", rmn: "+1 (713) 555-0104", partnerId: "P004",
+    kitchens: [{ skid: "SK-MH-001", name: "Meena's Marathi Kitchen", type: "HCF", cuisine: "Marathi", city: "Houston", status: "active" }],
+    joinedDate: "Apr 2025", region: "West", manager: "Patricia J.", grade: "C", scvBiz: 58,
     metrics: { attendance: 78, badRating: 15, delayedDelivery: 18, cancellations: 10, ratingReviews: 3.6 },
     salesTarget: 100, salesAchieved: 65, bankName: "ICICI", accountNo: "****4512",
     pendingGrievances: 1, totalOrders: 340, activeTickets: 0,
     ledger: [
       { sl: 1, date: "2026-03-01", week: "CW09", description: "Weekly sales earnings — 15 orders", debit: 0, credit: 4200, balance: 4200, type: "income" },
-      { sl: 2, date: "2026-02-23", week: "CW08", description: "Weekly payout — NEFT to ICICI ****4512", debit: 3800, credit: 0, balance: 400, type: "payout" },
+      { sl: 2, date: "2026-02-23", week: "CW08", description: "Weekly payout — ACH to ICICI ****4512", debit: 3800, credit: 0, balance: 400, type: "payout" },
     ],
   },
 ];
@@ -188,65 +188,65 @@ const partnerProfiles: PartnerProfile[] = [
 // ── Mock Orders ──
 const orderRecords: OrderRecord[] = [
   {
-    orderId: "ORD-4520", customerName: "Rahul S.", customerRMN: "+91 99887 77665",
-    partnerName: "Sujatha M.", partnerRMN: "+91 98765 43210", skid: "SK-TN-001",
+    orderId: "ORD-4520", customerName: "Rahul S.", customerRMN: "+1 99887 77665",
+    partnerName: "Maria T.", partnerRMN: "+1 (212) 555-0101", skid: "SK-TN-001",
     items: [{ name: "Chettinad Chicken Curry", qty: 1, price: 220 }, { name: "Sambar Rice", qty: 2, price: 150 }, { name: "Rasam", qty: 1, price: 60 }],
     status: "delivered", orderTime: "2026-03-03 12:30 PM", deliveryTime: "2026-03-03 1:15 PM",
     totalMRP: 580, totalPPP: 380, paymentStatus: "paid",
-    deliveryAddress: "Operational Zone — T. Nagar", notes: "",
+    deliveryAddress: "Operational Zone — SoHo", notes: "",
   },
   {
-    orderId: "ORD-4521", customerName: "Priya M.", customerRMN: "+91 88776 55443",
-    partnerName: "Priya K.", partnerRMN: "+91 87654 32109", skid: "SK-KA-001",
+    orderId: "ORD-4521", customerName: "Priya M.", customerRMN: "+1 (305) 555-0108",
+    partnerName: "Patricia K.", partnerRMN: "+1 (310) 555-0102", skid: "SK-KA-001",
     items: [{ name: "Paneer Butter Masala", qty: 1, price: 180 }, { name: "Butter Naan", qty: 4, price: 40 }],
     status: "preparing", orderTime: "2026-03-03 1:00 PM", deliveryTime: "—",
     totalMRP: 340, totalPPP: 220, paymentStatus: "paid",
     deliveryAddress: "Operational Zone — Koramangala", notes: "Customer reported wrong item concern",
   },
   {
-    orderId: "ORD-4522", customerName: "Karthik R.", customerRMN: "+91 77665 44332",
-    partnerName: "Sujatha M.", partnerRMN: "+91 98765 43210", skid: "SK-TN-002",
-    items: [{ name: "Kerala Fish Curry", qty: 1, price: 250 }, { name: "Appam", qty: 3, price: 30 }],
+    orderId: "ORD-4522", customerName: "Karthik R.", customerRMN: "+1 77665 44332",
+    partnerName: "Maria T.", partnerRMN: "+1 (212) 555-0101", skid: "SK-TN-002",
+    items: [{ name: "Florida Fish Curry", qty: 1, price: 250 }, { name: "Appam", qty: 3, price: 30 }],
     status: "accepted", orderTime: "2026-03-03 1:15 PM", deliveryTime: "—",
     totalMRP: 340, totalPPP: 225, paymentStatus: "paid",
     deliveryAddress: "Operational Zone — Anna Nagar", notes: "",
   },
   {
-    orderId: "ORD-4523", customerName: "Deepa N.", customerRMN: "+91 66554 33221",
-    partnerName: "Meena S.", partnerRMN: "+91 65432 10987", skid: "SK-MH-001",
+    orderId: "ORD-4523", customerName: "Deepa N.", customerRMN: "+1 66554 33221",
+    partnerName: "Lisa S.", partnerRMN: "+1 (713) 555-0104", skid: "SK-MH-001",
     items: [{ name: "Vada Pav", qty: 4, price: 50 }, { name: "Misal Pav", qty: 2, price: 120 }],
     status: "pending", orderTime: "2026-03-03 1:30 PM", deliveryTime: "—",
     totalMRP: 440, totalPPP: 290, paymentStatus: "pending",
     deliveryAddress: "Operational Zone — Andheri", notes: "",
   },
   {
-    orderId: "ORD-4519", customerName: "Arun K.", customerRMN: "+91 55443 22110",
-    partnerName: "Lakshmi R.", partnerRMN: "+91 76543 21098", skid: "SK-TS-001",
-    items: [{ name: "Hyderabadi Biryani", qty: 2, price: 280 }],
+    orderId: "ORD-4519", customerName: "Arun K.", customerRMN: "+1 (503) 555-0109",
+    partnerName: "Laura R.", partnerRMN: "+1 (312) 555-0103", skid: "SK-TS-001",
+    items: [{ name: "Chicagoi Biryani", qty: 2, price: 280 }],
     status: "cancelled", orderTime: "2026-03-02 7:00 PM", deliveryTime: "—",
     totalMRP: 560, totalPPP: 370, paymentStatus: "refunded",
-    deliveryAddress: "Operational Zone — Banjara Hills", notes: "Customer cancelled — partner started cooking",
+    deliveryAddress: "Operational Zone — Downtown", notes: "Customer cancelled — partner started cooking",
   },
 ];
 
 // ── Mock Tickets ──
 const mockTickets: Ticket[] = [
-  { id: "TKT-001", type: "profile_edit", priority: "medium", referenceId: "+91 98765 43210", referenceType: "partner", partnerId: "P001", partnerName: "Sujatha M.", partnerRMN: "+91 98765 43210", subject: "Update partner address — moved to T. Nagar", description: "Partner called to update kitchen address.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "KOBTL", status: "open", createdAt: "2026-03-02 10:15 AM", updatedAt: "2026-03-02 10:15 AM", comments: [] } as Ticket & { partnerId: string },
-  { id: "TKT-002", type: "order_edit", priority: "high", referenceId: "ORD-4521", referenceType: "order", partnerId: "P002", partnerName: "Priya K.", partnerRMN: "+91 87654 32109", subject: "Customer wants to add 2 Garlic Naan to order", description: "Customer Priya M. called to modify active order ORD-4521.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "OPS", status: "in_progress", createdAt: "2026-03-03 1:10 PM", updatedAt: "2026-03-03 1:15 PM", comments: [{ author: "Preethi V.", role: "SSC Executor", text: "Order is in preparing status. Contacted kitchen for modification.", at: "2026-03-03 1:15 PM" }] } as Ticket & { partnerId: string },
-  { id: "TKT-003", type: "refund_request", priority: "high", referenceId: "ORD-4519", referenceType: "order", partnerId: "P003", partnerName: "Lakshmi R.", partnerRMN: "+91 76543 21098", subject: "Customer requests full refund — cancelled after prep started", description: "Customer Arun K. wants refund. Partner had started cooking.", raisedBy: "Anitha S.", raisedByRole: "SSC Team Lead", assignedTo: "PPP", status: "open", createdAt: "2026-03-02 7:30 PM", updatedAt: "2026-03-02 7:30 PM", comments: [] } as Ticket & { partnerId: string },
-  { id: "TKT-004", type: "kitchen_add", priority: "medium", referenceId: "+91 98765 43210", referenceType: "partner", partnerId: "P001", partnerName: "Sujatha M.", partnerRMN: "+91 98765 43210", subject: "Request to add Tamil Nadu Veg kitchen", description: "Partner wants a 3rd kitchen — Tamil Veg.", raisedBy: "Gomathi R.", raisedByRole: "SSC Executor", assignedTo: "KOBTL", status: "open", createdAt: "2026-03-01 4:00 PM", updatedAt: "2026-03-01 4:00 PM", comments: [] } as Ticket & { partnerId: string },
-  { id: "TKT-005", type: "payment_query", priority: "low", referenceId: "+91 65432 10987", referenceType: "partner", partnerId: "P004", partnerName: "Meena S.", partnerRMN: "+91 65432 10987", subject: "Partner asking about delayed payout for CW08", description: "Meena S. called about CW08 payout not received.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "PPP", status: "resolved", createdAt: "2026-02-27 3:00 PM", updatedAt: "2026-02-28 10:00 AM", comments: [{ author: "Vijay K.", role: "PPP TL", text: "Payout was delayed due to bank holiday. Processed now.", at: "2026-02-28 10:00 AM" }] } as Ticket & { partnerId: string },
-  { id: "TKT-006", type: "complaint", priority: "high", referenceId: "+91 88776 55443", referenceType: "customer", partnerId: "", partnerName: "", partnerRMN: "", subject: "Customer Priya M. — wrong item received in ORD-4521", description: "Customer says ordered Paneer but got Dal Makhani.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "OPS", status: "in_progress", createdAt: "2026-03-03 1:30 PM", updatedAt: "2026-03-03 1:35 PM", comments: [{ author: "Preethi V.", role: "SSC Executor", text: "Contacted kitchen. They confirm wrong item packed. Replacement being prepared.", at: "2026-03-03 1:35 PM" }] } as Ticket & { partnerId: string },
+  { id: "TKT-001", type: "profile_edit", priority: "medium", referenceId: "+1 (212) 555-0101", referenceType: "partner", partnerId: "P001", partnerName: "Maria T.", partnerRMN: "+1 (212) 555-0101", subject: "Update partner address — moved to SoHo", description: "Partner called to update kitchen address.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "KOBTL", status: "open", createdAt: "2026-03-02 10:15 AM", updatedAt: "2026-03-02 10:15 AM", comments: [] } as Ticket & { partnerId: string },
+  { id: "TKT-002", type: "order_edit", priority: "high", referenceId: "ORD-4521", referenceType: "order", partnerId: "P002", partnerName: "Patricia K.", partnerRMN: "+1 (310) 555-0102", subject: "Customer wants to add 2 Garlic Naan to order", description: "Customer Priya M. called to modify active order ORD-4521.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "OPS", status: "in_progress", createdAt: "2026-03-03 1:10 PM", updatedAt: "2026-03-03 1:15 PM", comments: [{ author: "Preethi V.", role: "SSC Executor", text: "Order is in preparing status. Contacted kitchen for modification.", at: "2026-03-03 1:15 PM" }] } as Ticket & { partnerId: string },
+  { id: "TKT-003", type: "refund_request", priority: "high", referenceId: "ORD-4519", referenceType: "order", partnerId: "P003", partnerName: "Laura R.", partnerRMN: "+1 (312) 555-0103", subject: "Customer requests full refund — cancelled after prep started", description: "Customer Arun K. wants refund. Partner had started cooking.", raisedBy: "Anitha S.", raisedByRole: "SSC Team Lead", assignedTo: "PPP", status: "open", createdAt: "2026-03-02 7:30 PM", updatedAt: "2026-03-02 7:30 PM", comments: [] } as Ticket & { partnerId: string },
+  { id: "TKT-004", type: "kitchen_add", priority: "medium", referenceId: "+1 (212) 555-0101", referenceType: "partner", partnerId: "P001", partnerName: "Maria T.", partnerRMN: "+1 (212) 555-0101", subject: "Request to add New York Veg kitchen", description: "Partner wants a 3rd kitchen — Tamil Veg.", raisedBy: "Gomathi R.", raisedByRole: "SSC Executor", assignedTo: "KOBTL", status: "open", createdAt: "2026-03-01 4:00 PM", updatedAt: "2026-03-01 4:00 PM", comments: [] } as Ticket & { partnerId: string },
+  { id: "TKT-005", type: "payment_query", priority: "low", referenceId: "+1 (713) 555-0104", referenceType: "partner", partnerId: "P004", partnerName: "Lisa S.", partnerRMN: "+1 (713) 555-0104", subject: "Partner asking about delayed payout for CW08", description: "Lisa S. called about CW08 payout not received.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "PPP", status: "resolved", createdAt: "2026-02-27 3:00 PM", updatedAt: "2026-02-28 10:00 AM", comments: [{ author: "Vijay K.", role: "PPP TL", text: "Payout was delayed due to bank holiday. Processed now.", at: "2026-02-28 10:00 AM" }] } as Ticket & { partnerId: string },
+  { id: "TKT-006", type: "complaint", priority: "high", referenceId: "+1 (305) 555-0108", referenceType: "customer", partnerId: "", partnerName: "", partnerRMN: "", subject: "Customer Priya M. — wrong item received in ORD-4521", description: "Customer says ordered Paneer but got Dal Makhani.", raisedBy: "Preethi V.", raisedByRole: "SSC Executor", assignedTo: "OPS", status: "in_progress", createdAt: "2026-03-03 1:30 PM", updatedAt: "2026-03-03 1:35 PM", comments: [{ author: "Preethi V.", role: "SSC Executor", text: "Contacted kitchen. They confirm wrong item packed. Replacement being prepared.", at: "2026-03-03 1:35 PM" }] } as Ticket & { partnerId: string },
 ];
 
 // ── Mock Call Logs ──
 const callLogs: CallLog[] = [
-  { id: "CL-001", callerType: "partner", callerName: "Sujatha M.", callerRMN: "+91 98765 43210", type: "inbound", category: "Order Query", duration: "4:32", agent: "Preethi V.", outcome: "resolved", time: "10:15 AM", notes: "Partner asked about pending order count for today." },
-  { id: "CL-002", callerType: "partner", callerName: "Meena S.", callerRMN: "+91 65432 10987", type: "inbound", category: "Payment Query", duration: "6:10", agent: "Gomathi R.", outcome: "ticket_raised", linkedTicket: "TKT-005", time: "10:45 AM", notes: "Partner inquiring about delayed payout. Ticket raised." },
-  { id: "CL-003", callerType: "customer", callerName: "Rahul S.", callerRMN: "+91 99887 77665", type: "inbound", category: "Delivery Status", duration: "2:15", agent: "Preethi V.", outcome: "resolved", time: "11:00 AM", notes: "Customer tracking ORD-4520. Confirmed delivered." },
-  { id: "CL-004", callerType: "customer", callerName: "Priya M.", callerRMN: "+91 88776 55443", type: "inbound", category: "Wrong Item", duration: "5:40", agent: "Preethi V.", outcome: "ticket_raised", linkedTicket: "TKT-006", time: "1:30 PM", notes: "Customer received wrong item. Ticket + complaint raised." },
-  { id: "CL-005", callerType: "partner", callerName: "Priya K.", callerRMN: "+91 87654 32109", type: "outbound", category: "Kitchen Follow-up", duration: "3:20", agent: "Anitha S.", outcome: "resolved", time: "2:00 PM", notes: "Follow-up on quality complaint. Partner acknowledged." },
-  { id: "CL-006", callerType: "customer", callerName: "Deepa N.", callerRMN: "+91 66554 33221", type: "inbound", category: "Order Edit", duration: "3:50", agent: "Gomathi R.", outcome: "ticket_raised", linkedTicket: "TKT-002", time: "2:30 PM", notes: "Customer wants to add items. Ticket raised for order modification." },
+  { id: "CL-001", callerType: "partner", callerName: "Maria T.", callerRMN: "+1 (212) 555-0101", type: "inbound", category: "Order Query", duration: "4:32", agent: "Preethi V.", outcome: "resolved", time: "10:15 AM", notes: "Partner asked about pending order count for today." },
+  { id: "CL-002", callerType: "partner", callerName: "Lisa S.", callerRMN: "+1 (713) 555-0104", type: "inbound", category: "Payment Query", duration: "6:10", agent: "Gomathi R.", outcome: "ticket_raised", linkedTicket: "TKT-005", time: "10:45 AM", notes: "Partner inquiring about delayed payout. Ticket raised." },
+  { id: "CL-003", callerType: "customer", callerName: "Rahul S.", callerRMN: "+1 99887 77665", type: "inbound", category: "Delivery Status", duration: "2:15", agent: "Preethi V.", outcome: "resolved", time: "11:00 AM", notes: "Customer tracking ORD-4520. Confirmed delivered." },
+  { id: "CL-004", callerType: "customer", callerName: "Priya M.", callerRMN: "+1 (305) 555-0108", type: "inbound", category: "Wrong Item", duration: "5:40", agent: "Preethi V.", outcome: "ticket_raised", linkedTicket: "TKT-006", time: "1:30 PM", notes: "Customer received wrong item. Ticket + complaint raised." },
+  { id: "CL-005", callerType: "partner", callerName: "Patricia K.", callerRMN: "+1 (310) 555-0102", type: "outbound", category: "Kitchen Follow-up", duration: "3:20", agent: "Anitha S.", outcome: "resolved", time: "2:00 PM", notes: "Follow-up on quality complaint. Partner acknowledged." },
+  { id: "CL-006", callerType: "customer", callerName: "Deepa N.", callerRMN: "+1 66554 33221", type: "inbound", category: "Order Edit", duration: "3:50", agent: "Gomathi R.", outcome: "ticket_raised", linkedTicket: "TKT-002", time: "2:30 PM", notes: "Customer wants to add items. Ticket raised for order modification." },
 ];
 
 // ── Ticket Type Config ──
@@ -1175,7 +1175,7 @@ export default function AdminTickets() {
                     { agent: "Preethi V.", calls: 128, resolved: 115, csat: 4.6 },
                     { agent: "Anitha S.", calls: 112, resolved: 98, csat: 4.4 },
                     { agent: "Gomathi R.", calls: 96, resolved: 82, csat: 4.2 },
-                    { agent: "Rekha M.", calls: 45, resolved: 42, csat: 4.7 },
+                    { agent: "Rachel M.", calls: 45, resolved: 42, csat: 4.7 },
                   ].sort((a, b) => b.csat - a.csat).map((a, i) => (
                     <div key={a.agent} className="flex items-center justify-between p-2.5 rounded-lg bg-muted/30">
                       <div className="flex items-center gap-2">

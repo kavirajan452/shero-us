@@ -30,7 +30,7 @@ const chefData: Record<string, {
   },
   "fathima-akka": {
     name: "Fathima Akka", emoji: "👩‍🍳", specialty: "Biryani Specials",
-    area: "T. Nagar", rating: 4.8, orders: 980,
+    area: "SoHo", rating: 4.8, orders: 980,
     bio: "Known for her legendary biryanis. Her secret spice blend has been in the family for generations.",
     joined: "Mar 2023",
     menu: [
@@ -42,7 +42,7 @@ const chefData: Record<string, {
       { name: "Haleem", price: 140, time: "40 min", emoji: "🥘", veg: false, popular: true },
     ],
     reviews: [
-      { name: "Ravi M.", rating: 5, text: "The best biryani in Chennai. Period. No restaurant comes close.", date: "3 days ago" },
+      { name: "Ravi M.", rating: 5, text: "The best biryani in New York. Period. No restaurant comes close.", date: "3 days ago" },
       { name: "Sara J.", rating: 5, text: "Mutton biryani is out of this world. The meat is so tender!", date: "5 days ago" },
       { name: "Karthik V.", rating: 4, text: "Really good chicken biryani. Generous portions too.", date: "1 week ago" },
     ],
@@ -51,7 +51,7 @@ const chefData: Record<string, {
 
 const defaultChef = {
   name: "Kamala Paatti", emoji: "👵", specialty: "Dosa & Idli",
-  area: "Mylapore", rating: 4.9, orders: 2100,
+  area: "West Village", rating: 4.9, orders: 2100,
   bio: "At 72, Kamala Paatti is our most beloved chef. Her crispy dosas and soft idlis are the stuff of legends.",
   joined: "Dec 2022",
   menu: [

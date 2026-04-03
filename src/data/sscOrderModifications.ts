@@ -20,10 +20,10 @@ let _modifications: SSCOrderModification[] = [
   {
     id: "OM-001",
     orderId: "ORD-1001",
-    customerName: "Ramesh K.",
-    customerPhone: "+91 98765 11111",
+    customerName: "Robert K.",
+    customerPhone: "+1 98765 11111",
     kitchenName: "Shero – Chettinad (Veg)",
-    partnerName: "Sujatha M.",
+    partnerName: "Maria T.",
     modificationType: "change_qty",
     description: "Customer wants to increase Sambar qty from 2 to 3",
     status: "new",

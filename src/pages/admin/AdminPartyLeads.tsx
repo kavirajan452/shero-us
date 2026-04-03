@@ -373,7 +373,7 @@ const AdminPartyLeads = () => {
                       <a href={`https://wa.me/91${lead.phone}?text=Hi%20${encodeURIComponent(lead.name)}%2C%20regarding%20your%20Shero%20party%20order...`} target="_blank" rel="noopener noreferrer" className="text-[10px] px-2.5 py-1 rounded-full bg-green-100 text-green-800 font-medium hover:bg-green-200 transition-colors">
                         💬 WhatsApp
                       </a>
-                      <a href={`tel:+91${lead.phone}`} className="text-[10px] px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 font-medium hover:bg-blue-200 transition-colors">
+                      <a href={`tel:+1${lead.phone}`} className="text-[10px] px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 font-medium hover:bg-blue-200 transition-colors">
                         📞 Call
                       </a>
                     </div>

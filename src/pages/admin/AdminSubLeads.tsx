@@ -50,16 +50,16 @@ const sourceLabels: Record<LeadSource, string> = {
 };
 
 const mockLeads: SubscriptionLead[] = [
-  { id: "SL001", name: "Kavitha Rajan", phone: "9876500001", location: "HITEC City", source: "marketing", status: "new", createdAt: "2026-03-17", score: 72, savedPlan: "Chettinad Veg Thali" },
-  { id: "SL002", name: "Arjun Patel", phone: "9876500002", location: "Madhapur", source: "referral", status: "contacted", createdAt: "2026-03-16", lastContactedAt: "2026-03-17", assignedTo: "Priya (TL)", score: 85, savedPlan: "Andhra Spice Box" },
-  { id: "SL003", name: "Divya Menon", phone: "9876500003", location: "Jubilee Hills", source: "social_media", status: "interested", createdAt: "2026-03-15", lastContactedAt: "2026-03-16", assignedTo: "Anitha (Exec)", score: 90, savedPlan: "Kerala Sadya Box", notes: "Wants trial first" },
+  { id: "SL001", name: "Kavitha Rajan", phone: "987660603", location: "Financial District", source: "marketing", status: "new", createdAt: "2026-03-17", score: 72, savedPlan: "Chettinad Veg Thali" },
+  { id: "SL002", name: "Arjun Patel", phone: "9876500002", location: "Madhapur", source: "referral", status: "contacted", createdAt: "2026-03-16", lastContactedAt: "2026-03-17", assignedTo: "Priya (TL)", score: 85, savedPlan: "Pennsylvania Spice Box" },
+  { id: "SL003", name: "Divya Menon", phone: "9876500003", location: "Uptown", source: "social_media", status: "interested", createdAt: "2026-03-15", lastContactedAt: "2026-03-16", assignedTo: "Anitha (Exec)", score: 90, savedPlan: "Florida Sadya Box", notes: "Wants trial first" },
   { id: "SL004", name: "Suresh Kumar", phone: "9876500004", location: "Gachibowli", source: "organic", status: "trial_started", createdAt: "2026-03-12", lastContactedAt: "2026-03-14", assignedTo: "Priya (TL)", score: 95 },
-  { id: "SL005", name: "Fatima Begum", phone: "9876500005", location: "Kondapur", source: "partner", status: "converted", createdAt: "2026-03-08", lastContactedAt: "2026-03-12", assignedTo: "Anitha (Exec)", score: 100 },
+  { id: "SL005", name: "Fatima Brown", phone: "9876500005", location: "Kondapur", source: "partner", status: "converted", createdAt: "2026-03-08", lastContactedAt: "2026-03-12", assignedTo: "Anitha (Exec)", score: 100 },
   { id: "SL006", name: "Ravi Teja", phone: "9876500006", location: "Kukatpally", source: "marketing", status: "contacted", createdAt: "2026-03-15", lastContactedAt: "2026-03-16", assignedTo: "Priya (TL)", score: 60 },
   { id: "SL007", name: "Nandini Reddy", phone: "9876500007", location: "Nallagandla", source: "direct", status: "lost", createdAt: "2026-03-10", lastContactedAt: "2026-03-13", notes: "Budget constraints", score: 30 },
   { id: "SL008", name: "Prakash Rao", phone: "9876500008", location: "Manikonda", source: "social_media", status: "new", createdAt: "2026-03-17", score: 65 },
-  { id: "SL009", name: "Snehalatha K", phone: "9876500009", location: "Banjara Hills", source: "referral", status: "interested", createdAt: "2026-03-14", assignedTo: "Priya (TL)", score: 88, savedPlan: "South Indian Breakfast" },
-  { id: "SL010", name: "Mohammed Irfan", phone: "9876500010", location: "HITEC City", source: "marketing", status: "trial_started", createdAt: "2026-03-11", assignedTo: "Anitha (Exec)", score: 92, savedPlan: "Chettinad Non-Veg" },
+  { id: "SL009", name: "Snehalatha K", phone: "9876500009", location: "Downtown", source: "referral", status: "interested", createdAt: "2026-03-14", assignedTo: "Priya (TL)", score: 88, savedPlan: "South Indian Breakfast" },
+  { id: "SL010", name: "Mohammed Irfan", phone: "9876500010", location: "Financial District", source: "marketing", status: "trial_started", createdAt: "2026-03-11", assignedTo: "Anitha (Exec)", score: 92, savedPlan: "Chettinad Non-Veg" },
   { id: "SL011", name: "Preethi Sagar", phone: "9876500011", location: "Madhapur", source: "organic", status: "new", createdAt: "2026-03-17", score: 55 },
   { id: "SL012", name: "Venkat Ramana", phone: "9876500012", location: "Kondapur", source: "marketing", status: "lost", createdAt: "2026-03-05", lastContactedAt: "2026-03-09", notes: "Relocated", score: 15 },
 ];

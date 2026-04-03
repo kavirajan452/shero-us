@@ -268,7 +268,7 @@ const AdminManualOrder = () => {
                       ))}
                       <div className="border-t border-border pt-2 space-y-1 text-sm">
                         <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>${subtotal}</span></div>
-                        <div className="flex justify-between"><span className="text-muted-foreground">GST (5%)</span><span>${tax}</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">Sales Tax</span><span>${tax}</span></div>
                         <div className="flex justify-between font-bold text-base pt-1 border-t border-border"><span>Total</span><span>${total}</span></div>
                       </div>
                     </>

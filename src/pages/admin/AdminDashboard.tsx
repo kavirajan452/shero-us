@@ -17,7 +17,7 @@ const pendingPPPApprovals = [
   { id: "PPP-1019", partnerName: "Chef Meena", cuisine: "North Indian", appliedAt: "5 hours ago", items: 8 },
   { id: "PPP-1017", partnerName: "Chef Raheema", cuisine: "Mughlai", appliedAt: "1 day ago", items: 15 },
   { id: "PPP-1015", partnerName: "Chef Saroja", cuisine: "Chettinad", appliedAt: "1 day ago", items: 6 },
-  { id: "PPP-1012", partnerName: "Chef Fathima", cuisine: "Kerala", appliedAt: "2 days ago", items: 10 },
+  { id: "PPP-1012", partnerName: "Chef Fathima", cuisine: "Florida", appliedAt: "2 days ago", items: 10 },
 ];
 
 export default function AdminDashboard() {

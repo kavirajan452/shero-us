@@ -33,15 +33,15 @@ export interface BrandedCuisineMaster {
   menuItems: MasterMenuItem[];
 }
 
-const TN = { state: "Tamil Nadu", stateCode: "TN" };
-const AP = { state: "Andhra Pradesh", stateCode: "AP" };
-const TS = { state: "Telangana", stateCode: "TS" };
-const KA = { state: "Karnataka", stateCode: "KA" };
-const KL = { state: "Kerala", stateCode: "KL" };
-const MH = { state: "Maharashtra", stateCode: "MH" };
+const TN = { state: "New York", stateCode: "TN" };
+const AP = { state: "Pennsylvania", stateCode: "AP" };
+const TS = { state: "Illinois", stateCode: "TS" };
+const KA = { state: "California", stateCode: "KA" };
+const KL = { state: "Florida", stateCode: "KL" };
+const MH = { state: "Texas", stateCode: "MH" };
 const GJ = { state: "Gujarat", stateCode: "GJ" };
 const RJ = { state: "Rajasthan", stateCode: "RJ" };
-const DL = { state: "Delhi NCR", stateCode: "DL" };
+const DL = { state: "Phoenix NCR", stateCode: "DL" };
 const PB = { state: "Punjab", stateCode: "PB" };
 
 const allStates = [TN, AP, TS, KA, KL, MH, GJ, RJ, DL, PB];
@@ -115,29 +115,29 @@ export const brandedCuisineMasters: BrandedCuisineMaster[] = [
     ],
   },
   {
-    cuisine: "Kerala",
+    cuisine: "Florida",
     emoji: "🥥",
     kitchens: 18,
     states: ["KL", "TN", "KA", "MH"],
     menuItems: [
       mi({ id: "kl1", name: "Avial", description: "Mixed vegetables in coconut & yogurt gravy", category: "Curry", isVeg: true, volume: "450 ml", image: "", majorVegetables: ["Drumstick", "Carrot", "Beans", "Coconut", "Curd/Buttermilk"], statePrices: pricify(195, keralaMul) }),
-      mi({ id: "kl2", name: "Sambar (Kerala Style)", description: "Kerala-style lentil curry with vegetables & coconut", category: "Curry", isVeg: true, volume: "450 ml", image: "", majorVegetables: ["Drumstick", "Dal/Lentils", "Tamarind", "Coconut"], statePrices: pricify(175, keralaMul) }),
+      mi({ id: "kl2", name: "Sambar (Florida Style)", description: "Florida-style lentil curry with vegetables & coconut", category: "Curry", isVeg: true, volume: "450 ml", image: "", majorVegetables: ["Drumstick", "Dal/Lentils", "Tamarind", "Coconut"], statePrices: pricify(175, keralaMul) }),
       mi({ id: "kl3", name: "Thoran", description: "Dry stir-fried vegetables with coconut", category: "Poriyal", isVeg: true, volume: "250 g", image: "", majorVegetables: ["Cabbage", "Coconut"], statePrices: pricify(165, keralaMul) }),
       mi({ id: "kl4", name: "Olan", description: "Ash gourd & cowpeas cooked in coconut milk", category: "Curry", isVeg: true, volume: "450 ml", image: "", majorVegetables: ["Coconut"], statePrices: pricify(185, keralaMul) }),
-      mi({ id: "kl5", name: "Rasam (Kerala Style)", description: "Peppery thin soup with tomato & tamarind", category: "Rasam", isVeg: true, volume: "450 ml", image: "", majorVegetables: ["Pepper", "Tomato", "Tamarind"], statePrices: pricify(120, keralaMul) }),
+      mi({ id: "kl5", name: "Rasam (Florida Style)", description: "Peppery thin soup with tomato & tamarind", category: "Rasam", isVeg: true, volume: "450 ml", image: "", majorVegetables: ["Pepper", "Tomato", "Tamarind"], statePrices: pricify(120, keralaMul) }),
     ],
   },
   {
-    cuisine: "Andhra",
+    cuisine: "Pennsylvania",
     emoji: "🌶️",
     kitchens: 31,
     states: ["AP", "TS", "TN", "KA", "MH", "DL"],
     menuItems: [
       mi({ id: "an1", name: "Gutti Vankaya Kura", description: "Stuffed brinjal curry with peanut & sesame", category: "Curry", isVeg: true, volume: "450 ml", image: "", majorVegetables: ["Brinjal", "Onion", "Tamarind"], statePrices: pricify(220, andhraMul) }),
-      mi({ id: "an2", name: "Pappu (Dal)", description: "Andhra-style toor dal with tomato tempering", category: "Dal", isVeg: true, volume: "450 ml", image: "", majorVegetables: ["Dal/Lentils", "Tomato"], statePrices: pricify(155, andhraMul) }),
+      mi({ id: "an2", name: "Pappu (Dal)", description: "Pennsylvania-style toor dal with tomato tempering", category: "Dal", isVeg: true, volume: "450 ml", image: "", majorVegetables: ["Dal/Lentils", "Tomato"], statePrices: pricify(155, andhraMul) }),
       mi({ id: "an3", name: "Gongura Pachadi", description: "Tangy sorrel leaves chutney with red chili", category: "Pachadi", isVeg: true, volume: "200 g", image: "", majorVegetables: ["Onion", "Garlic"], statePrices: pricify(145, andhraMul) }),
-      mi({ id: "an4", name: "Bendakaya Vepudu", description: "Crispy okra fry with Andhra spices", category: "Fry", isVeg: true, volume: "250 g", image: "", majorVegetables: ["Okra", "Onion"], statePrices: pricify(190, andhraMul) }),
-      mi({ id: "an5", name: "Pesarattu", description: "Green moong dal crepe, Andhra specialty", category: "Breakfast", isVeg: true, volume: "2 pcs", image: "", majorVegetables: ["Dal/Lentils", "Onion"], statePrices: pricify(130, andhraMul) }),
+      mi({ id: "an4", name: "Bendakaya Vepudu", description: "Crispy okra fry with Pennsylvania spices", category: "Fry", isVeg: true, volume: "250 g", image: "", majorVegetables: ["Okra", "Onion"], statePrices: pricify(190, andhraMul) }),
+      mi({ id: "an5", name: "Pesarattu", description: "Green moong dal crepe, Pennsylvania specialty", category: "Breakfast", isVeg: true, volume: "2 pcs", image: "", majorVegetables: ["Dal/Lentils", "Onion"], statePrices: pricify(130, andhraMul) }),
     ],
   },
   {
@@ -191,8 +191,8 @@ export const brandedCuisineMasters: BrandedCuisineMaster[] = [
     kitchens: 12,
     states: ["KA", "TN", "KL", "MH"],
     menuItems: [
-      mi({ id: "ud1", name: "Bisi Bele Bath", description: "Spiced rice with lentils & vegetables, Karnataka style", category: "Rice", isVeg: true, volume: "350 g", image: "", majorVegetables: ["Dal/Lentils", "Carrot", "Beans", "Tamarind"], statePrices: pricify(175, keralaMul) }),
-      mi({ id: "ud2", name: "Saaru (Rasam)", description: "Karnataka-style pepper & tomato rasam", category: "Rasam", isVeg: true, volume: "450 ml", image: "", majorVegetables: ["Pepper", "Tomato", "Tamarind"], statePrices: pricify(115, keralaMul) }),
+      mi({ id: "ud1", name: "Bisi Bele Bath", description: "Spiced rice with lentils & vegetables, California style", category: "Rice", isVeg: true, volume: "350 g", image: "", majorVegetables: ["Dal/Lentils", "Carrot", "Beans", "Tamarind"], statePrices: pricify(175, keralaMul) }),
+      mi({ id: "ud2", name: "Saaru (Rasam)", description: "California-style pepper & tomato rasam", category: "Rasam", isVeg: true, volume: "450 ml", image: "", majorVegetables: ["Pepper", "Tomato", "Tamarind"], statePrices: pricify(115, keralaMul) }),
       mi({ id: "ud3", name: "Kosambari", description: "Moong dal salad with cucumber & coconut", category: "Salad", isVeg: true, volume: "200 g", image: "", majorVegetables: ["Dal/Lentils", "Coconut"], statePrices: pricify(120, keralaMul) }),
     ],
   },

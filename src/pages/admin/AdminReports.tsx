@@ -68,11 +68,11 @@ const verticals = [
 
 // ── State-wise Data ──
 const stateWiseData = [
-  { state: "Tamil Nadu", code: "TN", partners: 68, kitchens: 82, orders: 520, revenue: 542000, leads: 45, growth: 18.5 },
-  { state: "Karnataka", code: "KA", partners: 52, kitchens: 60, orders: 380, revenue: 398000, leads: 32, growth: 14.2 },
-  { state: "Telangana", code: "TS", partners: 38, kitchens: 44, orders: 285, revenue: 295000, leads: 28, growth: 16.1 },
-  { state: "Maharashtra", code: "MH", partners: 42, kitchens: 48, orders: 310, revenue: 320000, leads: 35, growth: 11.8 },
-  { state: "Delhi NCR", code: "DL", partners: 28, kitchens: 30, orders: 198, revenue: 185000, leads: 22, growth: 21.3 },
+  { state: "New York", code: "TN", partners: 68, kitchens: 82, orders: 520, revenue: 542000, leads: 45, growth: 18.5 },
+  { state: "California", code: "KA", partners: 52, kitchens: 60, orders: 380, revenue: 398000, leads: 32, growth: 14.2 },
+  { state: "Illinois", code: "TS", partners: 38, kitchens: 44, orders: 285, revenue: 295000, leads: 28, growth: 16.1 },
+  { state: "Texas", code: "MH", partners: 42, kitchens: 48, orders: 310, revenue: 320000, leads: 35, growth: 11.8 },
+  { state: "Phoenix NCR", code: "DL", partners: 28, kitchens: 30, orders: 198, revenue: 185000, leads: 22, growth: 21.3 },
   { state: "Uttar Pradesh", code: "UP", partners: 20, kitchens: 22, orders: 149, revenue: 102500, leads: 18, growth: 8.4 },
 ];
 
@@ -87,38 +87,38 @@ const leadFunnel = [
 
 // ── Top Partners ──
 const topPartners = [
-  { name: "Sujatha M.", rmn: "+91 98765 43210", city: "Chennai", state: "TN", stream: "SHF", cuisine: "Chettinad", orders: 142, revenue: 124500, rating: 4.8, skid: "SK-TN-001" },
-  { name: "Lakshmi R.", rmn: "+91 76543 21098", city: "Hyderabad", state: "TS", stream: "SHF", cuisine: "Andhra", orders: 118, revenue: 98200, rating: 4.7, skid: "SK-TS-001" },
-  { name: "Priya K.", rmn: "+91 87654 32109", city: "Bengaluru", state: "KA", stream: "HCF", cuisine: "North Indian", orders: 96, revenue: 82400, rating: 4.5, skid: "SK-KA-001" },
-  { name: "Meena S.", rmn: "+91 65432 10987", city: "Mumbai", state: "MH", stream: "HCF", cuisine: "Gujarati", orders: 84, revenue: 71800, rating: 4.6, skid: "SK-MH-001" },
-  { name: "Anita D.", rmn: "+91 54321 09876", city: "Delhi", state: "DL", stream: "SHF", cuisine: "Kerala", orders: 78, revenue: 68500, rating: 4.9, skid: "SK-DL-001" },
-  { name: "Padma V.", rmn: "+91 71234 56789", city: "Nagpur", state: "MH", stream: "HCF", cuisine: "Marathi", orders: 72, revenue: 62000, rating: 4.4, skid: "SK-MH-002" },
-  { name: "Saroja T.", rmn: "+91 61234 56789", city: "Coimbatore", state: "TN", stream: "SHF", cuisine: "Chettinad", orders: 65, revenue: 58200, rating: 4.7, skid: "SK-TN-002" },
-  { name: "Kamala R.", rmn: "+91 51234 56789", city: "Lucknow", state: "UP", stream: "HCF", cuisine: "Mughlai", orders: 58, revenue: 49500, rating: 4.3, skid: "SK-UP-001" },
+  { name: "Maria T.", rmn: "+1 (212) 555-0101", city: "New York", state: "TN", stream: "SHF", cuisine: "Chettinad", orders: 142, revenue: 124500, rating: 4.8, skid: "SK-TN-001" },
+  { name: "Laura R.", rmn: "+1 (312) 555-0103", city: "Chicago", state: "TS", stream: "SHF", cuisine: "Pennsylvania", orders: 118, revenue: 98200, rating: 4.7, skid: "SK-TS-001" },
+  { name: "Patricia K.", rmn: "+1 (310) 555-0102", city: "Bengaluru", state: "KA", stream: "HCF", cuisine: "North Indian", orders: 96, revenue: 82400, rating: 4.5, skid: "SK-KA-001" },
+  { name: "Lisa S.", rmn: "+1 (713) 555-0104", city: "Houston", state: "MH", stream: "HCF", cuisine: "Gujarati", orders: 84, revenue: 71800, rating: 4.6, skid: "SK-MH-001" },
+  { name: "Anita D.", rmn: "+1 (602) 555-0105", city: "Phoenix", state: "DL", stream: "SHF", cuisine: "Florida", orders: 78, revenue: 68500, rating: 4.9, skid: "SK-DL-001" },
+  { name: "Paula V.", rmn: "+1 (312) 555-0116", city: "Nagpur", state: "MH", stream: "HCF", cuisine: "Marathi", orders: 72, revenue: 62000, rating: 4.4, skid: "SK-MH-002" },
+  { name: "Sharon T.", rmn: "+1 (646) 555-0114", city: "San Jose", state: "TN", stream: "SHF", cuisine: "Chettinad", orders: 65, revenue: 58200, rating: 4.7, skid: "SK-TN-002" },
+  { name: "Kim R.", rmn: "+1 (713) 555-0117", city: "Lucknow", state: "UP", stream: "HCF", cuisine: "Mughlai", orders: 58, revenue: 49500, rating: 4.3, skid: "SK-UP-001" },
 ];
 
 // ── Recent Orders ──
 const recentOrders = [
-  { id: "SH-5024", customer: "C-***812", partner: "Sujatha M.", skid: "SK-TN-001", items: 3, amount: 850, status: "delivered", time: "12:45 PM", date: "02 Mar" },
-  { id: "SH-5023", customer: "C-***445", partner: "Lakshmi R.", skid: "SK-TS-001", items: 5, amount: 1420, status: "preparing", time: "12:30 PM", date: "02 Mar" },
-  { id: "SH-5022", customer: "C-***678", partner: "Priya K.", skid: "SK-KA-001", items: 2, amount: 580, status: "pending_acceptance", time: "12:15 PM", date: "02 Mar" },
-  { id: "SH-5021", customer: "C-***901", partner: "Meena S.", skid: "SK-MH-001", items: 4, amount: 1100, status: "delivered", time: "11:58 AM", date: "02 Mar" },
+  { id: "SH-5024", customer: "C-***812", partner: "Maria T.", skid: "SK-TN-001", items: 3, amount: 850, status: "delivered", time: "12:45 PM", date: "02 Mar" },
+  { id: "SH-5023", customer: "C-***445", partner: "Laura R.", skid: "SK-TS-001", items: 5, amount: 1420, status: "preparing", time: "12:30 PM", date: "02 Mar" },
+  { id: "SH-5022", customer: "C-***678", partner: "Patricia K.", skid: "SK-KA-001", items: 2, amount: 580, status: "pending_acceptance", time: "12:15 PM", date: "02 Mar" },
+  { id: "SH-5021", customer: "C-***901", partner: "Lisa S.", skid: "SK-MH-001", items: 4, amount: 1100, status: "delivered", time: "11:58 AM", date: "02 Mar" },
   { id: "SH-5020", customer: "C-***234", partner: "Anita D.", skid: "SK-DL-001", items: 6, amount: 1800, status: "delivered", time: "11:42 AM", date: "02 Mar" },
-  { id: "SH-5019", customer: "C-***567", partner: "Padma V.", skid: "SK-MH-002", items: 3, amount: 920, status: "cancelled", time: "11:30 AM", date: "02 Mar" },
-  { id: "SH-5018", customer: "C-***890", partner: "Saroja T.", skid: "SK-TN-002", items: 4, amount: 1050, status: "delivered", time: "11:15 AM", date: "02 Mar" },
-  { id: "SH-5017", customer: "C-***123", partner: "Kamala R.", skid: "SK-UP-001", items: 2, amount: 620, status: "delivered", time: "10:58 AM", date: "02 Mar" },
+  { id: "SH-5019", customer: "C-***567", partner: "Paula V.", skid: "SK-MH-002", items: 3, amount: 920, status: "cancelled", time: "11:30 AM", date: "02 Mar" },
+  { id: "SH-5018", customer: "C-***890", partner: "Sharon T.", skid: "SK-TN-002", items: 4, amount: 1050, status: "delivered", time: "11:15 AM", date: "02 Mar" },
+  { id: "SH-5017", customer: "C-***123", partner: "Kim R.", skid: "SK-UP-001", items: 2, amount: 620, status: "delivered", time: "10:58 AM", date: "02 Mar" },
 ];
 
 // ── Team Summary ──
 const teamSummary = [
   { role: "Country Head", name: "Arvind S.", rem: "country@shero.in", department: "Leadership", kpiLabel: "Revenue", kpiValue: "$18.4L", status: "active" },
   { role: "Vertical Head (SAP & OPS)", name: "Kavitha R.", rem: "sapops@shero.in", department: "Operations", kpiLabel: "Active Kitchens", kpiValue: "280", status: "active" },
-  { role: "Regional Manager", name: "Deepak M.", rem: "regional@shero.in", department: "South Region", kpiLabel: "Region Orders", kpiValue: "520", status: "active" },
+  { role: "Regional Manager", name: "David M.", rem: "regional@shero.in", department: "South Region", kpiLabel: "Region Orders", kpiValue: "520", status: "active" },
   { role: "Onboarding Manager", name: "Meera R.", rem: "onboarding@shero.in", department: "KOB", kpiLabel: "Approved Kitchens", kpiValue: "142", status: "active" },
   { role: "KOBTL", name: "Divya N.", rem: "kobtl@shero.in", department: "KOB", kpiLabel: "Leads Processed", kpiValue: "310", status: "active" },
-  { role: "SHF Manager", name: "Nithya P.", rem: "shf@shero.in", department: "Branded Ops", kpiLabel: "SHF Kitchens", kpiValue: "168", status: "active" },
-  { role: "HCF Manager", name: "Preeti J.", rem: "hcf@shero.in", department: "Marketplace", kpiLabel: "HCF Kitchens", kpiValue: "112", status: "active" },
-  { role: "SSC Manager", name: "Rekha M.", rem: "ssc-mgr@shero.in", department: "Support Center", kpiLabel: "Tickets/Day", kpiValue: "85", status: "active" },
+  { role: "SHF Manager", name: "Nicole P.", rem: "shf@shero.in", department: "Branded Ops", kpiLabel: "SHF Kitchens", kpiValue: "168", status: "active" },
+  { role: "HCF Manager", name: "Patricia J.", rem: "hcf@shero.in", department: "Marketplace", kpiLabel: "HCF Kitchens", kpiValue: "112", status: "active" },
+  { role: "SSC Manager", name: "Rachel M.", rem: "ssc-mgr@shero.in", department: "Support Center", kpiLabel: "Tickets/Day", kpiValue: "85", status: "active" },
   { role: "PPP Manager", name: "Ganesh R.", rem: "ppp-mgr@shero.in", department: "Payments", kpiLabel: "Weekly Payout", kpiValue: "$2.85L", status: "active" },
 ];
 
@@ -133,10 +133,10 @@ const orderStatusDist = [
 // ── Cuisine Performance ──
 const cuisinePerformance = [
   { cuisine: "Chettinad", orders: 320, revenue: 285000, partners: 28, rating: 4.7 },
-  { cuisine: "Andhra", orders: 245, revenue: 218000, partners: 22, rating: 4.6 },
+  { cuisine: "Pennsylvania", orders: 245, revenue: 218000, partners: 22, rating: 4.6 },
   { cuisine: "North Indian", orders: 210, revenue: 195000, partners: 24, rating: 4.5 },
   { cuisine: "Gujarati", orders: 180, revenue: 158000, partners: 18, rating: 4.4 },
-  { cuisine: "Kerala", orders: 165, revenue: 148000, partners: 16, rating: 4.8 },
+  { cuisine: "Florida", orders: 165, revenue: 148000, partners: 16, rating: 4.8 },
   { cuisine: "Marathi", orders: 155, revenue: 135000, partners: 15, rating: 4.3 },
   { cuisine: "Mughlai", orders: 142, revenue: 128000, partners: 14, rating: 4.5 },
   { cuisine: "Bengali", orders: 98, revenue: 85000, partners: 10, rating: 4.6 },

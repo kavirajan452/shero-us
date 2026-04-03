@@ -72,7 +72,7 @@ export const DEBIT_REASONS: Record<DebitReasonCode, { label: string; defaultAmou
   bad_order_quality: { label: "Poor Food Quality", defaultAmount: 200, severity: "high" },
   late_delivery_partner: { label: "Late Delivery (Partner fault)", defaultAmount: 50, severity: "low" },
   order_rejection: { label: "Order Rejection by Partner", defaultAmount: 150, severity: "medium" },
-  hygiene_violation: { label: "Hygiene / FSSAI Violation", defaultAmount: 500, severity: "critical" },
+  hygiene_violation: { label: "Hygiene / FDA Violation", defaultAmount: 500, severity: "critical" },
   customer_complaint: { label: "Formal Customer Complaint", defaultAmount: 150, severity: "medium" },
   missing_items: { label: "Missing Items in Order", defaultAmount: 100, severity: "medium" },
   wrong_order: { label: "Wrong Order Delivered", defaultAmount: 250, severity: "high" },
@@ -234,28 +234,28 @@ export interface CustomerLedgerRow {
 // ── Mock Data Generation ──
 
 const partners = [
-  { id: "P001", name: "Chef Lakshmi", kitchen: "K-CHN-001" },
-  { id: "P002", name: "Chef Kamala", kitchen: "K-BLR-002" },
-  { id: "P003", name: "Chef Meena", kitchen: "K-HYD-003" },
-  { id: "P004", name: "Chef Saroja", kitchen: "K-MAA-004" },
-  { id: "P005", name: "Chef Fathima", kitchen: "K-COK-005" },
-  { id: "P006", name: "Chef Raheema", kitchen: "K-VIZ-006" },
+  { id: "P001", name: "Chef Maria", kitchen: "K-NYC-001" },
+  { id: "P002", name: "Chef Sofia", kitchen: "K-LAX-002" },
+  { id: "P003", name: "Chef Lisa", kitchen: "K-CHI-003" },
+  { id: "P004", name: "Chef Emily", kitchen: "K-HOU-004" },
+  { id: "P005", name: "Chef Rosa", kitchen: "K-PHX-005" },
+  { id: "P006", name: "Chef Anna", kitchen: "K-PHI-006" },
 ];
 
 const customers = [
-  { id: "C001", name: "Priya Reddy", phone: "9876543210" },
-  { id: "C002", name: "Arun Kumar", phone: "9876543211" },
-  { id: "C003", name: "Divya Menon", phone: "9876543212" },
-  { id: "C004", name: "Raj Sharma", phone: "9876543213" },
-  { id: "C005", name: "Lakshmi Nair", phone: "9876543214" },
-  { id: "C006", name: "Kavitha Iyer", phone: "9876543215" },
+  { id: "C001", name: "Sarah Johnson", phone: "2125550101" },
+  { id: "C002", name: "Michael Chen", phone: "2125550102" },
+  { id: "C003", name: "Emma Wilson", phone: "2125550103" },
+  { id: "C004", name: "David Martinez", phone: "2125550104" },
+  { id: "C005", name: "Jennifer Lee", phone: "2125550105" },
+  { id: "C006", name: "Amanda Garcia", phone: "2125550106" },
 ];
 
 const agents = [
-  { name: "Anitha S", role: "ssc_executor" },
-  { name: "Deepa R", role: "ssc_tl" },
-  { name: "Karthik M", role: "ssc_manager" },
-  { name: "Sundar V", role: "vertical_head" },
+  { name: "Ashley S", role: "ssc_executor" },
+  { name: "Diana R", role: "ssc_tl" },
+  { name: "Kevin M", role: "ssc_manager" },
+  { name: "Steven V", role: "vertical_head" },
 ];
 
 const subVerticals: SubVertical[] = ["instant", "subscription", "party", "services"];
@@ -403,7 +403,7 @@ export function generateAuditLog(
     if (dn.status === "reversed") {
       log.push({
         id: nextId("AUD"), timestamp: `${dn.date}T14:00:00`, action: "reversed",
-        entityType: "debit_note", entityId: dn.id, performedBy: "Sundar V",
+        entityType: "debit_note", entityId: dn.id, performedBy: "Steven V",
         performedByRole: "vertical_head", previousStatus: "approved",
         newStatus: "reversed", amount: dn.amount, notes: "Reversed by leadership — partner dispute accepted",
       });

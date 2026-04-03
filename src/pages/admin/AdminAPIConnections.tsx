@@ -17,7 +17,7 @@ const apiConnections = [
 ];
 
 const webhookEndpoints = [
-  { url: "/webhooks/razorpay", events: "payment.*", status: "active", lastHit: "2 min ago", successRate: "99.8%" },
+  { url: "/webhooks/stripe", events: "payment.*", status: "active", lastHit: "2 min ago", successRate: "99.8%" },
   { url: "/webhooks/dunzo", events: "delivery.*", status: "active", lastHit: "5 min ago", successRate: "99.2%" },
   { url: "/webhooks/shadowfax", events: "order.*", status: "active", lastHit: "12 min ago", successRate: "98.9%" },
   { url: "/webhooks/whatsapp", events: "message.*", status: "active", lastHit: "1 min ago", successRate: "100%" },

@@ -29,9 +29,9 @@ const breakfastMenu: MealSlotMenu = {
     { id: "b-m5", name: "Ven Pongal 250ml" },
     { id: "b-m6", name: "Onion Ragi Dosa 3nos" },
     { id: "b-m7", name: "Khichadi 250ml" },
-    { id: "b-m8", name: "Andhra Upma 250ml" },
-    { id: "b-m9", name: "Andhra Style Erra Karam Dosa 3nos" },
-    { id: "b-m10", name: "Andhra Pesarratu 3nos" },
+    { id: "b-m8", name: "Pennsylvania Upma 250ml" },
+    { id: "b-m9", name: "Pennsylvania Style Erra Karam Dosa 3nos" },
+    { id: "b-m10", name: "Pennsylvania Pesarratu 3nos" },
     { id: "b-m11", name: "Lemon Semiya Upma 250ml" },
     { id: "b-m12", name: "Puttu 4pcs" },
     { id: "b-m13", name: "Nool Puttu 4nos" },
@@ -705,7 +705,7 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
                 <span>${DELIVERY_CHARGE_RANGE.min}–${DELIVERY_CHARGE_RANGE.max}/day</span>
               </div>
               <div className="flex justify-between text-muted-foreground text-xs">
-                <span>Taxes (GST 5%)</span>
+                <span>Taxes (Sales Tax)</span>
                 <span className="italic">Calculated at checkout</span>
               </div>
               <div className="border-t border-border pt-2 flex justify-between font-bold text-foreground">

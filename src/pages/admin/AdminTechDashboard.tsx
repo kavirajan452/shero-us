@@ -31,7 +31,7 @@ interface ServiceStatus {
 }
 
 const services: ServiceStatus[] = [
-  { name: "Razorpay Gateway", category: "Payments", status: "operational", uptime: 99.97, latency: 120, lastCheck: "30s ago", icon: CreditCard, errorRate: 0.3, requestsToday: 4250 },
+  { name: "Stripe Gateway", category: "Payments", status: "operational", uptime: 99.97, latency: 120, lastCheck: "30s ago", icon: CreditCard, errorRate: 0.3, requestsToday: 4250 },
   { name: "Cashfree Payouts", category: "Payments", status: "operational", uptime: 99.95, latency: 180, lastCheck: "1m ago", icon: DollarSign, errorRate: 0.1, requestsToday: 85 },
   { name: "Dunzo Fleet", category: "Delivery", status: "operational", uptime: 99.8, latency: 95, lastCheck: "15s ago", icon: Bike, errorRate: 0.8, requestsToday: 1280 },
   { name: "Shadowfax Fleet", category: "Delivery", status: "operational", uptime: 99.6, latency: 110, lastCheck: "20s ago", icon: Truck, errorRate: 1.2, requestsToday: 950 },
@@ -115,7 +115,7 @@ interface Incident {
 const incidents: Incident[] = [
   { id: "INC-047", title: "Porter API response time >500ms", severity: "medium", service: "Porter Fleet", status: "investigating", createdAt: "2026-03-17 21:30", impact: "Delayed auto-assignment for 3-8km orders" },
   { id: "INC-046", title: "SendGrid rate limit warning", severity: "low", service: "SendGrid Email", status: "open", createdAt: "2026-03-17 20:15", impact: "Email delivery may slow if quota exceeds 80%" },
-  { id: "INC-045", title: "Razorpay webhook timeout spike", severity: "high", service: "Razorpay Gateway", status: "resolved", createdAt: "2026-03-17 14:20", resolvedAt: "2026-03-17 14:45", impact: "Payment confirmation delayed for ~12 orders" },
+  { id: "INC-045", title: "Stripe webhook timeout spike", severity: "high", service: "Stripe Gateway", status: "resolved", createdAt: "2026-03-17 14:20", resolvedAt: "2026-03-17 14:45", impact: "Payment confirmation delayed for ~12 orders" },
   { id: "INC-044", title: "Google Maps geocoding quota 85%", severity: "medium", service: "Google Maps API", status: "resolved", createdAt: "2026-03-16 18:00", resolvedAt: "2026-03-16 18:30", impact: "Proactive alert — no user impact" },
   { id: "INC-043", title: "Shadowfax tracking API 503 errors", severity: "high", service: "Shadowfax Fleet", status: "resolved", createdAt: "2026-03-16 12:10", resolvedAt: "2026-03-16 12:35", impact: "Live tracking unavailable for ~25 min" },
   { id: "INC-042", title: "WhatsApp template rejection", severity: "low", service: "WhatsApp Business", status: "resolved", createdAt: "2026-03-15 10:00", resolvedAt: "2026-03-15 16:00", impact: "New promotional template delayed, workaround used" },

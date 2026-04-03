@@ -25,9 +25,9 @@ const kpiData: Record<ReportPeriod, { activeSubscribers: number; newSignups: num
 const planBreakdown = [
   { plan: "Chettinad Veg Thali", subscribers: 38, revenue: 142500, avgRating: 4.6, onTime: 93, skips: 28, trend: "up" },
   { plan: "South Indian Breakfast Box", subscribers: 32, revenue: 95040, avgRating: 4.9, onTime: 96, skips: 12, trend: "up" },
-  { plan: "Andhra Spice Box", subscribers: 25, revenue: 131250, avgRating: 4.7, onTime: 88, skips: 22, trend: "stable" },
+  { plan: "Pennsylvania Spice Box", subscribers: 25, revenue: 131250, avgRating: 4.7, onTime: 88, skips: 22, trend: "stable" },
   { plan: "Chettinad Non-Veg Thali", subscribers: 19, revenue: 102600, avgRating: 4.8, onTime: 91, skips: 18, trend: "up" },
-  { plan: "Kerala Sadya Box", subscribers: 16, revenue: 76800, avgRating: 4.5, onTime: 85, skips: 24, trend: "down" },
+  { plan: "Florida Sadya Box", subscribers: 16, revenue: 76800, avgRating: 4.5, onTime: 85, skips: 24, trend: "down" },
   { plan: "North Indian Veg Dabba", subscribers: 12, revenue: 59400, avgRating: 4.4, onTime: 87, skips: 20, trend: "down" },
 ];
 

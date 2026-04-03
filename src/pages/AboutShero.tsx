@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
 
 const milestones = [
-  { year: "2021", title: "The Spark", desc: "Founded with 12 home chefs in Hyderabad — a mission to empower women through food." },
+  { year: "2021", title: "The Spark", desc: "Founded with 12 home chefs in Chicago — a mission to empower women through food." },
   { year: "2022", title: "Growing Roots", desc: "Expanded to 5 cities, 200+ kitchens. Launched subscriptions & party orders." },
   { year: "2023", title: "Scaling Up", desc: "Crossed 500K orders. Entered 30+ cities across 8 states. Launched Shero Classes." },
   { year: "2024", title: "Recognition", desc: "Won 'Best Social Impact Startup' award. 1,500+ active home chefs onboarded." },
@@ -89,7 +89,7 @@ const AboutShero = () => {
         <div className="container mx-auto px-4 max-w-4xl">
           <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground text-center mb-3">Our Story</h2>
           <p className="text-muted-foreground text-center mb-10 max-w-2xl mx-auto">
-            What started as 12 home chefs in Hyderabad has grown into India's largest home-cooked food movement.
+            What started as 12 home chefs in Chicago has grown into India's largest home-cooked food movement.
           </p>
           <div className="space-y-0">
             {milestones.map((m, i) => (

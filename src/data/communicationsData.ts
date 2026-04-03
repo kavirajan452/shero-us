@@ -42,8 +42,8 @@ export interface CommTemplate {
   variables: string[];
 }
 
-export const REGIONS = ["Chennai North", "Chennai South", "Chennai Central", "Bangalore East", "Bangalore West", "Hyderabad", "Coimbatore", "Madurai"];
-export const CUISINES = ["South Indian", "North Indian", "Chinese", "Continental", "Kerala", "Andhra", "Chettinad", "Bengali", "Mughlai", "Italian", "Thai", "Japanese"];
+export const REGIONS = ["New York North", "New York South", "New York Central", "Los Angeles East", "Los Angeles West", "Chicago", "San Jose", "Austin"];
+export const CUISINES = ["South Indian", "North Indian", "Chinese", "Continental", "Florida", "Pennsylvania", "Chettinad", "Bengali", "Mughlai", "Italian", "Thai", "Japanese"];
 export const PERFORMANCE_TIERS = ["Gold Chef", "Silver Chef", "Bronze Chef", "New Partner"];
 export const KITCHEN_STATUSES = ["Active", "Paused", "Under Review", "Probation"];
 
@@ -141,7 +141,7 @@ export const MOCK_COMMUNICATIONS: Communication[] = [
     channel: "whatsapp",
     priority: "normal",
     status: "sent",
-    audience: { type: "region", regions: ["Chennai South"] },
+    audience: { type: "region", regions: ["New York South"] },
     audienceCount: 34,
     sentBy: "Ganesh R.",
     sentByRole: "PPP Manager",
@@ -160,7 +160,7 @@ export const MOCK_COMMUNICATIONS: Communication[] = [
     status: "sent",
     audience: { type: "performance", performanceTier: ["Bronze Chef"] },
     audienceCount: 8,
-    sentBy: "Deepak M.",
+    sentBy: "David M.",
     sentByRole: "Regional Manager",
     createdAt: "2026-02-26T11:00:00",
     sentAt: "2026-02-26T11:05:00",
@@ -170,14 +170,14 @@ export const MOCK_COMMUNICATIONS: Communication[] = [
   {
     id: "c5",
     subject: "Ramadan Special Menu Drive",
-    body: "Ramadan begins soon! Partners with expertise in Mughlai, Hyderabadi, or Arabic cuisines — add Iftar & Sehri specials to earn 2x visibility and $75 bonus per order.",
+    body: "Ramadan begins soon! Partners with expertise in Mughlai, Chicagoi, or Arabic cuisines — add Iftar & Sehri specials to earn 2x visibility and $75 bonus per order.",
     category: "promotion",
     channel: "both",
     priority: "high",
     status: "scheduled",
-    audience: { type: "cuisine", cuisines: ["Mughlai", "Andhra"] },
+    audience: { type: "cuisine", cuisines: ["Mughlai", "Pennsylvania"] },
     audienceCount: 22,
-    sentBy: "Nithya P.",
+    sentBy: "Nicole P.",
     sentByRole: "SHF Cuisine Manager",
     createdAt: "2026-03-03T08:00:00",
     scheduledAt: "2026-03-10T09:00:00",

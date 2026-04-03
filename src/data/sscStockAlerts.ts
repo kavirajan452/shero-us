@@ -21,7 +21,7 @@ let _alerts: SSCStockAlert[] = [
   {
     id: "SA-001",
     orderId: "ORD-1042",
-    partnerName: "Sujatha M.",
+    partnerName: "Maria T.",
     partnerId: "P001",
     kitchenName: "Sujatha's Chettinad Kitchen",
     itemName: "Chicken Biryani",
@@ -33,7 +33,7 @@ let _alerts: SSCStockAlert[] = [
   {
     id: "SA-002",
     orderId: "ORD-1042",
-    partnerName: "Sujatha M.",
+    partnerName: "Maria T.",
     partnerId: "P001",
     kitchenName: "Sujatha's Chettinad Kitchen",
     itemName: "Mutton Curry",
@@ -44,7 +44,7 @@ let _alerts: SSCStockAlert[] = [
   {
     id: "SA-003",
     orderId: "ORD-1038",
-    partnerName: "Priya K.",
+    partnerName: "Patricia K.",
     partnerId: "P002",
     kitchenName: "Priya's Home Kitchen",
     itemName: "Paneer Butter Masala",

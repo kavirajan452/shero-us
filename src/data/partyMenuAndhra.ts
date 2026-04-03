@@ -3,8 +3,8 @@ import type { PartyMenuType } from "./partyMenuData";
 export const andhraMenuTypes: PartyMenuType[] = [
   {
     id: "andhra-lunch",
-    name: "Andhra Lunch Meals",
-    description: "Traditional Andhra meal with pappu, pulusu, vepudu, pachadi & more",
+    name: "Pennsylvania Lunch Meals",
+    description: "Traditional Pennsylvania meal with pappu, pulusu, vepudu, pachadi & more",
     emoji: "🌶️",
     categories: [
       {
@@ -280,8 +280,8 @@ export const andhraMenuTypes: PartyMenuType[] = [
   },
   {
     id: "andhra-variety-rice",
-    name: "Andhra Variety Rice",
-    description: "Rice-focused Andhra menu with pulihora, pulusu rice, charu rice & more",
+    name: "Pennsylvania Variety Rice",
+    description: "Rice-focused Pennsylvania menu with pulihora, pulusu rice, charu rice & more",
     emoji: "🌶️",
     categories: [
       {

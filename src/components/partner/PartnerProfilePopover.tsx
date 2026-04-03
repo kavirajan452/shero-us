@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-const fssaiData = {
+const fdaData = {
   licenseNo: "11521099000234",
   appliedDate: "2024-06-15",
   receivedDate: "2024-07-20",
@@ -58,21 +58,21 @@ const PartnerProfilePopover = () => {
 
         <Separator />
 
-        {/* FSSAI Certificate */}
+        {/* FDA Certificate */}
         <div className="p-4 pb-3">
           <div className="flex items-center gap-2 mb-2">
             <ShieldCheck className="w-4 h-4 text-green-600" />
-            <h4 className="text-xs font-semibold text-foreground uppercase tracking-wide">FSSAI Certificate</h4>
+            <h4 className="text-xs font-semibold text-foreground uppercase tracking-wide">FDA Certificate</h4>
           </div>
           <div className="grid grid-cols-2 gap-y-1.5 text-xs">
             <span className="text-muted-foreground">License No</span>
-            <span className="font-medium text-foreground">{fssaiData.licenseNo}</span>
+            <span className="font-medium text-foreground">{fdaData.licenseNo}</span>
             <span className="text-muted-foreground">Applied</span>
-            <span className="text-foreground">{new Date(fssaiData.appliedDate).toLocaleDateString()}</span>
+            <span className="text-foreground">{new Date(fdaData.appliedDate).toLocaleDateString()}</span>
             <span className="text-muted-foreground">Received</span>
-            <span className="text-foreground">{new Date(fssaiData.receivedDate).toLocaleDateString()}</span>
+            <span className="text-foreground">{new Date(fdaData.receivedDate).toLocaleDateString()}</span>
             <span className="text-muted-foreground">Valid Upto</span>
-            <span className="text-foreground">{new Date(fssaiData.validUpto).toLocaleDateString()}</span>
+            <span className="text-foreground">{new Date(fdaData.validUpto).toLocaleDateString()}</span>
           </div>
         </div>
 

@@ -5,12 +5,12 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DollarSign, Shield, RefreshCw, CheckCircle, AlertTriangle, Clock, ArrowUpRight, FileText } from "lucide-react";
 
-const razorpayConfig = {
+const stripeConfig = {
   status: "active",
   mode: "live",
   merchantId: "rzp_live_****8kG2",
   lastSync: "2026-03-17 22:45:00",
-  webhookUrl: "https://api.shero.in/webhooks/razorpay",
+  webhookUrl: "https://api.shero.in/webhooks/stripe",
 };
 
 const recentTransactions = [
@@ -18,7 +18,7 @@ const recentTransactions = [
   { id: "pay_Q1e6f7g8h9", amount: 3500, status: "captured", method: "Card", customer: "Ravi K.", time: "8 min ago" },
   { id: "pay_Q1i0j1k2l3", amount: 890, status: "refunded", method: "UPI", customer: "Anitha S.", time: "15 min ago" },
   { id: "pay_Q1m4n5o6p7", amount: 4200, status: "failed", method: "Net Banking", customer: "Kumar R.", time: "22 min ago" },
-  { id: "pay_Q1q8r9s0t1", amount: 1800, status: "captured", method: "UPI", customer: "Lakshmi D.", time: "30 min ago" },
+  { id: "pay_Q1q8r9s0t1", amount: 1800, status: "captured", method: "UPI", customer: "Laura D.", time: "30 min ago" },
 ];
 
 const webhookEvents = [
@@ -29,15 +29,15 @@ const webhookEvents = [
   { event: "settlement.processed", count: 3, lastFired: "6 hrs ago", status: "warning" },
 ];
 
-export default function AdminRazorpayIntegration() {
+export default function AdminStripeIntegration() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Razorpay Integration</h1>
+          <h1 className="text-2xl font-bold">Stripe Integration</h1>
           <p className="text-muted-foreground text-sm">Payment gateway configuration, webhooks & transaction monitoring</p>
         </div>
-        <Badge variant={razorpayConfig.status === "active" ? "default" : "destructive"} className="text-sm px-3 py-1">
+        <Badge variant={stripeConfig.status === "active" ? "default" : "destructive"} className="text-sm px-3 py-1">
           <CheckCircle className="w-3.5 h-3.5 mr-1" /> Live & Active
         </Badge>
       </div>
@@ -79,7 +79,7 @@ export default function AdminRazorpayIntegration() {
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center py-2 border-b">
                 <span className="text-sm text-muted-foreground">Merchant ID</span>
-                <code className="text-sm bg-muted px-2 py-0.5 rounded">{razorpayConfig.merchantId}</code>
+                <code className="text-sm bg-muted px-2 py-0.5 rounded">{stripeConfig.merchantId}</code>
               </div>
               <div className="flex justify-between items-center py-2 border-b">
                 <span className="text-sm text-muted-foreground">Mode</span>
@@ -87,11 +87,11 @@ export default function AdminRazorpayIntegration() {
               </div>
               <div className="flex justify-between items-center py-2 border-b">
                 <span className="text-sm text-muted-foreground">Webhook URL</span>
-                <code className="text-xs bg-muted px-2 py-0.5 rounded">{razorpayConfig.webhookUrl}</code>
+                <code className="text-xs bg-muted px-2 py-0.5 rounded">{stripeConfig.webhookUrl}</code>
               </div>
               <div className="flex justify-between items-center py-2">
                 <span className="text-sm text-muted-foreground">Last Sync</span>
-                <span className="text-sm">{razorpayConfig.lastSync}</span>
+                <span className="text-sm">{stripeConfig.lastSync}</span>
               </div>
             </CardContent>
           </Card>

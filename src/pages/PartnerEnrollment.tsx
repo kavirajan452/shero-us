@@ -91,7 +91,7 @@ const PartnerEnrollment = () => {
     totalFamilyMembers: "", kidsCount: "", kidsAges: "",
     elderlyMembers: "", familyDescription: "",
     // Step 2: House & Location
-    address: "", city: "", pincode: "", landmark: "",
+    address: "", city: "", zipcode: "", landmark: "",
     googlePinUrl: "", floor: "", houseType: "", kitchenSize: "",
     locationLat: 0, locationLng: 0,
     hasAC: false, hasRefrigerator: false, hasGas: false, hasChimneyHouse: false,
@@ -231,8 +231,8 @@ const PartnerEnrollment = () => {
       case "house":
         if (!form.address.trim()) errors.push("Address is required");
         if (!form.city.trim()) errors.push("City is required");
-        if (!form.pincode.trim()) errors.push("Pincode is required");
-        else if (!/^\d{5,6}$/.test(form.pincode.trim())) errors.push("Enter a valid pincode");
+        if (!form.zipcode.trim()) errors.push("ZIP Code is required");
+        else if (!/^\d{5,6}$/.test(form.zipcode.trim())) errors.push("Enter a valid zipcode");
         break;
       case "verticals":
         if (form.selectedVerticals.length === 0) errors.push("Select at least one business vertical");
@@ -422,7 +422,7 @@ const PartnerEnrollment = () => {
                 <p className="text-xs text-muted-foreground text-center">Our partner support team is available to answer all your questions.</p>
                 <div className="bg-muted rounded-xl p-4 text-center space-y-2">
                   <p className="text-sm font-semibold text-foreground">📞 Call Us</p>
-                  <a href="tel:+911800123456" className="text-lg font-bold text-primary">1800-123-456</a>
+                  <a href="tel:+11800123456" className="text-lg font-bold text-primary">1800-123-456</a>
                   <p className="text-[10px] text-muted-foreground">Mon – Sat, 9 AM – 7 PM</p>
                 </div>
                 <div className="bg-muted rounded-xl p-4 text-center space-y-2">
@@ -446,7 +446,7 @@ const PartnerEnrollment = () => {
                 <div className="flex items-center gap-2 justify-center"><CreditCard className="w-5 h-5 text-accent" /><h3 className="text-lg font-serif font-semibold text-foreground">Registration Fee</h3></div>
                 <div className="bg-muted rounded-xl p-5 text-center space-y-1">
                   <p className="text-3xl font-bold text-foreground">$999</p>
-                  <p className="text-xs text-muted-foreground">One-time registration fee (inclusive of GST)</p>
+                  <p className="text-xs text-muted-foreground">One-time registration fee (inclusive of Sales Tax)</p>
                 </div>
                 <ul className="text-xs text-muted-foreground space-y-1.5 px-2">
                   <li className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" /> Kitchen verification & onboarding support</li>
@@ -693,8 +693,8 @@ const PartnerEnrollment = () => {
                   <Input id="fullName" placeholder="Enter your full name" value={form.fullName} onChange={e => updateField("fullName", e.target.value)} />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-2"><Label htmlFor="phone">Phone Number *</Label><Input id="phone" placeholder="+91 XXXXX XXXXX" value={form.phone} onChange={e => updateField("phone", e.target.value)} /></div>
-                  <div className="space-y-2"><Label htmlFor="altPhone">Alternate Phone</Label><Input id="altPhone" placeholder="+91 XXXXX XXXXX" value={form.altPhone} onChange={e => updateField("altPhone", e.target.value)} /></div>
+                  <div className="space-y-2"><Label htmlFor="phone">Phone Number *</Label><Input id="phone" placeholder="+1 XXXXX XXXXX" value={form.phone} onChange={e => updateField("phone", e.target.value)} /></div>
+                  <div className="space-y-2"><Label htmlFor="altPhone">Alternate Phone</Label><Input id="altPhone" placeholder="+1 XXXXX XXXXX" value={form.altPhone} onChange={e => updateField("altPhone", e.target.value)} /></div>
                 </div>
                 <div className="space-y-2"><Label htmlFor="email">Email Address</Label><Input id="email" type="email" placeholder="your@email.com" value={form.email} onChange={e => updateField("email", e.target.value)} /></div>
               </>
@@ -732,7 +732,7 @@ const PartnerEnrollment = () => {
               <LocationPicker
                 address={form.address}
                 city={form.city}
-                pincode={form.pincode}
+                zipcode={form.zipcode}
                 landmark={form.landmark}
                 googlePinUrl={form.googlePinUrl}
                 lat={form.locationLat || undefined}
@@ -907,7 +907,7 @@ const PartnerEnrollment = () => {
                       <SelectContent><SelectItem value="1-3">1-3 years</SelectItem><SelectItem value="3-5">3-5 years</SelectItem><SelectItem value="5-10">5-10 years</SelectItem><SelectItem value="10+">10+ years</SelectItem></SelectContent>
                     </Select>
                   </div>
-                  <div className="space-y-2"><Label>Cuisines You Can Cook</Label><Textarea placeholder="e.g. South Indian, North Indian, Hyderabadi, Chinese..." value={form.cuisinesKnown} onChange={e => updateField("cuisinesKnown", e.target.value)} rows={2} /></div>
+                  <div className="space-y-2"><Label>Cuisines You Can Cook</Label><Textarea placeholder="e.g. South Indian, North Indian, Chicagoi, Chinese..." value={form.cuisinesKnown} onChange={e => updateField("cuisinesKnown", e.target.value)} rows={2} /></div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2"><Label>Available Hours/Day</Label><Select value={form.availableHours} onValueChange={v => updateField("availableHours", v)}><SelectTrigger><SelectValue placeholder="Hours" /></SelectTrigger><SelectContent><SelectItem value="2-4">2-4 hours</SelectItem><SelectItem value="4-6">4-6 hours</SelectItem><SelectItem value="6-8">6-8 hours</SelectItem><SelectItem value="8+">8+ hours</SelectItem></SelectContent></Select></div>
                     <div className="space-y-2"><Label>Days Per Week</Label><Select value={form.daysPerWeek} onValueChange={v => updateField("daysPerWeek", v)}><SelectTrigger><SelectValue placeholder="Days" /></SelectTrigger><SelectContent><SelectItem value="3">3 days</SelectItem><SelectItem value="4">4 days</SelectItem><SelectItem value="5">5 days</SelectItem><SelectItem value="6">6 days</SelectItem><SelectItem value="7">7 days</SelectItem></SelectContent></Select></div>

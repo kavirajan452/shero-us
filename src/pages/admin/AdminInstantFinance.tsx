@@ -268,10 +268,10 @@ export default function AdminInstantFinance() {
                   <p className="text-xs text-muted-foreground py-4 text-center">{reg.empty}</p>
                 ) : (
                   <Table>
-                    <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Invoice No.</TableHead><TableHead className="text-[10px]">Party Name</TableHead><TableHead className="text-[10px]">Ref</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Gross ($)</TableHead><TableHead className="text-[10px] text-right">GST ($)</TableHead><TableHead className="text-[10px] text-right">Net ($)</TableHead><TableHead className="text-[10px]">Status</TableHead></TableRow></TableHeader>
+                    <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Invoice No.</TableHead><TableHead className="text-[10px]">Party Name</TableHead><TableHead className="text-[10px]">Ref</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Gross ($)</TableHead><TableHead className="text-[10px] text-right">Sales Tax ($)</TableHead><TableHead className="text-[10px] text-right">Net ($)</TableHead><TableHead className="text-[10px]">Status</TableHead></TableRow></TableHeader>
                     <TableBody>
                       {reg.data.map(v => {
-                        const gst = v.entries.filter(e => e.account === "gst_output_5" || e.account === "gst_output_18" || e.account === "gst_input_credit").reduce((s, e) => s + e.credit + e.debit, 0);
+                        const gst = v.entries.filter(e => e.account === "sales_tax_food" || e.account === "sales_tax_services" || e.account === "tax_input_credit").reduce((s, e) => s + e.credit + e.debit, 0);
                         return (
                           <TableRow key={v.id}>
                             <TableCell className="text-[10px] text-muted-foreground">{v.date}</TableCell>

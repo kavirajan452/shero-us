@@ -31,19 +31,19 @@ export interface SnackOrder {
   paymentStatus: "paid" | "cod" | "pending";
   shippingAddress: string;
   city: string;
-  pincode: string;
+  zipcode: string;
   createdAt: string;
   updatedAt: string;
   estimatedDelivery: string;
   trackingId?: string;
 }
 
-const cities = ["Chennai", "Bangalore", "Hyderabad", "Mumbai", "Delhi", "Kochi", "Coimbatore", "Mysore"];
+const cities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "San Diego", "San Jose", "Mysore"];
 const partners = [
   { id: "sp-1", name: "Lakshmi's Kitchen" },
   { id: "sp-2", name: "Amma's Snacks" },
-  { id: "sp-3", name: "Kerala Delights" },
-  { id: "sp-4", name: "Andhra Pickles House" },
+  { id: "sp-3", name: "Florida Delights" },
+  { id: "sp-4", name: "Pennsylvania Pickles House" },
   { id: "sp-5", name: "Mysore Sweets Hub" },
 ];
 const customers = [
@@ -113,7 +113,7 @@ function generateOrder(idx: number): SnackOrder {
     paymentStatus: pm === "COD" ? "cod" : "paid",
     shippingAddress: `${Math.floor(Math.random() * 200) + 1}, Example Street`,
     city: randomPick(cities),
-    pincode: `${500000 + Math.floor(Math.random() * 100000)}`,
+    zipcode: `${500000 + Math.floor(Math.random() * 100000)}`,
     createdAt: created.toISOString(),
     updatedAt: new Date(created.getTime() + Math.random() * 86400000 * 2).toISOString(),
     estimatedDelivery: new Date(created.getTime() + 3 * 86400000).toISOString().slice(0, 10),

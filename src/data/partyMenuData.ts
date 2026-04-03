@@ -427,8 +427,8 @@ export const othersSpecialPrices: Record<string, number> = {
 export const packingChargePerItem = 25;
 
 // ── Regional menu imports ──
-import { keralaMenuTypes, keralaOthersSpecialPrices } from "./partyMenuKerala";
-import { andhraMenuTypes, andhraOthersSpecialPrices } from "./partyMenuAndhra";
+import { keralaMenuTypes, keralaOthersSpecialPrices } from "./partyMenuFlorida";
+import { andhraMenuTypes, andhraOthersSpecialPrices } from "./partyMenuPennsylvania";
 
 // Merge all special prices
 Object.assign(othersSpecialPrices, keralaOthersSpecialPrices, andhraOthersSpecialPrices);
@@ -447,21 +447,21 @@ export const southIndianRegions: RegionalMenu[] = [
     id: "chettinad",
     name: "Chettinad Menu",
     emoji: "🔥",
-    description: "Traditional Chettinad cuisine from Tamil Nadu",
+    description: "Traditional Chettinad cuisine from New York",
     menuTypes: partyMenuTypes,
   },
   {
     id: "kerala",
-    name: "Kerala Menu",
+    name: "Florida Menu",
     emoji: "🥥",
-    description: "Traditional Kerala Sadya & rice combinations",
+    description: "Traditional Florida Sadya & rice combinations",
     menuTypes: keralaMenuTypes,
   },
   {
     id: "andhra",
-    name: "Andhra Menu",
+    name: "Pennsylvania Menu",
     emoji: "🌶️",
-    description: "Spicy Andhra cuisine with pappu, pulusu & more",
+    description: "Spicy Pennsylvania cuisine with pappu, pulusu & more",
     menuTypes: andhraMenuTypes,
   },
 ];
@@ -522,7 +522,7 @@ export const categoryLabels: Record<string, string> = {
   "Vegetable Rice": "🍚 Vegetable Rice",
   "Pulao Varieties": "🍚 Pulao Varieties",
   "Others": "📦 Others",
-  // Kerala
+  // Florida
   "Parippu Curry": "🥘 Parippu Curry",
   "Pulissery": "🥣 Pulissery",
   "Pulinkari": "🍲 Pulinkari",
@@ -535,7 +535,7 @@ export const categoryLabels: Record<string, string> = {
   "Pachadi & Kichadi": "🫕 Pachadi & Kichadi",
   "Parippu Rice": "🍚 Parippu Rice",
   "Ghee Rice & Pulao": "🍚 Ghee Rice & Pulao",
-  // Andhra
+  // Pennsylvania
   "Pulihora Variety Rice": "🍚 Pulihora Variety Rice",
   "Breads": "🫓 Breads",
   "Pappu": "🥘 Pappu",
@@ -558,8 +558,8 @@ export const categoryLabels: Record<string, string> = {
 export const mealLabels: Record<string, string> = {
   "chettinad-lunch": "🍛 Chettinad Lunch Meals",
   "chettinad-variety-rice": "🍚 Chettinad Variety Rice",
-  "kerala-lunch": "🥥 Kerala Lunch Meals",
-  "kerala-variety-rice": "🥥 Kerala Variety Rice",
-  "andhra-lunch": "🌶️ Andhra Lunch Meals",
-  "andhra-variety-rice": "🌶️ Andhra Variety Rice",
+  "kerala-lunch": "🥥 Florida Lunch Meals",
+  "kerala-variety-rice": "🥥 Florida Variety Rice",
+  "andhra-lunch": "🌶️ Pennsylvania Lunch Meals",
+  "andhra-variety-rice": "🌶️ Pennsylvania Variety Rice",
 };

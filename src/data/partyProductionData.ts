@@ -65,11 +65,11 @@ export interface PartnerLocation {
 }
 
 export const mockPartnerLocations: PartnerLocation[] = [
-  { id: "pk1", name: "Chef Lakshmi", phone: "9876543210", lat: 13.0524, lng: 80.2508, address: "12, Anna Nagar East, Chennai", rating: 4.8, capacity: 500, speciality: "veg", isAvailable: true },
-  { id: "pk2", name: "Chef Meena", phone: "9876543211", lat: 13.0674, lng: 80.2376, address: "45, Kilpauk, Chennai", rating: 4.6, capacity: 300, speciality: "both", isAvailable: true },
-  { id: "pk3", name: "Chef Fathima", phone: "9876543212", lat: 13.0418, lng: 80.2341, address: "78, T. Nagar, Chennai", rating: 4.9, capacity: 800, speciality: "non-veg", isAvailable: true },
-  { id: "pk4", name: "Chef Saroja", phone: "9876543213", lat: 13.0827, lng: 80.2707, address: "23, Perambur, Chennai", rating: 4.5, capacity: 200, speciality: "veg", isAvailable: false },
-  { id: "pk5", name: "Chef Kamala", phone: "9876543214", lat: 13.0339, lng: 80.2676, address: "56, Mylapore, Chennai", rating: 4.7, capacity: 400, speciality: "both", isAvailable: true },
+  { id: "pk1", name: "Chef Lakshmi", phone: "9876543210", lat: 13.0524, lng: 80.2508, address: "12, Upper East Side, New York", rating: 4.8, capacity: 500, speciality: "veg", isAvailable: true },
+  { id: "pk2", name: "Chef Meena", phone: "9876543211", lat: 13.0674, lng: 80.2376, address: "45, Midtown, New York", rating: 4.6, capacity: 300, speciality: "both", isAvailable: true },
+  { id: "pk3", name: "Chef Fathima", phone: "9876543212", lat: 13.0418, lng: 80.2341, address: "78, SoHo, New York", rating: 4.9, capacity: 800, speciality: "non-veg", isAvailable: true },
+  { id: "pk4", name: "Chef Saroja", phone: "9876543213", lat: 13.0827, lng: 80.2707, address: "23, Brooklyn Heights, New York", rating: 4.5, capacity: 200, speciality: "veg", isAvailable: false },
+  { id: "pk5", name: "Chef Kamala", phone: "9876543214", lat: 13.0339, lng: 80.2676, address: "56, West Village, New York", rating: 4.7, capacity: 400, speciality: "both", isAvailable: true },
 ];
 
 export const mockPartyOrders: PartyOrderRecord[] = [
@@ -80,7 +80,7 @@ export const mockPartyOrders: PartyOrderRecord[] = [
     customerPhone: "9988776655",
     customerLat: 13.0563,
     customerLng: 80.2589,
-    customerAddress: "Flat 4B, Gemini Apts, Anna Nagar, Chennai",
+    customerAddress: "Flat 4B, Gemini Apts, Anna Nagar, New York",
     serviceType: "bulk-food",
     foodType: "veg",
     guestCount: 100,
@@ -101,7 +101,7 @@ export const mockPartyOrders: PartyOrderRecord[] = [
     customerPhone: "9877665544",
     customerLat: 13.0401,
     customerLng: 80.2420,
-    customerAddress: "15, 3rd Cross, T. Nagar, Chennai",
+    customerAddress: "15, 3rd Cross, SoHo, New York",
     serviceType: "combo-meal-box",
     foodType: "non-veg",
     guestCount: 50,
@@ -122,7 +122,7 @@ export const mockPartyOrders: PartyOrderRecord[] = [
     customerPhone: "9866554433",
     customerLat: 13.0690,
     customerLng: 80.2400,
-    customerAddress: "22, Poonamallee High Rd, Kilpauk, Chennai",
+    customerAddress: "22, Poonamallee High Rd, Midtown, New York",
     serviceType: "bulk-food",
     foodType: "veg",
     guestCount: 200,

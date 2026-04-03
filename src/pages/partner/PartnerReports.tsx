@@ -56,7 +56,7 @@ const monthlyTrend = [
 ];
 
 const topItems = [
-  { name: "Hyderabadi Biryani", orders: 86, earnings: 3610 },
+  { name: "Chicagoi Biryani", orders: 86, earnings: 3610 },
   { name: "Butter Chicken", orders: 72, earnings: 3024 },
   { name: "Masala Dosa", orders: 65, earnings: 1274 },
   { name: "Gulab Jamun (Box)", orders: 54, earnings: 1512 },
@@ -111,12 +111,12 @@ const offsetDate = (baseDate: string, weeksBack: number): string => {
 
 const ledgerEntries: LedgerEntry[] = [
   // Week 0 (current week)
-  { id: "L001", date: offsetDate("2026-02-28", 0), type: "income", description: "Order #SH4821 — Hyderabadi Biryani × 2, Raita × 2", amount: 598, runningBalance: 24300, orderId: "SH4821", orderItems: [{ name: "Hyderabadi Biryani", qty: 2, price: 249 }, { name: "Raita", qty: 2, price: 50 }], customerName: "Priya Sharma" },
+  { id: "L001", date: offsetDate("2026-02-28", 0), type: "income", description: "Order #SH4821 — Chicagoi Biryani × 2, Raita × 2", amount: 598, runningBalance: 24300, orderId: "SH4821", orderItems: [{ name: "Chicagoi Biryani", qty: 2, price: 249 }, { name: "Raita", qty: 2, price: 50 }], customerName: "Patricia Sharma" },
   { id: "L002", date: offsetDate("2026-02-28", 0), type: "penalty", description: "Late preparation — Order #SH4815", amount: -50, runningBalance: 23702, orderId: "SH4815", penaltyReason: "Order was marked ready 18 minutes after the promised time. Platform SLA allows max 10 min delay. Penalty: $50 flat deduction." },
   { id: "L003", date: offsetDate("2026-02-27", 0), type: "income", description: "Order #SH4798 — Butter Chicken × 1, Naan × 3", amount: 420, runningBalance: 23752, orderId: "SH4798", orderItems: [{ name: "Butter Chicken", qty: 1, price: 299 }, { name: "Butter Naan", qty: 3, price: 40 }], customerName: "Rahul Verma" },
-  { id: "L004", date: offsetDate("2026-02-27", 0), type: "income", description: "Order #SH4795 — Masala Dosa × 3, Coffee × 3", amount: 390, runningBalance: 24172, orderId: "SH4795", orderItems: [{ name: "Masala Dosa", qty: 3, price: 80 }, { name: "Filter Coffee", qty: 3, price: 50 }], customerName: "Kavitha S." },
+  { id: "L004", date: offsetDate("2026-02-27", 0), type: "income", description: "Order #SH4795 — Masala Dosa × 3, Coffee × 3", amount: 390, runningBalance: 24172, orderId: "SH4795", orderItems: [{ name: "Masala Dosa", qty: 3, price: 80 }, { name: "Filter Coffee", qty: 3, price: 50 }], customerName: "Karen S." },
   // Week 1 (previous week)
-  { id: "L005", date: offsetDate("2026-02-26", 1), type: "payment", description: "Weekly payout — Bank transfer (Week " + (getISOWeek(startOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }))) + ")", amount: -15000, runningBalance: 23432, paymentMethod: "Bank Transfer (NEFT)", paymentRef: "UTR20260226SHERO4421" },
+  { id: "L005", date: offsetDate("2026-02-26", 1), type: "payment", description: "Weekly payout — Bank transfer (Week " + (getISOWeek(startOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }))) + ")", amount: -15000, runningBalance: 23432, paymentMethod: "Bank Transfer (ACH)", paymentRef: "UTR20260226SHERO4421" },
   { id: "L006", date: offsetDate("2026-02-26", 1), type: "income", description: "Order #SH4775 — Masala Dosa × 4, Filter Coffee × 4", amount: 520, runningBalance: 38432, orderId: "SH4775", orderItems: [{ name: "Masala Dosa", qty: 4, price: 80 }, { name: "Filter Coffee", qty: 4, price: 50 }], customerName: "Anita Reddy" },
   { id: "L007", date: offsetDate("2026-02-25", 1), type: "adjustment", description: "Platform fee reversal — Promo order reimbursement", amount: 75, runningBalance: 37912 },
   { id: "L008", date: offsetDate("2026-02-25", 1), type: "income", description: "Order #SH4760 — Veg Thali × 2", amount: 240, runningBalance: 37837, orderId: "SH4760", orderItems: [{ name: "Veg Thali", qty: 2, price: 120 }], customerName: "Meena Iyer" },
@@ -131,7 +131,7 @@ const ledgerEntries: LedgerEntry[] = [
   { id: "L015", date: offsetDate("2026-02-18", 3), type: "referral" as LedgerType, description: "Referral Reward — Preethi Kumari listed as partner", amount: 750, runningBalance: 35072 },
   { id: "L016", date: offsetDate("2026-02-12", 3), type: "income", description: "Order #SH4698 — Paneer Tikka × 4", amount: 560, runningBalance: 34322, orderId: "SH4698", orderItems: [{ name: "Paneer Tikka", qty: 4, price: 140 }], customerName: "Lakshmi P." },
   { id: "L017", date: offsetDate("2026-02-12", 3), type: "wallet_bonus" as LedgerType, description: "Signup Wallet Bonus — included in first PPP payout", amount: 500, runningBalance: 32072 },
-  { id: "L018", date: offsetDate("2026-02-10", 3), type: "payment", description: "Weekly payout — Bank transfer (Week " + (getISOWeek(startOfWeek(subWeeks(new Date(), 3), { weekStartsOn: 1 }))) + ")", amount: -8000, runningBalance: 31572, paymentMethod: "Bank Transfer (NEFT)", paymentRef: "UTR20260210SHERO3312" },
+  { id: "L018", date: offsetDate("2026-02-10", 3), type: "payment", description: "Weekly payout — Bank transfer (Week " + (getISOWeek(startOfWeek(subWeeks(new Date(), 3), { weekStartsOn: 1 }))) + ")", amount: -8000, runningBalance: 31572, paymentMethod: "Bank Transfer (ACH)", paymentRef: "UTR20260210SHERO3312" },
 ];
 
 const typeConfig: Record<LedgerType, { label: string; color: string; icon: React.ElementType }> = {
@@ -146,12 +146,12 @@ const typeConfig: Record<LedgerType, { label: string; color: string; icon: React
 
 // ── Bad Reviews Mock Data ────────────────────────────────────────────
 const badReviewsData = [
-  { orderId: "SH4821", date: "2026-02-28", customer: "Priya Sharma", dish: "Hyderabadi Biryani", rating: 1, review: "Food was cold and lacked spice. Very disappointed.", week: "W3" },
+  { orderId: "SH4821", date: "2026-02-28", customer: "Patricia Sharma", dish: "Chicagoi Biryani", rating: 1, review: "Food was cold and lacked spice. Very disappointed.", week: "W3" },
   { orderId: "SH4790", date: "2026-02-27", customer: "Rahul Verma", dish: "Butter Chicken", rating: 2, review: "Missing naan from order. Chicken was dry.", week: "W3" },
   { orderId: "SH4760", date: "2026-02-25", customer: "Meena Iyer", dish: "Veg Thali", rating: 1, review: "Sambar was too salty. Dal had no taste at all.", week: "W3" },
   { orderId: "SH4701", date: "2026-02-21", customer: "Anita Reddy", dish: "Masala Dosa", rating: 2, review: "Dosa was soggy and chutney was stale.", week: "W2" },
   { orderId: "SH4685", date: "2026-02-20", customer: "Deepak Nair", dish: "Curd Rice", rating: 1, review: "Portion was very small for the price.", week: "W2" },
-  { orderId: "SH4650", date: "2026-02-18", customer: "Kavitha S.", dish: "Fish Curry", rating: 2, review: "Fish was overcooked and curry was watery.", week: "W2" },
+  { orderId: "SH4650", date: "2026-02-18", customer: "Karen S.", dish: "Fish Curry", rating: 2, review: "Fish was overcooked and curry was watery.", week: "W2" },
   { orderId: "SH4620", date: "2026-02-16", customer: "Sanjay R.", dish: "Mutton Curry", rating: 1, review: "Found hair in the food. Very unhygienic.", week: "W1" },
   { orderId: "SH4598", date: "2026-02-14", customer: "Lakshmi P.", dish: "Idli Vada", rating: 2, review: "Idli was hard and vada was oily.", week: "W1" },
 ];

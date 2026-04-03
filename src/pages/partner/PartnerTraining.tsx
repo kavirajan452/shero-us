@@ -25,7 +25,7 @@ const appModules = [
 
 /* ─── Code of Conduct Items ─── */
 const conductSections = [
-  { title: "Hygiene & Food Safety Standards", icon: ShieldCheck, points: ["Maintain a clean and sanitized cooking area at all times", "Use fresh ingredients only — no expired or stale raw materials", "Wear clean attire and hairnet during food preparation", "Follow FSSAI packaging and labelling guidelines"], acknowledged: true },
+  { title: "Hygiene & Food Safety Standards", icon: ShieldCheck, points: ["Maintain a clean and sanitized cooking area at all times", "Use fresh ingredients only — no expired or stale raw materials", "Wear clean attire and hairnet during food preparation", "Follow FDA packaging and labelling guidelines"], acknowledged: true },
   { title: "SCV Metrics & Performance Expectations", icon: Star, points: ["Attendance: Minimum 90% weekly login & kitchen-open compliance", "Bad Rating (BR): Keep below 5% — respond to every negative review within 24 hours", "Delayed Delivery (DD): Food must be ready within the promised preparation window", "Cancellations (CA): Partner-side cancellations must stay below 3%", "Rating & Reviews (RR): Maintain 4.0+ average across all active items"], acknowledged: true },
   { title: "Customer Communication & Etiquette", icon: Globe, points: ["Be polite and professional in all interactions", "Never share personal contact details with customers", "Resolve complaints gracefully — escalate if needed via SPC", "Maintain response time under 5 minutes for order queries"], acknowledged: false },
   { title: "Business Ethics & Compliance", icon: Lock, points: ["Do not sell Shero branded items outside the platform", "Accurate portion sizes matching the menu specification", "Report any platform issues or bugs through Partner Centre", "Participate in scheduled CVAT audits and inspections"], acknowledged: false },
@@ -34,7 +34,7 @@ const conductSections = [
 /* ─── Cooking Training Videos ─── */
 const cookingModules = [
   { cuisine: "South Indian", items: [
-    { name: "Hyderabadi Biryani", duration: "25 min", type: "recorded", unlocked: true },
+    { name: "Chicagoi Biryani", duration: "25 min", type: "recorded", unlocked: true },
     { name: "Masala Dosa", duration: "18 min", type: "recorded", unlocked: true },
     { name: "Sambar Rice", duration: "15 min", type: "recorded", unlocked: true },
     { name: "Idli & Vada Combo", duration: "20 min", type: "recorded", unlocked: false },
