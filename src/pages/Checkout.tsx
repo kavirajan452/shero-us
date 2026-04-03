@@ -288,20 +288,35 @@ const Checkout = () => {
               </div>
               {attempted && missingPhone && <p className="text-[11px] text-destructive mt-1 ml-1">Valid phone number is required</p>}
             </div>
+            {/* Address auto-suggest */}
             <div className="relative">
-                <MapPin className={`absolute left-3 top-3.5 w-4 h-4 ${attempted && missingAddress ? "text-destructive" : "text-muted-foreground"}`} />
-                <textarea value={address} onChange={(e) => handleAddressChange(e.target.value)} onFocus={() => address.length > 2 && setShowSuggestions(true)} onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} placeholder={region.addressPlaceholder} rows={2} className={`w-full pl-10 pr-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted-foreground outline-none transition-colors resize-none ${attempted && missingAddress ? "border-destructive focus:border-destructive" : "border-border focus:border-primary"}`} />
-                {attempted && missingAddress && <p className="text-[11px] text-destructive mt-1 ml-1">Delivery address is required</p>}
-                {showSuggestions && filteredSuggestions.length > 0 && (
-                  <div className="absolute left-0 right-0 top-full mt-1 bg-card border border-border rounded-xl shadow-lg z-10 max-h-40 overflow-y-auto">
-                    {filteredSuggestions.map((s) => (
-                      <button key={s} onMouseDown={() => { setAddress(s); setShowSuggestions(false); }} className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors first:rounded-t-xl last:rounded-b-xl">
-                        <MapPin className="w-3 h-3 inline mr-2 text-muted-foreground" />{s}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <MapPin className={`absolute left-3 top-3.5 w-4 h-4 ${attempted && missingAddress ? "text-destructive" : "text-muted-foreground"}`} />
+              <input
+                value={address ? address : addressQuery}
+                onChange={(e) => { setAddressQuery(e.target.value); setAddress(""); }}
+                onFocus={() => addressSuggestions.length > 0 && setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                placeholder="Search address..."
+                className={`w-full pl-10 pr-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted-foreground outline-none transition-colors ${attempted && missingAddress ? "border-destructive focus:border-destructive" : "border-border focus:border-primary"}`}
+              />
+              {searchingAddress && <span className="absolute right-3 top-3.5 text-xs text-muted-foreground">Searching…</span>}
+              {attempted && missingAddress && <p className="text-[11px] text-destructive mt-1 ml-1">Delivery address is required</p>}
+              {showSuggestions && addressSuggestions.length > 0 && (
+                <div className="absolute left-0 right-0 top-full mt-1 bg-card border border-border rounded-xl shadow-lg z-10 max-h-48 overflow-y-auto">
+                  {addressSuggestions.map((s, i) => (
+                    <button key={i} onMouseDown={() => { setAddress(s.display); setAddressQuery(s.display); setShowSuggestions(false); }} className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors first:rounded-t-xl last:rounded-b-xl">
+                      <MapPin className="w-3 h-3 inline mr-2 text-muted-foreground" />{s.display}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            {/* Extra address fields */}
+            <div className="grid grid-cols-2 gap-3">
+              <input value={flatDoor} onChange={(e) => setFlatDoor(e.target.value)} type="text" placeholder="Flat / Door No." className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm" />
+              <input value={floorBlock} onChange={(e) => setFloorBlock(e.target.value)} type="text" placeholder="Floor / Block / Wing" className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm" />
+            </div>
+            <input value={addressExtra} onChange={(e) => setAddressExtra(e.target.value)} type="text" placeholder="Landmark / Extra directions (optional)" className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm" />
             {/* Snacks-specific: ZIP code + city */}
             {isSnacksOnly && (
               <div className="grid grid-cols-2 gap-3">
