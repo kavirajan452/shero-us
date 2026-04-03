@@ -110,7 +110,9 @@ const HeroSection = () => {
       {/* === MOBILE HERO (< md) === */}
       <div className="md:hidden relative h-[420px] overflow-hidden">
         <img src={heroMascot} alt="Shero Home Chef" className="absolute inset-0 w-full h-full object-cover object-top z-[1]" />
-        {/* Minimal gradient — only bottom 35% */}
+        {/* Light wash overlay to improve logo/text readability */}
+        <div className="absolute inset-0 bg-white/25 z-[1]" />
+        {/* Bottom gradient for text */}
         <div className="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-background via-background/80 to-transparent z-[2]" />
 
         {/* Top bar: language + logo with subtle backdrop */}
