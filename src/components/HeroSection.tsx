@@ -11,7 +11,7 @@ const HeroSection = () => {
   const c = contentMap(contentItems || []);
 
   const [showDropdown, setShowDropdown] = useState(false);
-  const [address, setAddress] = useState("Anna Nagar");
+  const [address, setAddress] = useState("Midtown");
   const [addressLabel, setAddressLabel] = useState("Home");
   const [detecting, setDetecting] = useState(false);
   const [manualInput, setManualInput] = useState("");
