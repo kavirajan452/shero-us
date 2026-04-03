@@ -37,7 +37,7 @@ const Index = () => {
         <AboutSheroCTA />
         <SubscriptionCTA />
         <TopChefsCarousel />
-        <WhyChooseUs />
+        
       </main>
       <Footer />
       <BottomNav />
