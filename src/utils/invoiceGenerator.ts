@@ -143,7 +143,7 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   y += 2;
   doc.line(pw - m - 65, y, pw - m, y);
   y += 5;
-  addLine("TOTAL", `₹${Math.round(data.total).toLocaleString("en-IN")}`, true);
+  addLine("TOTAL", fmt(Math.round(data.total * 100) / 100), true);
 
   // Bank details
   if (co.bankName || co.accountNumber) {
