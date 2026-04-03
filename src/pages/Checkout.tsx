@@ -63,7 +63,7 @@ const Checkout = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [addressQuery, setAddressQuery] = useState("");
-  const [addressSuggestions, setAddressSuggestions] = useState<{ display: string; lat: string; lon: string }[]>([]);
+  const [addressSuggestions, setAddressSuggestions] = useState<{ display: string; lat: string; lon: string; state: string }[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [searchingAddress, setSearchingAddress] = useState(false);
   const [flatDoor, setFlatDoor] = useState("");
