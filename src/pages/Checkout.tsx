@@ -239,32 +239,34 @@ const Checkout = () => {
             {items.map(({ item, quantity, selectedAddOns }) => {
               const addOnsPrice = selectedAddOns.reduce((s, a) => s + a.price, 0);
               return (
-                <div key={item.id} className="space-y-1">
-                  <div className="flex items-center gap-3">
+                <div key={item.id} className="space-y-2 pb-3 border-b border-border last:border-0 last:pb-0">
+                  <div className="flex items-start gap-3">
                     <img src={item.image} alt={item.name} className="w-14 h-14 rounded-lg object-cover shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-medium text-foreground">{item.name}</h4>
-                      <span className="text-sm text-muted-foreground">{formatPrice(item.price)}</span>
+                      <h4 className="text-sm font-medium text-foreground leading-snug">{item.name}</h4>
+                      <span className="text-xs text-muted-foreground">{formatPrice(item.price)}</span>
+                      {selectedAddOns.length > 0 && (
+                        <p className="text-[11px] text-muted-foreground mt-0.5">
+                          Add-ons: {selectedAddOns.map((a) => `${a.name} (+${formatPrice(a.price)})`).join(", ")}
+                        </p>
+                      )}
                     </div>
+                  </div>
+                  <div className="flex items-center justify-between ml-[4.25rem]">
                     <div className="flex items-center gap-1.5">
-                      <button onClick={() => updateQuantity(item.id, quantity - 1)} className="p-1 rounded bg-secondary hover:bg-primary/10 transition-colors">
+                      <button onClick={() => updateQuantity(item.id, quantity - 1)} className="p-1.5 rounded-lg bg-secondary hover:bg-primary/10 transition-colors">
                         <Minus className="w-3.5 h-3.5 text-foreground" />
                       </button>
-                      <span className="text-sm font-bold w-5 text-center text-foreground">{quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, quantity + 1)} className="p-1 rounded bg-secondary hover:bg-primary/10 transition-colors">
+                      <span className="text-sm font-bold w-6 text-center text-foreground">{quantity}</span>
+                      <button onClick={() => updateQuantity(item.id, quantity + 1)} className="p-1.5 rounded-lg bg-secondary hover:bg-primary/10 transition-colors">
                         <Plus className="w-3.5 h-3.5 text-foreground" />
                       </button>
-                      <button onClick={() => removeItem(item.id)} className="p-1 ml-1 text-destructive hover:bg-destructive/10 rounded transition-colors">
+                      <button onClick={() => removeItem(item.id)} className="p-1.5 ml-1 text-destructive hover:bg-destructive/10 rounded-lg transition-colors">
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
-                    <span className="text-sm font-bold text-foreground w-16 text-right">{formatPrice((item.price + addOnsPrice) * quantity)}</span>
+                    <span className="text-sm font-bold text-foreground">{formatPrice((item.price + addOnsPrice) * quantity)}</span>
                   </div>
-                  {selectedAddOns.length > 0 && (
-                    <div className="ml-[4.25rem] text-xs text-muted-foreground">
-                      Add-ons: {selectedAddOns.map((a) => `${a.name} (+${formatPrice(a.price)})`).join(", ")}
-                    </div>
-                  )}
                 </div>
               );
             })}
