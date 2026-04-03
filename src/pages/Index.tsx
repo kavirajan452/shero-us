@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import PromoBanner from "@/components/PromoBanner";
 import DesktopNav from "@/components/DesktopNav";
 import HeroSection from "@/components/HeroSection";
-
+import TrustBar from "@/components/TrustBar";
 
 import CategoryCards from "@/components/CategoryCards";
 import TrendingDishesCarousel from "@/components/TrendingDishesCarousel";
@@ -31,7 +31,7 @@ const Index = () => {
       <DesktopNav />
       <main>
         <HeroSection />
-        
+        <TrustBar />
         <CategoryCards />
         <TrendingDishesCarousel />
         <AboutSheroCTA />
