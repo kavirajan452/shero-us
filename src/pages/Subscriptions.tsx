@@ -970,7 +970,7 @@ const Subscriptions = () => {
             )}
           </CardContent>
         </Card>
-        <PaymentSection total={price.total} formatPrice={(n) => `$${n.toLocaleString()}`} onPaymentSuccess={() => handlePayment("upi")} onPaymentFailure={() => {}} />
+        <PaymentSection total={price.total} formatPrice={(n) => `$${n.toLocaleString()}`} onPaymentSuccess={() => handlePayment("card")} onPaymentFailure={() => {}} />
       </div>
     );
   };

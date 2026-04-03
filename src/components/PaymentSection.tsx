@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { CreditCard, Smartphone, Building2, Link2, CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { CreditCard, Smartphone, Building2, Link2, CheckCircle2, XCircle, Loader2, Apple, Wallet } from "lucide-react";
 
-export type PaymentMethod = "upi" | "card" | "bank" | "payment_link";
+export type PaymentMethod = "card" | "apple_pay" | "google_pay" | "ach" | "payment_link";
 
 interface PaymentSectionProps {
   total: number;
@@ -9,21 +9,24 @@ interface PaymentSectionProps {
   onPaymentSuccess: () => void;
   onPaymentFailure: (method: PaymentMethod) => void;
   disabled?: boolean;
-  showPaymentLink?: boolean; // for admin flow
+  showPaymentLink?: boolean;
 }
 
 const methods: { id: PaymentMethod; label: string; icon: typeof CreditCard; desc: string }[] = [
-  { id: "upi", label: "UPI", icon: Smartphone, desc: "Google Pay, PhonePe, Paytm" },
-  { id: "card", label: "Credit / Debit Card", icon: CreditCard, desc: "Visa, Mastercard, RuPay" },
-  { id: "bank", label: "Net Banking", icon: Building2, desc: "All major banks supported" },
+  { id: "card", label: "Credit / Debit Card", icon: CreditCard, desc: "Visa, Mastercard, Amex, Discover" },
+  { id: "apple_pay", label: "Apple Pay", icon: Smartphone, desc: "Pay with Face ID / Touch ID" },
+  { id: "google_pay", label: "Google Pay", icon: Wallet, desc: "Fast checkout with Google" },
+  { id: "ach", label: "Bank Transfer (ACH)", icon: Building2, desc: "Direct bank debit · No fees" },
 ];
 
 const PaymentSection = ({ total, formatPrice, onPaymentSuccess, onPaymentFailure, disabled, showPaymentLink }: PaymentSectionProps) => {
   const [selected, setSelected] = useState<PaymentMethod | null>(null);
-  const [upiId, setUpiId] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
+  const [cardZip, setCardZip] = useState("");
+  const [routingNumber, setRoutingNumber] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState<"success" | "failed" | null>(null);
 
@@ -31,13 +34,18 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, onPaymentFailure
     ? [...methods, { id: "payment_link" as PaymentMethod, label: "Payment Link", icon: Link2, desc: "Send payment link to customer" }]
     : methods;
 
+  const formatCardNumber = (val: string) => {
+    const digits = val.replace(/\D/g, "").slice(0, 16);
+    return digits.replace(/(\d{4})(?=\d)/g, "$1 ");
+  };
+
   const handlePay = () => {
     if (!selected) return;
     setProcessing(true);
     setResult(null);
-    // Mock payment – simulate 70% success
+    // Mock payment – simulate 80% success
     setTimeout(() => {
-      const success = Math.random() > 0.3;
+      const success = Math.random() > 0.2;
       setProcessing(false);
       setResult(success ? "success" : "failed");
       if (success) {
@@ -49,16 +57,14 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, onPaymentFailure
   };
 
   const canPay = selected && !processing && !result &&
-    (selected === "upi" ? upiId.includes("@") :
-     selected === "card" ? cardNumber.length >= 12 && cardExpiry && cardCvv.length >= 3 :
-     selected === "bank" ? true :
-     selected === "payment_link" ? true : false);
+    (selected === "card" ? cardNumber.replace(/\s/g, "").length >= 15 && cardExpiry && cardCvv.length >= 3 && cardZip.length >= 5 :
+     selected === "ach" ? routingNumber.length === 9 && accountNumber.length >= 6 :
+     selected === "apple_pay" || selected === "google_pay" || selected === "payment_link");
 
   return (
     <section className="bg-card border border-border rounded-2xl p-5 mb-5">
       <h2 className="font-semibold text-foreground mb-4">Payment</h2>
 
-      {/* Method selection */}
       <div className="space-y-2 mb-4">
         {allMethods.map((m) => (
           <button
@@ -78,31 +84,23 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, onPaymentFailure
         ))}
       </div>
 
-      {/* Method-specific fields */}
-      {selected === "upi" && (
-        <div className="space-y-2 mb-4">
-          <label className="text-xs font-medium text-muted-foreground">UPI ID</label>
-          <input
-            value={upiId}
-            onChange={(e) => setUpiId(e.target.value)}
-            placeholder="yourname@upi"
-            className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
-          />
-        </div>
-      )}
-
+      {/* Card fields */}
       {selected === "card" && (
         <div className="space-y-2 mb-4">
           <input
             value={cardNumber}
-            onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, "").slice(0, 16))}
-            placeholder="Card Number"
-            className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
+            onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
+            placeholder="1234 5678 9012 3456"
+            className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm tracking-wider"
           />
           <div className="flex gap-2">
             <input
               value={cardExpiry}
-              onChange={(e) => setCardExpiry(e.target.value.slice(0, 5))}
+              onChange={(e) => {
+                let v = e.target.value.replace(/\D/g, "").slice(0, 4);
+                if (v.length >= 3) v = v.slice(0, 2) + "/" + v.slice(2);
+                setCardExpiry(v);
+              }}
               placeholder="MM/YY"
               className="flex-1 px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
             />
@@ -111,21 +109,55 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, onPaymentFailure
               onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))}
               placeholder="CVV"
               type="password"
-              className="w-24 px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
+              className="w-20 px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
             />
+            <input
+              value={cardZip}
+              onChange={(e) => setCardZip(e.target.value.replace(/\D/g, "").slice(0, 5))}
+              placeholder="ZIP"
+              className="w-20 px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
+            />
+          </div>
+          <div className="flex items-center gap-2 mt-1">
+            <span className="text-[10px] text-muted-foreground">🔒 Secured by Stripe</span>
+            <span className="text-[10px] text-muted-foreground ml-auto">Visa · MC · Amex · Discover</span>
           </div>
         </div>
       )}
 
-      {selected === "bank" && (
+      {/* Apple Pay / Google Pay */}
+      {(selected === "apple_pay" || selected === "google_pay") && (
         <div className="mb-4 p-3 rounded-xl bg-secondary/50 border border-border">
-          <p className="text-xs text-muted-foreground">You will be redirected to your bank's secure portal to complete the payment.</p>
+          <p className="text-xs text-muted-foreground">
+            {selected === "apple_pay"
+              ? "Tap the button below to authenticate with Apple Pay using Face ID or Touch ID."
+              : "Tap the button below to complete payment with your saved Google Pay card."}
+          </p>
+        </div>
+      )}
+
+      {/* ACH fields */}
+      {selected === "ach" && (
+        <div className="space-y-2 mb-4">
+          <input
+            value={routingNumber}
+            onChange={(e) => setRoutingNumber(e.target.value.replace(/\D/g, "").slice(0, 9))}
+            placeholder="Routing Number (9 digits)"
+            className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
+          />
+          <input
+            value={accountNumber}
+            onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, "").slice(0, 17))}
+            placeholder="Account Number"
+            className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
+          />
+          <p className="text-[10px] text-muted-foreground">🔒 Bank-grade encryption · ACH transfers typically settle in 1-2 business days</p>
         </div>
       )}
 
       {selected === "payment_link" && (
         <div className="mb-4 p-3 rounded-xl bg-secondary/50 border border-border">
-          <p className="text-xs text-muted-foreground">A payment link will be generated and sent to the customer via SMS/WhatsApp.</p>
+          <p className="text-xs text-muted-foreground">A Stripe payment link will be generated and sent to the customer via SMS/email.</p>
         </div>
       )}
 
@@ -154,9 +186,11 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, onPaymentFailure
           className="w-full py-3.5 rounded-2xl bg-gradient-shero text-primary-foreground font-semibold text-base hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-shero flex items-center justify-center gap-2"
         >
           {processing ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" /> Processing...
-            </>
+            <><Loader2 className="w-4 h-4 animate-spin" /> Processing...</>
+          ) : selected === "apple_pay" ? (
+            ` Pay ${formatPrice(total)}`
+          ) : selected === "google_pay" ? (
+            `Pay ${formatPrice(total)} with G Pay`
           ) : (
             `Pay ${formatPrice(total)}`
           )}

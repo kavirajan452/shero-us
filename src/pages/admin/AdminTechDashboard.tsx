@@ -75,9 +75,9 @@ const paymentSummary = {
 };
 
 const paymentMethods = [
-  { name: "UPI", value: 68, color: "hsl(var(--primary))" },
-  { name: "Card", value: 18, color: "hsl(var(--accent))" },
-  { name: "Net Banking", value: 9, color: "hsl(142, 71%, 45%)" },
+  { name: "Card", value: 52, color: "hsl(var(--primary))" },
+  { name: "Apple Pay", value: 24, color: "hsl(var(--accent))" },
+  { name: "Google Pay", value: 15, color: "hsl(142, 71%, 45%)" },
   { name: "Wallet", value: 5, color: "hsl(38, 92%, 50%)" },
 ];
 
