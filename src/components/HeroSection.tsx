@@ -122,12 +122,14 @@ const HeroSection = () => {
         {/* Bottom text block */}
         <div className="absolute bottom-8 left-0 right-0 z-10 container mx-auto px-5">
           <h1 className="text-foreground font-serif text-[22px] font-bold leading-[1.25] drop-shadow-sm">
-            {c["home.hero_title"] || "India's Home Kitchens,"}
+            {c["home.hero_title"] || "Authentic Indian Home Food,"}
             <br />
-            {c["home.hero_title_line2"] || "Now Closer to You."}
+            {c["home.hero_title_line2"] || "Delivered Fresh"}
+            <br />
+            <span className="text-primary">{c["home.hero_title_line3"] || "Now Closer to You."}</span>
           </h1>
-          <p className="text-foreground/70 text-[13px] mt-2 max-w-[300px] leading-relaxed drop-shadow-sm">
-            {c["home.hero_subtitle"] || "Real women. Real recipes. Authentic home food."}
+          <p className="text-foreground/70 text-[13px] mt-2 max-w-[320px] leading-relaxed drop-shadow-sm">
+            {c["home.hero_subtitle"] || "From our certified home kitchens to your doorstep. The taste of India, made in America."}
           </p>
         </div>
       </div>
@@ -146,11 +148,12 @@ const HeroSection = () => {
             {!langSet && <LanguageSwitcher />}
           </div>
           <h1 className="text-foreground font-serif text-5xl lg:text-6xl font-bold leading-tight">
-            {c["home.hero_title"] || "India's Home Kitchens,"}<br />
-            {c["home.hero_title_line2"] || "Now Closer to You."}
+            {c["home.hero_title"] || "Authentic Indian Home Food,"}<br />
+            {c["home.hero_title_line2"] || "Delivered Fresh"}<br />
+            <span className="text-primary">{c["home.hero_title_line3"] || "Now Closer to You."}</span>
           </h1>
           <p className="text-foreground/70 text-lg mt-4 max-w-[440px] leading-relaxed">
-            {c["home.hero_subtitle"] || "Real women. Real recipes. Authentic home food."}
+            {c["home.hero_subtitle"] || "From our certified home kitchens to your doorstep. The taste of India, made in America."}
           </p>
 
           {/* CTA Button */}
