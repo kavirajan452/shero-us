@@ -150,12 +150,12 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
     y += 8;
     doc.setFontSize(8);
     doc.setFont("helvetica", "bold");
-    doc.text("Bank Details:", m, y);
+    doc.text("Bank / Payment Details:", m, y);
     doc.setFont("helvetica", "normal");
     y += 4;
     if (co.bankName) { doc.text(`Bank: ${co.bankName}`, m, y); y += 4; }
-    if (co.accountNumber) { doc.text(`A/C: ${co.accountNumber}`, m, y); y += 4; }
-    if (co.ifsc) { doc.text(`IFSC: ${co.ifsc}`, m, y); y += 4; }
+    if (co.accountNumber) { doc.text(`Account: ${co.accountNumber}`, m, y); y += 4; }
+    if (co.ifsc) { doc.text(`Routing: ${co.ifsc}`, m, y); y += 4; }
   }
 
   // Terms
