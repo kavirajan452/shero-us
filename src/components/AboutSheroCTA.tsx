@@ -40,7 +40,7 @@ const AboutSheroCTA = () => {
             </div>
 
             {/* Right: trust metrics */}
-            <div className="flex flex-row md:flex-col gap-3 flex-wrap">
+            <div className="flex flex-col gap-3">
               {[
                 { icon: Heart, label: "Genuinely Homemade", value: "100%", color: "text-red-500", bg: "bg-red-500/8 border-red-500/15" },
                 { icon: ChefHat, label: "Home Chefs", value: "50+", color: "text-primary", bg: "bg-primary/8 border-primary/15" },
