@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useSubscriptionMealPlans } from "@/hooks/useSupabaseData";
+import { standardMealPlans as localMealPlans } from "@/data/subscriptionPlansData";
 import type { SubscriptionDuration, SubscriptionSlot } from "@/data/subscriptionPlansData";
 
 const subscriptionDurations = [
@@ -120,9 +121,25 @@ const Subscriptions = () => {
   const { data: subContent } = useScreenContent("subscription");
   const sc = contentMap(subContent || []);
 
-  // Fetch meal plans from DB
+  // Fetch meal plans from DB, fallback to local data
   const { data: dbMealPlans, isLoading: plansLoading } = useSubscriptionMealPlans();
-  const standardMealPlans: StandardMealPlan[] = dbMealPlans || [];
+  const standardMealPlans: StandardMealPlan[] = (dbMealPlans && dbMealPlans.length > 0)
+    ? dbMealPlans
+    : localMealPlans.map(p => ({
+        id: p.id,
+        name: p.name,
+        cuisine: p.cuisine,
+        emoji: p.emoji,
+        description: p.description,
+        is_veg: p.isVeg,
+        slots: p.slots,
+        price_per_day: p.pricePerDay,
+        highlights: p.highlights,
+        image: p.image,
+        rating: p.rating,
+        subscribers: p.subscribers,
+        weekly_menu: p.weeklyMenu,
+      } as any));
 
   // Lead capture state
   const [customerVerified, setCustomerVerified] = useState(!isMarketingLead);
