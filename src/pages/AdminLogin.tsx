@@ -24,6 +24,7 @@ export default function AdminLogin() {
   const DUMMY_CREDS = {
     admin: { email: "admin@shero.in", password: "admin123", role: "super_admin", name: "Admin User" },
     super_admin: { email: "superadmin@shero.in", password: "super123", role: "super_admin", name: "Super Admin" },
+    ceo: { email: "ceo@shero.in", password: "ceo123", role: "super_admin", name: "CEO" },
   } as const;
 
   const handleLogin = async (e: React.FormEvent) => {
