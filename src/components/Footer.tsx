@@ -22,8 +22,6 @@ const Footer = () => {
             <ul className="space-y-2 text-sm text-primary-foreground/60">
               <li><a href="/about" className="hover:text-primary-foreground transition-colors">Who We Are</a></li>
               <li><a href="/partner-enrollment" className="hover:text-primary-foreground transition-colors">Be a Shero</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Franchise</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Awards & Events</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">FAQ</a></li>
             </ul>
           </div>
@@ -31,7 +29,7 @@ const Footer = () => {
             <h5 className="font-semibold mb-3">Contact</h5>
             <ul className="space-y-2 text-sm text-primary-foreground/60">
               <li>
-                ✉️ <a href={`mailto:${c["footer.support_email"] || "support@sherohomefood.com"}`} className="hover:text-primary-foreground transition-colors">{c["footer.support_email"] || "support@sherohomefood.com"}</a>
+                ✉️ <a href="mailto:support@shero.us" className="hover:text-primary-foreground transition-colors">support@shero.us</a>
               </li>
               <li>
                 📞 <a href={`tel:${(c["footer.support_phone"] || "+1 (800) 743-7600").replace(/[^0-9+]/g, "")}`} className="hover:text-primary-foreground transition-colors">{c["footer.support_phone"] || "+1 (800) 743-7600"}</a>
@@ -45,7 +43,7 @@ const Footer = () => {
             </div>
             <div className="mt-4 pt-3 border-t border-primary-foreground/10 text-xs text-primary-foreground/40">
               <p>
-                Complaints: <a href={`mailto:${c["footer.complaints_email"] || "ceo@sherohomefood.com"}`} className="hover:text-primary-foreground transition-colors">{c["footer.complaints_email"] || "ceo@sherohomefood.com"}</a>
+                Complaints: <a href="mailto:ceo@shero.us" className="hover:text-primary-foreground transition-colors">ceo@shero.us</a>
               </p>
             </div>
           </div>
