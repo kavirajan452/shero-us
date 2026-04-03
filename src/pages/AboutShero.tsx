@@ -29,10 +29,10 @@ const defaultStats = [
 ];
 
 const awards = [
-  { title: "Best Social Impact Startup 2024", org: "India Startup Awards" },
-  { title: "Women Empowerment Excellence", org: "National Women's Commission" },
-  { title: "Food Innovation of the Year", org: "FHRAI" },
-  { title: "Top 50 Startups to Watch", org: "YourStory" },
+  { title: "Best Social Impact Startup 2025", org: "TechCrunch Disrupt" },
+  { title: "Women Empowerment Excellence", org: "SBA Women's Business" },
+  { title: "Food Innovation of the Year", org: "National Restaurant Assoc." },
+  { title: "Top 50 Startups to Watch", org: "Forbes" },
 ];
 
 const AboutShero = () => {
