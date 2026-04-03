@@ -71,6 +71,7 @@ const Checkout = () => {
   const [addressExtra, setAddressExtra] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [city, setCity] = useState("");
+  const [customerState, setCustomerState] = useState("");
   const [attempted, setAttempted] = useState(false);
 
   // Auto-check serviceability on mount via GPS (non-blocking)
