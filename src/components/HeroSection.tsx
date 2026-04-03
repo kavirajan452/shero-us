@@ -143,7 +143,7 @@ const HeroSection = () => {
             {c["home.hero_title"] || "Authentic Home Food, Delivered Fresh"}
           </h1>
           <p className="text-foreground/80 text-base mt-4 max-w-[440px] leading-relaxed">
-            {c["home.hero_subtitle"] || "From our certified home kitchens to your doorstep. The taste of India, made in America."}
+            {c["home.hero_subtitle"] || "From our certified home kitchens to your doorstep. The taste of home, made in America."}
           </p>
 
           {/* CTA Button */}
