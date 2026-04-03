@@ -3,8 +3,8 @@ import type { PartyMenuType } from "./partyMenuData";
 export const keralaMenuTypes: PartyMenuType[] = [
   {
     id: "kerala-lunch",
-    name: "Florida Lunch Meals",
-    description: "Traditional Florida Sadya-style meal with sambar, thoran, avial & more",
+    name: "Kerala Lunch Meals",
+    description: "Traditional Kerala Sadya-style meal with sambar, thoran, avial & more",
     emoji: "🥥",
     categories: [
       {
@@ -250,8 +250,8 @@ export const keralaMenuTypes: PartyMenuType[] = [
   },
   {
     id: "kerala-variety-rice",
-    name: "Florida Variety Rice",
-    description: "Rice-focused Florida menu with sambar rice, rasam rice & traditional combinations",
+    name: "Kerala Variety Rice",
+    description: "Rice-focused Kerala menu with sambar rice, rasam rice & traditional combinations",
     emoji: "🥥",
     categories: [
       {
@@ -303,7 +303,7 @@ export const keralaMenuTypes: PartyMenuType[] = [
         portionUnit: "Gms",
         pricePerItem: 33,
         items: [
-          { id: "kvr-gr-1", name: "Florida Ghee Rice" },
+          { id: "kvr-gr-1", name: "Kerala Ghee Rice" },
           { id: "kvr-gr-2", name: "Coconut Milk Rice" },
           { id: "kvr-gr-3", name: "Vegetable Pulao" },
           { id: "kvr-gr-4", name: "Jeera Rice" },

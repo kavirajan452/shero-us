@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { CreditCard, Smartphone, Building2, Link2, CheckCircle2, XCircle, Loader2, Apple, Wallet } from "lucide-react";
+import { CreditCard, Smartphone, Landmark, Wallet, Link2, CheckCircle2, Loader2 } from "lucide-react";
 
-export type PaymentMethod = "card" | "apple_pay" | "google_pay" | "ach" | "payment_link";
+export type PaymentMethod = "upi" | "card" | "netbanking" | "wallet" | "payment_link";
 
 interface PaymentSectionProps {
   total: number;
@@ -13,25 +13,23 @@ interface PaymentSectionProps {
 }
 
 const methods: { id: PaymentMethod; label: string; icon: typeof CreditCard; desc: string }[] = [
-  { id: "card", label: "Credit / Debit Card", icon: CreditCard, desc: "Visa, Mastercard, Amex, Discover" },
-  { id: "apple_pay", label: "Apple Pay", icon: Smartphone, desc: "Pay with Face ID / Touch ID" },
-  { id: "google_pay", label: "Google Pay", icon: Wallet, desc: "Fast checkout with Google" },
-  { id: "ach", label: "Bank Transfer (ACH)", icon: Building2, desc: "Direct bank debit · No fees" },
+  { id: "upi", label: "UPI Apps", icon: Smartphone, desc: "GPay, PhonePe, Paytm or any UPI app" },
+  { id: "card", label: "Credit / Debit Card", icon: CreditCard, desc: "Visa, Mastercard, RuPay & Amex" },
+  { id: "netbanking", label: "Net Banking", icon: Landmark, desc: "Direct payment from your bank account" },
+  { id: "wallet", label: "Wallet / Pay Later", icon: Wallet, desc: "Fast checkout using wallet or pay later" },
 ];
 
-const PaymentSection = ({ total, formatPrice, onPaymentSuccess, onPaymentFailure, disabled, showPaymentLink }: PaymentSectionProps) => {
+const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled, showPaymentLink }: PaymentSectionProps) => {
   const [selected, setSelected] = useState<PaymentMethod | null>(null);
+  const [upiId, setUpiId] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
-  const [cardZip, setCardZip] = useState("");
-  const [routingNumber, setRoutingNumber] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [result, setResult] = useState<"success" | "failed" | null>(null);
+  const [result, setResult] = useState<"success" | null>(null);
 
   const allMethods = showPaymentLink
-    ? [...methods, { id: "payment_link" as PaymentMethod, label: "Payment Link", icon: Link2, desc: "Send payment link to customer" }]
+    ? [...methods, { id: "payment_link" as PaymentMethod, label: "Payment Link", icon: Link2, desc: "Send a payment link to complete later" }]
     : methods;
 
   const formatCardNumber = (val: string) => {
@@ -43,33 +41,42 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, onPaymentFailure
     if (!selected) return;
     setProcessing(true);
     setResult(null);
-    // Mock payment – simulate 80% success
+
     setTimeout(() => {
-      const success = Math.random() > 0.2;
       setProcessing(false);
-      setResult(success ? "success" : "failed");
-      if (success) {
-        setTimeout(() => onPaymentSuccess(), 800);
-      } else {
-        onPaymentFailure(selected);
-      }
-    }, 2000);
+      setResult("success");
+      setTimeout(() => onPaymentSuccess(), 500);
+    }, 1200);
   };
 
-  const canPay = selected && !processing && !result &&
-    (selected === "card" ? cardNumber.replace(/\s/g, "").length >= 15 && cardExpiry && cardCvv.length >= 3 && cardZip.length >= 5 :
-     selected === "ach" ? routingNumber.length === 9 && accountNumber.length >= 6 :
-     selected === "apple_pay" || selected === "google_pay" || selected === "payment_link");
+  const canPay =
+    selected &&
+    !processing &&
+    !result &&
+    (selected === "upi"
+      ? upiId.includes("@") && upiId.length >= 5
+      : selected === "card"
+        ? cardNumber.replace(/\s/g, "").length >= 15 && !!cardExpiry && cardCvv.length >= 3
+        : selected === "netbanking" || selected === "wallet" || selected === "payment_link");
 
   return (
     <section className="bg-card border border-border rounded-2xl p-5 mb-5">
-      <h2 className="font-semibold text-foreground mb-4">Payment</h2>
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <div>
+          <h2 className="font-semibold text-foreground">Payment</h2>
+          <p className="text-xs text-muted-foreground mt-1">Demo payment flow for testing the full order journey.</p>
+        </div>
+        <span className="text-sm font-bold text-primary">{formatPrice(total)}</span>
+      </div>
 
       <div className="space-y-2 mb-4">
         {allMethods.map((m) => (
           <button
             key={m.id}
-            onClick={() => { setSelected(m.id); setResult(null); }}
+            onClick={() => {
+              setSelected(m.id);
+              setResult(null);
+            }}
             disabled={disabled || processing}
             className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-colors ${
               selected === m.id ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"
@@ -84,7 +91,18 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, onPaymentFailure
         ))}
       </div>
 
-      {/* Card fields */}
+      {selected === "upi" && (
+        <div className="space-y-2 mb-4">
+          <input
+            value={upiId}
+            onChange={(e) => setUpiId(e.target.value.trim())}
+            placeholder="yourname@bank"
+            className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
+          />
+          <p className="text-[10px] text-muted-foreground">Use any valid UPI ID for this dummy payment flow.</p>
+        </div>
+      )}
+
       {selected === "card" && (
         <div className="space-y-2 mb-4">
           <input
@@ -109,76 +127,36 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, onPaymentFailure
               onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))}
               placeholder="CVV"
               type="password"
-              className="w-20 px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
-            />
-            <input
-              value={cardZip}
-              onChange={(e) => setCardZip(e.target.value.replace(/\D/g, "").slice(0, 5))}
-              placeholder="ZIP"
-              className="w-20 px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
+              className="w-24 px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
             />
           </div>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-[10px] text-muted-foreground">🔒 Secured by Stripe</span>
-            <span className="text-[10px] text-muted-foreground ml-auto">Visa · MC · Amex · Discover</span>
-          </div>
+          <p className="text-[10px] text-muted-foreground">Dummy secure card flow for preview only.</p>
         </div>
       )}
 
-      {/* Apple Pay / Google Pay */}
-      {(selected === "apple_pay" || selected === "google_pay") && (
+      {(selected === "netbanking" || selected === "wallet") && (
         <div className="mb-4 p-3 rounded-xl bg-secondary/50 border border-border">
           <p className="text-xs text-muted-foreground">
-            {selected === "apple_pay"
-              ? "Tap the button below to authenticate with Apple Pay using Face ID or Touch ID."
-              : "Tap the button below to complete payment with your saved Google Pay card."}
+            {selected === "netbanking"
+              ? "Choose your bank on the next step in a real integration. For now, this dummy flow will complete instantly."
+              : "Wallet / pay-later selection is mocked here so the end-to-end order flow works reliably."}
           </p>
-        </div>
-      )}
-
-      {/* ACH fields */}
-      {selected === "ach" && (
-        <div className="space-y-2 mb-4">
-          <input
-            value={routingNumber}
-            onChange={(e) => setRoutingNumber(e.target.value.replace(/\D/g, "").slice(0, 9))}
-            placeholder="Routing Number (9 digits)"
-            className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
-          />
-          <input
-            value={accountNumber}
-            onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, "").slice(0, 17))}
-            placeholder="Account Number"
-            className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
-          />
-          <p className="text-[10px] text-muted-foreground">🔒 Bank-grade encryption · ACH transfers typically settle in 1-2 business days</p>
         </div>
       )}
 
       {selected === "payment_link" && (
         <div className="mb-4 p-3 rounded-xl bg-secondary/50 border border-border">
-          <p className="text-xs text-muted-foreground">A Stripe payment link will be generated and sent to the customer via SMS/email.</p>
+          <p className="text-xs text-muted-foreground">A mock payment link will be generated in this demo flow.</p>
         </div>
       )}
 
-      {/* Result */}
       {result === "success" && (
         <div className="flex items-center gap-2 p-3 rounded-xl bg-accent/10 border border-accent mb-4">
           <CheckCircle2 className="w-5 h-5 text-accent" />
-          <span className="text-sm font-medium text-accent">Payment Successful!</span>
-        </div>
-      )}
-      {result === "failed" && (
-        <div className="flex items-center gap-2 p-3 rounded-xl bg-destructive/10 border border-destructive mb-4">
-          <XCircle className="w-5 h-5 text-destructive" />
-          <div>
-            <span className="text-sm font-medium text-destructive">Payment Failed</span>
-            <p className="text-xs text-muted-foreground">Your order details have been saved. Try again or choose another method.</p>
-          </div>
+          <span className="text-sm font-medium text-foreground">Payment successful!</span>
         </div>
       )}
 
-      {/* Pay button */}
       {selected && !result && (
         <button
           onClick={handlePay}
@@ -187,22 +165,9 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, onPaymentFailure
         >
           {processing ? (
             <><Loader2 className="w-4 h-4 animate-spin" /> Processing...</>
-          ) : selected === "apple_pay" ? (
-            ` Pay ${formatPrice(total)}`
-          ) : selected === "google_pay" ? (
-            `Pay ${formatPrice(total)} with G Pay`
           ) : (
             `Pay ${formatPrice(total)}`
           )}
-        </button>
-      )}
-
-      {result === "failed" && (
-        <button
-          onClick={() => { setResult(null); setProcessing(false); }}
-          className="w-full mt-2 py-3 rounded-2xl border border-primary text-primary font-semibold text-sm hover:bg-primary/5 transition-colors"
-        >
-          Retry Payment
         </button>
       )}
     </section>
