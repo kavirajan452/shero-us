@@ -118,11 +118,10 @@ const HeroSection = () => {
         </div>
         <div className="absolute bottom-6 left-0 z-10 container mx-auto px-4">
           <h1 className="text-foreground font-serif text-[24px] font-bold leading-tight drop-shadow-sm">
-            {c["hero.title_line1"] || "A Home-Food"}{" "}
-            <span className="text-primary">{c["hero.title_line2"] || "Revolution"}</span>
+            {c["home.hero_title"] || "Authentic Indian Home Food, Delivered Fresh"}
           </h1>
           <p className="text-foreground/80 text-[13px] mt-1.5 max-w-[280px] leading-snug drop-shadow-sm">
-            {c["hero.subtitle"] || "India's #1 home food platform — now in the USA. Authentic home-cooked meals delivered to your door."}
+            {c["home.hero_subtitle"] || "From our certified home kitchens to your doorstep. The taste of India, made in America."}
           </p>
         </div>
       </div>
