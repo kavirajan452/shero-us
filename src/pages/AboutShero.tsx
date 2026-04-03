@@ -3,6 +3,7 @@ import { ArrowLeft, Heart, Users, Award, MapPin, Shield, ChefHat, Leaf, Clock, S
 import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
+import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 
 const milestones = [
   { year: "2021", title: "The Spark", desc: "Founded with 12 home chefs in Chicago — a mission to empower women through food." },
@@ -20,13 +21,13 @@ const values = [
   { icon: Leaf, title: "Fresh & Sustainable", desc: "Locally sourced ingredients, minimal packaging waste. 500+ varieties of wholesome dishes delivered fresh daily.", color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-950/30" },
 ];
 
-const stats = [
-  { number: "2,400+", label: "Home Kitchens", icon: ChefHat },
-  { number: "72", label: "Cities", icon: MapPin },
-  { number: "14", label: "States", icon: Globe },
-  { number: "1.4M+", label: "Orders Delivered", icon: TrendingUp },
-  { number: "500+", label: "Dish Varieties", icon: Star },
-  { number: "5", label: "Years of Love", icon: Heart },
+const defaultStats = [
+  { key: "stat_kitchens", number: "2,400+", label: "Home Kitchens", icon: ChefHat },
+  { key: "stat_cities", number: "72", label: "Cities", icon: MapPin },
+  { key: "stat_states", number: "14", label: "States", icon: Globe },
+  { key: "stat_orders", number: "1.4M+", label: "Orders Delivered", icon: TrendingUp },
+  { key: "stat_dishes", number: "500+", label: "Dish Varieties", icon: Star },
+  { key: "stat_years", number: "5", label: "Years of Love", icon: Heart },
 ];
 
 const awards = [
@@ -37,6 +38,8 @@ const awards = [
 ];
 
 const AboutShero = () => {
+  const { data: aboutContent } = useScreenContent("about");
+  const ac = contentMap(aboutContent || []);
   return (
     <div className="min-h-screen bg-background">
       <DesktopNav />
@@ -53,14 +56,15 @@ const AboutShero = () => {
           </Link>
           <div className="text-center">
             <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-4">
-              🏠 India's Largest Home Food Platform
+              {ac["about.hero_badge"] || "🏠 America's Newest Home Food Platform"}
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-foreground mb-4 leading-tight">
-              A Home-Food <span className="text-primary">Revolution</span>
+              {(ac["about.hero_title"] || "A Home-Food Revolution").split("Revolution").map((part, i) => (
+                <span key={i}>{part}{i === 0 ? <span className="text-primary">Revolution</span> : ""}</span>
+              ))}
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              We believe every woman deserves the opportunity to turn her kitchen into a livelihood —
-              and every family deserves the taste of genuinely homemade food.
+              {ac["about.hero_subtitle"] || "We believe every woman deserves the opportunity to turn her kitchen into a livelihood — and every family deserves the taste of genuinely homemade food."}
             </p>
           </div>
         </div>
@@ -70,12 +74,12 @@ const AboutShero = () => {
       <section className="bg-card border-y border-border py-8">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-            {stats.map((s, i) => {
+            {defaultStats.map((s, i) => {
               const Icon = s.icon;
               return (
                 <div key={i} className="text-center">
                   <Icon className="w-5 h-5 mx-auto mb-1.5 text-primary" />
-                  <div className="text-xl md:text-2xl font-bold text-foreground">{s.number}</div>
+                  <div className="text-xl md:text-2xl font-bold text-foreground">{ac[`about.${s.key}`] || s.number}</div>
                   <div className="text-[11px] text-muted-foreground">{s.label}</div>
                 </div>
               );
