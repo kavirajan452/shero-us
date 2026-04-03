@@ -69,6 +69,15 @@ const Profile = () => {
   const { data: partyOrders = [] } = useMyPartyOrders(authUser?.id);
   const { data: partyDrafts = [] } = useMyPartyDrafts(authUser?.id, profile?.phone || undefined);
   const updatePartyOrder = useUpdatePartyOrder();
+
+  // Fetch real instant orders from DB
+  const [liveOrders, setLiveOrders] = useState<any[]>([]);
+  useEffect(() => {
+    if (!authUser?.id) return;
+    supabase.from("instant_orders").select("*").eq("customer_id", authUser.id).order("created_at", { ascending: false }).limit(20).then(({ data }) => {
+      if (data) setLiveOrders(data);
+    });
+  }, [authUser?.id]);
   const [chatMessages, setChatMessages] = useState<{ from: "bot" | "user"; text: string }[]>([
     { from: "bot", text: `Hi${profile?.full_name ? ` ${profile.full_name.split(" ")[0]}` : ""}! 👋 I'm Shero Bot. How can I help you today?\n\nQuick options:\n• Order issue\n• Refund status\n• Wallet help\n• Subscription query\n• Something else` },
   ]);
