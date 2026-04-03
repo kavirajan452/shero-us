@@ -168,7 +168,7 @@ const SweetsSnacks = () => {
                   Heritage in Every Bite
                 </h1>
                 <p className="text-xs text-muted-foreground mt-1 max-w-xs">
-                  Handmade at home. Fresh to order. Delivered across 72+ cities.
+                  Handmade at home. Fresh to order. Delivered across 12+ US cities.
                 </p>
               </div>
             </div>
