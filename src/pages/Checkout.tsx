@@ -290,8 +290,34 @@ const Checkout = () => {
           </div>
         </section>
 
+        {/* Serviceability Check Banner */}
+        {serviceableStatus === "checking" && (
+          <section className="bg-card border border-border rounded-2xl p-5 mb-5">
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-muted-foreground">Checking delivery availability for your location…</p>
+            </div>
+          </section>
+        )}
+
+        {isNotServiceable && (
+          <section className="bg-destructive/5 border border-destructive/20 rounded-2xl p-5 mb-5">
+            <div className="flex items-start gap-3 mb-4">
+              <AlertTriangle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h3 className="text-sm font-semibold text-destructive">Outside Delivery Area</h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  We currently deliver within {radiusMiles} miles of our partner kitchens.
+                  {detectedLocation && ` Your location: ${detectedLocation}.`}
+                </p>
+              </div>
+            </div>
+            <NonServiceableArea detectedLocation={detectedLocation || undefined} zipCode={zipCode || undefined} />
+          </section>
+        )}
+
         {/* Delivery Options — hide for snacks */}
-        {!isSnacksOnly && (
+        {!isSnacksOnly && !isNotServiceable && (
           <section className="bg-card border border-border rounded-2xl p-5 mb-5">
             <h2 className="font-semibold text-foreground mb-4">Delivery Method</h2>
             <div className="space-y-2">
