@@ -203,7 +203,7 @@ export type TransactionTrigger =
   | "shero_class_booked" | "shero_class_completed" | "shero_class_cancelled"
   // Common
   | "partner_payout" | "partner_penalty" | "discount_applied" | "marketing_spend"
-  | "refund_issued" | "wallet_topup" | "wallet_used" | "gst_payment"
+  | "refund_issued" | "wallet_topup" | "wallet_used" | "tax_payment"
   | "tds_deducted" | "cash_to_bank" | "packing_purchased"
   | "instructor_payout";
 
