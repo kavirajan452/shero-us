@@ -91,7 +91,7 @@ const AboutShero = () => {
         <div className="container mx-auto px-4 max-w-4xl">
           <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground text-center mb-3">Our Story</h2>
           <p className="text-muted-foreground text-center mb-10 max-w-2xl mx-auto">
-            What started as 12 home chefs in Chicago has grown into India's largest home-cooked food movement.
+            What started as 5 home chefs in the DC Metro area is growing into America's home-cooked food movement.
           </p>
           <div className="space-y-0">
             {milestones.map((m, i) => (
