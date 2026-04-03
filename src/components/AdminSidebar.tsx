@@ -109,7 +109,7 @@ const techItems = [
   { title: "Control Centre", url: "/admin/tech-dashboard", icon: LayoutDashboard },
   { title: "Screen Communications", url: "/admin/screen-comms", icon: MessageSquare },
   { title: "Integrations", url: "/admin/tech-integrations", icon: Plug },
-  { title: "Stripe Integration", url: "/admin/stripe", icon: CreditCard },
+  { title: "Payment Gateway", url: "/admin/payment-gateway", icon: CreditCard },
   { title: "Delivery Management", url: "/admin/delivery-mgmt", icon: Truck },
   { title: "API Connections", url: "/admin/api-connections", icon: Plug },
   { title: "Broadcast", url: "/admin/tech-comms", icon: Megaphone },

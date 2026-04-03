@@ -1,41 +1,40 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DollarSign, Shield, RefreshCw, CheckCircle, AlertTriangle, Clock, ArrowUpRight, FileText } from "lucide-react";
+import { DollarSign, CheckCircle, AlertTriangle } from "lucide-react";
 
 const stripeConfig = {
   status: "active",
   mode: "live",
-  merchantId: "rzp_live_****8kG2",
+  accountId: "acct_****8kG2",
   lastSync: "2026-03-17 22:45:00",
-  webhookUrl: "https://api.shero.in/webhooks/stripe",
+  webhookUrl: "https://api.sherohomefood.com/webhooks/stripe",
 };
 
 const recentTransactions = [
-  { id: "pay_Q1a2b3c4d5", amount: 1250, status: "captured", method: "UPI", customer: "Priya M.", time: "2 min ago" },
-  { id: "pay_Q1e6f7g8h9", amount: 3500, status: "captured", method: "Card", customer: "Ravi K.", time: "8 min ago" },
-  { id: "pay_Q1i0j1k2l3", amount: 890, status: "refunded", method: "UPI", customer: "Anitha S.", time: "15 min ago" },
-  { id: "pay_Q1m4n5o6p7", amount: 4200, status: "failed", method: "Net Banking", customer: "Kumar R.", time: "22 min ago" },
-  { id: "pay_Q1q8r9s0t1", amount: 1800, status: "captured", method: "UPI", customer: "Laura D.", time: "30 min ago" },
+  { id: "pi_Q1a2b3c4d5", amount: 1250, status: "succeeded", method: "Visa •••• 4242", customer: "Maria G.", time: "2 min ago" },
+  { id: "pi_Q1e6f7g8h9", amount: 3500, status: "succeeded", method: "Mastercard •••• 5555", customer: "James K.", time: "8 min ago" },
+  { id: "pi_Q1i0j1k2l3", amount: 890, status: "refunded", method: "Apple Pay", customer: "Sarah S.", time: "15 min ago" },
+  { id: "pi_Q1m4n5o6p7", amount: 4200, status: "failed", method: "Amex •••• 3782", customer: "Robert R.", time: "22 min ago" },
+  { id: "pi_Q1q8r9s0t1", amount: 1800, status: "succeeded", method: "Google Pay", customer: "Laura D.", time: "30 min ago" },
 ];
 
 const webhookEvents = [
-  { event: "payment.captured", count: 342, lastFired: "2 min ago", status: "healthy" },
-  { event: "payment.failed", count: 18, lastFired: "22 min ago", status: "healthy" },
-  { event: "refund.processed", count: 12, lastFired: "15 min ago", status: "healthy" },
-  { event: "order.paid", count: 340, lastFired: "2 min ago", status: "healthy" },
-  { event: "settlement.processed", count: 3, lastFired: "6 hrs ago", status: "warning" },
+  { event: "payment_intent.succeeded", count: 342, lastFired: "2 min ago", status: "healthy" },
+  { event: "payment_intent.payment_failed", count: 18, lastFired: "22 min ago", status: "healthy" },
+  { event: "charge.refunded", count: 12, lastFired: "15 min ago", status: "healthy" },
+  { event: "checkout.session.completed", count: 340, lastFired: "2 min ago", status: "healthy" },
+  { event: "payout.paid", count: 3, lastFired: "6 hrs ago", status: "warning" },
 ];
 
-export default function AdminStripeIntegration() {
+export default function AdminPaymentGateway() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Stripe Integration</h1>
-          <p className="text-muted-foreground text-sm">Payment gateway configuration, webhooks & transaction monitoring</p>
+          <h1 className="text-2xl font-bold">Payment Gateway</h1>
+          <p className="text-muted-foreground text-sm">Stripe configuration, webhooks & transaction monitoring</p>
         </div>
         <Badge variant={stripeConfig.status === "active" ? "default" : "destructive"} className="text-sm px-3 py-1">
           <CheckCircle className="w-3.5 h-3.5 mr-1" /> Live & Active
@@ -54,8 +53,8 @@ export default function AdminStripeIntegration() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card><CardContent className="pt-4">
               <p className="text-xs text-muted-foreground">Today's Collections</p>
-              <p className="text-2xl font-bold">$1,84,250</p>
-              <p className="text-xs text-green-600">↑ 12% vs yesterday</p>
+              <p className="text-2xl font-bold">$184,250</p>
+              <p className="text-xs text-primary">↑ 12% vs yesterday</p>
             </CardContent></Card>
             <Card><CardContent className="pt-4">
               <p className="text-xs text-muted-foreground">Success Rate</p>
@@ -63,9 +62,9 @@ export default function AdminStripeIntegration() {
               <p className="text-xs text-muted-foreground">342 of 355 attempts</p>
             </CardContent></Card>
             <Card><CardContent className="pt-4">
-              <p className="text-xs text-muted-foreground">Pending Settlements</p>
+              <p className="text-xs text-muted-foreground">Pending Payouts</p>
               <p className="text-2xl font-bold">$52,800</p>
-              <p className="text-xs text-muted-foreground">Next: Tomorrow 6 AM</p>
+              <p className="text-xs text-muted-foreground">Next: Tomorrow 6 AM EST</p>
             </CardContent></Card>
             <Card><CardContent className="pt-4">
               <p className="text-xs text-muted-foreground">Refunds Today</p>
@@ -78,8 +77,8 @@ export default function AdminStripeIntegration() {
             <CardHeader><CardTitle className="text-base">Configuration</CardTitle></CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center py-2 border-b">
-                <span className="text-sm text-muted-foreground">Merchant ID</span>
-                <code className="text-sm bg-muted px-2 py-0.5 rounded">{stripeConfig.merchantId}</code>
+                <span className="text-sm text-muted-foreground">Stripe Account ID</span>
+                <code className="text-sm bg-muted px-2 py-0.5 rounded">{stripeConfig.accountId}</code>
               </div>
               <div className="flex justify-between items-center py-2 border-b">
                 <span className="text-sm text-muted-foreground">Mode</span>
@@ -113,7 +112,7 @@ export default function AdminStripeIntegration() {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-semibold">${txn.amount.toLocaleString()}</p>
-                      <Badge variant={txn.status === "captured" ? "default" : txn.status === "refunded" ? "secondary" : "destructive"} className="text-[10px]">
+                      <Badge variant={txn.status === "succeeded" ? "default" : txn.status === "refunded" ? "secondary" : "destructive"} className="text-[10px]">
                         {txn.status}
                       </Badge>
                     </div>
@@ -138,9 +137,9 @@ export default function AdminStripeIntegration() {
                     <div className="flex items-center gap-3">
                       <span className="text-sm font-medium">{evt.count}</span>
                       {evt.status === "healthy" ? (
-                        <CheckCircle className="w-4 h-4 text-green-500" />
+                        <CheckCircle className="w-4 h-4 text-primary" />
                       ) : (
-                        <AlertTriangle className="w-4 h-4 text-yellow-500" />
+                        <AlertTriangle className="w-4 h-4 text-destructive" />
                       )}
                     </div>
                   </div>
@@ -154,7 +153,7 @@ export default function AdminStripeIntegration() {
           <Card>
             <CardHeader><CardTitle className="text-base">Payment Methods</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {["UPI (Google Pay, PhonePe, Paytm)", "Credit / Debit Cards", "Net Banking", "Wallets (Paytm, Mobikwik)"].map((method) => (
+              {["Credit / Debit Cards (Visa, Mastercard, Amex)", "Apple Pay", "Google Pay", "ACH Direct Debit"].map((method) => (
                 <div key={method} className="flex items-center justify-between py-2 border-b last:border-0">
                   <span className="text-sm">{method}</span>
                   <Switch defaultChecked />
@@ -170,7 +169,7 @@ export default function AdminStripeIntegration() {
                 <Switch defaultChecked />
               </div>
               <div className="flex items-center justify-between py-2 border-b">
-                <span className="text-sm">Fraud detection alerts</span>
+                <span className="text-sm">Radar fraud detection</span>
                 <Switch defaultChecked />
               </div>
               <div className="flex items-center justify-between py-2">

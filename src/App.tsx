@@ -87,7 +87,7 @@ import AdminPartnerComms from "./pages/admin/AdminPartnerComms";
 import AdminAITower from "./pages/admin/AdminAITower";
 import AdminChatbot from "./pages/admin/AdminChatbot";
 import AdminDebitCredit from "./pages/admin/AdminDebitCredit";
-import AdminStripeIntegration from "./pages/admin/AdminRazorpayIntegration";
+import AdminPaymentGateway from "./pages/admin/AdminPaymentGateway";
 import AdminTechDashboard from "./pages/admin/AdminTechDashboard";
 import AdminDeliveryManagement from "./pages/admin/AdminDeliveryManagement";
 import AdminAPIConnections from "./pages/admin/AdminAPIConnections";
@@ -275,7 +275,7 @@ const App = () => (
                   <Route path="ai-tower" element={<AdminAITower />} />
                   <Route path="chatbot" element={<AdminChatbot />} />
                   <Route path="debit-credit" element={<AdminDebitCredit />} />
-                  <Route path="stripe" element={<AdminStripeIntegration />} />
+                  <Route path="payment-gateway" element={<AdminPaymentGateway />} />
                   <Route path="tech-dashboard" element={<AdminTechDashboard />} />
                   <Route path="screen-comms" element={<AdminScreenComms />} />
                   <Route path="promotions" element={<AdminPromotions />} />
