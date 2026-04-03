@@ -98,7 +98,7 @@ const KitchenDetail = () => {
         </div>
 
         <div className="container mx-auto px-4 mt-6">
-          <p className="text-sm text-muted-foreground mb-6">{(kitchen.cuisine || []).join(" • ")} · Min order {formatPrice(kitchen.min_order)}</p>
+          <p className="text-sm text-muted-foreground mb-6">{(kitchen.cuisine || []).join(" • ")}</p>
 
           {categories.map((cat) => (
             <div key={cat} className="mb-8">
