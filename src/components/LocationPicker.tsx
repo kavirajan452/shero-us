@@ -152,7 +152,7 @@ const LocationPicker = ({ address, city, pincode, landmark, googlePinUrl, lat, l
         <Label htmlFor="loc-address">Full Address *</Label>
         <textarea
           id="loc-address"
-          placeholder="House/Flat No, Street, Area"
+          placeholder="Street Address, Apt/Suite, City"
           value={address}
           onChange={(e) => onUpdate({ address: e.target.value })}
           rows={2}
