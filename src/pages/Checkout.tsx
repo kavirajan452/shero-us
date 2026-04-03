@@ -146,7 +146,7 @@ const Checkout = () => {
       subtotal,
       discount: promoDiscount,
       delivery_fee: deliveryFee,
-      platform_fee: region.platformFee,
+      platform_fee: 0,
       tax,
       wallet_used: walletUsable,
       total,
