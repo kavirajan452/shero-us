@@ -133,29 +133,29 @@ const HeroSection = () => {
       </div>
 
       {/* === DESKTOP HERO (md+) — split layout === */}
-      <div className="hidden md:flex items-stretch h-[500px] overflow-hidden">
+      <div className="hidden md:flex items-stretch min-h-[500px] overflow-visible">
       {/* Left: text + search */}
-        <div className="w-1/2 flex flex-col justify-center px-12 lg:px-20 relative z-10 bg-gradient-to-br from-primary/5 via-background to-primary/10">
+        <div className="w-1/2 flex flex-col justify-center px-10 lg:px-16 py-8 relative z-10 bg-gradient-to-br from-primary/5 via-background to-primary/10">
           {/* Decorative circles */}
           <div className="absolute top-8 right-12 w-24 h-24 rounded-full bg-primary/5 blur-2xl" />
           <div className="absolute bottom-12 left-8 w-32 h-32 rounded-full bg-primary/8 blur-3xl" />
           <div className="absolute top-1/3 left-4 w-2 h-2 rounded-full bg-primary/30" />
           <div className="absolute bottom-1/4 right-20 w-3 h-3 rounded-full bg-primary/20" />
-          <div className="flex items-center gap-4 mb-6">
-            <img src={sheroLogo} alt="Shero" className="h-16 lg:h-20 drop-shadow-md" />
+          <div className="flex items-center gap-4 mb-4">
+            <img src={sheroLogo} alt="Shero" className="h-14 lg:h-16 drop-shadow-md" />
             {!langSet && <LanguageSwitcher />}
           </div>
-          <h1 className="text-foreground font-serif text-5xl lg:text-6xl font-bold leading-tight">
+          <h1 className="text-foreground font-serif text-4xl lg:text-5xl font-bold leading-tight">
             {c["home.hero_title"] || "Authentic Indian Home Food,"}<br />
             {c["home.hero_title_line2"] || "Delivered Fresh"}<br />
             <span className="text-primary">{c["home.hero_title_line3"] || "Now Closer to You."}</span>
           </h1>
-          <p className="text-foreground/70 text-lg mt-4 max-w-[440px] leading-relaxed">
+          <p className="text-foreground/70 text-base mt-3 max-w-[440px] leading-relaxed">
             {c["home.hero_subtitle"] || "From our certified home kitchens to your doorstep. The taste of India, made in America."}
           </p>
 
           {/* CTA Button */}
-          <Link to="/instant-delivery" className="mt-6 inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 rounded-full text-base font-semibold hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] w-fit">
+          <Link to="/instant-delivery" className="mt-4 inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] w-fit">
             {c["home.hero_cta"] || "Order Now"}
             <ArrowRight className="w-4 h-4" />
           </Link>
