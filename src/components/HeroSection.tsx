@@ -92,7 +92,7 @@ const HeroSection = () => {
     }
     const recognition = new SpeechRecognition();
     recognitionRef.current = recognition;
-    recognition.lang = "en-IN";
+    recognition.lang = "en-US";
     recognition.interimResults = true;
     recognition.continuous = false;
     recognition.onresult = (event: any) => {
