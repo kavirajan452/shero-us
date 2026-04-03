@@ -29,7 +29,7 @@ const webhookEvents = [
   { event: "settlement.processed", count: 3, lastFired: "6 hrs ago", status: "warning" },
 ];
 
-export default function AdminStripeIntegration() {
+export default function AdminPaymentGateway() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">

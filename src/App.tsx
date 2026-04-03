@@ -275,7 +275,7 @@ const App = () => (
                   <Route path="ai-tower" element={<AdminAITower />} />
                   <Route path="chatbot" element={<AdminChatbot />} />
                   <Route path="debit-credit" element={<AdminDebitCredit />} />
-                  <Route path="stripe" element={<AdminStripeIntegration />} />
+                  <Route path="payment-gateway" element={<AdminPaymentGateway />} />
                   <Route path="tech-dashboard" element={<AdminTechDashboard />} />
                   <Route path="screen-comms" element={<AdminScreenComms />} />
                   <Route path="promotions" element={<AdminPromotions />} />
