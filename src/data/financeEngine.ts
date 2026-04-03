@@ -40,7 +40,7 @@ export const voucherTypeLabels: Record<VoucherType, { label: string; shortCode: 
   purchase:    { label: "Purchase",      shortCode: "PUR", color: "bg-teal/15 text-teal",                       description: "Procurement of packing, raw materials, supplies" },
 };
 
-// ── Ledger Groups (Indian Standard / Tally) ──
+// ── Ledger Groups (US GAAP Standard) ──
 export type LedgerGroup =
   | "income_direct"
   | "income_indirect"
