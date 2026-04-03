@@ -172,7 +172,7 @@ const Checkout = () => {
   const missingZipCode = isSnacksOnly && zipCode.trim().length < 5;
 
   const canPlaceOrder = isSnacksOnly
-    ? !missingName && !missingPhone && !missingAddress && !missingPincode && isLoggedIn
+    ? !missingName && !missingPhone && !missingAddress && !missingZipCode && isLoggedIn
     : !missingName && !missingPhone && !missingAddress && !missingSlot && isLoggedIn;
 
   return (
