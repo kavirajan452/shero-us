@@ -161,7 +161,7 @@ const HeroSection = () => {
           </Link>
 
           {/* Desktop search bar inline */}
-          <div className="mt-8 bg-card rounded-2xl p-2.5 flex items-center gap-2 shadow-lg border border-border max-w-[520px]">
+          <div className="mt-5 bg-card rounded-2xl p-2.5 flex items-center gap-2 shadow-lg border border-border max-w-[520px]">
             <div className="relative" ref={dropdownRef}>
               <button onClick={() => setShowDropdown(!showDropdown)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-secondary shrink-0">
                 <MapPin className="w-3.5 h-3.5 text-primary" />
