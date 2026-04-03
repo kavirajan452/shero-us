@@ -70,7 +70,7 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
   doc.setTextColor(33, 33, 33);
   doc.setFont("helvetica", "bold");
   doc.text(`Invoice No: ${data.invoiceNumber}`, m, y);
-  doc.text(`Date: ${new Date(data.generatedAt).toLocaleDateString("en-IN")}`, pw - m, y, { align: "right" });
+  doc.text(`Date: ${new Date(data.generatedAt).toLocaleDateString("en-US")}`, pw - m, y, { align: "right" });
   y += 5;
   doc.setFont("helvetica", "normal");
   doc.text(`Order: #${data.orderId}`, m, y);
