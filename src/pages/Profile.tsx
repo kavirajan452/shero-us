@@ -100,23 +100,28 @@ const Profile = () => {
       const subtotal = order.price;
       const taxAmount = Math.round(subtotal * 0.05);
       const invoiceData: InvoiceData = {
-        invoiceNumber: generateInvoiceNumber("SHERO"),
+        invoiceNumber: generateInvoiceNumber("SHERO-US"),
         generatedAt: new Date().toISOString(),
+        invoiceType: "customer_sale",
         customerName: userName,
         customerPhone: userPhone,
         customerEmail: userEmail,
         items: [{ name: order.dish, qty: "1", amount: subtotal }],
         subtotal,
         taxAmount,
-        taxRate: "5",
+        taxRate: "8.25",
+        federalTax: 0,
+        stateTax: Math.round(subtotal * 0.06),
+        localTax: Math.round(subtotal * 0.0225),
         deliveryFee: 0,
         packingCharges: 0,
         platformFee: 0,
         discount: 0,
+        tips: 0,
         total: subtotal + taxAmount,
         orderType: "instant",
         orderId: order.id,
-        companySnapshot: {},
+        companySnapshot: { companyName: "Shero USA INC", companyType: "Delaware C-Corporation" },
       };
       const doc = generateInvoicePDF(invoiceData);
       doc.save(`invoice-${invoiceData.invoiceNumber}.pdf`);
