@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Star, Clock, MapPin, Plus, Minus, Leaf } from "lucide-react";
+import { ArrowLeft, MapPin, Plus, Minus, Leaf } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
