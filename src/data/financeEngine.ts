@@ -107,9 +107,9 @@ export type LedgerAccount =
   // CURRENT LIABILITIES
   | "accounts_payable_partner"
   | "accounts_payable_vendor"
-  | "gst_output_5"
-  | "gst_output_18"
-  | "gst_input_credit"
+  | "sales_tax_food"
+  | "sales_tax_services"
+  | "tax_input_credit"
   | "tds_payable"
   | "revenue_deferred"
   | "advance_from_customer"
