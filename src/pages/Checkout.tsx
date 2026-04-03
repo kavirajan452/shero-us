@@ -376,27 +376,50 @@ const Checkout = () => {
             </div>
             <div className="space-y-3">
               <p className="text-xs font-medium text-foreground">Choose delivery slot</p>
-              {(() => {
-                const grouped: Record<string, typeof slots> = {};
-                slots.forEach(s => { (grouped[s.day] ??= []).push(s); });
-                return Object.entries(grouped).map(([day, daySlots]) => (
-                  <div key={day} className="space-y-1.5">
-                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">{day}</p>
-                    <div className="grid grid-cols-3 gap-2">
-                      {daySlots.map((slot) => (
-                        <button
-                          key={slot.value}
-                          type="button"
-                          onClick={() => setSelectedSlot(slot.value)}
-                          className={`rounded-xl border px-2 py-2.5 text-center text-xs font-medium transition-colors ${selectedSlot === slot.value ? "border-primary bg-primary/5 text-primary" : "border-border text-foreground hover:border-primary/30"}`}
-                        >
-                          {slot.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ));
-              })()}
+              {/* Step 1: Pick a day */}
+              <div className="flex gap-2">
+                {deliveryDays.map(day => (
+                  <button
+                    key={day.index}
+                    type="button"
+                    onClick={() => { setSelectedDay(day.index); setSelectedSession(""); setSelectedSlot(""); }}
+                    className={`flex-1 rounded-xl border px-2 py-2 text-center transition-colors ${selectedDay === day.index ? "border-primary bg-primary/5 text-primary" : "border-border text-foreground hover:border-primary/30"}`}
+                  >
+                    <span className="block text-xs font-semibold">{day.label}</span>
+                    <span className="block text-[10px] text-muted-foreground">{day.date}</span>
+                  </button>
+                ))}
+              </div>
+              {/* Step 2: Pick session */}
+              {selectedDay > 0 && (
+                <div className="flex gap-2">
+                  {(["Lunch", "Dinner"] as const).map(s => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => { setSelectedSession(s); setSelectedSlot(""); }}
+                      className={`flex-1 rounded-xl border px-2 py-2 text-xs font-medium transition-colors ${selectedSession === s ? "border-primary bg-primary/5 text-primary" : "border-border text-foreground hover:border-primary/30"}`}
+                    >
+                      {s === "Lunch" ? "🍛 Lunch" : "🍽️ Dinner"}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {/* Step 3: Pick time slot */}
+              {sessionSlots.length > 0 && (
+                <div className="grid grid-cols-3 gap-2">
+                  {sessionSlots.map(slot => (
+                    <button
+                      key={slot.value}
+                      type="button"
+                      onClick={() => setSelectedSlot(slot.value)}
+                      className={`rounded-xl border px-2 py-2.5 text-center text-xs font-medium transition-colors ${selectedSlot === slot.value ? "border-primary bg-primary/5 text-primary" : "border-border text-foreground hover:border-primary/30"}`}
+                    >
+                      {slot.label}
+                    </button>
+                  ))}
+                </div>
+              )}
               {attempted && missingSlot && <p className="text-[11px] text-destructive">Please select a delivery slot</p>}
             </div>
           </section>
