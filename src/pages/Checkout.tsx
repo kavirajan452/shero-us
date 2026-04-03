@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Tag } from "lucide-react";
-import { ArrowLeft, Minus, Plus, Trash2, MapPin, Phone, User, Clock, Truck, Store, Package, Shield, Wallet, AlertTriangle } from "lucide-react";
+import { Tag, Heart } from "lucide-react";
+import { ArrowLeft, Minus, Plus, Trash2, MapPin, Phone, User, Clock, Truck, Package, Shield, Wallet, AlertTriangle } from "lucide-react";
 import CheckoutAuth from "@/components/CheckoutAuth";
 import PaymentSection from "@/components/PaymentSection";
 import type { PaymentMethod } from "@/components/PaymentSection";
@@ -16,12 +16,10 @@ import { useCreateInstantOrder, useSaveIncompleteOrder } from "@/hooks/useSupaba
 import { useServiceability } from "@/hooks/useServiceability";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
-const deliveryOptionsBase = [
-  { id: "self-pickup", label: "Self Pickup", description: "Pick up from kitchen", icon: Store },
-  { id: "self-delivery", label: "Self Delivery", description: "Kitchen's own delivery", icon: Truck },
-  { id: "third-party", label: "Third-Party Delivery", description: "Delivered via partner service", icon: Package },
-];
+const DELIVERY_FEE_DEFAULT = 30;
+const TIP_PRESETS_DEFAULT = [5, 10, 15, 20];
 
 const Checkout = () => {
   const { items, updateQuantity, removeItem, subtotal, clearCart, totalItems, appliedPromo, promoDiscount, applyPromoCode, removePromoCode, promoLoading } = useCart();
@@ -36,10 +34,30 @@ const Checkout = () => {
   const { detectAndCheck, checkByZip, detectedLocation, checking: geoChecking, radiusMiles, hasKitchens } = useServiceability();
   const [serviceableStatus, setServiceableStatus] = useState<"unknown" | "checking" | "serviceable" | "not_serviceable">("unknown");
 
+  // Tips state
+  const [tipAmount, setTipAmount] = useState(0);
+  const [customTip, setCustomTip] = useState("");
+  const [showCustomTip, setShowCustomTip] = useState(false);
+  const [tipPresets, setTipPresets] = useState(TIP_PRESETS_DEFAULT);
+  const [configDeliveryFee, setConfigDeliveryFee] = useState(DELIVERY_FEE_DEFAULT);
+
+  // Load delivery fee and tip presets from backend config
+  useEffect(() => {
+    supabase.from("app_config").select("value").eq("key", "invoice_settings").maybeSingle().then(({ data }) => {
+      if (data?.value && typeof data.value === "object") {
+        const cfg = data.value as Record<string, string>;
+        if (cfg.deliveryFee) setConfigDeliveryFee(parseFloat(cfg.deliveryFee) || DELIVERY_FEE_DEFAULT);
+        if (cfg.tipPresets) {
+          try { setTipPresets(JSON.parse(cfg.tipPresets)); } catch {}
+        }
+      }
+    });
+  }, []);
+
   // Detect if cart is snacks-only (shipped items, no time slots needed)
   const isSnacksOnly = items.length > 0 && items.every((ci) => ci.item.kitchenId === "snacks");
 
-  const [deliveryType, setDeliveryType] = useState(isSnacksOnly ? "shipping" : "self-delivery");
+  const deliveryType = isSnacksOnly ? "shipping" : "self-delivery";
   const [selectedSlot, setSelectedSlot] = useState(isSnacksOnly ? "shipping" : "");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -59,7 +77,7 @@ const Checkout = () => {
     });
   }, [hasKitchens]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Also check when ZIP code is entered (for snacks or manual entry)
+  // Also check when ZIP code is entered
   useEffect(() => {
     if (zipCode.length === 5 && hasKitchens) {
       const isServiceable = checkByZip(zipCode);
@@ -67,14 +85,9 @@ const Checkout = () => {
     }
   }, [zipCode, hasKitchens, checkByZip]);
 
-  const deliveryFees: Record<string, Record<string, number>> = {
-    IN: { "self-pickup": 0, "self-delivery": 30, "third-party": 50 },
-    US: { "self-pickup": 0, "self-delivery": 4, "third-party": 7 },
-  };
-
-  const deliveryFee = isSnacksOnly ? (subtotal >= 599 ? 0 : 49) : (deliveryFees[region.code]?.[deliveryType] || 0);
+  const deliveryFee = isSnacksOnly ? (subtotal >= 599 ? 0 : 49) : configDeliveryFee;
   const tax = calcTax(subtotal - promoDiscount);
-  const subtotalWithFees = subtotal - promoDiscount + deliveryFee + region.platformFee + tax;
+  const subtotalWithFees = subtotal - promoDiscount + deliveryFee + region.platformFee + tax + tipAmount;
   const walletUsable = useWalletBalance ? getUsableAmount(subtotalWithFees) : 0;
   const total = subtotalWithFees - walletUsable;
 
@@ -188,7 +201,7 @@ const Checkout = () => {
 
   const missingName = !name.trim();
   const missingPhone = phone.trim().length < region.phoneMaxLength;
-  const missingAddress = deliveryType !== "self-pickup" && !address.trim();
+  const missingAddress = !address.trim();
   const missingSlot = !isSnacksOnly && !selectedSlot;
   const missingZipCode = isSnacksOnly && zipCode.trim().length < 5;
 
@@ -264,8 +277,7 @@ const Checkout = () => {
               </div>
               {attempted && missingPhone && <p className="text-[11px] text-destructive mt-1 ml-1">Valid phone number is required</p>}
             </div>
-            {deliveryType !== "self-pickup" && (
-              <div className="relative">
+            <div className="relative">
                 <MapPin className={`absolute left-3 top-3.5 w-4 h-4 ${attempted && missingAddress ? "text-destructive" : "text-muted-foreground"}`} />
                 <textarea value={address} onChange={(e) => handleAddressChange(e.target.value)} onFocus={() => address.length > 2 && setShowSuggestions(true)} onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} placeholder={region.addressPlaceholder} rows={2} className={`w-full pl-10 pr-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted-foreground outline-none transition-colors resize-none ${attempted && missingAddress ? "border-destructive focus:border-destructive" : "border-border focus:border-primary"}`} />
                 {attempted && missingAddress && <p className="text-[11px] text-destructive mt-1 ml-1">Delivery address is required</p>}
@@ -279,7 +291,6 @@ const Checkout = () => {
                   </div>
                 )}
               </div>
-            )}
             {/* Snacks-specific: ZIP code + city */}
             {isSnacksOnly && (
               <div className="grid grid-cols-2 gap-3">
@@ -316,58 +327,75 @@ const Checkout = () => {
           </section>
         )}
 
-        {/* Delivery Options — hide for snacks */}
+        {/* Delivery Info — fixed fee, delivery only */}
         {!isSnacksOnly && !isNotServiceable && (
           <section className="bg-card border border-border rounded-2xl p-5 mb-5">
-            <h2 className="font-semibold text-foreground mb-4">Delivery Method</h2>
-            <div className="space-y-2">
-              {deliveryOptionsBase.map((opt) => {
-                const fee = deliveryFees[region.code]?.[opt.id] || 0;
-                return (
-                  <button key={opt.id} onClick={() => setDeliveryType(opt.id)} className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-colors ${deliveryType === opt.id ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"}`}>
-                    <opt.icon className={`w-5 h-5 ${deliveryType === opt.id ? "text-primary" : "text-muted-foreground"}`} />
-                    <div className="flex-1 text-left">
-                      <span className={`text-sm font-medium ${deliveryType === opt.id ? "text-primary" : "text-foreground"}`}>{opt.label}</span>
-                      <p className="text-xs text-muted-foreground">{opt.description}</p>
-                    </div>
-                    <span className="text-sm font-semibold text-foreground">{fee === 0 ? "Free" : formatPrice(fee)}</span>
-                  </button>
-                );
-              })}
-            </div>
-            {deliveryType === "third-party" && (
-              <div className="mt-3 p-3 rounded-xl bg-secondary/50 border border-border">
-                <div className="flex items-center gap-2 mb-2">
-                  <Shield className="w-4 h-4 text-primary" />
-                  <span className="text-xs font-semibold text-foreground">Delivery Partner Auto-Assigned</span>
+            <h2 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+              <Truck className="w-4 h-4 text-primary" /> Delivery
+            </h2>
+            <div className="flex items-center justify-between p-3 rounded-xl border border-primary bg-primary/5">
+              <div className="flex items-center gap-3">
+                <Truck className="w-5 h-5 text-primary" />
+                <div>
+                  <span className="text-sm font-medium text-primary">Home Delivery</span>
+                  <p className="text-xs text-muted-foreground">Delivered by Shero partner</p>
                 </div>
-                <div className="flex gap-2">
-                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-card border border-border text-xs">
-                    <span>🚲</span>
-                    <span className="text-foreground font-medium">Dunzo / Shadowfax</span>
-                  </div>
-                </div>
-                <p className="text-[10px] text-muted-foreground mt-2">Best available partner assigned based on ETA & availability.</p>
               </div>
-            )}
+              <span className="text-sm font-semibold text-foreground">{formatPrice(configDeliveryFee)}</span>
+            </div>
           </section>
         )}
 
-        {/* Delivery Schedule — hide for snacks and non-serviceable */}
+        {/* Tips Section */}
         {!isSnacksOnly && !isNotServiceable && (
           <section className="bg-card border border-border rounded-2xl p-5 mb-5">
-            <h2 className={`font-semibold mb-1 flex items-center gap-2 ${attempted && missingSlot ? "text-destructive" : "text-foreground"}`}>
-              <Clock className={`w-4 h-4 ${attempted && missingSlot ? "text-destructive" : "text-primary"}`} /> Delivery Schedule
-              {attempted && missingSlot && <span className="text-[11px] font-normal ml-auto">Please select a slot</span>}
+            <h2 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+              <Heart className="w-4 h-4 text-primary" /> Tip Your Home Chef
             </h2>
-            <p className="text-xs text-muted-foreground mb-4">Min {region.minPrepMinutes / 60} hr{region.minPrepMinutes > 60 ? "s" : ""} prep · {region.deliveryStartHour} AM – {region.deliveryEndHour > 12 ? `${region.deliveryEndHour - 12} PM` : `${region.deliveryEndHour} AM`}</p>
-            <div className="grid grid-cols-2 gap-2">
-              {slots.map((slot) => (
-                <button key={slot.value} onClick={() => setSelectedSlot(slot.value)} className={`px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${selectedSlot === slot.value ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:border-primary/30 border border-transparent"}`}>
-                  {slot.label}
+            <p className="text-xs text-muted-foreground mb-3">100% of tips go to your kitchen partner</p>
+            <div className="flex gap-2 flex-wrap">
+              {tipPresets.map((preset) => (
+                <button
+                  key={preset}
+                  onClick={() => { setTipAmount(preset); setShowCustomTip(false); setCustomTip(""); }}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${tipAmount === preset && !showCustomTip ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:border-primary/30 border border-transparent"}`}
+                >
+                  {formatPrice(preset)}
                 </button>
               ))}
+              <button
+                onClick={() => { setShowCustomTip(true); setTipAmount(0); }}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${showCustomTip ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:border-primary/30 border border-transparent"}`}
+              >
+                Custom
+              </button>
+              {tipAmount > 0 && !showCustomTip && (
+                <button
+                  onClick={() => setTipAmount(0)}
+                  className="px-3 py-2 rounded-xl text-xs text-destructive hover:bg-destructive/10 transition-colors"
+                >
+                  Remove
+                </button>
+              )}
             </div>
+            {showCustomTip && (
+              <div className="mt-3 flex gap-2">
+                <input
+                  type="number"
+                  value={customTip}
+                  onChange={(e) => setCustomTip(e.target.value)}
+                  placeholder="Enter amount"
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm outline-none focus:border-primary transition-colors"
+                  min="0"
+                />
+                <button
+                  onClick={() => { const val = parseFloat(customTip) || 0; setTipAmount(val); }}
+                  className="px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold"
+                >
+                  Add
+                </button>
+              </div>
+            )}
           </section>
         )}
 
@@ -380,7 +408,7 @@ const Checkout = () => {
             <div className="space-y-1.5 text-xs text-muted-foreground">
               <p>📦 Ships within 1-2 business days</p>
               <p>🚚 {subtotal >= 599 ? "Free shipping applied! 🎉" : `Add ${formatPrice(599 - subtotal)} more for free shipping`}</p>
-              <p>🌍 Pan-India delivery via trusted courier partners</p>
+              <p>🇺🇸 Nationwide delivery via trusted courier partners</p>
             </div>
           </section>
         )}
@@ -440,6 +468,12 @@ const Checkout = () => {
             <div className="flex justify-between"><span className="text-muted-foreground">Delivery Fee</span><span className="text-foreground">{deliveryFee === 0 ? "Free" : formatPrice(deliveryFee)}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Platform Fee</span><span className="text-foreground">{formatPrice(region.platformFee)}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">{region.taxLabel}</span><span className="text-foreground">{formatPrice(tax)}</span></div>
+            {tipAmount > 0 && (
+              <div className="flex justify-between text-primary">
+                <span className="flex items-center gap-1"><Heart className="w-3 h-3" /> Tip</span>
+                <span className="font-semibold">{formatPrice(tipAmount)}</span>
+              </div>
+            )}
 
             {/* Wallet */}
             {balance > 0 && (
