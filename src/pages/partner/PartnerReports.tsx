@@ -116,7 +116,7 @@ const ledgerEntries: LedgerEntry[] = [
   { id: "L003", date: offsetDate("2026-02-27", 0), type: "income", description: "Order #SH4798 — Butter Chicken × 1, Naan × 3", amount: 420, runningBalance: 23752, orderId: "SH4798", orderItems: [{ name: "Butter Chicken", qty: 1, price: 299 }, { name: "Butter Naan", qty: 3, price: 40 }], customerName: "Rahul Verma" },
   { id: "L004", date: offsetDate("2026-02-27", 0), type: "income", description: "Order #SH4795 — Masala Dosa × 3, Coffee × 3", amount: 390, runningBalance: 24172, orderId: "SH4795", orderItems: [{ name: "Masala Dosa", qty: 3, price: 80 }, { name: "Filter Coffee", qty: 3, price: 50 }], customerName: "Kavitha S." },
   // Week 1 (previous week)
-  { id: "L005", date: offsetDate("2026-02-26", 1), type: "payment", description: "Weekly payout — Bank transfer (Week " + (getISOWeek(startOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }))) + ")", amount: -15000, runningBalance: 23432, paymentMethod: "Bank Transfer (NEFT)", paymentRef: "UTR20260226SHERO4421" },
+  { id: "L005", date: offsetDate("2026-02-26", 1), type: "payment", description: "Weekly payout — Bank transfer (Week " + (getISOWeek(startOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }))) + ")", amount: -15000, runningBalance: 23432, paymentMethod: "Bank Transfer (ACH)", paymentRef: "UTR20260226SHERO4421" },
   { id: "L006", date: offsetDate("2026-02-26", 1), type: "income", description: "Order #SH4775 — Masala Dosa × 4, Filter Coffee × 4", amount: 520, runningBalance: 38432, orderId: "SH4775", orderItems: [{ name: "Masala Dosa", qty: 4, price: 80 }, { name: "Filter Coffee", qty: 4, price: 50 }], customerName: "Anita Reddy" },
   { id: "L007", date: offsetDate("2026-02-25", 1), type: "adjustment", description: "Platform fee reversal — Promo order reimbursement", amount: 75, runningBalance: 37912 },
   { id: "L008", date: offsetDate("2026-02-25", 1), type: "income", description: "Order #SH4760 — Veg Thali × 2", amount: 240, runningBalance: 37837, orderId: "SH4760", orderItems: [{ name: "Veg Thali", qty: 2, price: 120 }], customerName: "Meena Iyer" },
@@ -131,7 +131,7 @@ const ledgerEntries: LedgerEntry[] = [
   { id: "L015", date: offsetDate("2026-02-18", 3), type: "referral" as LedgerType, description: "Referral Reward — Preethi Kumari listed as partner", amount: 750, runningBalance: 35072 },
   { id: "L016", date: offsetDate("2026-02-12", 3), type: "income", description: "Order #SH4698 — Paneer Tikka × 4", amount: 560, runningBalance: 34322, orderId: "SH4698", orderItems: [{ name: "Paneer Tikka", qty: 4, price: 140 }], customerName: "Lakshmi P." },
   { id: "L017", date: offsetDate("2026-02-12", 3), type: "wallet_bonus" as LedgerType, description: "Signup Wallet Bonus — included in first PPP payout", amount: 500, runningBalance: 32072 },
-  { id: "L018", date: offsetDate("2026-02-10", 3), type: "payment", description: "Weekly payout — Bank transfer (Week " + (getISOWeek(startOfWeek(subWeeks(new Date(), 3), { weekStartsOn: 1 }))) + ")", amount: -8000, runningBalance: 31572, paymentMethod: "Bank Transfer (NEFT)", paymentRef: "UTR20260210SHERO3312" },
+  { id: "L018", date: offsetDate("2026-02-10", 3), type: "payment", description: "Weekly payout — Bank transfer (Week " + (getISOWeek(startOfWeek(subWeeks(new Date(), 3), { weekStartsOn: 1 }))) + ")", amount: -8000, runningBalance: 31572, paymentMethod: "Bank Transfer (ACH)", paymentRef: "UTR20260210SHERO3312" },
 ];
 
 const typeConfig: Record<LedgerType, { label: string; color: string; icon: React.ElementType }> = {

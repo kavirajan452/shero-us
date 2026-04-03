@@ -309,7 +309,7 @@ const Subscriptions = () => {
         </p>
         <div className="flex flex-wrap justify-center gap-2 mt-2">
           {[
-            { icon: Shield, text: "FSSAI" },
+            { icon: Shield, text: "FDA" },
             { icon: Heart, text: "No Preservatives" },
             { icon: Truck, text: "Daily Delivery" },
             { icon: Crown, text: "1000+ Subscribers" },

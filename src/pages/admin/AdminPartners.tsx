@@ -80,7 +80,7 @@ interface EnrollmentLead {
   cookingExperience: string;
   cuisinesKnown: string;
   kitchenSize: string;
-  hasFSSAI: boolean;
+  hasFDA: boolean;
   photosUploaded: number;
   submittedAt: string;
   status: LeadStatus;
@@ -209,7 +209,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-001", fullName: "Kavitha S.", phone: "+91 99887 76655", email: "kavitha@email.com",
     city: "Chennai", state: "Tamil Nadu", pincode: "600028", education: "Graduate",
     cookingExperience: "8 years of home cooking, specializing in Chettinad cuisine",
-    cuisinesKnown: "Chettinad, South Indian", kitchenSize: "medium", hasFSSAI: false,
+    cuisinesKnown: "Chettinad, South Indian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 7, submittedAt: "2026-02-28", status: "new",
     amenities: ["Refrigerator", "Gas Stove", "Chimney"], houseType: "Apartment", familyMembers: 4,
     selectedServices: ["sap", "hcf"],
@@ -222,7 +222,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-002", fullName: "Sunitha R.", phone: "+91 88776 55443", email: "sunitha.r@email.com",
     city: "Hyderabad", state: "Telangana", pincode: "500032", education: "Post Graduate",
     cookingExperience: "12 years, Andhra & Telangana meals expert",
-    cuisinesKnown: "Andhra, Telangana, Biryani", kitchenSize: "large", hasFSSAI: true,
+    cuisinesKnown: "Andhra, Telangana, Biryani", kitchenSize: "large", hasFDA: true,
     photosUploaded: 7, submittedAt: "2026-02-26", status: "video_watched",
     amenities: ["Refrigerator", "Gas Stove", "Chimney", "AC"], houseType: "Independent House", familyMembers: 5,
     selectedServices: ["hcf", "party_orders", "subscription"],
@@ -235,7 +235,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-003", fullName: "Meenakshi P.", phone: "+91 77665 44332", email: "meenakshi@email.com",
     city: "Bengaluru", state: "Karnataka", pincode: "560078", education: "12th Pass",
     cookingExperience: "5 years, North Indian & Punjabi",
-    cuisinesKnown: "North Indian, Punjabi", kitchenSize: "small", hasFSSAI: false,
+    cuisinesKnown: "North Indian, Punjabi", kitchenSize: "small", hasFDA: false,
     photosUploaded: 5, submittedAt: "2026-02-25", status: "paid",
     amenities: ["Refrigerator", "Gas Stove"], houseType: "Apartment", familyMembers: 3,
     selectedServices: ["hcf"],
@@ -248,7 +248,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-004", fullName: "Radha K.", phone: "+91 66554 33221", email: "radha.k@email.com",
     city: "Coimbatore", state: "Tamil Nadu", pincode: "641001", education: "Graduate",
     cookingExperience: "15 years, Kerala & Tamil Nadu traditional",
-    cuisinesKnown: "Kerala, Tamil", kitchenSize: "large", hasFSSAI: true,
+    cuisinesKnown: "Kerala, Tamil", kitchenSize: "large", hasFDA: true,
     photosUploaded: 7, submittedAt: "2026-02-20", status: "approved",
     amenities: ["Refrigerator", "Gas Stove", "Chimney"], houseType: "Independent House", familyMembers: 6,
     selectedServices: ["sap", "subscription", "cookery_classes"],
@@ -261,7 +261,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-005", fullName: "Jaya M.", phone: "+91 55443 22110", email: "jaya.m@email.com",
     city: "Mumbai", state: "Maharashtra", pincode: "400053", education: "Graduate",
     cookingExperience: "3 years, Maharashtrian home food",
-    cuisinesKnown: "Maharashtrian, Gujarati", kitchenSize: "small", hasFSSAI: false,
+    cuisinesKnown: "Maharashtrian, Gujarati", kitchenSize: "small", hasFDA: false,
     photosUploaded: 4, submittedAt: "2026-02-22", status: "thinking",
     decisionNote: "Needs 5 days to decide", amenities: ["Refrigerator", "Gas Stove"], houseType: "Apartment", familyMembers: 4,
     selectedServices: ["hcf", "shero_classes"],
@@ -274,7 +274,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-006", fullName: "Deepa V.", phone: "+91 44332 11009", email: "deepa.v@email.com",
     city: "Delhi", state: "Delhi", pincode: "110001", education: "Post Graduate",
     cookingExperience: "6 years, Continental & Italian",
-    cuisinesKnown: "Continental, Italian", kitchenSize: "medium", hasFSSAI: false,
+    cuisinesKnown: "Continental, Italian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 6, submittedAt: "2026-02-18", status: "not_interested",
     decisionNote: "Kitchen is not ready", amenities: ["Refrigerator", "Gas Stove", "AC"], houseType: "Apartment", familyMembers: 2,
     selectedServices: ["cookery_classes"],
@@ -287,7 +287,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-007", fullName: "Lakshmi G.", phone: "+91 33221 00998", email: "lakshmi.g@email.com",
     city: "Pune", state: "Maharashtra", pincode: "411001", education: "10th Pass",
     cookingExperience: "20 years, traditional Marathi cuisine",
-    cuisinesKnown: "Marathi, Konkani", kitchenSize: "medium", hasFSSAI: false,
+    cuisinesKnown: "Marathi, Konkani", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 7, submittedAt: "2026-03-01", status: "payment_pending",
     amenities: ["Refrigerator", "Gas Stove", "Chimney"], houseType: "Independent House", familyMembers: 5,
     selectedServices: ["sap", "hcf", "party_orders"],
@@ -301,7 +301,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-R01", fullName: "Sunita Devi", phone: "+91 98xxx 12345", email: "sunita.d@email.com",
     city: "Chennai", state: "Tamil Nadu", pincode: "600015", education: "Graduate",
     cookingExperience: "10 years, South Indian home cooking",
-    cuisinesKnown: "South Indian, Chettinad", kitchenSize: "medium", hasFSSAI: false,
+    cuisinesKnown: "South Indian, Chettinad", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 6, submittedAt: "2026-01-15", status: "approved",
     amenities: ["Refrigerator", "Gas Stove", "Chimney"], houseType: "Independent House", familyMembers: 4,
     selectedServices: ["sap", "hcf"],
@@ -315,7 +315,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-R02", fullName: "Kavitha Rao", phone: "+91 97xxx 67890", email: "kavitha.rao@email.com",
     city: "Hyderabad", state: "Telangana", pincode: "500028", education: "Post Graduate",
     cookingExperience: "7 years, Andhra specialties",
-    cuisinesKnown: "Andhra, Telugu", kitchenSize: "large", hasFSSAI: false,
+    cuisinesKnown: "Andhra, Telugu", kitchenSize: "large", hasFDA: false,
     photosUploaded: 7, submittedAt: "2026-01-20", status: "approved",
     amenities: ["Refrigerator", "Gas Stove", "Chimney", "AC"], houseType: "Apartment", familyMembers: 3,
     selectedServices: ["hcf", "subscription"],
@@ -329,7 +329,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-R03", fullName: "Lakshmi Nair", phone: "+91 96xxx 11223", email: "lakshmi.n@email.com",
     city: "Kochi", state: "Kerala", pincode: "682001", education: "Graduate",
     cookingExperience: "9 years, Kerala traditional",
-    cuisinesKnown: "Kerala, South Indian", kitchenSize: "medium", hasFSSAI: false,
+    cuisinesKnown: "Kerala, South Indian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 5, submittedAt: "2026-02-01", status: "approved",
     amenities: ["Refrigerator", "Gas Stove"], houseType: "Independent House", familyMembers: 5,
     selectedServices: ["sap"],
@@ -343,7 +343,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-R04", fullName: "Anjali Sharma", phone: "+91 95xxx 44556", email: "anjali.s@email.com",
     city: "Pune", state: "Maharashtra", pincode: "411028", education: "Graduate",
     cookingExperience: "6 years, Maharashtrian & North Indian",
-    cuisinesKnown: "Maharashtrian, North Indian", kitchenSize: "medium", hasFSSAI: false,
+    cuisinesKnown: "Maharashtrian, North Indian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 6, submittedAt: "2026-02-05", status: "approved",
     amenities: ["Refrigerator", "Gas Stove", "Chimney"], houseType: "Apartment", familyMembers: 4,
     selectedServices: ["hcf", "party_orders"],
@@ -357,7 +357,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-R05", fullName: "Preethi Kumari", phone: "+91 94xxx 77889", email: "preethi.k@email.com",
     city: "Bengaluru", state: "Karnataka", pincode: "560034", education: "12th Pass",
     cookingExperience: "8 years, South Indian & Karnataka cuisine",
-    cuisinesKnown: "Karnataka, South Indian", kitchenSize: "small", hasFSSAI: false,
+    cuisinesKnown: "Karnataka, South Indian", kitchenSize: "small", hasFDA: false,
     photosUploaded: 5, submittedAt: "2026-02-10", status: "approved",
     amenities: ["Refrigerator", "Gas Stove"], houseType: "Apartment", familyMembers: 3,
     selectedServices: ["hcf"],
@@ -371,7 +371,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-R06", fullName: "Radha Menon", phone: "+91 93xxx 00112", email: "radha.m@email.com",
     city: "Trivandrum", state: "Kerala", pincode: "695001", education: "Graduate",
     cookingExperience: "11 years, Kerala traditional",
-    cuisinesKnown: "Kerala", kitchenSize: "large", hasFSSAI: true,
+    cuisinesKnown: "Kerala", kitchenSize: "large", hasFDA: true,
     photosUploaded: 7, submittedAt: "2026-02-15", status: "approved",
     amenities: ["Refrigerator", "Gas Stove", "Chimney"], houseType: "Independent House", familyMembers: 5,
     selectedServices: ["sap", "hcf"],
@@ -385,7 +385,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-R07", fullName: "Deepa Gowda", phone: "+91 92xxx 33445", email: "deepa.g@email.com",
     city: "Mysuru", state: "Karnataka", pincode: "570001", education: "Graduate",
     cookingExperience: "5 years, Karnataka cuisine",
-    cuisinesKnown: "Karnataka, South Indian", kitchenSize: "medium", hasFSSAI: false,
+    cuisinesKnown: "Karnataka, South Indian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 6, submittedAt: "2026-02-20", status: "paid",
     amenities: ["Refrigerator", "Gas Stove", "Chimney"], houseType: "Apartment", familyMembers: 3,
     selectedServices: ["hcf"],
@@ -399,7 +399,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-R08", fullName: "Fatima Begum", phone: "+91 91xxx 66778", email: "fatima.b@email.com",
     city: "Hyderabad", state: "Telangana", pincode: "500001", education: "12th Pass",
     cookingExperience: "15 years, Hyderabadi Biryani specialist",
-    cuisinesKnown: "Hyderabadi, Mughlai", kitchenSize: "medium", hasFSSAI: false,
+    cuisinesKnown: "Hyderabadi, Mughlai", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 4, submittedAt: "2026-02-25", status: "video_watched",
     amenities: ["Refrigerator", "Gas Stove"], houseType: "Independent House", familyMembers: 6,
     selectedServices: ["hcf", "party_orders"],
@@ -413,7 +413,7 @@ export const mockLeads: EnrollmentLead[] = [
     id: "EL-R09", fullName: "Swathi Reddy", phone: "+91 90xxx 99001", email: "swathi.r@email.com",
     city: "Vizag", state: "Andhra Pradesh", pincode: "530001", education: "Graduate",
     cookingExperience: "4 years, Andhra home cooking",
-    cuisinesKnown: "Andhra, Telugu", kitchenSize: "small", hasFSSAI: false,
+    cuisinesKnown: "Andhra, Telugu", kitchenSize: "small", hasFDA: false,
     photosUploaded: 3, submittedAt: "2026-02-27", status: "new",
     amenities: ["Refrigerator", "Gas Stove"], houseType: "Apartment", familyMembers: 3,
     selectedServices: ["hcf"],
@@ -1100,8 +1100,8 @@ function EnrollmentLeadsSection() {
                   <Camera className="w-3.5 h-3.5 text-muted-foreground" />
                   <span className="text-xs">{selectedLead.photosUploaded} photos uploaded</span>
                 </div>
-                {selectedLead.hasFSSAI && (
-                  <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 text-[10px] border-0">FSSAI Available</Badge>
+                {selectedLead.hasFDA && (
+                  <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 text-[10px] border-0">FDA Available</Badge>
                 )}
               </div>
 
@@ -1486,9 +1486,9 @@ interface LicenceKitchen {
 }
 
 const MOCK_LICENCE_KITCHENS: LicenceKitchen[] = [
-  { skid: "SAP-CHN-001", kitchenName: "SHF Chettinad Veg – Anna Nagar", partnerName: "Sujatha M.", rmn: "98765•••10", stream: "SAP", cuisine: "Chettinad", city: "Chennai", state: "TN", licenceNumber: "FSSAI-TN-2024-78901", licenceExpiry: new Date("2026-03-20"), status: "approved" },
-  { skid: "HCF-CHN-001", kitchenName: "Lakshmi's Kitchen", partnerName: "Lakshmi D.", rmn: "98765•••10", stream: "HCF", cuisine: "South Indian", city: "Chennai", state: "TN", licenceNumber: "FSSAI-TN-2025-44321", licenceExpiry: new Date("2026-03-25"), status: "approved" },
-  { skid: "HCF-HYD-012", kitchenName: "Fatima's Biryani House", partnerName: "Fatima B.", rmn: "91234•••45", stream: "HCF", cuisine: "Hyderabadi", city: "Hyderabad", state: "TS", licenceNumber: "FSSAI-TS-2024-11111", licenceExpiry: new Date("2026-02-15"), status: "closed", closedReason: "Licence expired" },
+  { skid: "SAP-CHN-001", kitchenName: "SHF Chettinad Veg – Anna Nagar", partnerName: "Sujatha M.", rmn: "98765•••10", stream: "SAP", cuisine: "Chettinad", city: "Chennai", state: "TN", licenceNumber: "FDA-TN-2024-78901", licenceExpiry: new Date("2026-03-20"), status: "approved" },
+  { skid: "HCF-CHN-001", kitchenName: "Lakshmi's Kitchen", partnerName: "Lakshmi D.", rmn: "98765•••10", stream: "HCF", cuisine: "South Indian", city: "Chennai", state: "TN", licenceNumber: "FDA-TN-2025-44321", licenceExpiry: new Date("2026-03-25"), status: "approved" },
+  { skid: "HCF-HYD-012", kitchenName: "Fatima's Biryani House", partnerName: "Fatima B.", rmn: "91234•••45", stream: "HCF", cuisine: "Hyderabadi", city: "Hyderabad", state: "TS", licenceNumber: "FDA-TS-2024-11111", licenceExpiry: new Date("2026-02-15"), status: "closed", closedReason: "Licence expired" },
 ];
 
 function daysUntilExpiry(d: Date): number {
@@ -1612,7 +1612,7 @@ function LicenceRenewalsSection() {
               </div>
               <div className="space-y-1.5">
                 <Label className="text-xs font-semibold">New Licence Number</Label>
-                <Input placeholder="e.g. FSSAI-TN-2026-12345" value={newLicenceNumber} onChange={(e) => setNewLicenceNumber(e.target.value)} className="h-9 text-sm font-mono" />
+                <Input placeholder="e.g. FDA-TN-2026-12345" value={newLicenceNumber} onChange={(e) => setNewLicenceNumber(e.target.value)} className="h-9 text-sm font-mono" />
               </div>
               <div className="space-y-1.5">
                 <Label className="text-xs font-semibold">New Expiry Date</Label>

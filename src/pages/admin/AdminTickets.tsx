@@ -139,9 +139,9 @@ const partnerProfiles: PartnerProfile[] = [
       { sl: 1, date: "2026-03-01", week: "CW09", description: "Weekly sales earnings — 42 orders", debit: 0, credit: 11830, balance: 11830, type: "income" },
       { sl: 2, date: "2026-02-28", week: "CW09", description: "Penalty: Late delivery (18 min)", debit: 50, credit: 0, balance: 11780, type: "penalty" },
       { sl: 3, date: "2026-02-27", week: "CW09", description: "Penalty: Quality complaint (cold food)", debit: 100, credit: 0, balance: 11680, type: "penalty" },
-      { sl: 4, date: "2026-02-23", week: "CW08", description: "Weekly payout — NEFT to HDFC ****7842", debit: 10920, credit: 0, balance: 760, type: "payout" },
+      { sl: 4, date: "2026-02-23", week: "CW08", description: "Weekly payout — ACH to HDFC ****7842", debit: 10920, credit: 0, balance: 760, type: "payout" },
       { sl: 5, date: "2026-02-22", week: "CW08", description: "Weekly sales earnings — 38 orders", debit: 0, credit: 10920, balance: 11680, type: "income" },
-      { sl: 6, date: "2026-02-16", week: "CW07", description: "Weekly payout — NEFT to HDFC ****7842", debit: 9800, credit: 0, balance: 760, type: "payout" },
+      { sl: 6, date: "2026-02-16", week: "CW07", description: "Weekly payout — ACH to HDFC ****7842", debit: 9800, credit: 0, balance: 760, type: "payout" },
     ],
   },
   {
@@ -153,7 +153,7 @@ const partnerProfiles: PartnerProfile[] = [
     pendingGrievances: 1, totalOrders: 680, activeTickets: 1,
     ledger: [
       { sl: 1, date: "2026-03-01", week: "CW09", description: "Weekly sales earnings — 28 orders", debit: 0, credit: 8060, balance: 8060, type: "income" },
-      { sl: 2, date: "2026-02-23", week: "CW08", description: "Weekly payout — NEFT to SBI ****3291", debit: 7180, credit: 0, balance: 880, type: "payout" },
+      { sl: 2, date: "2026-02-23", week: "CW08", description: "Weekly payout — ACH to SBI ****3291", debit: 7180, credit: 0, balance: 880, type: "payout" },
       { sl: 3, date: "2026-02-22", week: "CW08", description: "Weekly sales earnings — 25 orders", debit: 0, credit: 7280, balance: 8060, type: "income" },
       { sl: 4, date: "2026-02-21", week: "CW08", description: "Penalty: Quality complaint — cold food", debit: 100, credit: 0, balance: 780, type: "penalty" },
     ],
@@ -168,7 +168,7 @@ const partnerProfiles: PartnerProfile[] = [
     ledger: [
       { sl: 1, date: "2026-02-22", week: "CW08", description: "Weekly sales earnings — 55 orders", debit: 0, credit: 16120, balance: 16120, type: "income" },
       { sl: 2, date: "2026-02-24", week: "CW08", description: "Penalty: Partner cancellation", debit: 500, credit: 0, balance: 15620, type: "penalty" },
-      { sl: 3, date: "2026-02-23", week: "CW08", description: "Weekly payout — NEFT to SBI ****6701", debit: 15620, credit: 0, balance: 0, type: "payout" },
+      { sl: 3, date: "2026-02-23", week: "CW08", description: "Weekly payout — ACH to SBI ****6701", debit: 15620, credit: 0, balance: 0, type: "payout" },
     ],
   },
   {
@@ -180,7 +180,7 @@ const partnerProfiles: PartnerProfile[] = [
     pendingGrievances: 1, totalOrders: 340, activeTickets: 0,
     ledger: [
       { sl: 1, date: "2026-03-01", week: "CW09", description: "Weekly sales earnings — 15 orders", debit: 0, credit: 4200, balance: 4200, type: "income" },
-      { sl: 2, date: "2026-02-23", week: "CW08", description: "Weekly payout — NEFT to ICICI ****4512", debit: 3800, credit: 0, balance: 400, type: "payout" },
+      { sl: 2, date: "2026-02-23", week: "CW08", description: "Weekly payout — ACH to ICICI ****4512", debit: 3800, credit: 0, balance: 400, type: "payout" },
     ],
   },
 ];

@@ -42,10 +42,10 @@ const monthlyTrend = [
 
 // ── Tax Summary ──
 const taxSummary = [
-  { head: "GST Output (5%)", amount: 97025, status: "Filed" },
-  { head: "GST Output (18%)", amount: 28800, status: "Filed" },
-  { head: "GST Input Credit (ITC)", amount: -45200, status: "Claimed" },
-  { head: "Net GST Payable", amount: 80625, status: "Due Apr 20" },
+  { head: "Sales Tax (5%)", amount: 97025, status: "Filed" },
+  { head: "Sales Tax (18%)", amount: 28800, status: "Filed" },
+  { head: "Tax Input Credit (ITC)", amount: -45200, status: "Claimed" },
+  { head: "Net Sales Tax Payable", amount: 80625, status: "Due Apr 20" },
   { head: "TDS 194C (Contractors)", amount: 12400, status: "Filed" },
   { head: "TDS 194J (Professional)", amount: 8600, status: "Filed" },
   { head: "TDS 194H (Commission)", amount: 6200, status: "Pending" },
@@ -55,13 +55,13 @@ const taxSummary = [
 
 // ── Receivables / Payables ──
 const arAp = [
-  { type: "AR", entity: "Razorpay Settlement", amount: 185000, aging: "T+1", status: "Expected" },
+  { type: "AR", entity: "Stripe Settlement", amount: 185000, aging: "T+1", status: "Expected" },
   { type: "AR", entity: "COD Collections", amount: 42000, aging: "T+3", status: "In Transit" },
   { type: "AR", entity: "Corporate Invoices", amount: 68000, aging: "30 days", status: "Outstanding" },
   { type: "AP", entity: "Partner Payouts (PPP)", amount: 320000, aging: "Weekly", status: "Due Fri" },
   { type: "AP", entity: "Delivery Partners", amount: 85000, aging: "Weekly", status: "Due Fri" },
   { type: "AP", entity: "Vendor Invoices", amount: 52000, aging: "Net 30", status: "Pending" },
-  { type: "AP", entity: "GST Payable", amount: 80625, aging: "Monthly", status: "Due Apr 20" },
+  { type: "AP", entity: "Sales Tax Payable", amount: 80625, aging: "Monthly", status: "Due Apr 20" },
   { type: "AP", entity: "Instructor Payouts", amount: 36000, aging: "Bi-weekly", status: "Processing" },
 ];
 
@@ -163,7 +163,7 @@ export default function AdminFinancialReports() {
               <div className="space-y-2 text-sm">
                 {[
                   { label: "Gross Revenue", value: totalRevenue, bold: true },
-                  { label: "  Less: GST Collected", value: -(taxSummary[0].amount + taxSummary[1].amount), indent: true },
+                  { label: "  Less: Sales Tax Collected", value: -(taxSummary[0].amount + taxSummary[1].amount), indent: true },
                   { label: "Net Revenue", value: totalRevenue - (taxSummary[0].amount + taxSummary[1].amount), bold: true, border: true },
                   { label: "  Less: COGS (Partner Payouts + Raw Material)", value: -verticalPnL.reduce((s, v) => s + v.cogs, 0), indent: true },
                   { label: "Gross Profit (CM1)", value: verticalPnL.reduce((s, v) => s + v.grossProfit, 0), bold: true, border: true },

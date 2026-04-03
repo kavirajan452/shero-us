@@ -28,9 +28,9 @@ export const appTrainingConfigs: Record<string, InteractiveTrainingConfig> = {
         segmentLabel: "Profile Setup",
         quiz: {
           question: "Which document is mandatory to complete your kitchen profile?",
-          options: ["Passport", "FSSAI License", "Driving License", "Voter ID"],
+          options: ["Passport", "FDA License", "Driving License", "Voter ID"],
           correctIndex: 1,
-          explanation: "An FSSAI license is required for all food business operators in India.",
+          explanation: "An FDA license is required for all food business operators in India.",
         },
       },
       {

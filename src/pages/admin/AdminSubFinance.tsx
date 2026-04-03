@@ -311,7 +311,7 @@ export default function AdminSubFinance() {
                         <TableHead className="text-[10px]">Ref</TableHead>
                         <TableHead className="text-[10px]">Narration</TableHead>
                         <TableHead className="text-[10px] text-right">Gross ($)</TableHead>
-                        <TableHead className="text-[10px] text-right">GST ($)</TableHead>
+                        <TableHead className="text-[10px] text-right">Sales Tax ($)</TableHead>
                         <TableHead className="text-[10px] text-right">Net ($)</TableHead>
                         <TableHead className="text-[10px]">Status</TableHead>
                       </TableRow>

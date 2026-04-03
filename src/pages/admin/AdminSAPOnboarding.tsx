@@ -15,7 +15,7 @@ import {
 import SAPOnboardingWizard from "@/components/admin/SAPOnboardingWizard";
 
 type Platform = "swiggy" | "zomato" | "both";
-type OnboardingStatus = "pending_fssai" | "fssai_verified" | "pending_resid" | "resid_linked" | "pos_pending" | "pos_integrated" | "live" | "rejected";
+type OnboardingStatus = "pending_fda" | "fda_verified" | "pending_resid" | "resid_linked" | "pos_pending" | "pos_integrated" | "live" | "rejected";
 
 interface SAPKitchen {
   id: string;
@@ -23,13 +23,13 @@ interface SAPKitchen {
   partnerName: string;
   city: string;
   platform: Platform;
-  // FSSAI
-  fssaiNumber: string;
-  fssaiStatus: "pending" | "verified" | "expired" | "not_submitted";
-  fssaiApplyDate: string;
-  fssaiReceivedDate: string;
-  fssaiValidUpto: string;
-  fssaiExpiry: string; // kept for compat
+  // FDA
+  fdaNumber: string;
+  fdaStatus: "pending" | "verified" | "expired" | "not_submitted";
+  fdaApplyDate: string;
+  fdaReceivedDate: string;
+  fdaValidUpto: string;
+  fdaExpiry: string; // kept for compat
   // Swiggy timeline
   swiggyResId: string;
   swiggyAppliedDate: string;
@@ -54,8 +54,8 @@ interface SAPKitchen {
 const mockKitchens: SAPKitchen[] = [
   {
     id: "SAP-001", kitchenName: "Lakshmi's Kitchen", partnerName: "Chef Lakshmi", city: "Chennai",
-    platform: "both", fssaiNumber: "10024051000123", fssaiStatus: "verified",
-    fssaiApplyDate: "2025-12-01", fssaiReceivedDate: "2026-01-10", fssaiValidUpto: "2027-03-15", fssaiExpiry: "2027-03-15",
+    platform: "both", fdaNumber: "10024051000123", fdaStatus: "verified",
+    fdaApplyDate: "2025-12-01", fdaReceivedDate: "2026-01-10", fdaValidUpto: "2027-03-15", fdaExpiry: "2027-03-15",
     swiggyResId: "SWG-98231", swiggyAppliedDate: "2026-01-15", swiggyLiveDate: "2026-02-20", swiggyOpsHandoverDate: "2026-02-22", swiggyComments: "Smooth onboarding",
     zomatoResId: "ZMT-44521", zomatoAppliedDate: "2026-01-15", zomatoLiveDate: "2026-02-20", zomatoOpsHandoverDate: "2026-02-23", zomatoComments: "Menu approved quickly",
     posIntegrated: true, posProvider: "Petpooja",
@@ -63,8 +63,8 @@ const mockKitchens: SAPKitchen[] = [
   },
   {
     id: "SAP-002", kitchenName: "Meena's Tiffins", partnerName: "Chef Meena", city: "Bangalore",
-    platform: "swiggy", fssaiNumber: "10024051000456", fssaiStatus: "verified",
-    fssaiApplyDate: "2025-11-10", fssaiReceivedDate: "2025-12-20", fssaiValidUpto: "2027-06-10", fssaiExpiry: "2027-06-10",
+    platform: "swiggy", fdaNumber: "10024051000456", fdaStatus: "verified",
+    fdaApplyDate: "2025-11-10", fdaReceivedDate: "2025-12-20", fdaValidUpto: "2027-06-10", fdaExpiry: "2027-06-10",
     swiggyResId: "SWG-98345", swiggyAppliedDate: "2026-02-28", swiggyLiveDate: "", swiggyOpsHandoverDate: "", swiggyComments: "Awaiting POS setup",
     zomatoResId: "", zomatoAppliedDate: "", zomatoLiveDate: "", zomatoOpsHandoverDate: "", zomatoComments: "",
     posIntegrated: false, posProvider: "",
@@ -72,17 +72,17 @@ const mockKitchens: SAPKitchen[] = [
   },
   {
     id: "SAP-003", kitchenName: "Raheema's Biryani", partnerName: "Chef Raheema", city: "Hyderabad",
-    platform: "zomato", fssaiNumber: "", fssaiStatus: "not_submitted",
-    fssaiApplyDate: "", fssaiReceivedDate: "", fssaiValidUpto: "", fssaiExpiry: "",
+    platform: "zomato", fdaNumber: "", fdaStatus: "not_submitted",
+    fdaApplyDate: "", fdaReceivedDate: "", fdaValidUpto: "", fdaExpiry: "",
     swiggyResId: "", swiggyAppliedDate: "", swiggyLiveDate: "", swiggyOpsHandoverDate: "", swiggyComments: "",
     zomatoResId: "", zomatoAppliedDate: "", zomatoLiveDate: "", zomatoOpsHandoverDate: "", zomatoComments: "",
     posIntegrated: false, posProvider: "",
-    status: "pending_fssai", appliedAt: "1 day ago", goLiveDate: ""
+    status: "pending_fda", appliedAt: "1 day ago", goLiveDate: ""
   },
   {
     id: "SAP-004", kitchenName: "Saroja's Chettinad", partnerName: "Chef Saroja", city: "Madurai",
-    platform: "both", fssaiNumber: "10024051000789", fssaiStatus: "verified",
-    fssaiApplyDate: "2025-09-15", fssaiReceivedDate: "2025-10-20", fssaiValidUpto: "2026-12-01", fssaiExpiry: "2026-12-01",
+    platform: "both", fdaNumber: "10024051000789", fdaStatus: "verified",
+    fdaApplyDate: "2025-09-15", fdaReceivedDate: "2025-10-20", fdaValidUpto: "2026-12-01", fdaExpiry: "2026-12-01",
     swiggyResId: "SWG-99102", swiggyAppliedDate: "2026-02-25", swiggyLiveDate: "", swiggyOpsHandoverDate: "", swiggyComments: "",
     zomatoResId: "", zomatoAppliedDate: "", zomatoLiveDate: "", zomatoOpsHandoverDate: "", zomatoComments: "Application pending",
     posIntegrated: false, posProvider: "",
@@ -90,17 +90,17 @@ const mockKitchens: SAPKitchen[] = [
   },
   {
     id: "SAP-005", kitchenName: "Kamala's Kitchen", partnerName: "Chef Kamala", city: "Coimbatore",
-    platform: "swiggy", fssaiNumber: "10024051000321", fssaiStatus: "expired",
-    fssaiApplyDate: "2023-10-01", fssaiReceivedDate: "2023-11-15", fssaiValidUpto: "2025-11-30", fssaiExpiry: "2025-11-30",
-    swiggyResId: "", swiggyAppliedDate: "", swiggyLiveDate: "", swiggyOpsHandoverDate: "", swiggyComments: "Blocked due to expired FSSAI",
+    platform: "swiggy", fdaNumber: "10024051000321", fdaStatus: "expired",
+    fdaApplyDate: "2023-10-01", fdaReceivedDate: "2023-11-15", fdaValidUpto: "2025-11-30", fdaExpiry: "2025-11-30",
+    swiggyResId: "", swiggyAppliedDate: "", swiggyLiveDate: "", swiggyOpsHandoverDate: "", swiggyComments: "Blocked due to expired FDA",
     zomatoResId: "", zomatoAppliedDate: "", zomatoLiveDate: "", zomatoOpsHandoverDate: "", zomatoComments: "",
     posIntegrated: false, posProvider: "",
     status: "rejected", appliedAt: "7 days ago", goLiveDate: ""
   },
   {
     id: "SAP-006", kitchenName: "Fathima's Kerala", partnerName: "Chef Fathima", city: "Kochi",
-    platform: "both", fssaiNumber: "10024051000654", fssaiStatus: "verified",
-    fssaiApplyDate: "2025-07-01", fssaiReceivedDate: "2025-08-15", fssaiValidUpto: "2027-09-20", fssaiExpiry: "2027-09-20",
+    platform: "both", fdaNumber: "10024051000654", fdaStatus: "verified",
+    fdaApplyDate: "2025-07-01", fdaReceivedDate: "2025-08-15", fdaValidUpto: "2027-09-20", fdaExpiry: "2027-09-20",
     swiggyResId: "SWG-99200", swiggyAppliedDate: "2026-02-10", swiggyLiveDate: "", swiggyOpsHandoverDate: "", swiggyComments: "Waiting for menu verification",
     zomatoResId: "ZMT-44600", zomatoAppliedDate: "2026-02-10", zomatoLiveDate: "", zomatoOpsHandoverDate: "", zomatoComments: "Documents submitted",
     posIntegrated: true, posProvider: "UrbanPiper",
@@ -109,8 +109,8 @@ const mockKitchens: SAPKitchen[] = [
 ];
 
 const statusConfig: Record<OnboardingStatus, { label: string; variant: "default" | "destructive" | "outline" | "secondary" }> = {
-  pending_fssai: { label: "FSSAI Pending", variant: "outline" },
-  fssai_verified: { label: "FSSAI Verified", variant: "secondary" },
+  pending_fda: { label: "FDA Pending", variant: "outline" },
+  fda_verified: { label: "FDA Verified", variant: "secondary" },
   pending_resid: { label: "Res ID Pending", variant: "outline" },
   resid_linked: { label: "Res ID Linked", variant: "secondary" },
   pos_pending: { label: "POS Pending", variant: "outline" },
@@ -130,7 +130,7 @@ const platformBadge = (p: Platform) => {
   );
 };
 
-const fssaiStatusBadge = (s: SAPKitchen["fssaiStatus"]) => {
+const fdaStatusBadge = (s: SAPKitchen["fdaStatus"]) => {
   const map = {
     verified: { label: "Verified", variant: "default" as const },
     pending: { label: "Pending", variant: "outline" as const },
@@ -146,9 +146,9 @@ function getRenewalAlert(validUpto: string): { show: boolean; message: string; u
   const expiry = new Date(validUpto);
   const now = new Date();
   const diffDays = Math.floor((expiry.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-  if (diffDays < 0) return { show: true, message: `FSSAI expired ${Math.abs(diffDays)} days ago!`, urgent: true };
-  if (diffDays <= 30) return { show: true, message: `FSSAI expires in ${diffDays} days — renewal required!`, urgent: true };
-  if (diffDays <= 60) return { show: true, message: `FSSAI expires in ${diffDays} days — plan renewal soon`, urgent: false };
+  if (diffDays < 0) return { show: true, message: `FDA expired ${Math.abs(diffDays)} days ago!`, urgent: true };
+  if (diffDays <= 30) return { show: true, message: `FDA expires in ${diffDays} days — renewal required!`, urgent: true };
+  if (diffDays <= 60) return { show: true, message: `FDA expires in ${diffDays} days — plan renewal soon`, urgent: false };
   return { show: false, message: "", urgent: false };
 }
 
@@ -249,23 +249,23 @@ export default function AdminSAPOnboarding() {
       k.partnerName.toLowerCase().includes(search.toLowerCase());
     const matchPlatform = platformFilter === "all" || k.platform === platformFilter || k.platform === "both";
     const matchTab = tab === "all" ||
-      (tab === "pending" && ["pending_fssai", "pending_resid", "pos_pending"].includes(k.status)) ||
+      (tab === "pending" && ["pending_fda", "pending_resid", "pos_pending"].includes(k.status)) ||
       (tab === "live" && k.status === "live") ||
       (tab === "rejected" && k.status === "rejected") ||
-      (tab === "in_progress" && ["fssai_verified", "resid_linked", "pos_integrated"].includes(k.status));
+      (tab === "in_progress" && ["fda_verified", "resid_linked", "pos_integrated"].includes(k.status));
     return matchSearch && matchPlatform && matchTab;
   });
 
   const counts = {
     all: kitchens.length,
-    pending: kitchens.filter((k) => ["pending_fssai", "pending_resid", "pos_pending"].includes(k.status)).length,
-    in_progress: kitchens.filter((k) => ["fssai_verified", "resid_linked", "pos_integrated"].includes(k.status)).length,
+    pending: kitchens.filter((k) => ["pending_fda", "pending_resid", "pos_pending"].includes(k.status)).length,
+    in_progress: kitchens.filter((k) => ["fda_verified", "resid_linked", "pos_integrated"].includes(k.status)).length,
     live: kitchens.filter((k) => k.status === "live").length,
     rejected: kitchens.filter((k) => k.status === "rejected").length,
   };
 
   const renewalAlerts = useMemo(() => {
-    return kitchens.filter(k => getRenewalAlert(k.fssaiValidUpto).show);
+    return kitchens.filter(k => getRenewalAlert(k.fdaValidUpto).show);
   }, [kitchens]);
 
   const updateKitchen = (id: string, updates: Partial<SAPKitchen>) => {
@@ -273,14 +273,14 @@ export default function AdminSAPOnboarding() {
     if (selected?.id === id) setSelected((p) => p ? { ...p, ...updates } : p);
   };
 
-  const renewalAlert = selected ? getRenewalAlert(selected.fssaiValidUpto) : null;
+  const renewalAlert = selected ? getRenewalAlert(selected.fdaValidUpto) : null;
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-foreground">SAP Onboarding</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Manage kitchen onboarding to Swiggy & Zomato — FSSAI, Restaurant IDs & POS integration
+          Manage kitchen onboarding to Swiggy & Zomato — FDA, Restaurant IDs & POS integration
         </p>
       </div>
 
@@ -290,11 +290,11 @@ export default function AdminSAPOnboarding() {
           <CardContent className="p-3">
             <div className="flex items-center gap-2 mb-2">
               <Bell className="w-4 h-4 text-amber-600" />
-              <p className="text-sm font-semibold text-amber-800">FSSAI Renewal Alerts ({renewalAlerts.length})</p>
+              <p className="text-sm font-semibold text-amber-800">FDA Renewal Alerts ({renewalAlerts.length})</p>
             </div>
             <div className="space-y-1">
               {renewalAlerts.map(k => {
-                const alert = getRenewalAlert(k.fssaiValidUpto);
+                const alert = getRenewalAlert(k.fdaValidUpto);
                 return (
                   <div key={k.id} className={`flex items-center justify-between text-xs rounded-lg px-2 py-1.5 ${alert.urgent ? "bg-destructive/10 text-destructive" : "bg-amber-100 text-amber-700"}`}>
                     <span>{k.kitchenName} ({k.id}) — {alert.message}</span>
@@ -359,7 +359,7 @@ export default function AdminSAPOnboarding() {
             <p className="text-center text-muted-foreground py-8">No kitchens found</p>
           )}
           {filtered.map((k) => {
-            const alert = getRenewalAlert(k.fssaiValidUpto);
+            const alert = getRenewalAlert(k.fdaValidUpto);
             return (
               <Card key={k.id} className={`border-border hover:shadow-sm transition-shadow cursor-pointer ${alert.urgent ? "border-l-4 border-l-destructive" : ""}`} onClick={() => setSelected(k)}>
                 <CardContent className="p-4">
@@ -382,7 +382,7 @@ export default function AdminSAPOnboarding() {
                       {/* Progress steps */}
                       <div className="flex items-center gap-1 mt-2 flex-wrap">
                         {[
-                          { label: "FSSAI", done: ["verified"].includes(k.fssaiStatus), icon: ShieldCheck },
+                          { label: "FDA", done: ["verified"].includes(k.fdaStatus), icon: ShieldCheck },
                           { label: "Res ID", done: !!(k.swiggyResId || k.zomatoResId), icon: Hash },
                           { label: "POS", done: k.posIntegrated, icon: Plug },
                           { label: "Live", done: k.status === "live", icon: ExternalLink },
@@ -444,31 +444,31 @@ export default function AdminSAPOnboarding() {
               ))}
             </div>
 
-            {/* FSSAI Section - Expanded */}
+            {/* FDA Section - Expanded */}
             <div className="border border-border rounded-xl p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-sm flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-primary" /> FSSAI License
+                  <ShieldCheck className="w-4 h-4 text-primary" /> FDA License
                 </h3>
-                {fssaiStatusBadge(selected.fssaiStatus)}
+                {fdaStatusBadge(selected.fdaStatus)}
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
                 <div>
-                  <Label className="text-[11px] text-muted-foreground">FSSAI Number</Label>
+                  <Label className="text-[11px] text-muted-foreground">FDA Number</Label>
                   <Input
-                    value={selected.fssaiNumber}
-                    placeholder="14-digit FSSAI number"
-                    onChange={(e) => updateKitchen(selected.id, { fssaiNumber: e.target.value })}
+                    value={selected.fdaNumber}
+                    placeholder="14-digit FDA number"
+                    onChange={(e) => updateKitchen(selected.id, { fdaNumber: e.target.value })}
                     className="mt-1 h-9 text-sm"
                   />
                 </div>
-                <DateField label="FSSAI Apply Date" value={selected.fssaiApplyDate} onChange={(v) => updateKitchen(selected.id, { fssaiApplyDate: v })} />
-                <DateField label="FSSAI Received Date" value={selected.fssaiReceivedDate} onChange={(v) => updateKitchen(selected.id, { fssaiReceivedDate: v })} />
+                <DateField label="FDA Apply Date" value={selected.fdaApplyDate} onChange={(v) => updateKitchen(selected.id, { fdaApplyDate: v })} />
+                <DateField label="FDA Received Date" value={selected.fdaReceivedDate} onChange={(v) => updateKitchen(selected.id, { fdaReceivedDate: v })} />
               </div>
 
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <DateField label="Valid Upto" value={selected.fssaiValidUpto} onChange={(v) => updateKitchen(selected.id, { fssaiValidUpto: v, fssaiExpiry: v })} />
+                <DateField label="Valid Upto" value={selected.fdaValidUpto} onChange={(v) => updateKitchen(selected.id, { fdaValidUpto: v, fdaExpiry: v })} />
                 <div>
                   <Label className="text-[11px] text-muted-foreground flex items-center gap-1">
                     <Bell className="w-3 h-3" /> Next Renewal Alert
@@ -489,13 +489,13 @@ export default function AdminSAPOnboarding() {
                 </div>
               </div>
 
-              {selected.fssaiStatus === "expired" && (
+              {selected.fdaStatus === "expired" && (
                 <div className="flex items-center gap-2 text-xs text-destructive bg-destructive/10 rounded-lg p-2">
-                  <AlertTriangle className="w-4 h-4" /> FSSAI license has expired. Renewal required before onboarding.
+                  <AlertTriangle className="w-4 h-4" /> FDA license has expired. Renewal required before onboarding.
                 </div>
               )}
-              {selected.fssaiStatus !== "verified" && (
-                <Button size="sm" variant="outline" onClick={() => updateKitchen(selected.id, { fssaiStatus: "verified", status: "fssai_verified" })}>
+              {selected.fdaStatus !== "verified" && (
+                <Button size="sm" variant="outline" onClick={() => updateKitchen(selected.id, { fdaStatus: "verified", status: "fda_verified" })}>
                   <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Mark as Verified
                 </Button>
               )}

@@ -8,7 +8,7 @@ const tickets = [
   { id: "ITK-199", from: "SSC Agent - Priya", to: "Finance Manager", subject: "Refund processing stuck for ORD-8790", priority: "medium", status: "in_progress", date: "Today" },
   { id: "ITK-197", from: "Finance Executive", to: "Vertical Head", subject: "TDS deduction mismatch Q3", priority: "high", status: "open", date: "Yesterday" },
   { id: "ITK-195", from: "HR Manager", to: "Country Head", subject: "New hire approval — SSC batch", priority: "low", status: "resolved", date: "Yesterday" },
-  { id: "ITK-193", from: "Ops Executive", to: "Onboarding Manager", subject: "FSSAI renewal pending for 3 partners", priority: "medium", status: "in_progress", date: "2 days ago" },
+  { id: "ITK-193", from: "Ops Executive", to: "Onboarding Manager", subject: "FDA renewal pending for 3 partners", priority: "medium", status: "in_progress", date: "2 days ago" },
 ];
 
 const statusColors: Record<string, string> = {

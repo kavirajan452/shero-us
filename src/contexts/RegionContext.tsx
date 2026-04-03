@@ -29,7 +29,7 @@ const regions: Record<RegionCode, RegionConfig> = {
     currency: "INR",
     currencySymbol: "$",
     locale: "en-US",
-    taxLabel: "GST (5%)",
+    taxLabel: "Sales Tax",
     taxRate: 0.05,
     phonePrefix: "+91",
     phonePlaceholder: "10-digit mobile number",

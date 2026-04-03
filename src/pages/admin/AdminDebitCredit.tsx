@@ -224,7 +224,7 @@ function DebitNotesTab({ notes }: { notes: DebitNote[] }) {
                 <DetailRow label="Reason" value={DEBIT_REASONS[selected.reason].label} />
                 <DetailRow label="Severity" value={selected.severity} />
                 <DetailRow label="Amount" value={`$${selected.amount}`} />
-                <DetailRow label="GST (5%)" value={`$${selected.gstAmount}`} />
+                <DetailRow label="Sales Tax" value={`$${selected.gstAmount}`} />
                 <DetailRow label="Net Amount" value={`$${selected.netAmount}`} />
                 <DetailRow label="Linked CN" value={selected.linkedCreditNoteId || "None"} />
                 <DetailRow label="Linked JRN" value={selected.linkedJournalId || "None"} />

@@ -705,7 +705,7 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
                 <span>${DELIVERY_CHARGE_RANGE.min}–${DELIVERY_CHARGE_RANGE.max}/day</span>
               </div>
               <div className="flex justify-between text-muted-foreground text-xs">
-                <span>Taxes (GST 5%)</span>
+                <span>Taxes (Sales Tax)</span>
                 <span className="italic">Calculated at checkout</span>
               </div>
               <div className="border-t border-border pt-2 flex justify-between font-bold text-foreground">

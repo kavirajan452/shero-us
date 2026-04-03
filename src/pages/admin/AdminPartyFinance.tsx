@@ -268,7 +268,7 @@ export default function AdminPartyFinance() {
                   <p className="text-xs text-muted-foreground py-4 text-center">No entries</p>
                 ) : (
                   <Table>
-                    <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Invoice No.</TableHead><TableHead className="text-[10px]">Party</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Gross ($)</TableHead><TableHead className="text-[10px] text-right">GST ($)</TableHead><TableHead className="text-[10px]">Status</TableHead></TableRow></TableHeader>
+                    <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Invoice No.</TableHead><TableHead className="text-[10px]">Party</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Gross ($)</TableHead><TableHead className="text-[10px] text-right">Sales Tax ($)</TableHead><TableHead className="text-[10px]">Status</TableHead></TableRow></TableHeader>
                     <TableBody>
                       {reg.data.map(v => {
                         const gst = v.entries.filter(e => e.account === "sales_tax_food" || e.account === "sales_tax_services" || e.account === "tax_input_credit").reduce((s, e) => s + e.credit + e.debit, 0);

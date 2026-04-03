@@ -446,7 +446,7 @@ const PartnerEnrollment = () => {
                 <div className="flex items-center gap-2 justify-center"><CreditCard className="w-5 h-5 text-accent" /><h3 className="text-lg font-serif font-semibold text-foreground">Registration Fee</h3></div>
                 <div className="bg-muted rounded-xl p-5 text-center space-y-1">
                   <p className="text-3xl font-bold text-foreground">$999</p>
-                  <p className="text-xs text-muted-foreground">One-time registration fee (inclusive of GST)</p>
+                  <p className="text-xs text-muted-foreground">One-time registration fee (inclusive of Sales Tax)</p>
                 </div>
                 <ul className="text-xs text-muted-foreground space-y-1.5 px-2">
                   <li className="flex items-start gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-accent shrink-0 mt-0.5" /> Kitchen verification & onboarding support</li>

@@ -51,7 +51,7 @@ export async function createInvoice(params: CreateInvoiceParams): Promise<string
       discount: params.discount,
       total: params.total,
       tax_rate: taxRate,
-      gstin: settings.gstin || "",
+      ein: settings.ein || "",
       company_snapshot: JSON.parse(JSON.stringify(settings)),
       status: "generated",
     }]);

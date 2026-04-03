@@ -130,7 +130,7 @@ export default function AdminServicesFinance() {
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-semibold">Profit & Loss A/c — Home Services Sub-Vertical</CardTitle>
-              <p className="text-[10px] text-muted-foreground">GST 18% on services; provider payouts at 60%; CM1→CM1.5</p>
+              <p className="text-[10px] text-muted-foreground">Sales Tax on services; provider payouts at 60%; CM1→CM1.5</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-0">

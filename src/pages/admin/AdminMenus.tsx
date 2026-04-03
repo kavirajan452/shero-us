@@ -843,7 +843,7 @@ const MOCK_SAP_KITCHENS: KitchenRecord[] = [
   {
     skid: "SAP-CHN-001", partnerName: "Sujatha M.", rmn: "98765•••10", kitchenName: "SHF Chettinad Veg – Anna Nagar",
     cuisine: "Chettinad", city: "Chennai", state: "TN", status: "pending", stream: "SAP",
-    licenceNumber: "FSSAI-TN-2024-78901", licenceExpiry: new Date("2026-03-20"),
+    licenceNumber: "FDA-TN-2024-78901", licenceExpiry: new Date("2026-03-20"),
     menuItems: [
       { id: "s1", name: "Chettinad Sambar", description: "Classic Chettinad sambar with shallots", price: 167, isVeg: true, image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=200&fit=crop", category: "Sambar", servingSize: "450 ml" },
       { id: "s2", name: "Appam", description: "Lacy rice-flour hoppers, soft centre", price: 89, isVeg: true, image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=200&h=200&fit=crop", category: "Tiffin", servingSize: "3 pcs" },
@@ -853,7 +853,7 @@ const MOCK_SAP_KITCHENS: KitchenRecord[] = [
   {
     skid: "SAP-BLR-003", partnerName: "Lakshmi R.", rmn: "76543•••98", kitchenName: "SHF Andhra – Koramangala",
     cuisine: "Andhra", city: "Bangalore", state: "KA", status: "approved", stream: "SAP",
-    licenceNumber: "FSSAI-KA-2025-12345", licenceExpiry: new Date("2027-01-15"),
+    licenceNumber: "FDA-KA-2025-12345", licenceExpiry: new Date("2027-01-15"),
     menuItems: [
       { id: "s3", name: "Gongura Chicken", description: "Sorrel-leaf chicken curry", price: 239, isVeg: false, image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=200&h=200&fit=crop", category: "Main Course", servingSize: "350 ml" },
     ],
@@ -864,12 +864,12 @@ const MOCK_SAP_KITCHENS: KitchenRecord[] = [
   {
     skid: "SAP-MUM-007", partnerName: "Anita D.", rmn: "54321•••76", kitchenName: "SHF Gujarati – Andheri",
     cuisine: "Gujarati", city: "Mumbai", state: "MH", status: "rejected", stream: "SAP",
-    licenceNumber: "FSSAI-MH-2025-55678", licenceExpiry: new Date("2026-04-10"),
+    licenceNumber: "FDA-MH-2025-55678", licenceExpiry: new Date("2026-04-10"),
     menuItems: [
       { id: "s4", name: "Undhiyu", description: "Mixed vegetable casserole", price: 189, isVeg: true, image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=200&fit=crop", category: "Main Course", servingSize: "400 gm" },
     ],
     approvalHistory: [
-      { action: "rejected", approverName: "Meera R.", approverEmail: "onboarding@shero.in", approverRole: "Onboarding Manager", timestamp: new Date("2026-02-22T16:00:00"), remarks: "FSSAI licence copy not legible. Re-upload required." },
+      { action: "rejected", approverName: "Meera R.", approverEmail: "onboarding@shero.in", approverRole: "Onboarding Manager", timestamp: new Date("2026-02-22T16:00:00"), remarks: "FDA licence copy not legible. Re-upload required." },
     ],
   },
 ];
@@ -879,7 +879,7 @@ const MOCK_HCF_KITCHENS: KitchenRecord[] = [
   {
     skid: "HCF-CHN-001", partnerName: "Lakshmi D.", rmn: "98765•••10", kitchenName: "Lakshmi's Kitchen",
     cuisine: "South Indian", city: "Chennai", state: "TN", status: "pending", stream: "HCF",
-    licenceNumber: "FSSAI-TN-2025-44321", licenceExpiry: new Date("2026-03-25"),
+    licenceNumber: "FDA-TN-2025-44321", licenceExpiry: new Date("2026-03-25"),
     menuItems: [
       { id: "h1", name: "Idli Sambar Combo", description: "Soft steamed idlis served with hot sambar and coconut chutney", price: 89, isVeg: true, image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=200&h=200&fit=crop", category: "Breakfast", servingSize: "4 pcs" },
       { id: "h2", name: "Masala Dosa", description: "Crispy rice crepe filled with spiced potato masala", price: 109, isVeg: true, image: "https://images.unsplash.com/photo-1630383249896-424e482df921?w=200&h=200&fit=crop", category: "Breakfast", servingSize: "1 pc" },
@@ -891,7 +891,7 @@ const MOCK_HCF_KITCHENS: KitchenRecord[] = [
   {
     skid: "HCF-BLR-005", partnerName: "Meena R.", rmn: "87654•••22", kitchenName: "Meena's Home Bites",
     cuisine: "Karnataka", city: "Bangalore", state: "KA", status: "pending", stream: "HCF",
-    licenceNumber: "FSSAI-KA-2025-98765", licenceExpiry: new Date("2026-06-30"),
+    licenceNumber: "FDA-KA-2025-98765", licenceExpiry: new Date("2026-06-30"),
     menuItems: [
       { id: "h5", name: "Bisi Bele Bath", description: "Traditional Karnataka-style spiced rice", price: 139, isVeg: true, image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=200&fit=crop", category: "Rice", servingSize: "400 gm" },
       { id: "h6", name: "Ragi Mudde", description: "Finger millet balls with saaru", price: 99, isVeg: true, image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=200&h=200&fit=crop", category: "Main Course", servingSize: "3 pcs" },
@@ -901,7 +901,7 @@ const MOCK_HCF_KITCHENS: KitchenRecord[] = [
   {
     skid: "HCF-HYD-012", partnerName: "Fatima B.", rmn: "91234•••45", kitchenName: "Fatima's Biryani House",
     cuisine: "Hyderabadi", city: "Hyderabad", state: "TS", status: "approved", stream: "HCF",
-    licenceNumber: "FSSAI-TS-2024-11111", licenceExpiry: new Date("2026-02-15"),
+    licenceNumber: "FDA-TS-2024-11111", licenceExpiry: new Date("2026-02-15"),
     menuItems: [
       { id: "h8", name: "Hyderabadi Chicken Biryani", description: "Aromatic dum biryani with tender chicken", price: 259, isVeg: false, image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=200&fit=crop", category: "Biryani", servingSize: "500 gm" },
       { id: "h9", name: "Mirchi Ka Salan", description: "Spicy curry with green chillies in peanut-sesame gravy", price: 149, isVeg: true, image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=200&fit=crop", category: "Sides", servingSize: "250 ml" },
@@ -913,7 +913,7 @@ const MOCK_HCF_KITCHENS: KitchenRecord[] = [
   {
     skid: "HCF-MUM-008", partnerName: "Priya S.", rmn: "99876•••33", kitchenName: "Priya's Maharashtrian Delights",
     cuisine: "Maharashtrian", city: "Mumbai", state: "MH", status: "rejected", stream: "HCF",
-    licenceNumber: "FSSAI-MH-2025-22222", licenceExpiry: new Date("2027-05-01"),
+    licenceNumber: "FDA-MH-2025-22222", licenceExpiry: new Date("2027-05-01"),
     menuItems: [
       { id: "h11", name: "Misal Pav", description: "Spicy sprouts curry topped with farsan, served with pav", price: 109, isVeg: true, image: "https://images.unsplash.com/photo-1606491956689-2ea866880049?w=200&h=200&fit=crop", category: "Snacks", servingSize: "1 plate" },
     ],

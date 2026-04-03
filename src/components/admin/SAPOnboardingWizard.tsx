@@ -36,7 +36,7 @@ interface WizardKitchen {
     address: string;
     manualEntry: boolean;
   };
-  fssaiApplication: {
+  fdaApplication: {
     type: "tatkal" | "normal";
     applicantName: string;
     kitchenAddress: string;
@@ -79,7 +79,7 @@ interface PlatformOnboard {
 
 interface SupportTicket {
   id: string;
-  category: "pos" | "location" | "fssai";
+  category: "pos" | "location" | "fda";
   issueType: string;
   description: string;
   priority: "low" | "medium" | "high";
@@ -93,8 +93,8 @@ interface SupportTicket {
 const STEPS = [
   { num: 1, label: "Contract", icon: FileText, sla: 1 },
   { num: 2, label: "Location", icon: MapPin, sla: 1 },
-  { num: 3, label: "FSSAI Application", icon: ShieldCheck, sla: 3 },
-  { num: 4, label: "FSSAI Decision", icon: ShieldCheck, sla: 14 },
+  { num: 3, label: "FDA Application", icon: ShieldCheck, sla: 3 },
+  { num: 4, label: "FDA Decision", icon: ShieldCheck, sla: 14 },
   { num: 5, label: "Platform Onboarding", icon: ExternalLink, sla: 7 },
   { num: 6, label: "POS Setup", icon: Plug, sla: 7 },
   { num: 7, label: "KOB Testing", icon: TestTube, sla: 2 },
@@ -105,7 +105,7 @@ const STEPS = [
 ];
 
 const OBG_TEAM = [
-  { name: "Anitha S.", speciality: "fssai" },
+  { name: "Anitha S.", speciality: "fda" },
   { name: "Rekha M.", speciality: "pos" },
   { name: "Preethi V.", speciality: "location" },
   { name: "Gomathi R.", speciality: "pos" },
@@ -118,7 +118,7 @@ function getDefaultKitchen(id: string, name: string, partner: string, city: stri
     stepTimestamps: { 1: { start: new Date().toISOString().split("T")[0] } },
     contract: { signed: false, signedBy: "", signedDate: "", signature: "" },
     location: { lat: 0, lng: 0, address: "", manualEntry: false },
-    fssaiApplication: {
+    fdaApplication: {
       type: "normal", applicantName: partner, kitchenAddress: "", foodCategory: "",
       mobile: "", email: "", documents: { aadhaar: false, addressProof: false, kitchenPhoto: false },
       status: "not_submitted", submittedDate: "", rejectionReason: "",
@@ -165,14 +165,14 @@ function TATCountdown({ startDate, slaDays, label }: { startDate: string; slaDay
   );
 }
 
-function FSSAIDecisionTAT({ kitchen }: { kitchen: WizardKitchen }) {
-  const submittedDate = kitchen.fssaiApplication.submittedDate;
-  const status = kitchen.fssaiApplication.status;
+function FDADecisionTAT({ kitchen }: { kitchen: WizardKitchen }) {
+  const submittedDate = kitchen.fdaApplication.submittedDate;
+  const status = kitchen.fdaApplication.status;
   if (!submittedDate || status === "not_submitted") return null;
   if (status === "approved" || status === "rejected") return (
     <div className="flex items-center gap-1.5 text-xs font-medium text-green-600 bg-green-50 border border-green-200 rounded-md px-3 py-1.5">
       <CheckCircle2 className="w-3.5 h-3.5" />
-      <span>FSSAI Decision TAT: {status === "approved" ? "Approved" : "Rejected"} — completed ✓</span>
+      <span>FDA Decision TAT: {status === "approved" ? "Approved" : "Rejected"} — completed ✓</span>
     </div>
   );
   const elapsed = daysBetween(submittedDate);
@@ -181,7 +181,7 @@ function FSSAIDecisionTAT({ kitchen }: { kitchen: WizardKitchen }) {
   return (
     <div className={`flex items-center gap-1.5 text-xs font-medium rounded-md px-3 py-1.5 border ${breached ? "text-destructive bg-destructive/10 border-destructive/30" : remaining <= 2 ? "text-amber-700 bg-amber-50 border-amber-200" : "text-muted-foreground bg-muted/30 border-border"}`}>
       <Timer className="w-3.5 h-3.5" />
-      <span>FSSAI Application → Decision TAT:</span>
+      <span>FDA Application → Decision TAT:</span>
       {breached ? (
         <Badge variant="destructive" className="text-[10px]">TAT Breached ({Math.abs(remaining)}d over 9d SLA)</Badge>
       ) : (
@@ -307,12 +307,12 @@ export default function SAPOnboardingWizard({
   }, [activeStep, kitchen.goLiveDate]);
 
   // ── Auto-assign logic ──
-  const autoAssignTicket = (category: "pos" | "location" | "fssai"): string => {
+  const autoAssignTicket = (category: "pos" | "location" | "fda"): string => {
     const agent = OBG_TEAM.find(a => a.speciality === category) || OBG_TEAM[0];
     return agent.name;
   };
 
-  const addTicket = (category: "pos" | "location" | "fssai", issueType: string, description: string, priority: "low" | "medium" | "high") => {
+  const addTicket = (category: "pos" | "location" | "fda", issueType: string, description: string, priority: "low" | "medium" | "high") => {
     const assignedTo = autoAssignTicket(category);
     const ticket: SupportTicket = {
       id: `TKT-${Date.now().toString(36).toUpperCase()}`,
@@ -332,8 +332,8 @@ export default function SAPOnboardingWizard({
     switch (activeStep) {
       case 1: return <StepContract kitchen={kitchen} update={update} signPadRef={signPadRef} startDraw={startDraw} draw={draw} endDraw={endDraw} clearSignature={clearSignature} />;
       case 2: return <StepLocation kitchen={kitchen} update={update} detectLocation={detectLocation} />;
-      case 3: return <StepFSSAIApplication kitchen={kitchen} update={update} />;
-      case 4: return <StepFSSAIDecision kitchen={kitchen} update={update} goNext={goNext} />;
+      case 3: return <StepFDAApplication kitchen={kitchen} update={update} />;
+      case 4: return <StepFDADecision kitchen={kitchen} update={update} goNext={goNext} />;
       case 5: return <StepPlatformOnboarding kitchen={kitchen} update={update} />;
       case 6: return <StepPOSSetup kitchen={kitchen} update={update} />;
       case 7: return <StepKOBTesting kitchen={kitchen} update={update} addTicket={addTicket} />;
@@ -445,7 +445,7 @@ function StepContract({ kitchen, update, signPadRef, startDraw, draw, endDraw, c
               <p className="font-semibold text-foreground">Shero Home Foods — Partner Agreement</p>
               <div className="space-y-2 text-muted-foreground text-xs max-h-48 overflow-y-auto">
                 <p><strong>1. Scope:</strong> Partner agrees to prepare food items as per Shero quality guidelines and deliver through authorized platforms (Swiggy, Zomato).</p>
-                <p><strong>2. FSSAI Compliance:</strong> Partner must maintain a valid FSSAI license at all times. Shero will assist in application and renewal.</p>
+                <p><strong>2. FDA Compliance:</strong> Partner must maintain a valid FDA license at all times. Shero will assist in application and renewal.</p>
                 <p><strong>3. Hygiene Standards:</strong> Kitchen must comply with monthly hygiene audits. Failure to meet standards may result in temporary suspension.</p>
                 <p><strong>4. Revenue Sharing:</strong> Revenue split as per the agreed commission structure. Payouts processed weekly.</p>
                 <p><strong>5. Platform Conduct:</strong> Partner must maintain a minimum 4.0 rating. Consistent low ratings will trigger a performance review.</p>
@@ -575,11 +575,11 @@ function StepLocation({ kitchen, update, detectLocation }: any) {
 }
 
 // ════════════════════════════════════════
-// STEP 3 — FSSAI Application
+// STEP 3 — FDA Application
 // ════════════════════════════════════════
-function StepFSSAIApplication({ kitchen, update }: any) {
-  const app = kitchen.fssaiApplication;
-  const updateApp = (changes: any) => update({ fssaiApplication: { ...app, ...changes } });
+function StepFDAApplication({ kitchen, update }: any) {
+  const app = kitchen.fdaApplication;
+  const updateApp = (changes: any) => update({ fdaApplication: { ...app, ...changes } });
 
   const submitApplication = () => {
     if (!app.applicantName || !app.kitchenAddress || !app.mobile || !app.email) {
@@ -587,18 +587,18 @@ function StepFSSAIApplication({ kitchen, update }: any) {
       return;
     }
     updateApp({ status: "submitted", submittedDate: new Date().toISOString().split("T")[0] });
-    toast.success("FSSAI Application submitted! Status: Pending Approval");
+    toast.success("FDA Application submitted! Status: Pending Approval");
   };
 
   return (
     <div className="space-y-4">
-      <h3 className="font-semibold flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-primary" /> Step 3 — FSSAI Application</h3>
-      <FSSAIDecisionTAT kitchen={kitchen} />
+      <h3 className="font-semibold flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-primary" /> Step 3 — FDA Application</h3>
+      <FDADecisionTAT kitchen={kitchen} />
 
       {app.status !== "not_submitted" ? (
         <div className="text-center py-6 space-y-2">
           <Badge className="bg-amber-100 text-amber-700 border-amber-300 text-sm py-1.5 px-4">
-            <Clock className="w-4 h-4 mr-1" /> FSSAI Submitted — Pending Approval
+            <Clock className="w-4 h-4 mr-1" /> FDA Submitted — Pending Approval
           </Badge>
           <p className="text-xs text-muted-foreground">Application type: {app.type === "tatkal" ? "Tatkal (Fast Track)" : "Normal"}</p>
         </div>
@@ -684,7 +684,7 @@ function StepFSSAIApplication({ kitchen, update }: any) {
           </div>
 
           <Button onClick={submitApplication} className="w-full">
-            <ShieldCheck className="w-4 h-4 mr-1" /> Submit FSSAI Application
+            <ShieldCheck className="w-4 h-4 mr-1" /> Submit FDA Application
           </Button>
         </>
       )}
@@ -693,41 +693,41 @@ function StepFSSAIApplication({ kitchen, update }: any) {
 }
 
 // ════════════════════════════════════════
-// STEP 4 — FSSAI Decision Gate
+// STEP 4 — FDA Decision Gate
 // ════════════════════════════════════════
-function StepFSSAIDecision({ kitchen, update, goNext }: any) {
-  const app = kitchen.fssaiApplication;
+function StepFDADecision({ kitchen, update, goNext }: any) {
+  const app = kitchen.fdaApplication;
 
   if (app.status === "not_submitted") {
     return (
       <div className="text-center py-8 space-y-2">
         <AlertTriangle className="w-8 h-8 text-amber-500 mx-auto" />
-        <p className="text-sm text-muted-foreground">FSSAI Application not yet submitted. Please complete Step 3 first.</p>
+        <p className="text-sm text-muted-foreground">FDA Application not yet submitted. Please complete Step 3 first.</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-4">
-      <h3 className="font-semibold flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-primary" /> Step 4 — FSSAI Decision Gate</h3>
-      <FSSAIDecisionTAT kitchen={kitchen} />
+      <h3 className="font-semibold flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-primary" /> Step 4 — FDA Decision Gate</h3>
+      <FDADecisionTAT kitchen={kitchen} />
 
       {app.status === "submitted" && (
         <div className="text-center py-8 space-y-4">
           <div className="animate-pulse">
             <Clock className="w-12 h-12 text-amber-500 mx-auto" />
           </div>
-          <Badge className="bg-amber-100 text-amber-700 border-amber-300 text-sm py-1.5 px-4">Awaiting FSSAI Approval</Badge>
+          <Badge className="bg-amber-100 text-amber-700 border-amber-300 text-sm py-1.5 px-4">Awaiting FDA Approval</Badge>
           <p className="text-xs text-muted-foreground">Estimated TAT: {app.type === "tatkal" ? "3-5 business days" : "10-15 business days"}</p>
           <div className="flex justify-center gap-2">
             <Button size="sm" onClick={() => {
-              update({ fssaiApplication: { ...app, status: "approved" } });
-              toast.success("FSSAI Approved! ✅ Proceeding...");
+              update({ fdaApplication: { ...app, status: "approved" } });
+              toast.success("FDA Approved! ✅ Proceeding...");
             }} className="bg-green-600 hover:bg-green-700">
               <CheckCircle2 className="w-4 h-4 mr-1" /> Simulate: Approve
             </Button>
             <Button size="sm" variant="destructive" onClick={() => {
-              update({ fssaiApplication: { ...app, status: "rejected", rejectionReason: "Incomplete kitchen photos. Kitchen hygiene standards not met in submitted images." } });
+              update({ fdaApplication: { ...app, status: "rejected", rejectionReason: "Incomplete kitchen photos. Kitchen hygiene standards not met in submitted images." } });
             }}>
               Simulate: Reject
             </Button>
@@ -738,8 +738,8 @@ function StepFSSAIDecision({ kitchen, update, goNext }: any) {
       {app.status === "approved" && (
         <div className="text-center py-8 space-y-3">
           <CheckCircle2 className="w-12 h-12 text-green-600 mx-auto" />
-          <Badge className="bg-green-100 text-green-700 border-green-300 text-sm py-1.5 px-4">FSSAI Approved ✓</Badge>
-          <p className="text-xs text-muted-foreground">Your FSSAI application has been approved. You may proceed to platform onboarding.</p>
+          <Badge className="bg-green-100 text-green-700 border-green-300 text-sm py-1.5 px-4">FDA Approved ✓</Badge>
+          <p className="text-xs text-muted-foreground">Your FDA application has been approved. You may proceed to platform onboarding.</p>
           <Button size="sm" onClick={goNext}>Proceed to Step 5 <ArrowRight className="w-4 h-4 ml-1" /></Button>
         </div>
       )}
@@ -747,13 +747,13 @@ function StepFSSAIDecision({ kitchen, update, goNext }: any) {
       {app.status === "rejected" && (
         <div className="text-center py-8 space-y-3">
           <AlertTriangle className="w-12 h-12 text-destructive mx-auto" />
-          <Badge variant="destructive" className="text-sm py-1.5 px-4">FSSAI Rejected</Badge>
+          <Badge variant="destructive" className="text-sm py-1.5 px-4">FDA Rejected</Badge>
           <p className="text-sm text-muted-foreground max-w-md mx-auto">
             <strong>Reason:</strong> {app.rejectionReason}
           </p>
           <Button size="sm" onClick={() => {
-            update({ fssaiApplication: { ...app, status: "not_submitted", rejectionReason: "" } });
-            toast.info("Redirecting to FSSAI Application form...");
+            update({ fdaApplication: { ...app, status: "not_submitted", rejectionReason: "" } });
+            toast.info("Redirecting to FDA Application form...");
           }}>
             <ShieldCheck className="w-4 h-4 mr-1" /> Reapply
           </Button>
@@ -1043,7 +1043,7 @@ function StepSupportTickets({ kitchen, addTicket }: any) {
       toast.error("Please fill issue type and description");
       return;
     }
-    addTicket(ticketTab as "pos" | "location" | "fssai", issueType, description, priority);
+    addTicket(ticketTab as "pos" | "location" | "fda", issueType, description, priority);
     setIssueType("");
     setDescription("");
   };
@@ -1056,7 +1056,7 @@ function StepSupportTickets({ kitchen, addTicket }: any) {
         <TabsList>
           <TabsTrigger value="pos">POS Issues</TabsTrigger>
           <TabsTrigger value="location">Location Issues</TabsTrigger>
-          <TabsTrigger value="fssai">FSSAI Issues</TabsTrigger>
+          <TabsTrigger value="fda">FDA Issues</TabsTrigger>
         </TabsList>
         <TabsContent value={ticketTab} className="space-y-3 mt-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -1132,7 +1132,7 @@ function StepAutoAssign({ kitchen, update }: any) {
           <div className="text-xs text-muted-foreground space-y-1">
             <p>• <strong>POS Issues</strong> → Rekha M. / Gomathi R.</p>
             <p>• <strong>Location Issues</strong> → Preethi V.</p>
-            <p>• <strong>FSSAI Issues</strong> → Anitha S.</p>
+            <p>• <strong>FDA Issues</strong> → Anitha S.</p>
             <p>• TAT exceeded → Auto-flag with <Badge variant="destructive" className="text-[9px] py-0 px-1">TAT Breached</Badge></p>
           </div>
         </CardContent>

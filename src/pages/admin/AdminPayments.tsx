@@ -1248,7 +1248,7 @@ export default function AdminPayments() {
             </div>
             <div className="rounded-lg border border-border bg-muted/30 p-3">
               <p className="text-[10px] font-semibold text-foreground mb-1">Expected Columns:</p>
-              <p className="text-[10px] text-muted-foreground">Partner RMN, Partner Name, Payment Amount ($), UTR/Reference, Payment Date, Payment Mode (NEFT/UPI/IMPS)</p>
+              <p className="text-[10px] text-muted-foreground">Partner RMN, Partner Name, Payment Amount ($), UTR/Reference, Payment Date, Payment Mode (ACH/UPI/IMPS)</p>
             </div>
           </div>
           <DialogFooter>
