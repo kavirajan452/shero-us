@@ -152,7 +152,7 @@ const SweetsSnacks = () => {
       <main className="pt-20 pb-24">
         {/* Free Shipping Banner */}
         <div className="bg-primary text-primary-foreground text-center py-2 text-xs font-semibold tracking-wide">
-          🚚 FREE SHIPPING above {formatPrice(599)} · Code <span className="underline">FIRST100</span> for $100 OFF
+          🚚 FREE SHIPPING above {formatPrice(99)} · Code <span className="underline">FIRST10</span> for $10 OFF
         </div>
 
         {/* Hero Banner */}
@@ -168,7 +168,7 @@ const SweetsSnacks = () => {
                   Heritage in Every Bite
                 </h1>
                 <p className="text-xs text-muted-foreground mt-1 max-w-xs">
-                  Handmade at home. Fresh to order. Delivered across 72+ cities.
+                  Handmade at home. Fresh to order. Delivered across 12+ US cities.
                 </p>
               </div>
             </div>
@@ -188,7 +188,7 @@ const SweetsSnacks = () => {
           {[
             { icon: Heart, text: "Handmade" },
             { icon: Package, text: "Fresh to Order" },
-            { icon: Truck, text: "72+ Cities" },
+            { icon: Truck, text: "12+ US Cities" },
             { icon: CreditCard, text: "Secure Pay" },
           ].map((b) => (
             <div key={b.text} className="flex items-center gap-1.5 text-[10px] text-muted-foreground whitespace-nowrap shrink-0">

@@ -14,14 +14,14 @@ const Footer = () => {
               <img src={sheroLogo} alt="Shero Home Food" className="h-10 brightness-200" />
             </div>
             <p className="text-primary-foreground/60 text-sm">
-              {c["footer.tagline"] || "India's favorite home food, now in America."}
+              {c["footer.tagline"] || "America's favorite home food, now in your city."}
             </p>
           </div>
           <div>
             <h5 className="font-semibold mb-3">Quick Links</h5>
             <ul className="space-y-2 text-sm text-primary-foreground/60">
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Who We Are</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Be a Shero</a></li>
+              <li><a href="/about" className="hover:text-primary-foreground transition-colors">Who We Are</a></li>
+              <li><a href="/partner-enrollment" className="hover:text-primary-foreground transition-colors">Be a Shero</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">Franchise</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">Awards & Events</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">FAQ</a></li>

@@ -6,35 +6,33 @@ import BottomNav from "@/components/BottomNav";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 
 const milestones = [
-  { year: "2021", title: "The Spark", desc: "Founded with 12 home chefs in Chicago — a mission to empower women through food." },
-  { year: "2022", title: "Growing Roots", desc: "Expanded to 5 cities, 200+ kitchens. Launched subscriptions & party orders." },
-  { year: "2023", title: "Scaling Up", desc: "Crossed 500K orders. Entered 30+ cities across 8 states. Launched Shero Classes." },
-  { year: "2024", title: "Recognition", desc: "Won 'Best Social Impact Startup' award. 1,500+ active home chefs onboarded." },
-  { year: "2025", title: "National Presence", desc: "72 cities, 14 states, 2,400+ kitchens. Crossed 1.4 million orders delivered." },
-  { year: "2026", title: "The Revolution Continues", desc: "India's largest home food platform. Expanding services, classes & experiences." },
+  { year: "2024", title: "The Spark", desc: "Founded with 5 home chefs in the DC Metro area — a mission to empower women through food." },
+  { year: "2025 Q1", title: "Growing Roots", desc: "Expanded to 3 cities, 50+ kitchens. Launched subscriptions & party orders." },
+  { year: "2025 Q3", title: "Scaling Up", desc: "Crossed 10K orders. Entered 12 cities across 5 states. Launched Shero Classes." },
+  { year: "2026", title: "The Revolution Continues", desc: "America's fastest-growing home food platform. Expanding services, classes & experiences." },
 ];
 
 const values = [
   { icon: Heart, title: "Genuinely Homemade", desc: "Zero chemicals, quality oils & ingredients. Cooked fresh by real home chefs, just like they cook for their own families.", color: "text-rose-500", bg: "bg-rose-50 dark:bg-rose-950/30" },
-  { icon: Users, title: "Women Empowerment", desc: "Creating financial independence for 2,400+ women through their culinary talents. Managed entirely by our all-women operations team.", color: "text-violet-500", bg: "bg-violet-50 dark:bg-violet-950/30" },
+  { icon: Users, title: "Women Empowerment", desc: "Creating financial independence for 50+ women through their culinary talents. Managed entirely by our all-women operations team.", color: "text-violet-500", bg: "bg-violet-50 dark:bg-violet-950/30" },
   { icon: Shield, title: "Transparent & Honest", desc: "No hidden charges, no cloud kitchens. Decentralised home kitchens you can trust. What you see is what you get.", color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-950/30" },
-  { icon: Leaf, title: "Fresh & Sustainable", desc: "Locally sourced ingredients, minimal packaging waste. 500+ varieties of wholesome dishes delivered fresh daily.", color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-950/30" },
+  { icon: Leaf, title: "Fresh & Sustainable", desc: "Locally sourced ingredients, minimal packaging waste. 200+ varieties of wholesome dishes delivered fresh daily.", color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-950/30" },
 ];
 
 const defaultStats = [
-  { key: "stat_kitchens", number: "2,400+", label: "Home Kitchens", icon: ChefHat },
-  { key: "stat_cities", number: "72", label: "Cities", icon: MapPin },
-  { key: "stat_states", number: "14", label: "States", icon: Globe },
-  { key: "stat_orders", number: "1.4M+", label: "Orders Delivered", icon: TrendingUp },
-  { key: "stat_dishes", number: "500+", label: "Dish Varieties", icon: Star },
-  { key: "stat_years", number: "5", label: "Years of Love", icon: Heart },
+  { key: "stat_kitchens", number: "50+", label: "Home Kitchens", icon: ChefHat },
+  { key: "stat_cities", number: "12", label: "Cities", icon: MapPin },
+  { key: "stat_states", number: "5", label: "States", icon: Globe },
+  { key: "stat_orders", number: "10K+", label: "Orders Delivered", icon: TrendingUp },
+  { key: "stat_dishes", number: "200+", label: "Dish Varieties", icon: Star },
+  { key: "stat_years", number: "1", label: "Year of Love", icon: Heart },
 ];
 
 const awards = [
-  { title: "Best Social Impact Startup 2024", org: "India Startup Awards" },
-  { title: "Women Empowerment Excellence", org: "National Women's Commission" },
-  { title: "Food Innovation of the Year", org: "FHRAI" },
-  { title: "Top 50 Startups to Watch", org: "YourStory" },
+  { title: "Best Social Impact Startup 2025", org: "TechCrunch Disrupt" },
+  { title: "Women Empowerment Excellence", org: "SBA Women's Business" },
+  { title: "Food Innovation of the Year", org: "National Restaurant Assoc." },
+  { title: "Top 50 Startups to Watch", org: "Forbes" },
 ];
 
 const AboutShero = () => {
@@ -93,7 +91,7 @@ const AboutShero = () => {
         <div className="container mx-auto px-4 max-w-4xl">
           <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground text-center mb-3">Our Story</h2>
           <p className="text-muted-foreground text-center mb-10 max-w-2xl mx-auto">
-            What started as 12 home chefs in Chicago has grown into India's largest home-cooked food movement.
+            What started as 5 home chefs in the DC Metro area is growing into America's home-cooked food movement.
           </p>
           <div className="space-y-0">
             {milestones.map((m, i) => (
@@ -167,7 +165,7 @@ const AboutShero = () => {
         <div className="container mx-auto px-4 max-w-4xl">
           <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground text-center mb-3">Awards & Recognition</h2>
           <p className="text-muted-foreground text-center mb-8 max-w-xl mx-auto">
-            Our impact has been recognised by India's top institutions.
+            Our impact has been recognized by leading institutions.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {awards.map((a, i) => (

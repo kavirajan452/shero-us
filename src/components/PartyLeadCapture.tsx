@@ -114,7 +114,7 @@ const PartyLeadCapture = ({ onVerified }: Props) => {
           <div className="space-y-3">
             <div>
               <label className="text-xs font-medium text-foreground flex items-center gap-1 mb-1">
-                <Phone className="w-3 h-3 text-primary" /> Mobile Number (RMN)
+                <Phone className="w-3 h-3 text-primary" /> Mobile Number
               </label>
               <input
                 type="tel"
