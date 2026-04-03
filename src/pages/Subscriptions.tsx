@@ -302,7 +302,7 @@ const Subscriptions = () => {
       <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5 px-4 py-4 text-center">
         <div className="absolute top-1 right-2 text-3xl opacity-20 rotate-12">🍛</div>
         {customerInfo ? (
-          <p className="text-[10px] text-primary font-medium mb-0.5">Welcome{customerInfo.isReturning ? " back" : ""}, {customerInfo.name}! 🙏</p>
+          <p className="text-[10px] text-primary font-medium mb-0.5">{customerInfo.isReturning ? (sc["subscription.welcome_back_text"] || "Welcome back") : (sc["subscription.welcome_text"] || "Welcome")}, {customerInfo.name}! 🙏</p>
         ) : null}
         <h1 className="text-lg font-bold text-foreground leading-snug">
           {(sc["subscription.hero_title"] || "Home-Cooked Meals, Delivered Daily").split(",").map((part, i) => (
