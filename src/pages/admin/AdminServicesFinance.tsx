@@ -174,7 +174,7 @@ export default function AdminServicesFinance() {
             </CardHeader>
             <CardContent className="overflow-x-auto">
               <Table>
-                <TableHeader><TableRow><TableHead className="text-xs">Ledger Group</TableHead><TableHead className="text-xs">Account Name</TableHead><TableHead className="text-xs text-right">Debit (₹)</TableHead><TableHead className="text-xs text-right">Credit (₹)</TableHead></TableRow></TableHeader>
+                <TableHeader><TableRow><TableHead className="text-xs">Ledger Group</TableHead><TableHead className="text-xs">Account Name</TableHead><TableHead className="text-xs text-right">Debit ($)</TableHead><TableHead className="text-xs text-right">Credit ($)</TableHead></TableRow></TableHeader>
                 <TableBody>
                   {trialBalance.map(row => (
                     <TableRow key={row.account}>
@@ -201,7 +201,7 @@ export default function AdminServicesFinance() {
             <CardHeader className="pb-2"><CardTitle className="text-sm font-semibold">Day Book — All Voucher Entries (Chronological)</CardTitle></CardHeader>
             <CardContent className="overflow-x-auto">
               <Table>
-                <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Voucher No.</TableHead><TableHead className="text-[10px]">Type</TableHead><TableHead className="text-[10px]">Party Name</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Debit (₹)</TableHead><TableHead className="text-[10px] text-right">Credit (₹)</TableHead></TableRow></TableHeader>
+                <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Voucher No.</TableHead><TableHead className="text-[10px]">Type</TableHead><TableHead className="text-[10px]">Party Name</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Debit ($)</TableHead><TableHead className="text-[10px] text-right">Credit ($)</TableHead></TableRow></TableHeader>
                 <TableBody>
                   {dayBook.map((e, i) => {
                     const cfg = voucherTypeLabels[e.voucherType];
@@ -268,7 +268,7 @@ export default function AdminServicesFinance() {
                   <p className="text-xs text-muted-foreground py-4 text-center">{reg.empty}</p>
                 ) : (
                   <Table>
-                    <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Invoice No.</TableHead><TableHead className="text-[10px]">Party Name</TableHead><TableHead className="text-[10px]">Ref</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Gross (₹)</TableHead><TableHead className="text-[10px] text-right">GST (₹)</TableHead><TableHead className="text-[10px] text-right">Net (₹)</TableHead><TableHead className="text-[10px]">Status</TableHead></TableRow></TableHeader>
+                    <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Invoice No.</TableHead><TableHead className="text-[10px]">Party Name</TableHead><TableHead className="text-[10px]">Ref</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Gross ($)</TableHead><TableHead className="text-[10px] text-right">Tax ($)</TableHead><TableHead className="text-[10px] text-right">Net ($)</TableHead><TableHead className="text-[10px]">Status</TableHead></TableRow></TableHeader>
                     <TableBody>
                       {reg.data.map(v => {
                         const gst = v.entries.filter(e => e.account === "gst_output_5" || e.account === "gst_output_18" || e.account === "gst_input_credit").reduce((s, e) => s + e.credit + e.debit, 0);
