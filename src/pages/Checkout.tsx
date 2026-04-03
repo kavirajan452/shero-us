@@ -1,10 +1,11 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tag } from "lucide-react";
-import { ArrowLeft, Minus, Plus, Trash2, MapPin, Phone, User, Clock, Truck, Store, Package, Shield, Wallet } from "lucide-react";
+import { ArrowLeft, Minus, Plus, Trash2, MapPin, Phone, User, Clock, Truck, Store, Package, Shield, Wallet, AlertTriangle } from "lucide-react";
 import CheckoutAuth from "@/components/CheckoutAuth";
 import PaymentSection from "@/components/PaymentSection";
 import type { PaymentMethod } from "@/components/PaymentSection";
+import NonServiceableArea from "@/components/NonServiceableArea";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import { useCart } from "@/contexts/CartContext";
@@ -12,6 +13,7 @@ import { useRegion } from "@/contexts/RegionContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWallet } from "@/contexts/WalletContext";
 import { useCreateInstantOrder, useSaveIncompleteOrder } from "@/hooks/useSupabaseData";
+import { useServiceability } from "@/hooks/useServiceability";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 
@@ -31,6 +33,8 @@ const Checkout = () => {
   const createOrder = useCreateInstantOrder();
   const saveIncomplete = useSaveIncompleteOrder();
   const [useWalletBalance, setUseWalletBalance] = useState(true);
+  const { detectAndCheck, checkByZip, detectedLocation, checking: geoChecking, radiusMiles, hasKitchens } = useServiceability();
+  const [serviceableStatus, setServiceableStatus] = useState<"unknown" | "checking" | "serviceable" | "not_serviceable">("unknown");
 
   // Detect if cart is snacks-only (shipped items, no time slots needed)
   const isSnacksOnly = items.length > 0 && items.every((ci) => ci.item.kitchenId === "snacks");
@@ -45,6 +49,23 @@ const Checkout = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [attempted, setAttempted] = useState(false);
+
+  // Auto-check serviceability on mount via GPS (non-blocking)
+  useEffect(() => {
+    if (isSnacksOnly || serviceableStatus !== "unknown" || !hasKitchens) return;
+    setServiceableStatus("checking");
+    detectAndCheck().then((result) => {
+      setServiceableStatus(result.serviceable ? "serviceable" : "not_serviceable");
+    });
+  }, [hasKitchens]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Also check when ZIP code is entered (for snacks or manual entry)
+  useEffect(() => {
+    if (zipCode.length === 5 && hasKitchens) {
+      const isServiceable = checkByZip(zipCode);
+      setServiceableStatus(isServiceable ? "serviceable" : "not_serviceable");
+    }
+  }, [zipCode, hasKitchens, checkByZip]);
 
   const deliveryFees: Record<string, Record<string, number>> = {
     IN: { "self-pickup": 0, "self-delivery": 30, "third-party": 50 },
@@ -171,9 +192,11 @@ const Checkout = () => {
   const missingSlot = !isSnacksOnly && !selectedSlot;
   const missingZipCode = isSnacksOnly && zipCode.trim().length < 5;
 
+  const isNotServiceable = serviceableStatus === "not_serviceable" && hasKitchens;
+
   const canPlaceOrder = isSnacksOnly
-    ? !missingName && !missingPhone && !missingAddress && !missingZipCode && isLoggedIn
-    : !missingName && !missingPhone && !missingAddress && !missingSlot && isLoggedIn;
+    ? !missingName && !missingPhone && !missingAddress && !missingZipCode && isLoggedIn && !isNotServiceable
+    : !missingName && !missingPhone && !missingAddress && !missingSlot && isLoggedIn && !isNotServiceable;
 
   return (
     <div className="min-h-screen bg-background">
@@ -267,8 +290,34 @@ const Checkout = () => {
           </div>
         </section>
 
+        {/* Serviceability Check Banner */}
+        {serviceableStatus === "checking" && (
+          <section className="bg-card border border-border rounded-2xl p-5 mb-5">
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-muted-foreground">Checking delivery availability for your location…</p>
+            </div>
+          </section>
+        )}
+
+        {isNotServiceable && (
+          <section className="bg-destructive/5 border border-destructive/20 rounded-2xl p-5 mb-5">
+            <div className="flex items-start gap-3 mb-4">
+              <AlertTriangle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h3 className="text-sm font-semibold text-destructive">Outside Delivery Area</h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  We currently deliver within {radiusMiles} miles of our partner kitchens.
+                  {detectedLocation && ` Your location: ${detectedLocation}.`}
+                </p>
+              </div>
+            </div>
+            <NonServiceableArea detectedLocation={detectedLocation || undefined} zipCode={zipCode || undefined} />
+          </section>
+        )}
+
         {/* Delivery Options — hide for snacks */}
-        {!isSnacksOnly && (
+        {!isSnacksOnly && !isNotServiceable && (
           <section className="bg-card border border-border rounded-2xl p-5 mb-5">
             <h2 className="font-semibold text-foreground mb-4">Delivery Method</h2>
             <div className="space-y-2">
@@ -304,8 +353,8 @@ const Checkout = () => {
           </section>
         )}
 
-        {/* Delivery Schedule — hide for snacks */}
-        {!isSnacksOnly && (
+        {/* Delivery Schedule — hide for snacks and non-serviceable */}
+        {!isSnacksOnly && !isNotServiceable && (
           <section className="bg-card border border-border rounded-2xl p-5 mb-5">
             <h2 className={`font-semibold mb-1 flex items-center gap-2 ${attempted && missingSlot ? "text-destructive" : "text-foreground"}`}>
               <Clock className={`w-4 h-4 ${attempted && missingSlot ? "text-destructive" : "text-primary"}`} /> Delivery Schedule
