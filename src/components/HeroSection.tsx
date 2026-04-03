@@ -109,17 +109,25 @@ const HeroSection = () => {
     <section className="relative">
       {/* === MOBILE HERO (< md) === */}
       <div className="md:hidden relative h-[420px] overflow-hidden">
-        <img src={heroMascot} alt="Shero Home Chef" className="absolute inset-0 w-full h-full object-cover object-top z-[1]" />
-        {/* Light wash overlay to improve logo/text readability */}
-        <div className="absolute inset-0 bg-white/35 z-[1]" />
+        <img src={heroMascot} alt="Shero Home Chef" className="absolute inset-0 w-full h-full object-cover object-top brightness-105 saturate-90 z-[1]" />
+        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-background/75 via-background/20 to-transparent z-[2]" />
+        <div className="absolute top-1 right-3 h-20 w-40 rounded-full bg-background/70 blur-2xl z-[2]" />
         {/* Bottom gradient for text */}
         <div className="absolute bottom-0 left-0 right-0 h-[45%] bg-gradient-to-t from-background via-background/80 to-transparent z-[2]" />
 
-        {/* Top bar: language + logo with subtle backdrop */}
+        {/* Top bar: language + logo */}
         <div className="relative z-10 container mx-auto px-4 pt-3 pb-2 flex items-center justify-between">
           {!langSet && <LanguageSwitcher />}
           {langSet && <div />}
-          <img src={sheroLogo} alt="Shero" className="h-14 [filter:drop-shadow(0_0_8px_white)_drop-shadow(0_0_16px_white)_drop-shadow(0_0_24px_white)_drop-shadow(0_0_32px_rgba(255,255,255,0.8))]" />
+          <img
+            src={sheroLogo}
+            alt="Shero"
+            className="h-14 w-auto"
+            style={{
+              filter:
+                "drop-shadow(0 0 8px hsl(var(--background) / 0.95)) drop-shadow(0 0 18px hsl(var(--background) / 0.9))",
+            }}
+          />
         </div>
 
         {/* Bottom text block — compact */}
