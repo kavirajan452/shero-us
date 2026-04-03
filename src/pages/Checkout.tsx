@@ -359,7 +359,7 @@ const Checkout = () => {
             <h2 className="font-semibold text-foreground mb-3 flex items-center gap-2">
               <Truck className="w-4 h-4 text-primary" /> Delivery
             </h2>
-            <div className="flex items-center justify-between p-3 rounded-xl border border-primary bg-primary/5">
+            <div className="flex items-center justify-between p-3 rounded-xl border border-primary bg-primary/5 mb-4">
               <div className="flex items-center gap-3">
                 <Truck className="w-5 h-5 text-primary" />
                 <div>
@@ -368,6 +368,22 @@ const Checkout = () => {
                 </div>
               </div>
               <span className="text-sm font-semibold text-foreground">{formatPrice(configDeliveryFee)}</span>
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-medium text-foreground">Choose delivery slot</p>
+              <div className="grid grid-cols-1 gap-2">
+                {slots.map((slot) => (
+                  <button
+                    key={slot.value}
+                    type="button"
+                    onClick={() => setSelectedSlot(slot.value)}
+                    className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition-colors ${selectedSlot === slot.value ? "border-primary bg-primary/5 text-primary" : "border-border text-foreground hover:border-primary/30"}`}
+                  >
+                    {slot.label}
+                  </button>
+                ))}
+              </div>
+              {attempted && missingSlot && <p className="text-[11px] text-destructive">Please select a delivery slot</p>}
             </div>
           </section>
         )}
