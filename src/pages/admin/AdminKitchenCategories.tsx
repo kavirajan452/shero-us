@@ -147,7 +147,7 @@ const AdminKitchenCategories = () => {
       const q = locSearch.toLowerCase();
       result = result.filter((l: any) =>
         l.partner_name.toLowerCase().includes(q) ||
-        (l.zipcode || "").includes(q) ||
+        (l.pincode || "").includes(q) ||
         (l.location || "").toLowerCase().includes(q) ||
         (l.kitchen_id || "").toLowerCase().includes(q)
       );
@@ -168,7 +168,7 @@ const AdminKitchenCategories = () => {
       };
       // For unbranded kitchens, location is on the kitchen itself
       if (!kIsBranded) {
-        insertData.zipcode = kZipCode || null;
+        insertData.pincode = kZipCode || null;
         insertData.latitude = kLatitude ? parseFloat(kLatitude) : null;
         insertData.longitude = kLongitude ? parseFloat(kLongitude) : null;
       }
@@ -194,7 +194,7 @@ const AdminKitchenCategories = () => {
         food_preference: kFoodPref,
       };
       if (!kIsBranded) {
-        updateData.zipcode = kZipCode || null;
+        updateData.pincode = kZipCode || null;
         updateData.latitude = kLatitude ? parseFloat(kLatitude) : null;
         updateData.longitude = kLongitude ? parseFloat(kLongitude) : null;
       }
@@ -239,7 +239,7 @@ const AdminKitchenCategories = () => {
         kitchen_id: locKitchenId,
         partner_name: locPartnerName,
         partner_phone: locPartnerPhone || null,
-        zipcode: locZipCode,
+        pincode: locZipCode,
         latitude: locLatitude ? parseFloat(locLatitude) : null,
         longitude: locLongitude ? parseFloat(locLongitude) : null,
         location: locLocation || null,
@@ -260,7 +260,7 @@ const AdminKitchenCategories = () => {
       const { error } = await supabase.from("kitchen_partner_locations").update({
         partner_name: locPartnerName,
         partner_phone: locPartnerPhone || null,
-        zipcode: locZipCode,
+        pincode: locZipCode,
         latitude: locLatitude ? parseFloat(locLatitude) : null,
         longitude: locLongitude ? parseFloat(locLongitude) : null,
         location: locLocation || null,
@@ -372,7 +372,7 @@ const AdminKitchenCategories = () => {
     setEditingKitchen(k);
     setKName(k.name); setKCuisine((k.cuisine || []).join(", "));
     setKLocation(k.location || "");
-    setKZipCode(k.zipcode || ""); setKLatitude(k.latitude ? String(k.latitude) : "");
+    setKZipCode(k.pincode || ""); setKLatitude(k.latitude ? String(k.latitude) : "");
     setKLongitude(k.longitude ? String(k.longitude) : "");
     setKIsBranded(k.is_branded);
     setKIsVeg(k.is_veg); setKMinOrder(String(k.min_order));
@@ -423,7 +423,7 @@ const AdminKitchenCategories = () => {
     setLocKitchenId(loc.kitchen_id);
     setLocPartnerName(loc.partner_name);
     setLocPartnerPhone(loc.partner_phone || "");
-    setLocZipCode(loc.zipcode || "");
+    setLocZipCode(loc.pincode || "");
     setLocLatitude(loc.latitude ? String(loc.latitude) : "");
     setLocLongitude(loc.longitude ? String(loc.longitude) : "");
     setLocLocation(loc.location || "");
@@ -567,7 +567,7 @@ const AdminKitchenCategories = () => {
                       ) : (
                         <>
                           {" — "}{kitchen.location || "No location"}
-                          {kitchen.zipcode && <span className="ml-1">📍 {kitchen.zipcode}</span>}
+                          {kitchen.pincode && <span className="ml-1">📍 {kitchen.pincode}</span>}
                         </>
                       )}
                     </p>
