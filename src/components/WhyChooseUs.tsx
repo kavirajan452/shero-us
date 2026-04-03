@@ -4,20 +4,20 @@ const items = [
   {
     icon: Heart,
     color: "text-red-500",
-    title: "Made by Women, from Their Homes",
-    desc: "Real care. Real cooking. Real homes.",
+    title: "Not Restaurant Food",
+    desc: "Cooked in real homes, not commercial kitchens",
   },
   {
     icon: ChefHat,
     color: "text-primary",
-    title: "Women Home Chefs",
-    desc: "Independent kitchens led by women",
+    title: "Women Behind Every Meal",
+    desc: "Home chefs, not factory cooks",
   },
   {
     icon: ShieldCheck,
     color: "text-amber-600",
-    title: "Trusted & Safe Food",
-    desc: "Cooked with care, held to standards",
+    title: "Food You Can Trust Daily",
+    desc: "Simple, balanced, made the right way",
   },
 ];
 
