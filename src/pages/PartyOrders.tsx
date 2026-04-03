@@ -4,6 +4,7 @@ import { useCreatePartyOrder } from "@/hooks/useSupabaseData";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import jsPDF from "jspdf";
+import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 import { checkMinPrepTime } from "@/utils/prepTimeValidation";
 import Navbar from "@/components/Navbar";
 import bulkFoodImg from "@/assets/bulk-food-icon.png";
@@ -214,6 +215,8 @@ const PartyOrders = () => {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const { user: authUser } = useAuth();
+  const { data: partyContent } = useScreenContent("party");
+  const pc = contentMap(partyContent || []);
 
   // Lead gate
   const [leadVerified, setLeadVerified] = useState(() => !!getCurrentLead());
@@ -1002,13 +1005,13 @@ const PartyOrders = () => {
         </Link>
 
         <div className="flex items-center justify-between mb-1">
-          <h1 className="text-lg font-serif font-bold text-foreground">🎉 Party Orders</h1>
+          <h1 className="text-lg font-serif font-bold text-foreground">{pc["party.hero_title"] || "🎉 Party Orders"}</h1>
           {currentLead && (
             <span className="text-[10px] text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">👤 {currentLead.name}</span>
           )}
         </div>
         {(phase === "serviceType" || phase === "foodType") && (
-          <p className="text-xs text-muted-foreground mb-3">🙏 Thank you for choosing genuinely homemade food for your guests — zero chemicals, quality oils & ingredients, cooked fresh by a real home chef as we cook for our home-coming guest! Your order puts a smile on her family's face. Managed entirely by our all-women team — transparent, honest, and truly homemade.</p>
+          <p className="text-xs text-muted-foreground mb-3">{pc["party.hero_subtitle"] || "Thank you for choosing genuinely homemade food for your guests."}</p>
         )}
 
         {/* Stepper */}

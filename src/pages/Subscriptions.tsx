@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
+import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 import SubscriptionLeadCapture from "@/components/SubscriptionLeadCapture";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -116,6 +117,8 @@ const Subscriptions = () => {
   const [searchParams] = useSearchParams();
   const isMarketingLead = searchParams.get("source") === "marketing" || searchParams.get("utm_source") !== null;
   const mainRef = useRef<HTMLElement>(null);
+  const { data: subContent } = useScreenContent("subscription");
+  const sc = contentMap(subContent || []);
 
   // Fetch meal plans from DB
   const { data: dbMealPlans, isLoading: plansLoading } = useSubscriptionMealPlans();
@@ -299,20 +302,22 @@ const Subscriptions = () => {
       <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5 px-4 py-4 text-center">
         <div className="absolute top-1 right-2 text-3xl opacity-20 rotate-12">🍛</div>
         {customerInfo ? (
-          <p className="text-[10px] text-primary font-medium mb-0.5">Welcome{customerInfo.isReturning ? " back" : ""}, {customerInfo.name}! 🙏</p>
+          <p className="text-[10px] text-primary font-medium mb-0.5">{customerInfo.isReturning ? (sc["subscription.welcome_back_text"] || "Welcome back") : (sc["subscription.welcome_text"] || "Welcome")}, {customerInfo.name}! 🙏</p>
         ) : null}
         <h1 className="text-lg font-bold text-foreground leading-snug">
-          Home-Cooked Meals,<br />Delivered Daily
+          {(sc["subscription.hero_title"] || "Home-Cooked Meals, Delivered Daily").split(",").map((part, i) => (
+            <span key={i}>{part}{i === 0 ? <>,<br /></> : ""}</span>
+          ))}
         </h1>
         <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
-          Fresh, preservative-free meals by verified home chefs
+          {sc["subscription.hero_subtitle"] || "Fresh, preservative-free meals by verified home chefs"}
         </p>
         <div className="flex flex-wrap justify-center gap-2 mt-2">
           {[
-            { icon: Shield, text: "FDA" },
-            { icon: Heart, text: "No Preservatives" },
-            { icon: Truck, text: "Daily Delivery" },
-            { icon: Crown, text: "1000+ Subscribers" },
+            { icon: Shield, text: sc["subscription.trust_badge_1"] || "FDA" },
+            { icon: Heart, text: sc["subscription.trust_badge_2"] || "No Preservatives" },
+            { icon: Truck, text: sc["subscription.trust_badge_3"] || "Daily Delivery" },
+            { icon: Crown, text: sc["subscription.trust_badge_4"] || "1000+ Subscribers" },
           ].map(b => (
             <div key={b.text} className="flex items-center gap-0.5 text-[9px] text-muted-foreground">
               <b.icon className="w-2.5 h-2.5 text-primary" />
