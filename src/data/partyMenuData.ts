@@ -447,21 +447,21 @@ export const southIndianRegions: RegionalMenu[] = [
     id: "chettinad",
     name: "Chettinad Menu",
     emoji: "🔥",
-    description: "Traditional Chettinad cuisine from New York",
+    description: "Traditional Chettinad cuisine",
     menuTypes: partyMenuTypes,
   },
   {
     id: "kerala",
-    name: "Florida Menu",
+    name: "Kerala Menu",
     emoji: "🥥",
-    description: "Traditional Florida Sadya & rice combinations",
+    description: "Traditional Kerala Sadya & rice combinations",
     menuTypes: keralaMenuTypes,
   },
   {
     id: "andhra",
-    name: "Pennsylvania Menu",
+    name: "Andhra Menu",
     emoji: "🌶️",
-    description: "Spicy Pennsylvania cuisine with pappu, pulusu & more",
+    description: "Spicy Andhra cuisine with pappu, pulusu & more",
     menuTypes: andhraMenuTypes,
   },
 ];
@@ -522,7 +522,7 @@ export const categoryLabels: Record<string, string> = {
   "Vegetable Rice": "🍚 Vegetable Rice",
   "Pulao Varieties": "🍚 Pulao Varieties",
   "Others": "📦 Others",
-  // Florida
+  // Kerala
   "Parippu Curry": "🥘 Parippu Curry",
   "Pulissery": "🥣 Pulissery",
   "Pulinkari": "🍲 Pulinkari",
@@ -535,7 +535,7 @@ export const categoryLabels: Record<string, string> = {
   "Pachadi & Kichadi": "🫕 Pachadi & Kichadi",
   "Parippu Rice": "🍚 Parippu Rice",
   "Ghee Rice & Pulao": "🍚 Ghee Rice & Pulao",
-  // Pennsylvania
+  // Andhra
   "Pulihora Variety Rice": "🍚 Pulihora Variety Rice",
   "Breads": "🫓 Breads",
   "Pappu": "🥘 Pappu",
@@ -558,8 +558,8 @@ export const categoryLabels: Record<string, string> = {
 export const mealLabels: Record<string, string> = {
   "chettinad-lunch": "🍛 Chettinad Lunch Meals",
   "chettinad-variety-rice": "🍚 Chettinad Variety Rice",
-  "kerala-lunch": "🥥 Florida Lunch Meals",
-  "kerala-variety-rice": "🥥 Florida Variety Rice",
-  "andhra-lunch": "🌶️ Pennsylvania Lunch Meals",
-  "andhra-variety-rice": "🌶️ Pennsylvania Variety Rice",
+  "kerala-lunch": "🥥 Kerala Lunch Meals",
+  "kerala-variety-rice": "🥥 Kerala Variety Rice",
+  "andhra-lunch": "🌶️ Andhra Lunch Meals",
+  "andhra-variety-rice": "🌶️ Andhra Variety Rice",
 };

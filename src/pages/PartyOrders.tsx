@@ -91,8 +91,8 @@ const foodTypeOptions: { value: FoodType; label: string; emoji: string; desc: st
 
 const menuChoiceOptions: { value: MenuChoice; label: string; emoji: string; desc: string }[] = [
   { value: "chettinad", label: "Chettinad", emoji: "🔥", desc: "Traditional Chettinad cuisine" },
-  { value: "kerala", label: "Florida", emoji: "🥥", desc: "Florida Sadya & rice combos" },
-  { value: "andhra", label: "Pennsylvania", emoji: "🌶️", desc: "Spicy Pennsylvania cuisine" },
+  { value: "kerala", label: "Kerala", emoji: "🥥", desc: "Traditional Kerala Sadya & rice combos" },
+  { value: "andhra", label: "Andhra", emoji: "🌶️", desc: "Spicy Andhra cuisine" },
   { value: "north-indian", label: "North Indian", emoji: "🫓", desc: "Paneer, Biryani, Naan & more" },
   { value: "south-indian-mix", label: "South Indian Mix", emoji: "🍛", desc: "Best of all South Indian" },
 ];
@@ -768,7 +768,7 @@ const PartyOrders = () => {
     lines.push(`━━━━━━━━━━━━━━━━━━`);
     if (currentLead) lines.push(`Customer: ${currentLead.name} | ${currentLead.phone}`);
     lines.push(`Food: ${foodType === "veg" ? "🥬 Veg" : "🍗 Non-Veg"}`);
-    lines.push(`Delivery: $500 (flat fee)`);
+    lines.push(`Delivery: ${formatPrice(DELIVERY_FEE)} (flat fee)`);
     lines.push(``);
 
     for (const s of selectedSessions) {
@@ -794,30 +794,30 @@ const PartyOrders = () => {
             const price = othersSpecialPrices[item.id] || cat.pricePerItem;
             const totalQty = cat.portionSize * data.guestCount;
             const qtyDisplay = totalQty >= 1000 ? `${(totalQty / 1000).toFixed(1)} Kg` : `${totalQty} ${cat.portionUnit}`;
-            lines.push(`${item.name} - ${qtyDisplay} - $${price * data.guestCount}`);
+            lines.push(`${item.name} - ${qtyDisplay} - ${formatPrice(price * data.guestCount)}`);
           });
         });
 
         const addOns = menu.addOns.filter(ao => cs.selectedAddOns.has(ao.id));
         if (addOns.length > 0) {
           lines.push(`➕ ADD-ONS`);
-          addOns.forEach(ao => lines.push(`${ao.name} - $${ao.price * data.guestCount}`));
+          addOns.forEach(ao => lines.push(`${ao.name} - ${formatPrice(ao.price * data.guestCount)}`));
         }
       }
       lines.push(``);
     }
 
     lines.push(`━━━━━━━━━━━━━━━━━━`);
-    lines.push(`Meal: $${totalCosts.mealSubtotal}`);
-    if (totalCosts.addOnSubtotal > 0) lines.push(`Add-Ons: $${totalCosts.addOnSubtotal}`);
-    lines.push(`Packing: $${totalCosts.packingCost}`);
-    lines.push(`Delivery: $500`);
-    if (totalCosts.discount > 0) lines.push(`Discount: -$${totalCosts.discount}`);
-    lines.push(`${region.taxLabel}: $${Math.round(totalCosts.tax)}`);
-    lines.push(`TOTAL: $${Math.round(totalCosts.total)}`);
+    lines.push(`Meal: ${formatPrice(totalCosts.mealSubtotal)}`);
+    if (totalCosts.addOnSubtotal > 0) lines.push(`Add-Ons: ${formatPrice(totalCosts.addOnSubtotal)}`);
+    lines.push(`Packing: ${formatPrice(totalCosts.packingCost)}`);
+    lines.push(`Delivery: ${formatPrice(DELIVERY_FEE)}`);
+    if (totalCosts.discount > 0) lines.push(`Discount: -${formatPrice(totalCosts.discount)}`);
+    lines.push(`${region.taxLabel}: ${formatPrice(Math.round(totalCosts.tax))}`);
+    lines.push(`TOTAL: ${formatPrice(Math.round(totalCosts.total))}`);
     lines.push(`\nPowered by Shero 🧡`);
     return lines.join("\n");
-  }, [currentLead, foodType, selectedSessions, sessionMenus, totalCosts, region.taxLabel]);
+  }, [currentLead, foodType, selectedSessions, sessionMenus, totalCosts, region.taxLabel, formatPrice]);
 
   const handleDownloadPDF = useCallback(() => {
     const text = buildSummaryText();
@@ -861,19 +861,19 @@ const PartyOrders = () => {
       const cfg = getComboCategoryConfig(sel.category);
       const items = comboMenuItems[sel.category][sel.foodType];
       const selectedItemObjects = items.filter(i => sel.selectedItems.includes(i.id));
-      lines.push(`${cfg.label} (${sel.foodType === "veg" ? "🥬 Veg" : "🍗 Non-Veg"}) — $${cfg.pricePerBox}/box`);
+      lines.push(`${cfg.label} (${sel.foodType === "veg" ? "🥬 Veg" : "🍗 Non-Veg"}) — ${formatPrice(cfg.pricePerBox)}/box`);
       selectedItemObjects.forEach(item => lines.push(`  • ${item.name}`));
       lines.push(``);
     });
     lines.push(`━━━━━━━━━━━━━━━━━━`);
-    lines.push(`Combo: $${comboTotalCost}`);
-    lines.push(`Packing: $${comboPackingCost}`);
-    lines.push(`Delivery: $${DELIVERY_FEE}`);
-    lines.push(`${region.taxLabel}: $${Math.round(comboTax)}`);
-    lines.push(`TOTAL: $${Math.round(comboGrandTotal)}`);
+    lines.push(`Combo: ${formatPrice(comboTotalCost)}`);
+    lines.push(`Packing: ${formatPrice(comboPackingCost)}`);
+    lines.push(`Delivery: ${formatPrice(DELIVERY_FEE)}`);
+    lines.push(`${region.taxLabel}: ${formatPrice(Math.round(comboTax))}`);
+    lines.push(`TOTAL: ${formatPrice(Math.round(comboGrandTotal))}`);
     lines.push(`\nPowered by Shero 🧡`);
     return lines.join("\n");
-  }, [currentLead, comboGuestCount, comboEventDate, comboServingTime, comboOccasion, comboSelections, comboTotalCost, comboPackingCost, comboTax, comboGrandTotal, region.taxLabel]);
+  }, [currentLead, comboGuestCount, comboEventDate, comboServingTime, comboOccasion, comboSelections, comboTotalCost, comboPackingCost, comboTax, comboGrandTotal, region.taxLabel, formatPrice]);
 
   const handleComboDownloadPDF = useCallback(() => {
     const text = buildComboSummaryText();
@@ -1290,7 +1290,7 @@ const PartyOrders = () => {
                             <span className="text-xs font-medium text-foreground block truncate">{item.name}</span>
                             <span className="text-[10px] text-muted-foreground">{item.portionSize} {item.portionUnit}</span>
                           </div>
-                          <span className="text-xs font-semibold text-foreground shrink-0">${item.price}</span>
+                          <span className="text-xs font-semibold text-foreground shrink-0">{formatPrice(item.price)}</span>
                         </label>
                       );
                     })}
@@ -1304,7 +1304,7 @@ const PartyOrders = () => {
               <p className="text-xs text-foreground font-medium">
                 {currentComboSelection.selectedItems.length} of {currentComboCategoryConfig.minItems}–{currentComboCategoryConfig.maxItems} items
               </p>
-              <span className="text-xs font-bold text-primary">${currentComboCategoryConfig.pricePerBox}/box</span>
+              <span className="text-xs font-bold text-primary">{formatPrice(currentComboCategoryConfig.pricePerBox)}/box</span>
             </div>
 
             <div className="flex gap-2">
@@ -1416,7 +1416,7 @@ const PartyOrders = () => {
                     <h3 className="font-semibold text-xs text-foreground flex items-center gap-1.5">
                       <img src={cfg.id === "tiffin" ? comboIdliImg : cfg.id === "snacks" ? comboVadaImg : comboThaliImg} alt={cfg.label} className="w-5 h-5 object-contain" /> {cfg.label} <span className="text-[10px] font-normal text-muted-foreground">({sel.foodType === "veg" ? "🥬 Veg" : "🍗 Non-Veg"})</span>
                     </h3>
-                    <span className="text-xs font-bold text-primary">${cfg.pricePerBox}/box</span>
+                    <span className="text-xs font-bold text-primary">{formatPrice(cfg.pricePerBox)}/box</span>
                   </div>
                   <div className="space-y-0.5">
                     {selectedItemObjects.map(item => (
@@ -1473,16 +1473,16 @@ const PartyOrders = () => {
                   return (
                     <div key={sel.category} className="flex justify-between">
                       <span className="text-muted-foreground flex items-center gap-1"><img src={cfg.id === "tiffin" ? comboIdliImg : cfg.id === "snacks" ? comboVadaImg : comboThaliImg} alt={cfg.label} className="w-4 h-4 object-contain inline" /> {cfg.label} × {comboGuestCount}</span>
-                      <span className="text-foreground">${cfg.pricePerBox * comboGuestCount}</span>
+                      <span className="text-foreground">{formatPrice(cfg.pricePerBox * comboGuestCount)}</span>
                     </div>
                   );
                 })}
-                <div className="flex justify-between"><span className="text-muted-foreground flex items-center gap-1"><Package className="w-3 h-3" /> Packing ({comboSelections.length * comboGuestCount} boxes × ${COMBO_PACKING_PER_BOX})</span><span className="text-foreground">${comboPackingCost}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">🚚 Delivery</span><span className="text-foreground">${DELIVERY_FEE}</span></div>
-                <div className="flex justify-between"><span className="text-muted-foreground">{region.taxLabel}</span><span className="text-foreground">${Math.round(comboTax)}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground flex items-center gap-1"><Package className="w-3 h-3" /> Packing ({comboSelections.length * comboGuestCount} boxes × {formatPrice(COMBO_PACKING_PER_BOX)})</span><span className="text-foreground">{formatPrice(comboPackingCost)}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">🚚 Delivery</span><span className="text-foreground">{formatPrice(DELIVERY_FEE)}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">{region.taxLabel}</span><span className="text-foreground">{formatPrice(Math.round(comboTax))}</span></div>
                 <div className="border-t border-border pt-1.5 flex justify-between font-bold text-sm">
                   <span className="text-foreground">Total</span>
-                  <span className="text-foreground">${Math.round(comboGrandTotal)}</span>
+                  <span className="text-foreground">{formatPrice(Math.round(comboGrandTotal))}</span>
                 </div>
               </div>
             </div>
@@ -1492,11 +1492,11 @@ const PartyOrders = () => {
               <div className="grid grid-cols-2 gap-2">
                 <button onClick={() => setPaymentOption("full")} className={`flex flex-col items-center gap-1 p-2.5 rounded-lg border-2 text-xs font-medium transition-all ${paymentOption === "full" ? "border-primary bg-primary/5 text-foreground" : "border-border text-muted-foreground"}`}>
                   <span className="font-bold">Full Payment</span>
-                  <span className="text-[10px]">${Math.round(comboGrandTotal)}</span>
+                  <span className="text-[10px]">{formatPrice(Math.round(comboGrandTotal))}</span>
                 </button>
                 <button onClick={() => setPaymentOption("part")} className={`flex flex-col items-center gap-1 p-2.5 rounded-lg border-2 text-xs font-medium transition-all ${paymentOption === "part" ? "border-primary bg-primary/5 text-foreground" : "border-border text-muted-foreground"}`}>
                   <span className="font-bold">50% Advance</span>
-                  <span className="text-[10px]">${Math.round(comboGrandTotal * 0.5)} now</span>
+                  <span className="text-[10px]">{formatPrice(Math.round(comboGrandTotal * 0.5))} now</span>
                 </button>
               </div>
             </div>
@@ -1505,7 +1505,7 @@ const PartyOrders = () => {
               <p>• Minimum 50% advance payment on booking.</p>
               <p>• Balance payment due 1 day before the event.</p>
               <p>• Free cancellation up to 2 days before event.</p>
-              <p>• Flat $500 delivery fee applied.</p>
+              <p>• Flat ₹500 delivery fee applied.</p>
             </div>
 
             {/* Action buttons */}
@@ -1737,9 +1737,9 @@ const PartyOrders = () => {
                   <div className="sticky bottom-0 bg-card border border-border rounded-xl p-2.5 shadow-lg flex items-center justify-between z-30">
                     <div>
                       <p className="text-[10px] text-muted-foreground">{getAllSelectedItems(currentSessionData).size} items × {currentSessionData.guestCount} guests</p>
-                      <p className="text-sm font-bold text-foreground">${curSessionCost.mealCost + curSessionCost.addOnCost}<span className="text-[10px] font-normal text-muted-foreground">/plate</span></p>
+                      <p className="text-sm font-bold text-foreground">{formatPrice(curSessionCost.mealCost + curSessionCost.addOnCost)}<span className="text-[10px] font-normal text-muted-foreground">/plate</span></p>
                     </div>
-                    <span className="text-sm font-bold text-primary">${(curSessionCost.mealCost + curSessionCost.addOnCost) * currentSessionData.guestCount}</span>
+                    <span className="text-sm font-bold text-primary">{formatPrice((curSessionCost.mealCost + curSessionCost.addOnCost) * currentSessionData.guestCount)}</span>
                   </div>
                 )}
 
@@ -1828,7 +1828,7 @@ const PartyOrders = () => {
                                     <div key={item.id} className="flex items-center text-xs py-0.5">
                                       <span className="flex-1 text-foreground truncate pr-2">{item.name}</span>
                                       <span className="w-20 text-right text-muted-foreground">{qtyDisplay}</span>
-                                      <span className="w-16 text-right text-foreground font-medium">${price * data.guestCount}</span>
+                                      <span className="w-16 text-right text-foreground font-medium">{formatPrice(price * data.guestCount)}</span>
                                     </div>
                                   );
                                 })}
@@ -1844,7 +1844,7 @@ const PartyOrders = () => {
                               <div key={ao.id} className="flex items-center text-xs py-0.5">
                                 <span className="flex-1 text-foreground truncate pr-2">{ao.name}</span>
                                 <span className="w-20 text-right text-muted-foreground">{data.guestCount} qty</span>
-                                <span className="w-16 text-right text-foreground font-medium">${ao.price * data.guestCount}</span>
+                                <span className="w-16 text-right text-foreground font-medium">{formatPrice(ao.price * data.guestCount)}</span>
                               </div>
                             ))}
                           </div>
@@ -1855,7 +1855,7 @@ const PartyOrders = () => {
 
                   <div className="mt-2 pt-2 border-t border-border flex justify-between text-xs font-semibold">
                     <span className="text-muted-foreground">Session Subtotal ({data.guestCount} guests)</span>
-                    <span className="text-primary">${cost.sessionTotal}</span>
+                    <span className="text-primary">{formatPrice(cost.sessionTotal)}</span>
                   </div>
                 </div>
               );
@@ -1901,16 +1901,16 @@ const PartyOrders = () => {
               </h3>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-foreground font-medium">Flat Delivery Fee</span>
-                <span className="text-xs font-bold text-foreground">$500</span>
+                <span className="text-xs font-bold text-foreground">{formatPrice(DELIVERY_FEE)}</span>
               </div>
               <div className="flex items-center gap-1 mt-1">
                 <button onClick={() => setShowDeliveryInfo(!showDeliveryInfo)} className="text-primary hover:text-primary/80"><Info className="w-3 h-3" /></button>
-                <span className="text-[10px] text-muted-foreground">Why $500?</span>
+                <span className="text-[10px] text-muted-foreground">Why ₹500?</span>
               </div>
               {showDeliveryInfo && (
                 <div className="mt-2 p-2 rounded-lg bg-secondary/50 border border-border text-[10px] text-muted-foreground space-y-0.5">
                   <p className="font-medium text-foreground">ℹ️ Delivery Fee Information</p>
-                  <p>• A flat $500 delivery fee is charged for all party orders for operational reasons.</p>
+                  <p>• A flat ₹500 delivery fee is charged for all party orders for operational reasons.</p>
                   <p>• Covers packaging, loading, transport, and doorstep delivery.</p>
                   <p>• No hidden charges — what you see is what you pay.</p>
                 </div>
@@ -1940,7 +1940,7 @@ const PartyOrders = () => {
                           const disc = Math.round(totalCosts.mealSubtotal * 0.1);
                           setDiscountAmount(disc);
                           setCouponApplied(true);
-                          toast({ title: "🎉 Coupon Applied!", description: `$${disc} discount applied (10% off meals)` });
+                          toast({ title: "🎉 Coupon Applied!", description: `${formatPrice(disc)} discount applied (10% off meals)` });
                         } else {
                           toast({ title: "❌ Invalid Coupon", description: "This coupon code is not valid. Please try a different code.", variant: "destructive" });
                         }
@@ -1971,14 +1971,14 @@ const PartyOrders = () => {
             <div className="bg-card border border-border rounded-xl p-3">
               <h3 className="font-semibold text-xs text-foreground mb-2">Grand Total</h3>
               <div className="space-y-1 text-xs">
-                <div className="flex justify-between"><span className="text-muted-foreground">Meal ({totalCosts.totalItems} items)</span><span className="text-foreground">${totalCosts.mealSubtotal}</span></div>
-                {totalCosts.addOnSubtotal > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Add-Ons</span><span className="text-foreground">${totalCosts.addOnSubtotal}</span></div>}
+                <div className="flex justify-between"><span className="text-muted-foreground">Meal ({totalCosts.totalItems} items)</span><span className="text-foreground">{formatPrice(totalCosts.mealSubtotal)}</span></div>
+                {totalCosts.addOnSubtotal > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Add-Ons</span><span className="text-foreground">{formatPrice(totalCosts.addOnSubtotal)}</span></div>}
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground flex items-center gap-1">
                     <Package className="w-3 h-3" /> Packing ({packingResult.totalBoxes} boxes)
                     <button onClick={() => setShowPackingInfo(!showPackingInfo)} className="text-primary hover:text-primary/80"><Info className="w-3 h-3" /></button>
                   </span>
-                  <span className="text-foreground">${totalCosts.packingCost}</span>
+                  <span className="text-foreground">{formatPrice(totalCosts.packingCost)}</span>
                 </div>
                 {showPackingInfo && (
                   <div className="bg-secondary/50 border border-border rounded-lg p-2 space-y-1">
@@ -1986,21 +1986,21 @@ const PartyOrders = () => {
                     {packingResult.breakdown.slice(0, 8).map((b, i) => (
                       <div key={i} className="flex justify-between text-[10px]">
                         <span className="text-muted-foreground truncate pr-2">{b.itemName}</span>
-                        <span className="text-foreground shrink-0">{b.boxes > 0 ? `${b.boxes} box = $${b.boxCost}` : `$${b.pieceCost}`}</span>
+                        <span className="text-foreground shrink-0">{b.boxes > 0 ? `${b.boxes} box = ${formatPrice(b.boxCost)}` : formatPrice(b.pieceCost)}</span>
                       </div>
                     ))}
                     {packingResult.breakdown.length > 8 && <p className="text-[10px] text-muted-foreground">...+{packingResult.breakdown.length - 8} more items</p>}
                     <p className="text-[9px] text-muted-foreground italic mt-1 border-t border-border pt-1">{PACKING_INFO_TEXT}</p>
                   </div>
                 )}
-                <div className="flex justify-between"><span className="text-muted-foreground">🚚 Delivery</span><span className="text-foreground">${totalCosts.deliveryFee}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">🚚 Delivery</span><span className="text-foreground">{formatPrice(totalCosts.deliveryFee)}</span></div>
                 {totalCosts.discount > 0 && (
-                  <div className="flex justify-between text-green-600 dark:text-green-400"><span>🏷️ Discount</span><span>-${totalCosts.discount}</span></div>
+                  <div className="flex justify-between text-green-600 dark:text-green-400"><span>🏷️ Discount</span><span>-{formatPrice(totalCosts.discount)}</span></div>
                 )}
-                <div className="flex justify-between"><span className="text-muted-foreground">{region.taxLabel}</span><span className="text-foreground">${Math.round(totalCosts.tax)}</span></div>
+                <div className="flex justify-between"><span className="text-muted-foreground">{region.taxLabel}</span><span className="text-foreground">{formatPrice(Math.round(totalCosts.tax))}</span></div>
                 <div className="border-t border-border pt-1.5 flex justify-between font-bold text-sm">
                   <span className="text-foreground">Total</span>
-                  <span className="text-foreground">${Math.round(totalCosts.total)}</span>
+                  <span className="text-foreground">{formatPrice(Math.round(totalCosts.total))}</span>
                 </div>
               </div>
             </div>
@@ -2011,17 +2011,17 @@ const PartyOrders = () => {
               <div className="grid grid-cols-2 gap-2">
                 <button onClick={() => setPaymentOption("full")} className={`flex flex-col items-center gap-1 p-2.5 rounded-lg border-2 text-xs font-medium transition-all ${paymentOption === "full" ? "border-primary bg-primary/5 text-foreground" : "border-border text-muted-foreground"}`}>
                   <span className="font-bold">Full Payment</span>
-                  <span className="text-[10px]">${Math.round(totalCosts.total)}</span>
+                  <span className="text-[10px]">{formatPrice(Math.round(totalCosts.total))}</span>
                 </button>
                 <button onClick={() => setPaymentOption("part")} className={`flex flex-col items-center gap-1 p-2.5 rounded-lg border-2 text-xs font-medium transition-all ${paymentOption === "part" ? "border-primary bg-primary/5 text-foreground" : "border-border text-muted-foreground"}`}>
                   <span className="font-bold">50% Advance</span>
-                  <span className="text-[10px]">${Math.round(totalCosts.total * 0.5)} now</span>
+                  <span className="text-[10px]">{formatPrice(Math.round(totalCosts.total * 0.5))} now</span>
                 </button>
               </div>
               {paymentOption === "part" && (
                 <div className="mt-2 p-2 rounded-lg bg-accent/20 border border-accent text-[10px] text-muted-foreground space-y-0.5">
-                  <p>✅ Pay ${Math.round(totalCosts.total * 0.5)} now (50% advance)</p>
-                  <p>💰 Balance ${Math.round(totalCosts.total * 0.5)} due 1 day before the event</p>
+                  <p>✅ Pay {formatPrice(Math.round(totalCosts.total * 0.5))} now (50% advance)</p>
+                  <p>💰 Balance {formatPrice(Math.round(totalCosts.total * 0.5))} due 1 day before the event</p>
                   <p>🔔 You'll receive a reminder for balance payment</p>
                 </div>
               )}
@@ -2032,7 +2032,7 @@ const PartyOrders = () => {
               <p>• Minimum 50% advance payment on booking.</p>
               <p>• Balance payment due 1 day before the event.</p>
               <p>• Free cancellation up to 2 days before event. Full refund.</p>
-              <p>• Flat $500 delivery fee applied on all party orders.</p>
+              <p>• Flat ₹500 delivery fee applied on all party orders.</p>
             </div>
 
             {/* Action buttons */}

@@ -27,20 +27,20 @@ const regions: Record<RegionCode, RegionConfig> = {
     code: "IN",
     label: "India",
     currency: "INR",
-    currencySymbol: "$",
-    locale: "en-US",
-    taxLabel: "Sales Tax",
+    currencySymbol: "₹",
+    locale: "en-IN",
+    taxLabel: "GST (5%)",
     taxRate: 0.05,
-    phonePrefix: "+1",
+    phonePrefix: "+91",
     phonePlaceholder: "10-digit mobile number",
     phoneMaxLength: 10,
-    addressPlaceholder: "Flat/House No, Street, Area, City, ZIP Code",
+    addressPlaceholder: "Flat/House No, Street, Area, City, Pincode",
     addressSuggestions: [
-      "Flat 302, Lakshmi Towers, Road No. 12, Downtown, Chicago",
-      "Plot 45, Cyber Towers, Financial District, Chicago",
-      "House 8-3-214, Uptown, Chicago",
-      "Aparna Sarovar, Nallagandla, Chicago",
-      "My Home Hub, Madhapur, Chicago",
+      "Flat 302, Lakshmi Towers, T. Nagar, Chennai 600017",
+      "Plot 45, Jubilee Hills, Hyderabad 500033",
+      "House 8-3-214, Indiranagar, Bengaluru 560038",
+      "Aparna Sarovar, Nallagandla, Hyderabad 500019",
+      "My Home Hub, Madhapur, Hyderabad 500081",
     ],
     deliveryStartHour: 8,
     deliveryEndHour: 22,
@@ -86,7 +86,7 @@ interface RegionContextType {
 const RegionContext = createContext<RegionContextType | undefined>(undefined);
 
 export const RegionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [regionCode, setRegionCode] = useState<RegionCode>("US");
+  const [regionCode, setRegionCode] = useState<RegionCode>("IN");
   const region = regions[regionCode];
 
   const setRegion = useCallback((code: RegionCode) => setRegionCode(code), []);
