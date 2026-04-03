@@ -28,7 +28,7 @@ const AboutSheroCTA = () => {
               </h3>
 
               <p className="text-sm text-muted-foreground leading-relaxed max-w-md mb-6">
-                Real homes. Real kitchens. Real women cooking with love — no factories, no shortcuts. That's the Shero promise.
+                Real homes. Real kitchens. Real women —<br />not restaurants, not fancy, no frills.<br />Just real food, made the right way.<br />That's the Shero promise.
               </p>
 
               <Link
