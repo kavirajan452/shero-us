@@ -188,7 +188,7 @@ const SweetsSnacks = () => {
           {[
             { icon: Heart, text: "Handmade" },
             { icon: Package, text: "Fresh to Order" },
-            { icon: Truck, text: "72+ Cities" },
+            { icon: Truck, text: "12+ US Cities" },
             { icon: CreditCard, text: "Secure Pay" },
           ].map((b) => (
             <div key={b.text} className="flex items-center gap-1.5 text-[10px] text-muted-foreground whitespace-nowrap shrink-0">

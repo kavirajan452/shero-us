@@ -21,7 +21,7 @@ const Footer = () => {
             <h5 className="font-semibold mb-3">Quick Links</h5>
             <ul className="space-y-2 text-sm text-primary-foreground/60">
               <li><a href="/about" className="hover:text-primary-foreground transition-colors">Who We Are</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Be a Shero</a></li>
+              <li><a href="/partner-enrollment" className="hover:text-primary-foreground transition-colors">Be a Shero</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">Franchise</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">Awards & Events</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">FAQ</a></li>
