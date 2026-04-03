@@ -117,7 +117,7 @@ const HeroSection = () => {
         <div className="relative z-10 container mx-auto px-4 pt-3 pb-2 flex items-center justify-between">
           {!langSet && <LanguageSwitcher />}
           {langSet && <div />}
-          <img src={sheroLogo} alt="Shero" className="h-12 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]" />
+          <img src={sheroLogo} alt="Shero" className="h-12 drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] bg-background/40 backdrop-blur-sm rounded-lg p-1" />
         </div>
 
         {/* Bottom text block — compact */}
