@@ -37,6 +37,7 @@ const Index = () => {
         <TrendingDishesCarousel />
         <AboutSheroCTA />
         <SubscriptionCTA />
+        <HomeFAQ />
         
         
       </main>
