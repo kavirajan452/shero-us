@@ -20,8 +20,8 @@ import {
   voucherTypeLabels, accountMeta, ledgerGroupLabels,
 } from "@/data/financeEngine";
 
-const fmt = (n: number) => { if (Math.abs(n) >= 100000) return `₹${(n / 100000).toFixed(1)}L`; if (Math.abs(n) >= 1000) return `₹${(n / 1000).toFixed(1)}K`; return `₹${n}`; };
-const fmtFull = (n: number) => `₹${Math.abs(n).toLocaleString("en-IN")}`;
+const fmt = (n: number) => { if (Math.abs(n) >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`; if (Math.abs(n) >= 1000) return `$${(n / 1000).toFixed(1)}K`; return `$${n}`; };
+const fmtFull = (n: number) => `$${Math.abs(n).toLocaleString("en-US")}`;
 const fmtSigned = (n: number) => n < 0 ? `(${fmtFull(n)})` : fmtFull(n);
 
 const today = new Date();

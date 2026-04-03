@@ -48,7 +48,7 @@ const AdminSubOrders = () => {
                   <Badge className={`text-[9px] border-0 ${statusColors[c.status] || "bg-muted text-muted-foreground"}`}>{c.status}</Badge>
                 </TableCell>
                 <TableCell className="text-xs">{c.partner_name || "—"}</TableCell>
-                <TableCell className="text-xs">₹{c.total_paid?.toLocaleString()}</TableCell>
+                <TableCell className="text-xs">${c.total_paid?.toLocaleString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
