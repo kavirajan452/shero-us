@@ -59,7 +59,7 @@ export function useServiceability() {
         .select("value")
         .eq("key", "kitchen_visibility_radius")
         .maybeSingle();
-      return data?.value as { radius_miles?: number } | null;
+      return (data?.value as { radius_miles?: number } | null) ?? null;
     },
     staleTime: 10 * 60 * 1000,
   });
