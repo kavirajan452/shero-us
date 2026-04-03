@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
 import { useKitchenPartner, useInstantMenuItems } from "@/hooks/useSupabaseData";
-import type { MenuItem, AddOn } from "@/data/mockData";
+import type { MenuItem, AddOn } from "@/types/menu";
 import { useCart } from "@/contexts/CartContext";
 import { useRegion } from "@/contexts/RegionContext";
 import { Badge } from "@/components/ui/badge";

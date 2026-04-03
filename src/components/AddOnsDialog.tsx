@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Leaf } from "lucide-react";
-import type { MenuItem, AddOn } from "@/data/mockData";
+import type { MenuItem, AddOn } from "@/types/menu";
 import { useRegion } from "@/contexts/RegionContext";
 
 interface AddOnsDialogProps {
