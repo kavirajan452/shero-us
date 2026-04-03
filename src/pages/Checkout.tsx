@@ -375,20 +375,29 @@ const Checkout = () => {
               </div>
               <span className="text-sm font-semibold text-foreground">{formatPrice(configDeliveryFee)}</span>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-3">
               <p className="text-xs font-medium text-foreground">Choose delivery slot</p>
-              <div className="grid grid-cols-1 gap-2">
-                {slots.map((slot) => (
-                  <button
-                    key={slot.value}
-                    type="button"
-                    onClick={() => setSelectedSlot(slot.value)}
-                    className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition-colors ${selectedSlot === slot.value ? "border-primary bg-primary/5 text-primary" : "border-border text-foreground hover:border-primary/30"}`}
-                  >
-                    {slot.label}
-                  </button>
-                ))}
-              </div>
+              {(() => {
+                const grouped: Record<string, typeof slots> = {};
+                slots.forEach(s => { (grouped[s.day] ??= []).push(s); });
+                return Object.entries(grouped).map(([day, daySlots]) => (
+                  <div key={day} className="space-y-1.5">
+                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">{day}</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {daySlots.map((slot) => (
+                        <button
+                          key={slot.value}
+                          type="button"
+                          onClick={() => setSelectedSlot(slot.value)}
+                          className={`rounded-xl border px-2 py-2.5 text-center text-xs font-medium transition-colors ${selectedSlot === slot.value ? "border-primary bg-primary/5 text-primary" : "border-border text-foreground hover:border-primary/30"}`}
+                        >
+                          {slot.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ));
+              })()}
               {attempted && missingSlot && <p className="text-[11px] text-destructive">Please select a delivery slot</p>}
             </div>
           </section>
