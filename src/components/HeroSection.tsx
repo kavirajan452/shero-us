@@ -121,14 +121,12 @@ const HeroSection = () => {
         </div>
 
         {/* Bottom text block — compact */}
-        <div className="absolute bottom-4 left-0 right-0 z-10 container mx-auto px-5">
-          <h1 className="text-foreground font-serif text-[20px] font-bold leading-[1.2] drop-shadow-md">
-            {c["home.hero_title"] || "Authentic Indian Home Food,"}
-            <br />
-            {c["home.hero_title_line2"] || "Delivered Fresh"}{" "}
-            <span className="text-primary">{c["home.hero_title_line3"] || "Now Closer to You."}</span>
+        <div className="absolute bottom-3 left-0 right-0 z-10 container mx-auto px-5">
+          <h1 className="text-foreground font-serif text-[19px] font-bold leading-[1.15] drop-shadow-md">
+            {c["home.hero_title"] || "Authentic Indian Home Food,"}<br />
+            {c["home.hero_title_line2"] || "Delivered Fresh."} <span className="text-primary">{c["home.hero_title_line3"] || "Now Closer to You."}</span>
           </h1>
-          <p className="text-foreground/70 text-[12px] mt-1 max-w-[310px] leading-snug drop-shadow-sm">
+          <p className="text-foreground/70 text-[11px] mt-1 max-w-[300px] leading-snug drop-shadow-sm">
             {c["home.hero_subtitle"] || "From our certified home kitchens to your doorstep. The taste of India, made in America."}
           </p>
         </div>
