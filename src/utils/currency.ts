@@ -1,6 +1,6 @@
 /**
  * Centralized US currency formatting utility.
- * All components should use these functions instead of hardcoded ₹ symbols.
+ * All components should use these functions instead of hardcoded $ symbols.
  */
 
 /** Format a number as USD currency: $1,234.56 */

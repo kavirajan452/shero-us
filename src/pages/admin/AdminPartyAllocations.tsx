@@ -929,7 +929,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                     </div>
                     {refundType === "partial" && (
                       <div>
-                        <label className="text-xs font-medium text-foreground block mb-1">Refund Amount (₹)</label>
+                        <label className="text-xs font-medium text-foreground block mb-1">Refund Amount ($)</label>
                         <input
                           type="number"
                           value={refundAmount}
@@ -1128,7 +1128,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                           <Badge variant="destructive" className="text-[10px]">Cancelled & Refunded</Badge>
                         </div>
                         <p className="text-xs text-muted-foreground"><strong>Reason:</strong> {esc.reason}</p>
-                        {esc.refundType && <p className="text-xs text-muted-foreground"><strong>Refund:</strong> {esc.refundType}{esc.refundAmount ? ` — ₹${esc.refundAmount}` : ""}</p>}
+                        {esc.refundType && <p className="text-xs text-muted-foreground"><strong>Refund:</strong> {esc.refundType}{esc.refundAmount ? ` — $${esc.refundAmount}` : ""}</p>}
                         {esc.resolution && <p className="text-xs text-muted-foreground"><strong>Resolution:</strong> {esc.resolution}</p>}
                         {esc.resolvedBy && <p className="text-xs text-muted-foreground"><strong>Resolved by:</strong> {esc.resolvedBy} on {new Date(esc.resolvedAt || "").toLocaleDateString()}</p>}
                       </Card>
@@ -1720,7 +1720,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
               </p>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-medium text-foreground block mb-1">Box Cost (₹)</label>
+                  <label className="text-xs font-medium text-foreground block mb-1">Box Cost ($)</label>
                   <input type="number" value={packingConfig.boxCostRupees} onChange={(e) => setPackingConfig(prev => ({ ...prev, boxCostRupees: parseInt(e.target.value) || 0 }))} className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground text-sm" />
                 </div>
                 <div>
@@ -1732,7 +1732,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                   <input type="number" value={packingConfig.volumePerBoxLitres} onChange={(e) => setPackingConfig(prev => ({ ...prev, volumePerBoxLitres: parseInt(e.target.value) || 5 }))} className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground text-sm" />
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-foreground block mb-1">Per-Piece Cost (₹)</label>
+                  <label className="text-xs font-medium text-foreground block mb-1">Per-Piece Cost ($)</label>
                   <input type="number" value={packingConfig.pieceCostRupees} onChange={(e) => setPackingConfig(prev => ({ ...prev, pieceCostRupees: parseInt(e.target.value) || 0 }))} className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground text-sm" />
                 </div>
               </div>

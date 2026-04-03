@@ -1,4 +1,4 @@
-import { IndianRupee, TrendingUp, Star, ClipboardList, Gift, AlertTriangle } from "lucide-react";
+import { DollarSign, TrendingUp, Star, ClipboardList, Gift, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { earningsSummary, weeklyEarnings, referralStats, opportunitySummary } from "@/data/partnerMockData";
 import { useRegion } from "@/contexts/RegionContext";
@@ -9,9 +9,9 @@ const PartnerEarnings = () => {
   const { formatPrice } = useRegion();
 
   const cards = [
-    { label: "Today", value: formatPrice(earningsSummary.today), icon: IndianRupee, sub: "earnings", accent: "border-l-emerald-500", opportunity: opportunitySummary.missedToday > 0 ? formatPrice(opportunitySummary.potentialToday) : null },
+    { label: "Today", value: formatPrice(earningsSummary.today), icon: DollarSign, sub: "earnings", accent: "border-l-emerald-500", opportunity: opportunitySummary.missedToday > 0 ? formatPrice(opportunitySummary.potentialToday) : null },
     { label: "This Week", value: formatPrice(earningsSummary.thisWeek), icon: TrendingUp, sub: "earnings", accent: "border-l-blue-500", opportunity: opportunitySummary.missedThisWeek > 0 ? formatPrice(opportunitySummary.potentialThisWeek) : null },
-    { label: "This Month", value: formatPrice(earningsSummary.thisMonth), icon: IndianRupee, sub: "earnings", accent: "border-l-purple-500", opportunity: opportunitySummary.missedThisMonth > 0 ? formatPrice(opportunitySummary.potentialThisMonth) : null },
+    { label: "This Month", value: formatPrice(earningsSummary.thisMonth), icon: DollarSign, sub: "earnings", accent: "border-l-purple-500", opportunity: opportunitySummary.missedThisMonth > 0 ? formatPrice(opportunitySummary.potentialThisMonth) : null },
     { label: "Total Orders", value: earningsSummary.totalOrders.toString(), icon: ClipboardList, sub: "all time", accent: "border-l-sky-500" },
     { label: "Avg Rating", value: earningsSummary.avgRating.toFixed(1), icon: Star, sub: "from customers", accent: "border-l-amber-500" },
     { label: "Referral Earnings", value: formatPrice(referralStats.totalEarned), icon: Gift, sub: `${referralStats.listed} listed · ${referralStats.active} active`, accent: "border-l-pink-500" },

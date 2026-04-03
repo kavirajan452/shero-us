@@ -14,7 +14,7 @@ import {
   ComposedChart, Tooltip,
 } from "recharts";
 import {
-  IndianRupee, TrendingUp, TrendingDown, Download, Upload, PiggyBank, BookOpen, FileText,
+  DollarSign, TrendingUp, TrendingDown, Download, Upload, PiggyBank, BookOpen, FileText,
   AlertTriangle, CheckCircle2, Clock, CreditCard, Users, Brain, Lightbulb, Receipt,
   Wallet, Scale, BookMarked, ShoppingCart, CalendarCheck, FileSpreadsheet, Printer,
   Building2, Shield, Gavel, Calculator, BarChart3, PieChart, ArrowUpRight, ArrowDownRight,
@@ -36,8 +36,8 @@ import {
 import * as XLSX from "xlsx";
 
 /* ── Helpers ── */
-const fmt = (n: number) => { if (Math.abs(n) >= 10000000) return `₹${(n / 10000000).toFixed(2)}Cr`; if (Math.abs(n) >= 100000) return `₹${(n / 100000).toFixed(1)}L`; if (Math.abs(n) >= 1000) return `₹${(n / 1000).toFixed(1)}K`; return `₹${n}`; };
-const fmtFull = (n: number) => `₹${Math.abs(n).toLocaleString("en-IN")}`;
+const fmt = (n: number) => { if (Math.abs(n) >= 10000000) return `$${(n / 10000000).toFixed(2)}Cr`; if (Math.abs(n) >= 100000) return `$${(n / 1000000).toFixed(1)}M`; if (Math.abs(n) >= 1000) return `$${(n / 1000).toFixed(1)}K`; return `$${n}`; };
+const fmtFull = (n: number) => `$${Math.abs(n).toLocaleString("en-US")}`;
 const pct = (n: number, d: number) => d === 0 ? "0%" : `${(n / d * 100).toFixed(1)}%`;
 
 const COLORS = ["hsl(var(--primary))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))"];
@@ -439,8 +439,8 @@ export default function AdminFinanceDashboard() {
                   <TableRow>
                     <TableHead className="text-xs">Ledger Account</TableHead>
                     <TableHead className="text-xs">Group</TableHead>
-                    <TableHead className="text-xs text-right">Debit (₹)</TableHead>
-                    <TableHead className="text-xs text-right">Credit (₹)</TableHead>
+                    <TableHead className="text-xs text-right">Debit ($)</TableHead>
+                    <TableHead className="text-xs text-right">Credit ($)</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

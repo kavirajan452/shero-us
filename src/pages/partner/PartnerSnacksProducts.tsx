@@ -90,7 +90,7 @@ export default function PartnerSnacksProducts() {
                   <div className="flex items-center gap-2 mt-1.5">
                     {product.packSizes.map(ps => (
                       <span key={ps.label} className="text-xs bg-secondary rounded px-1.5 py-0.5">
-                        {ps.label}: <span className="font-semibold">₹{ps.price}</span>
+                        {ps.label}: <span className="font-semibold">${ps.price}</span>
                       </span>
                     ))}
                   </div>

@@ -252,7 +252,7 @@ const PartnerReferrals = () => {
               { step: "1", title: "Share Your Code", desc: "Send your referral code or link to friends via WhatsApp, Facebook, or Instagram groups" },
               { step: "2", title: "They Sign Up", desc: "Your friend clicks the link, fills the enrollment form with your referral code, and their application is linked to you" },
               { step: "3", title: "Track Their Status", desc: "Their enrollment status (submitted, paid, approved, rejected) appears in your referral history in real time" },
-              { step: "4", title: "You Earn Rewards", desc: `₹${REFERRAL_MILESTONE_1} when they're listed + ₹${REFERRAL_MILESTONE_2} when they go active = ₹${REFERRAL_TOTAL_PER_PERSON} total` },
+              { step: "4", title: "You Earn Rewards", desc: `$${REFERRAL_MILESTONE_1} when they're listed + $${REFERRAL_MILESTONE_2} when they go active = $${REFERRAL_TOTAL_PER_PERSON} total` },
             ].map((s) => (
               <div key={s.step} className="text-center p-4 rounded-xl border border-border">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2">

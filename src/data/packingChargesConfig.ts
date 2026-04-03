@@ -3,8 +3,8 @@
  * 
  * Logic:
  * - Items measured in kg/L: Every 5 kg (or 5L) = 1 box. 7.5kg = 2 boxes.
- * - Items measured in pieces: ₹10 per piece-based item (flat, not volume).
- * - Box cost is admin-configurable (default ₹20).
+ * - Items measured in pieces: $10 per piece-based item (flat, not volume).
+ * - Box cost is admin-configurable (default $20).
  * 
  * Boxes are fresh, food-grade, reusable containers.
  */
@@ -18,10 +18,10 @@ export interface PackingConfig {
 
 /** Combo Meal Box packing — separate material & pricing */
 export interface ComboPackingConfig {
-  boxCostPerUnit: number;      // cost per combo box (default ₹15)
-  labelCostPerUnit: number;    // sticker/label per box (default ₹2)
-  sealWrapCostPerUnit: number; // cling wrap / seal per box (default ₹3)
-  bagCostPerUnit: number;      // carry bag per box (default ₹5)
+  boxCostPerUnit: number;      // cost per combo box (default $15)
+  labelCostPerUnit: number;    // sticker/label per box (default $2)
+  sealWrapCostPerUnit: number; // cling wrap / seal per box (default $3)
+  bagCostPerUnit: number;      // carry bag per box (default $5)
 }
 
 // Default config - admin can change these

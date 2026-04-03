@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Search, TrendingUp, TrendingDown, Minus, Target, Award, AlertTriangle,
   ChevronDown, ChevronRight, BarChart3, Users, Zap, Eye, Download,
-  Calendar, IndianRupee, CheckCircle2, Clock, XCircle, Gift, Skull,
+  Calendar, DollarSign, CheckCircle2, Clock, XCircle, Gift, Skull,
 } from "lucide-react";
 import {
   RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
@@ -363,7 +363,7 @@ function generateIncentiveRecords(members: TeamMember[], pmsData: Map<string, PM
           grade,
           type: slab.type,
           amount,
-          reason: `${slab.icon} ${slab.label} — TAP ${monthTAP}% (${slab.pctOfCTC > 0 ? "+" : ""}${slab.pctOfCTC}% of base CTC ₹${baseCTC.toLocaleString("en-IN")})`,
+          reason: `${slab.icon} ${slab.label} — TAP ${monthTAP}% (${slab.pctOfCTC > 0 ? "+" : ""}${slab.pctOfCTC}% of base CTC $${baseCTC.toLocaleString("en-US")})`,
           status: mi === 0 ? "pending" : mi === 1 ? "approved" : "disbursed",
         });
       }
@@ -437,7 +437,7 @@ export default function TeamPMS({ members }: TeamPMSProps) {
     { key: "hierarchy", label: "Hierarchy TAP", icon: Users },
     { key: "targets", label: "Tier Targets", icon: Zap },
     { key: "reviews", label: "Review Cycles", icon: Calendar },
-    { key: "incentives", label: "Incentives", icon: IndianRupee },
+    { key: "incentives", label: "Incentives", icon: DollarSign },
     { key: "analytics", label: "Analytics", icon: BarChart3 },
   ];
 
@@ -892,7 +892,7 @@ function IncentiveView({ records, members, pmsData }: { records: IncentiveRecord
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><IndianRupee className="w-4 h-4 text-primary" /> Incentive & Penalty Engine</h3>
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><DollarSign className="w-4 h-4 text-primary" /> Incentive & Penalty Engine</h3>
           <p className="text-[10px] text-muted-foreground">Auto-calculated from TAP % — linked to base CTC per tier. Feeds into PPP payroll.</p>
         </div>
         <Button size="sm" variant="outline" className="h-7 text-xs gap-1"><Download className="w-3.5 h-3.5" /> Export Payroll</Button>
@@ -918,7 +918,7 @@ function IncentiveView({ records, members, pmsData }: { records: IncentiveRecord
             {(["leadership", "manager", "team_leader", "executive"] as RoleTier[]).map(tier => (
               <div key={tier} className="text-center text-[9px] text-muted-foreground">
                 <span className="capitalize font-medium text-foreground">{tier.replace(/_/g, " ")}</span>
-                <br />Base CTC: ₹{BASE_CTC_BY_TIER[tier].toLocaleString("en-IN")}
+                <br />Base CTC: ${BASE_CTC_BY_TIER[tier].toLocaleString("en-US")}
               </div>
             ))}
           </div>
@@ -927,11 +927,11 @@ function IncentiveView({ records, members, pmsData }: { records: IncentiveRecord
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <Card className="border-green-200/50 dark:border-green-800/50"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Total Bonuses</p><p className="text-xl font-bold text-green-600 dark:text-green-400 mt-1">₹{summary.totalBonuses.toLocaleString("en-IN")}</p><p className="text-[9px] text-muted-foreground">{summary.bonusCount} records</p></CardContent></Card>
-        <Card className="border-red-200/50 dark:border-red-800/50"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Total Penalties</p><p className="text-xl font-bold text-red-600 dark:text-red-400 mt-1">₹{summary.totalPenalties.toLocaleString("en-IN")}</p><p className="text-[9px] text-muted-foreground">{summary.penaltyCount} records</p></CardContent></Card>
-        <Card><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Net Impact</p><p className={`text-xl font-bold mt-1 ${summary.net >= 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>₹{summary.net.toLocaleString("en-IN")}</p></CardContent></Card>
-        <Card className="border-primary/20"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Pending Approval</p><p className="text-xl font-bold text-primary mt-1">₹{summary.pendingAmount.toLocaleString("en-IN")}</p></CardContent></Card>
-        <Card><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Disbursed</p><p className="text-xl font-bold text-foreground mt-1">₹{records.filter(r => r.status === "disbursed").reduce((s, r) => s + r.amount, 0).toLocaleString("en-IN")}</p></CardContent></Card>
+        <Card className="border-green-200/50 dark:border-green-800/50"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Total Bonuses</p><p className="text-xl font-bold text-green-600 dark:text-green-400 mt-1">${summary.totalBonuses.toLocaleString("en-US")}</p><p className="text-[9px] text-muted-foreground">{summary.bonusCount} records</p></CardContent></Card>
+        <Card className="border-red-200/50 dark:border-red-800/50"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Total Penalties</p><p className="text-xl font-bold text-red-600 dark:text-red-400 mt-1">${summary.totalPenalties.toLocaleString("en-US")}</p><p className="text-[9px] text-muted-foreground">{summary.penaltyCount} records</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Net Impact</p><p className={`text-xl font-bold mt-1 ${summary.net >= 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>${summary.net.toLocaleString("en-US")}</p></CardContent></Card>
+        <Card className="border-primary/20"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Pending Approval</p><p className="text-xl font-bold text-primary mt-1">${summary.pendingAmount.toLocaleString("en-US")}</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Disbursed</p><p className="text-xl font-bold text-foreground mt-1">${records.filter(r => r.status === "disbursed").reduce((s, r) => s + r.amount, 0).toLocaleString("en-US")}</p></CardContent></Card>
       </div>
 
       {/* Filter */}
@@ -957,7 +957,7 @@ function IncentiveView({ records, members, pmsData }: { records: IncentiveRecord
               <TableHead className="text-xs text-center">TAP %</TableHead>
               <TableHead className="text-xs text-center">Grade</TableHead>
               <TableHead className="text-xs">Type</TableHead>
-              <TableHead className="text-xs text-right">Amount (₹)</TableHead>
+              <TableHead className="text-xs text-right">Amount ($)</TableHead>
               <TableHead className="text-xs">Reason</TableHead>
               <TableHead className="text-xs">Status</TableHead>
             </TableRow>
@@ -977,7 +977,7 @@ function IncentiveView({ records, members, pmsData }: { records: IncentiveRecord
                   </Badge>
                 </TableCell>
                 <TableCell className={`text-xs text-right font-mono font-bold ${r.type === "bonus" ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>
-                  {r.type === "bonus" ? "+" : "-"}₹{r.amount.toLocaleString("en-IN")}
+                  {r.type === "bonus" ? "+" : "-"}${r.amount.toLocaleString("en-US")}
                 </TableCell>
                 <TableCell className="text-[10px] text-muted-foreground max-w-[200px] truncate">{r.reason}</TableCell>
                 <TableCell>
@@ -1265,7 +1265,7 @@ function MemberPMSDialog({ memberId, members, pmsData, reviews, incentives, onCl
               <div className={`rounded-lg border p-2 text-center ${slab.type === "bonus" ? "border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-950/20" : slab.type === "penalty" ? "border-red-200 dark:border-red-800 bg-red-50/50 dark:bg-red-950/20" : "border-border bg-muted/30"}`}>
                 <div className="text-[9px] text-muted-foreground">Incentive</div>
                 <div className={`text-sm font-bold ${slab.type === "bonus" ? "text-green-600 dark:text-green-400" : slab.type === "penalty" ? "text-red-600 dark:text-red-400" : "text-muted-foreground"}`}>
-                  {slab.icon} ₹{incentiveAmt.toLocaleString("en-IN")}
+                  {slab.icon} ${incentiveAmt.toLocaleString("en-US")}
                 </div>
               </div>
             </div>
@@ -1335,7 +1335,7 @@ function MemberPMSDialog({ memberId, members, pmsData, reviews, incentives, onCl
                         {r.type}
                       </Badge>
                       <span className={`text-sm font-bold ml-auto ${r.type === "bonus" ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>
-                        {r.type === "bonus" ? "+" : "-"}₹{r.amount.toLocaleString("en-IN")}
+                        {r.type === "bonus" ? "+" : "-"}${r.amount.toLocaleString("en-US")}
                       </span>
                       <Badge className={`text-[8px] ${r.status === "disbursed" ? "bg-action-done/15 text-action-done" : r.status === "approved" ? "bg-primary/15 text-primary" : "bg-action-cook/15 text-action-cook"}`}>
                         {r.status}

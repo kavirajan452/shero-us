@@ -323,12 +323,12 @@ const ManualPartyOrderPunching = () => {
                                 {isChecked && "✓"}
                               </span>
                               <span className="truncate">{item.emoji} {item.name}</span>
-                              <span className="ml-auto text-[10px] shrink-0">₹{item.price}</span>
+                              <span className="ml-auto text-[10px] shrink-0">${item.price}</span>
                             </button>
                           );
                         })}
                       </div>
-                      <p className="text-[9px] text-muted-foreground">₹{config.pricePerBox}/box × {guestCount} = {formatPrice(config.pricePerBox * guestCount)}</p>
+                      <p className="text-[9px] text-muted-foreground">${config.pricePerBox}/box × {guestCount} = {formatPrice(config.pricePerBox * guestCount)}</p>
                     </div>
                   );
                 })}
@@ -547,7 +547,7 @@ const ManualPartyOrderPunching = () => {
                   const selected = comboSelections[catId] || [];
                   return (
                     <div key={catId}>
-                      <p className="text-[10px] text-muted-foreground font-medium mb-0.5">{config.emoji} {config.label} — ₹{config.pricePerBox}/box</p>
+                      <p className="text-[10px] text-muted-foreground font-medium mb-0.5">{config.emoji} {config.label} — ${config.pricePerBox}/box</p>
                       {selected.map(id => {
                         const item = items.find(i => i.id === id);
                         return item ? (

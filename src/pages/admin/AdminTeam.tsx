@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Briefcase, HeartHandshake, IndianRupee, Landmark } from "lucide-react";
+import { Briefcase, HeartHandshake, DollarSign, Landmark } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -366,7 +366,7 @@ const roleIcons: Record<AdminRole, typeof Globe> = {
   ssc_manager: Users,
   ssc_tl: Users,
   ssc_executor: UserCircle,
-  ppp_tl: IndianRupee,
+  ppp_tl: DollarSign,
   ppp_executor: UserCircle,
   party_manager: Target,
   party_tl: Target,

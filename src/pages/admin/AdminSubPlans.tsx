@@ -19,7 +19,7 @@ const AdminSubPlans = () => {
 
   const handleAddPlan = () => {
     if (!newPlanName || !newPlanCuisine || !newPlanPrice) { toast({ title: "Missing fields", variant: "destructive" }); return; }
-    toast({ title: "✅ Meal Plan Created", description: `${newPlanName} — ₹${newPlanPrice}/day` });
+    toast({ title: "✅ Meal Plan Created", description: `${newPlanName} — $${newPlanPrice}/day` });
     setShowAddPlan(false); setNewPlanName(""); setNewPlanCuisine(""); setNewPlanPrice("");
   };
 
@@ -46,7 +46,7 @@ const AdminSubPlans = () => {
                 <button onClick={() => setNewPlanIsVeg(true)} className={`text-xs px-3 py-1.5 rounded-full transition-all ${newPlanIsVeg ? "bg-action-done/15 text-action-done font-bold ring-1 ring-action-done/30" : "bg-muted text-muted-foreground"}`}>🥬 Veg</button>
                 <button onClick={() => setNewPlanIsVeg(false)} className={`text-xs px-3 py-1.5 rounded-full transition-all ${!newPlanIsVeg ? "bg-destructive/10 text-destructive font-bold ring-1 ring-destructive/30" : "bg-muted text-muted-foreground"}`}>🍗 Non-Veg</button>
               </div>
-              <div><label className="text-xs font-medium text-foreground">Price per Day (₹)</label><Input value={newPlanPrice} onChange={e => setNewPlanPrice(e.target.value)} placeholder="e.g., 150" type="number" className="h-9 text-xs mt-1" /></div>
+              <div><label className="text-xs font-medium text-foreground">Price per Day ($)</label><Input value={newPlanPrice} onChange={e => setNewPlanPrice(e.target.value)} placeholder="e.g., 150" type="number" className="h-9 text-xs mt-1" /></div>
               <Button className="w-full text-xs h-9 bg-action-accept text-action-accept-foreground hover:bg-action-accept/90" onClick={handleAddPlan}>Create Meal Plan</Button>
             </div>
           </DialogContent>
@@ -107,7 +107,7 @@ const AdminSubPlans = () => {
                     </Badge>
                   </div>
                   <div className="flex items-center gap-3 mt-1.5">
-                    <span className="text-sm font-bold text-primary">₹{plan.pricePerDay}/day</span>
+                    <span className="text-sm font-bold text-primary">${plan.pricePerDay}/day</span>
                     <span className="text-[11px] text-muted-foreground">·</span>
                     <span className="text-[11px] text-muted-foreground flex items-center gap-0.5">
                       <Users className="w-3 h-3" /> {plan.subscribers} subscribers

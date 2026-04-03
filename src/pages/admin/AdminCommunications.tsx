@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, Clock, FileText, Plus, Search, Filter, Eye, MessageCircle, Smartphone, Users, BarChart3, Megaphone, TrendingUp, AlertTriangle, PartyPopper, IndianRupee, Radio, ChevronDown, ChevronUp, Copy, Sparkles } from "lucide-react";
+import { Send, Clock, FileText, Plus, Search, Filter, Eye, MessageCircle, Smartphone, Users, BarChart3, Megaphone, TrendingUp, AlertTriangle, PartyPopper, DollarSign, Radio, ChevronDown, ChevronUp, Copy, Sparkles } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,7 +33,7 @@ import {
 
 const categoryIcons: Record<CommCategory, any> = {
   performance: TrendingUp,
-  finance: IndianRupee,
+  finance: DollarSign,
   promotion: Megaphone,
   announcement: Radio,
   alert: AlertTriangle,

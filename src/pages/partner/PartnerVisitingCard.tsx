@@ -35,7 +35,7 @@ const PartnerVisitingCard = () => {
   };
 
   const referralLink = `${window.location.origin}/welcome?ref=${referralCode}`;
-  const shareText = `🌟 I'm a proud Shero Business Partner! 🍲\n\nI cook homemade food with love and deliver it through Shero — India's #1 home food platform.\n\n🎁 Use my referral code "${referralCode}" to join Shero and get ₹500 in your wallet!\n\n✨ Whether you want to ORDER delicious homemade food or BECOME a home chef yourself — Shero is for you!\n\nJoin now 👇\n${referralLink}`;
+  const shareText = `🌟 I'm a proud Shero Business Partner! 🍲\n\nI cook homemade food with love and deliver it through Shero — India's #1 home food platform.\n\n🎁 Use my referral code "${referralCode}" to join Shero and get $500 in your wallet!\n\n✨ Whether you want to ORDER delicious homemade food or BECOME a home chef yourself — Shero is for you!\n\nJoin now 👇\n${referralLink}`;
 
   const copyLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -121,7 +121,7 @@ const PartnerVisitingCard = () => {
     // Referral section
     ctx.fillStyle = "#D4A574";
     ctx.font = "bold 11px sans-serif";
-    ctx.fillText("SCAN TO JOIN AS A PARTNER OR CUSTOMER & GET ₹500", 350, 248);
+    ctx.fillText("SCAN TO JOIN AS A PARTNER OR CUSTOMER & GET $500", 350, 248);
 
     // Code box
     ctx.strokeStyle = "#D4A574";
@@ -178,17 +178,17 @@ const PartnerVisitingCard = () => {
             <div className="bg-card/80 rounded-xl p-3 border border-border text-center">
               <div className="text-2xl mb-1">🍽️</div>
               <p className="text-xs font-semibold text-foreground">Friends Order Food</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">They get <span className="font-bold text-accent">₹500</span> in wallet to try your food!</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">They get <span className="font-bold text-accent">$500</span> in wallet to try your food!</p>
             </div>
             <div className="bg-card/80 rounded-xl p-3 border border-border text-center">
               <div className="text-2xl mb-1">👩‍🍳</div>
               <p className="text-xs font-semibold text-foreground">Family Joins as Chefs</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">You earn <span className="font-bold text-accent">₹2,250</span> per partner referral!</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">You earn <span className="font-bold text-accent">$2,250</span> per partner referral!</p>
             </div>
             <div className="bg-card/80 rounded-xl p-3 border border-border text-center">
               <div className="text-2xl mb-1">💰</div>
               <p className="text-xs font-semibold text-foreground">Everyone Wins</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5">New partners get <span className="font-bold text-accent">₹500</span> signup bonus in first PPP!</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">New partners get <span className="font-bold text-accent">$500</span> signup bonus in first PPP!</p>
             </div>
           </div>
         </CardContent>
@@ -244,7 +244,7 @@ const PartnerVisitingCard = () => {
 
               <div className="w-48 h-[1px] bg-[#D4A574]/20 mx-auto mt-4 mb-3" />
 
-              <p className="text-[9px] text-[#D4A574] font-bold tracking-wider mb-2">SCAN TO JOIN AS A PARTNER OR CUSTOMER & GET ₹500</p>
+              <p className="text-[9px] text-[#D4A574] font-bold tracking-wider mb-2">SCAN TO JOIN AS A PARTNER OR CUSTOMER & GET $500</p>
               
               {/* QR placeholder */}
               <div className="w-20 h-20 mx-auto bg-white rounded-lg flex items-center justify-center mb-2">
@@ -269,7 +269,7 @@ const PartnerVisitingCard = () => {
             <div className="flex items-center justify-between">
               <h4 className="font-semibold text-foreground text-sm">Share Your Visiting Card</h4>
               <Badge variant="outline" className="text-[10px] border-accent/30 text-accent">
-                ₹500 per referral
+                $500 per referral
               </Badge>
             </div>
 

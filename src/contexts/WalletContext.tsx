@@ -275,7 +275,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         type: "purchase_debit",
         amount: -amount,
         remaining_amount: 0,
-        description: `Used on order (₹${orderTotal} total)`,
+        description: `Used on order ($${orderTotal} total)`,
       });
 
       // Update wallet
@@ -353,7 +353,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         .eq("id", referralId)
         .eq("user_id", user.id);
 
-      // No flat ₹100 reward — reward is spin-only
+      // No flat $100 reward — reward is spin-only
       fetchWalletData();
     },
     [user?.id, fetchWalletData]
@@ -382,7 +382,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         type: "spin_reward",
         amount: cappedAmount,
         remaining_amount: cappedAmount,
-        description: `🎰 Spin wheel bonus — ₹${cappedAmount} won!`,
+        description: `🎰 Spin wheel bonus — $${cappedAmount} won!`,
         expires_at: expiresAt.toISOString(),
       });
 

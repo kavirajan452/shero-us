@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import {
-  IndianRupee, TrendingUp, Download, BookOpen,
+  DollarSign, TrendingUp, Download, BookOpen,
   Receipt, Wallet, Scale,
 } from "lucide-react";
 import { getAdminRole } from "@/data/adminRoles";
@@ -18,8 +18,8 @@ import {
   voucherTypeLabels, accountMeta, ledgerGroupLabels,
 } from "@/data/financeEngine";
 
-const fmt = (n: number) => { if (Math.abs(n) >= 100000) return `₹${(n / 100000).toFixed(1)}L`; if (Math.abs(n) >= 1000) return `₹${(n / 1000).toFixed(1)}K`; return `₹${n}`; };
-const fmtFull = (n: number) => `₹${Math.abs(n).toLocaleString("en-IN")}`;
+const fmt = (n: number) => { if (Math.abs(n) >= 100000) return `$${(n / 1000000).toFixed(1)}M`; if (Math.abs(n) >= 1000) return `$${(n / 1000).toFixed(1)}K`; return `$${n}`; };
+const fmtFull = (n: number) => `$${Math.abs(n).toLocaleString("en-US")}`;
 const fmtSigned = (n: number) => n < 0 ? `(${fmtFull(n)})` : fmtFull(n);
 
 const today = new Date();
@@ -83,7 +83,7 @@ export default function AdminSheroClassesFinance() {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Net Revenue", value: fmtFull(netRevenue), icon: IndianRupee, color: "text-primary" },
+          { label: "Net Revenue", value: fmtFull(netRevenue), icon: DollarSign, color: "text-primary" },
           { label: "CM1", value: `${fmtFull(cm1)} (${(cm1/netRevenue*100).toFixed(1)}%)`, icon: TrendingUp, color: "text-green-600" },
           { label: "CM1.5", value: `${fmtFull(cm15)} (${(cm15/netRevenue*100).toFixed(1)}%)`, icon: Scale, color: "text-chart-2" },
           { label: "Receivables", value: fmtFull(totalReceivable), icon: Receipt, color: "text-blue-600" },

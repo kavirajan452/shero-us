@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import {
-  Search, Check, X, Clock, BadgePercent, Phone, User, Hash, IndianRupee,
+  Search, Check, X, Clock, BadgePercent, Phone, User, Hash, DollarSign,
 } from "lucide-react";
 
 interface DiscountRequest {
@@ -108,7 +108,7 @@ const AdminPartyDiscounts = () => {
         r.id === id ? { ...r, status: "approved" as const, approvedBy: "TL (You)", approvedDiscount: approvedAmt } : r
       )
     );
-    toast({ title: "✅ Discount Approved", description: `₹${approvedAmt} discount approved for ${req.orderId}` });
+    toast({ title: "✅ Discount Approved", description: `$${approvedAmt} discount approved for ${req.orderId}` });
   };
 
   const handleReject = (id: string) => {
@@ -201,8 +201,8 @@ const AdminPartyDiscounts = () => {
                 <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground mt-2">
                   <span className="flex items-center gap-1"><User className="w-3 h-3" /> {req.customerName}</span>
                   <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> {req.customerPhone}</span>
-                  <span className="flex items-center gap-1"><IndianRupee className="w-3 h-3" /> Order: ₹{req.orderAmount.toLocaleString()}</span>
-                  <span className="flex items-center gap-1"><BadgePercent className="w-3 h-3" /> Requested: ₹{req.requestedDiscount.toLocaleString()}</span>
+                  <span className="flex items-center gap-1"><DollarSign className="w-3 h-3" /> Order: ${req.orderAmount.toLocaleString()}</span>
+                  <span className="flex items-center gap-1"><BadgePercent className="w-3 h-3" /> Requested: ${req.requestedDiscount.toLocaleString()}</span>
                 </div>
 
                 <div className="mt-2 p-2 rounded-lg bg-secondary/50 border border-border">
@@ -212,7 +212,7 @@ const AdminPartyDiscounts = () => {
 
                 {req.status === "approved" && (
                   <div className="mt-2 p-2 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-300 text-xs">
-                    <p className="text-green-800 dark:text-green-300 font-medium">✅ Approved: ₹{req.approvedDiscount?.toLocaleString()}</p>
+                    <p className="text-green-800 dark:text-green-300 font-medium">✅ Approved: ${req.approvedDiscount?.toLocaleString()}</p>
                     <p className="text-[10px] text-green-600 dark:text-green-400">By: {req.approvedBy}</p>
                   </div>
                 )}
@@ -220,7 +220,7 @@ const AdminPartyDiscounts = () => {
                 {req.status === "pending" && (
                   <div className="mt-3 space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-muted-foreground whitespace-nowrap">Approve ₹:</span>
+                      <span className="text-[10px] text-muted-foreground whitespace-nowrap">Approve $:</span>
                       <Input
                         type="number"
                         placeholder={`${req.requestedDiscount}`}
@@ -228,7 +228,7 @@ const AdminPartyDiscounts = () => {
                         onChange={(e) => setApprovalAmounts((prev) => ({ ...prev, [req.id]: e.target.value }))}
                         className="h-8 text-xs w-24"
                       />
-                      <span className="text-[10px] text-muted-foreground">of ₹{req.orderAmount.toLocaleString()}</span>
+                      <span className="text-[10px] text-muted-foreground">of ${req.orderAmount.toLocaleString()}</span>
                     </div>
                     <div className="flex gap-2">
                       <button

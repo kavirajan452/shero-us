@@ -767,7 +767,7 @@ const AdminKitchenCategories = () => {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label className="text-xs">Min Order (₹)</Label>
+                <Label className="text-xs">Min Order ($)</Label>
                 <Input type="number" value={kMinOrder} onChange={(e) => setKMinOrder(e.target.value)} />
               </div>
               <div>

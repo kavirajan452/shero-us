@@ -425,7 +425,7 @@ export default function PartnerKitchenAttendance() {
                     </div>
                   ))}
                 </div>
-                <p className="text-destructive font-medium text-xs">Switching off will trigger a ₹500 penalty per order.</p>
+                <p className="text-destructive font-medium text-xs">Switching off will trigger a $500 penalty per order.</p>
               </div>
             </AlertDialogDescription>
           </AlertDialogHeader>

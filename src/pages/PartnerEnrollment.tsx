@@ -445,7 +445,7 @@ const PartnerEnrollment = () => {
               <CardContent className="pt-6 pb-6 space-y-4">
                 <div className="flex items-center gap-2 justify-center"><CreditCard className="w-5 h-5 text-accent" /><h3 className="text-lg font-serif font-semibold text-foreground">Registration Fee</h3></div>
                 <div className="bg-muted rounded-xl p-5 text-center space-y-1">
-                  <p className="text-3xl font-bold text-foreground">₹999</p>
+                  <p className="text-3xl font-bold text-foreground">$999</p>
                   <p className="text-xs text-muted-foreground">One-time registration fee (inclusive of GST)</p>
                 </div>
                 <ul className="text-xs text-muted-foreground space-y-1.5 px-2">
@@ -475,7 +475,7 @@ const PartnerEnrollment = () => {
               <CardContent className="pt-6 pb-6 space-y-4">
                 <div className="flex items-center gap-2 justify-center"><Clock className="w-5 h-5 text-primary" /><h3 className="text-lg font-serif font-semibold text-foreground">Payment Link Sent!</h3></div>
                 <p className="text-xs text-muted-foreground text-center">
-                  A payment link of <span className="font-bold text-foreground">₹999</span> has been sent to <span className="font-semibold text-foreground">{form.phone || "your phone"}</span> via SMS & WhatsApp.
+                  A payment link of <span className="font-bold text-foreground">$999</span> has been sent to <span className="font-semibold text-foreground">{form.phone || "your phone"}</span> via SMS & WhatsApp.
                 </p>
                 <div className="bg-muted/50 rounded-xl p-4 text-center space-y-2">
                   <p className="text-sm font-medium text-foreground">Have you completed the payment?</p>
@@ -511,9 +511,9 @@ const PartnerEnrollment = () => {
                   <div className="space-y-2 text-xs">
                     <div className="flex justify-between"><span className="text-muted-foreground">Name</span><span className="font-medium text-foreground">{form.fullName || "Partner"}</span></div>
                     <div className="flex justify-between"><span className="text-muted-foreground">Phone</span><span className="font-medium text-foreground">{form.phone || "—"}</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">Amount</span><span className="font-bold text-foreground">₹999</span></div>
+                    <div className="flex justify-between"><span className="text-muted-foreground">Amount</span><span className="font-bold text-foreground">$999</span></div>
                     <div className="flex justify-between"><span className="text-muted-foreground">Transaction ID</span><span className="font-mono font-medium text-foreground">TXN-{Date.now().toString().slice(-8)}</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">Date</span><span className="font-medium text-foreground">{new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</span></div>
+                    <div className="flex justify-between"><span className="text-muted-foreground">Date</span><span className="font-medium text-foreground">{new Date().toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" })}</span></div>
                     <div className="flex justify-between"><span className="text-muted-foreground">Status</span><span className="font-bold text-accent">✅ Paid</span></div>
                   </div>
                   <div className="h-px bg-border" />

@@ -74,7 +74,7 @@ const AdminSubDiscounts = () => {
                   </div>
                   <div className="space-y-1">
                     <label className="text-[10px] font-medium text-muted-foreground flex items-center gap-1">
-                      <Truck className="w-2.5 h-2.5" /> Delivery ₹/day
+                      <Truck className="w-2.5 h-2.5" /> Delivery $/day
                     </label>
                     <Input type="number" value={d.deliveryFeePerDay} onChange={e => handleUpdate(d.duration, "deliveryFeePerDay", Number(e.target.value))} className="h-9 text-sm font-medium" min={0} />
                   </div>
@@ -95,7 +95,7 @@ const AdminSubDiscounts = () => {
                 <div className="bg-secondary/40 rounded-md px-3 py-2 flex items-center justify-between">
                   <span className="text-[11px] text-muted-foreground">Total delivery fee for plan</span>
                   <span className="text-sm font-bold text-foreground">
-                    ₹{d.deliveryFeePerDay}/day × {durData?.days || 0} days = <span className="text-primary">₹{totalDelivery}</span>
+                    ${d.deliveryFeePerDay}/day × {durData?.days || 0} days = <span className="text-primary">${totalDelivery}</span>
                   </span>
                 </div>
               </CardContent>

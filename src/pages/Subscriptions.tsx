@@ -516,7 +516,7 @@ const Subscriptions = () => {
                       <p className="text-[9px] text-white/70">{plan.cuisine}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-base font-bold text-white">₹{price.perDay}</p>
+                      <p className="text-base font-bold text-white">${price.perDay}</p>
                       <p className="text-[8px] text-white/70">/day</p>
                     </div>
                   </div>
@@ -541,12 +541,12 @@ const Subscriptions = () => {
                   <div className="flex items-center justify-between mt-2 pt-2 border-t border-border">
                     <div>
                       <div className="flex items-baseline gap-1">
-                        <span className="text-sm font-bold text-foreground">₹{price.total.toLocaleString()}</span>
-                        {price.discount > 0 && <span className="text-[10px] text-muted-foreground line-through">₹{price.base.toLocaleString()}</span>}
+                        <span className="text-sm font-bold text-foreground">${price.total.toLocaleString()}</span>
+                        {price.discount > 0 && <span className="text-[10px] text-muted-foreground line-through">${price.base.toLocaleString()}</span>}
                       </div>
                       <p className="text-[8px] text-muted-foreground">
                         {durationInfo.days}d • {persons}p
-                        {price.discount > 0 && <span className="text-green-600 font-semibold ml-1">Save ₹{price.discount.toLocaleString()}</span>}
+                        {price.discount > 0 && <span className="text-green-600 font-semibold ml-1">Save ${price.discount.toLocaleString()}</span>}
                       </p>
                     </div>
                     <Button size="sm" className="gap-0.5 rounded-lg text-[10px] h-7 px-2.5">
@@ -601,7 +601,7 @@ const Subscriptions = () => {
     const price = calcPrice(selectedPlan);
     const activationDate = new Date();
     activationDate.setDate(activationDate.getDate() + 1);
-    const activationDay = activationDate.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "short" });
+    const activationDay = activationDate.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "short" });
 
     return (
       <div className="space-y-3">
@@ -863,15 +863,15 @@ const Subscriptions = () => {
         {/* Pricing */}
         <Card className="border-primary/30 bg-primary/5">
           <CardContent className="p-2.5 space-y-1">
-            <div className="flex justify-between text-[10px]"><span className="text-muted-foreground">Per day ({persons}p)</span><span className="font-medium">₹{price.perDay}</span></div>
-            <div className="flex justify-between text-[10px]"><span className="text-muted-foreground">{durationInfo.days} days</span><span className="font-medium">₹{price.base.toLocaleString()}</span></div>
-            {price.discount > 0 && <div className="flex justify-between text-[10px] text-green-600"><span>Discount</span><span>-₹{price.discount.toLocaleString()}</span></div>}
-            <div className="flex justify-between text-[10px]"><span className="text-muted-foreground">Delivery</span><span>₹{price.delivery.toLocaleString()}</span></div>
+            <div className="flex justify-between text-[10px]"><span className="text-muted-foreground">Per day ({persons}p)</span><span className="font-medium">${price.perDay}</span></div>
+            <div className="flex justify-between text-[10px]"><span className="text-muted-foreground">{durationInfo.days} days</span><span className="font-medium">${price.base.toLocaleString()}</span></div>
+            {price.discount > 0 && <div className="flex justify-between text-[10px] text-green-600"><span>Discount</span><span>-${price.discount.toLocaleString()}</span></div>}
+            <div className="flex justify-between text-[10px]"><span className="text-muted-foreground">Delivery</span><span>${price.delivery.toLocaleString()}</span></div>
             {extensionSessions > 0 && (
               <div className="flex justify-between text-[10px] text-primary"><span>Extension ({extensionSessions} skipped sessions)</span><span>+{extensionSessions} meals free</span></div>
             )}
             <div className="border-t border-border pt-1.5 flex justify-between text-sm font-bold">
-              <span>Total</span><span className="text-primary">₹{price.total.toLocaleString()}</span>
+              <span>Total</span><span className="text-primary">${price.total.toLocaleString()}</span>
             </div>
           </CardContent>
         </Card>
@@ -926,10 +926,10 @@ const Subscriptions = () => {
         return (
           <Card className="border-primary/30 bg-primary/5">
             <CardContent className="p-2.5 space-y-0.5">
-              <div className="flex justify-between text-[10px]"><span className="text-muted-foreground">{selectedPlan.name} ({durationInfo.days}d × {persons}p)</span><span>₹{price.base.toLocaleString()}</span></div>
-              {price.discount > 0 && <div className="flex justify-between text-[10px] text-green-600"><span>Discount</span><span>-₹{price.discount.toLocaleString()}</span></div>}
-              <div className="flex justify-between text-[10px]"><span className="text-muted-foreground">Delivery</span><span>₹{price.delivery.toLocaleString()}</span></div>
-              <div className="border-t border-border pt-1 flex justify-between text-xs font-bold"><span>Total</span><span className="text-primary">₹{price.total.toLocaleString()}</span></div>
+              <div className="flex justify-between text-[10px]"><span className="text-muted-foreground">{selectedPlan.name} ({durationInfo.days}d × {persons}p)</span><span>${price.base.toLocaleString()}</span></div>
+              {price.discount > 0 && <div className="flex justify-between text-[10px] text-green-600"><span>Discount</span><span>-${price.discount.toLocaleString()}</span></div>}
+              <div className="flex justify-between text-[10px]"><span className="text-muted-foreground">Delivery</span><span>${price.delivery.toLocaleString()}</span></div>
+              <div className="border-t border-border pt-1 flex justify-between text-xs font-bold"><span>Total</span><span className="text-primary">${price.total.toLocaleString()}</span></div>
             </CardContent>
           </Card>
         );
@@ -965,7 +965,7 @@ const Subscriptions = () => {
             )}
           </CardContent>
         </Card>
-        <PaymentSection total={price.total} formatPrice={(n) => `₹${n.toLocaleString()}`} onPaymentSuccess={() => handlePayment("upi")} onPaymentFailure={() => {}} />
+        <PaymentSection total={price.total} formatPrice={(n) => `$${n.toLocaleString()}`} onPaymentSuccess={() => handlePayment("upi")} onPaymentFailure={() => {}} />
       </div>
     );
   };

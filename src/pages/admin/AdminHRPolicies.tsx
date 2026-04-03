@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, FileText, Download, Search, Shield, Clock, Users, AlertTriangle, Heart, IndianRupee, Calendar, CheckCircle2, ChevronRight } from "lucide-react";
+import { BookOpen, FileText, Download, Search, Shield, Clock, Users, AlertTriangle, Heart, DollarSign, Calendar, CheckCircle2, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -83,10 +83,10 @@ const policies: PolicyDocument[] = [
 const categoryIcons: Record<string, typeof BookOpen> = {
   General: BookOpen,
   Leave: Calendar,
-  Compensation: IndianRupee,
+  Compensation: DollarSign,
   Compliance: Shield,
   Operations: CheckCircle2,
-  Finance: IndianRupee,
+  Finance: DollarSign,
   Performance: AlertTriangle,
   Onboarding: Users,
 };

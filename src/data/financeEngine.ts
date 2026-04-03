@@ -312,7 +312,7 @@ export function generateSubscriptionVouchers(): Voucher[] {
   // 1. New Subscription — Sales Invoice
   const s1 = vid("SLS");
   v.push({ id: s1, type: "sales", date: "2026-03-01", trigger: "new_subscription", referenceId: "SUB-1001", partyName: "Priya Reddy", amount: 4500, status: "posted", subVertical: "subscription",
-    narration: "Chettinad Veg Thali — 30 days × ₹150/day",
+    narration: "Chettinad Veg Thali — 30 days × $150/day",
     entries: [
       entry(s1, "sales", "new_subscription", "accounts_receivable", 4500, 0, "Subscription receivable", "SUB-1001", "subscription", "2026-03-01"),
       entry(s1, "sales", "new_subscription", "sales_meal_subscription", 0, 4286, "Meal revenue (excl GST 5%)", "SUB-1001", "subscription", "2026-03-01"),
@@ -335,7 +335,7 @@ export function generateSubscriptionVouchers(): Voucher[] {
   v.push({ id: s3, type: "journal", date: "2026-03-05", trigger: "meal_delivered", referenceId: "SUB-1001", partyName: "Priya Reddy", partnerName: "Chef Lakshmi", amount: 150, status: "posted", subVertical: "subscription",
     narration: "Lunch delivered — Day 5, Chettinad Veg Thali",
     entries: [
-      entry(s3, "journal", "meal_delivered", "purchase_ppp_payout", 82.50, 0, "PPP 55% of ₹150", "SUB-1001", "subscription", "2026-03-05"),
+      entry(s3, "journal", "meal_delivered", "purchase_ppp_payout", 82.50, 0, "PPP 55% of $150", "SUB-1001", "subscription", "2026-03-05"),
       entry(s3, "journal", "meal_delivered", "accounts_payable_partner", 0, 82.50, "Payable to Chef Lakshmi", "SUB-1001", "subscription", "2026-03-05"),
       entry(s3, "journal", "meal_delivered", "purchase_packing_material", 20, 0, "Packing cost per meal", "SUB-1001", "subscription", "2026-03-05"),
       entry(s3, "journal", "meal_delivered", "expense_delivery_logistics", 25, 0, "Delivery cost per meal", "SUB-1001", "subscription", "2026-03-05"),
@@ -360,7 +360,7 @@ export function generateSubscriptionVouchers(): Voucher[] {
   v.push({ id: s5, type: "journal", date: "2026-03-10", trigger: "subscription_paused", referenceId: "SUB-1003", partyName: "Sneha Pillai", amount: 2700, status: "posted", subVertical: "subscription",
     narration: "Subscription paused — 18 remaining meals frozen as deferred revenue",
     entries: [
-      entry(s5, "journal", "subscription_paused", "sales_meal_subscription", 2571, 0, "Reverse undelivered revenue (18 × ₹143)", "SUB-1003", "subscription", "2026-03-10"),
+      entry(s5, "journal", "subscription_paused", "sales_meal_subscription", 2571, 0, "Reverse undelivered revenue (18 × $143)", "SUB-1003", "subscription", "2026-03-10"),
       entry(s5, "journal", "subscription_paused", "gst_output_5", 129, 0, "Reverse GST on undelivered", "SUB-1003", "subscription", "2026-03-10"),
       entry(s5, "journal", "subscription_paused", "revenue_deferred", 0, 2700, "Park as deferred revenue", "SUB-1003", "subscription", "2026-03-10"),
     ],
@@ -389,7 +389,7 @@ export function generateSubscriptionVouchers(): Voucher[] {
   // 8. Payment — Weekly Partner Payout
   const s8 = vid("PMT");
   v.push({ id: s8, type: "payment", date: "2026-03-08", trigger: "partner_payout", referenceId: "PTNR-001", partyName: "Chef Lakshmi Kitchen", amount: 12375, status: "posted", subVertical: "subscription",
-    narration: "Weekly PPP settlement — 150 meals × ₹82.50",
+    narration: "Weekly PPP settlement — 150 meals × $82.50",
     entries: [
       entry(s8, "payment", "partner_payout", "accounts_payable_partner", 12375, 0, "Settlement — Chef Lakshmi", "PTNR-001", "subscription", "2026-03-08"),
       entry(s8, "payment", "partner_payout", "bank_account_settlement", 0, 12375, "NEFT transfer", "PTNR-001", "subscription", "2026-03-08"),
@@ -537,7 +537,7 @@ export function generatePartyVouchers(): Voucher[] {
 
   const p5 = vid("CN");
   v.push({ id: p5, type: "credit_note", date: "2026-03-06", trigger: "party_order_cancelled", referenceId: "PO-3412", partyName: "Priya M.", amount: 15000, status: "posted", subVertical: "party",
-    narration: "Anniversary order cancelled — 80% refund (₹3,750 cancellation retained)",
+    narration: "Anniversary order cancelled — 80% refund ($3,750 cancellation retained)",
     entries: [
       entry(p5, "credit_note", "party_order_cancelled", "sales_meal_party", 15000, 0, "Reverse revenue", "PO-3412", "party", "2026-03-06"),
       entry(p5, "credit_note", "party_order_cancelled", "refund_payable", 0, 15000, "Refund payable", "PO-3412", "party", "2026-03-06"),
@@ -619,7 +619,7 @@ export function generateInstantVouchers(): Voucher[] {
 
   const i5 = vid("JRN");
   v.push({ id: i5, type: "journal", date: "2026-03-16", trigger: "instant_surge_applied", referenceId: "INS-7810", partyName: "Ajay V.", amount: 45, status: "posted", subVertical: "instant",
-    narration: "Peak hour surge ₹45 applied",
+    narration: "Peak hour surge $45 applied",
     entries: [
       entry(i5, "journal", "instant_surge_applied", "accounts_receivable", 45, 0, "Surge receivable", "INS-7810", "instant", "2026-03-16"),
       entry(i5, "journal", "instant_surge_applied", "sales_surge_charge", 0, 45, "Surge income", "INS-7810", "instant", "2026-03-16"),
@@ -667,7 +667,7 @@ export function generateServicesVouchers(): Voucher[] {
 
   const sv4 = vid("CN");
   v.push({ id: sv4, type: "credit_note", date: "2026-03-13", trigger: "service_cancelled", referenceId: "SVC-505", partyName: "Revathi S.", amount: 800, status: "posted", subVertical: "services",
-    narration: "Service cancelled — partial refund (₹200 cancellation charge)",
+    narration: "Service cancelled — partial refund ($200 cancellation charge)",
     entries: [
       entry(sv4, "credit_note", "service_cancelled", "sales_service_booking", 800, 0, "Reverse service revenue", "SVC-505", "services", "2026-03-13"),
       entry(sv4, "credit_note", "service_cancelled", "refund_payable", 0, 600, "Refund payable (net of cancellation)", "SVC-505", "services", "2026-03-13"),
@@ -787,7 +787,7 @@ export function generateCookeryVouchers(): Voucher[] {
 
   const ck4 = vid("CN");
   v.push({ id: ck4, type: "credit_note", date: "2026-03-04", trigger: "cookery_class_cancelled", referenceId: "CKC-098", partyName: "Meera K.", amount: 800, status: "posted", subVertical: "cookery",
-    narration: "Class cancelled — 75% refund (₹200 cancellation charge)",
+    narration: "Class cancelled — 75% refund ($200 cancellation charge)",
     entries: [
       entry(ck4, "credit_note", "cookery_class_cancelled", "sales_service_booking", 800, 0, "Reverse class revenue", "CKC-098", "cookery", "2026-03-04"),
       entry(ck4, "credit_note", "cookery_class_cancelled", "refund_payable", 0, 600, "Refund payable", "CKC-098", "cookery", "2026-03-04"),
@@ -1180,14 +1180,14 @@ export function generateReceivablesPayables(sv: SubVertical): ReceivablePayable[
 // FINANCIAL INTELLIGENCE — GAPS
 // ═══════════════════════════════════════════
 export const financialGaps: FinancialGap[] = [
-  { id: "FG-001", category: "revenue_leakage", severity: "critical", title: "Paused Subscriptions Counted as Revenue", description: "3 paused subscriptions (₹8,100) still recognized as revenue. Must be deferred until resumed.", impact: "P&L overstated by ₹8,100", suggestion: "Auto-journal: On pause → reverse remaining sessions to Deferred Revenue", subVertical: "subscription" },
-  { id: "FG-002", category: "liability_missing", severity: "critical", title: "Skip Credits Not Recorded as Liability", description: "28 skip credits (₹4,200) have no liability entry. Meals still owed.", impact: "Understated liabilities by ₹4,200", suggestion: "Auto-journal: On skip → Cr Skip Credit Liability, Dr Revenue Deferred", subVertical: "subscription" },
-  { id: "FG-003", category: "tax_gap", severity: "critical", title: "GST Liability Not Reconciled with GSTR-3B", description: "GST Output collected ₹1,51,484 but no reconciliation with filed GSTR-3B. Risk of penalty.", impact: "Tax compliance risk — ₹1.5L unreconciled", suggestion: "Monthly GSTR-3B reconciliation report; auto-match with Sales Register", subVertical: "all" },
-  { id: "FG-004", category: "reconciliation", severity: "high", title: "Overdue Sundry Debtors > 7 Days", description: "₹32,325 receivable overdue from 3 customers across sub-verticals.", impact: "Cash collection delay, working capital stress", suggestion: "Auto-SMS/email reminder > 3 days overdue; escalate > 7 days to Team Leader", subVertical: "all" },
+  { id: "FG-001", category: "revenue_leakage", severity: "critical", title: "Paused Subscriptions Counted as Revenue", description: "3 paused subscriptions ($8,100) still recognized as revenue. Must be deferred until resumed.", impact: "P&L overstated by $8,100", suggestion: "Auto-journal: On pause → reverse remaining sessions to Deferred Revenue", subVertical: "subscription" },
+  { id: "FG-002", category: "liability_missing", severity: "critical", title: "Skip Credits Not Recorded as Liability", description: "28 skip credits ($4,200) have no liability entry. Meals still owed.", impact: "Understated liabilities by $4,200", suggestion: "Auto-journal: On skip → Cr Skip Credit Liability, Dr Revenue Deferred", subVertical: "subscription" },
+  { id: "FG-003", category: "tax_gap", severity: "critical", title: "GST Liability Not Reconciled with GSTR-3B", description: "GST Output collected $1,51,484 but no reconciliation with filed GSTR-3B. Risk of penalty.", impact: "Tax compliance risk — $1.5L unreconciled", suggestion: "Monthly GSTR-3B reconciliation report; auto-match with Sales Register", subVertical: "all" },
+  { id: "FG-004", category: "reconciliation", severity: "high", title: "Overdue Sundry Debtors > 7 Days", description: "$32,325 receivable overdue from 3 customers across sub-verticals.", impact: "Cash collection delay, working capital stress", suggestion: "Auto-SMS/email reminder > 3 days overdue; escalate > 7 days to Team Leader", subVertical: "all" },
   { id: "FG-005", category: "expense_untracked", severity: "high", title: "Party Advances Not Parked as Liability", description: "Advances received (50%) recognized as revenue immediately instead of Advance from Customer.", impact: "Revenue recognized before service delivery", suggestion: "Receipt → Cr Advance from Customer; On delivery → Journal to clear advance vs receivable", subVertical: "party" },
-  { id: "FG-006", category: "compliance", severity: "high", title: "TDS Not Deducted on All Partner Payouts", description: "TDS 1% under Sec 194C mandatory on all PPP payouts > ₹30,000/year. Only 40% partners have TDS deducted.", impact: "Non-compliance penalty risk", suggestion: "Auto-deduct TDS on all Payment vouchers; maintain TDS Payable ledger", subVertical: "all" },
+  { id: "FG-006", category: "compliance", severity: "high", title: "TDS Not Deducted on All Partner Payouts", description: "TDS 1% under Sec 194C mandatory on all PPP payouts > $30,000/year. Only 40% partners have TDS deducted.", impact: "Non-compliance penalty risk", suggestion: "Auto-deduct TDS on all Payment vouchers; maintain TDS Payable ledger", subVertical: "all" },
   { id: "FG-007", category: "revenue_leakage", severity: "medium", title: "Instant Delivery Surge Not Tracked Separately", description: "Surge charges mixed with food revenue. Cannot analyze surge contribution.", impact: "Revenue analysis incomplete", suggestion: "Separate Sales — Surge Pricing ledger; auto-post on surge orders", subVertical: "instant" },
-  { id: "FG-008", category: "expense_untracked", severity: "medium", title: "Delivery Return Costs Untracked", description: "Failed deliveries incur return costs not recorded. Estimated ₹3,200/month.", impact: "Hidden expense", suggestion: "Track delivery failures; Journal return costs to Delivery Return account", subVertical: "all" },
+  { id: "FG-008", category: "expense_untracked", severity: "medium", title: "Delivery Return Costs Untracked", description: "Failed deliveries incur return costs not recorded. Estimated $3,200/month.", impact: "Hidden expense", suggestion: "Track delivery failures; Journal return costs to Delivery Return account", subVertical: "all" },
   { id: "FG-009", category: "reconciliation", severity: "medium", title: "Partner Settlement Mismatch > 7 Days", description: "2 partners show outstanding payables > 7 days past agreed settlement date.", impact: "Partner relationship risk", suggestion: "Weekly auto-reconciliation; flag overdue settlements", subVertical: "all" },
   { id: "FG-010", category: "tax_gap", severity: "high", title: "Services GST @ 18% vs Food GST @ 5% Mixed", description: "Service bookings taxed at 18% but no separate GST Output account. Risk of under-reporting.", impact: "Mixed GST rates = wrong GSTR filing", suggestion: "Maintain separate GST Output 5% and GST Output 18% ledgers", subVertical: "services" },
 ];

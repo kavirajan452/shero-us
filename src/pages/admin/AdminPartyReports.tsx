@@ -5,7 +5,7 @@ import { mockPartyOrders, mockPartnerLocations } from "@/data/partyProductionDat
 import { mealLabels } from "@/data/partyMenuData";
 import { useRegion } from "@/contexts/RegionContext";
 import {
-  Users, CalendarDays, IndianRupee, ChefHat, TrendingUp, Package, BarChart3, PieChart,
+  Users, CalendarDays, DollarSign, ChefHat, TrendingUp, Package, BarChart3, PieChart,
 } from "lucide-react";
 
 const AdminPartyReports = () => {
@@ -57,7 +57,7 @@ const AdminPartyReports = () => {
           <p className="text-xs text-muted-foreground">Total Orders</p>
         </Card>
         <Card className="p-4 text-center">
-          <IndianRupee className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
+          <DollarSign className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
           <p className="text-2xl font-bold text-foreground">{formatPrice(stats.totalRevenue)}</p>
           <p className="text-xs text-muted-foreground">Total Revenue</p>
         </Card>

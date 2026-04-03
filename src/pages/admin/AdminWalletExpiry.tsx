@@ -135,7 +135,7 @@ const AdminWalletExpiry = () => {
   const addSegment = () => {
     setReferralSettings((prev) => ({
       ...prev,
-      spin_segments: [...prev.spin_segments, { label: "₹0", value: 0, weight: 10 }],
+      spin_segments: [...prev.spin_segments, { label: "$0", value: 0, weight: 10 }],
     }));
   };
 
@@ -271,7 +271,7 @@ const AdminWalletExpiry = () => {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="text-xs text-muted-foreground">Earning Cap (₹)</label>
+                  <label className="text-xs text-muted-foreground">Earning Cap ($)</label>
                   <Input
                     type="number"
                     value={referralSettings.earning_cap}
@@ -373,9 +373,9 @@ const AdminWalletExpiry = () => {
                     {expiringCredits.map((c) => (
                       <TableRow key={c.id}>
                         <TableCell className="text-xs">{c.user_id?.slice(0, 8)}...</TableCell>
-                        <TableCell className="font-medium">₹{c.amount}</TableCell>
-                        <TableCell className="font-medium text-primary">₹{c.remaining_amount}</TableCell>
-                        <TableCell className="text-xs">{new Date(c.expires_at).toLocaleDateString("en-IN")}</TableCell>
+                        <TableCell className="font-medium">${c.amount}</TableCell>
+                        <TableCell className="font-medium text-primary">${c.remaining_amount}</TableCell>
+                        <TableCell className="text-xs">{new Date(c.expires_at).toLocaleDateString("en-US")}</TableCell>
                         <TableCell><Badge variant="outline" className="text-[10px]">{c.type}</Badge></TableCell>
                       </TableRow>
                     ))}
@@ -410,10 +410,10 @@ const AdminWalletExpiry = () => {
                     {expiredLog.map((c) => (
                       <TableRow key={c.id}>
                         <TableCell className="text-xs">{c.user_id?.slice(0, 8)}...</TableCell>
-                        <TableCell className="font-medium text-destructive">₹{c.amount}</TableCell>
+                        <TableCell className="font-medium text-destructive">${c.amount}</TableCell>
                         <TableCell><Badge variant="outline" className="text-[10px]">{c.type}</Badge></TableCell>
-                        <TableCell className="text-xs">{new Date(c.created_at).toLocaleDateString("en-IN")}</TableCell>
-                        <TableCell className="text-xs">{c.expires_at ? new Date(c.expires_at).toLocaleDateString("en-IN") : "—"}</TableCell>
+                        <TableCell className="text-xs">{new Date(c.created_at).toLocaleDateString("en-US")}</TableCell>
+                        <TableCell className="text-xs">{c.expires_at ? new Date(c.expires_at).toLocaleDateString("en-US") : "—"}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -449,7 +449,7 @@ const AdminWalletExpiry = () => {
                         <TableCell className="text-xs">{n.user_id?.slice(0, 8)}...</TableCell>
                         <TableCell><Badge variant="outline" className="text-[10px]">{n.notification_type}</Badge></TableCell>
                         <TableCell className="text-xs max-w-[200px] truncate">{n.message}</TableCell>
-                        <TableCell className="text-xs">{new Date(n.sent_at).toLocaleDateString("en-IN")}</TableCell>
+                        <TableCell className="text-xs">{new Date(n.sent_at).toLocaleDateString("en-US")}</TableCell>
                         <TableCell>
                           {n.read_at ? (
                             <Badge variant="default" className="text-[10px]">Read</Badge>

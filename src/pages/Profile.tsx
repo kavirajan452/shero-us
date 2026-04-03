@@ -52,7 +52,7 @@ const faqs = [
   { q: "Can I change my delivery address?", a: "Yes, update your address during checkout or in Settings. You can save multiple addresses for quick selection." },
   { q: "What if the food quality is bad?", a: "Report via Contact Us within 2 hours of delivery. We'll investigate and issue a refund or credit to your wallet." },
   { q: "How do subscriptions work?", a: "Choose a meal plan (weekly/monthly), select a chef, and get daily meals delivered. Unused meals don't roll over." },
-  { q: "How do I earn referral rewards?", a: "Share your referral code. When a friend signs up and verifies via OTP, you get ₹100 + a spin wheel bonus (₹50–₹500)!" },
+  { q: "How do I earn referral rewards?", a: "Share your referral code. When a friend signs up and verifies via OTP, you get $100 + a spin wheel bonus ($50–$500)!" },
   { q: "Is my payment secure?", a: "Yes, all payments are processed through secure payment gateways. We never store your card details." },
 ];
 
@@ -322,8 +322,8 @@ const Profile = () => {
                   {/* Referral CTA */}
                   <Link to="/referrals" className="block p-5 rounded-2xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 text-center hover:shadow-md transition-shadow">
                     <p className="text-lg mb-1">🎁</p>
-                    <p className="text-sm font-semibold text-foreground">Refer Friends & Win up to ₹500!</p>
-                    <p className="text-xs text-muted-foreground mt-1">Get ₹100 + Spin Wheel bonus for every friend who joins</p>
+                    <p className="text-sm font-semibold text-foreground">Refer Friends & Win up to $500!</p>
+                    <p className="text-xs text-muted-foreground mt-1">Get $100 + Spin Wheel bonus for every friend who joins</p>
                   </Link>
                 </div>
               </div>
@@ -508,7 +508,7 @@ const Profile = () => {
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-xl">🎁</div>
                     <div className="flex-1">
                       <p className="font-semibold text-foreground text-sm">Earn More Wallet Credits</p>
-                      <p className="text-xs text-muted-foreground">Refer friends → ₹100 + spin wheel bonus per referral</p>
+                      <p className="text-xs text-muted-foreground">Refer friends → $100 + spin wheel bonus per referral</p>
                     </div>
                     <ChevronRight className="w-5 h-5 text-muted-foreground" />
                   </CardContent>

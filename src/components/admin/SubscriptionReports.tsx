@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import {
   TrendingUp, TrendingDown, BarChart3, Users, Download, Calendar,
-  ChefHat, Star, Clock, XCircle, SkipForward, IndianRupee,
+  ChefHat, Star, Clock, XCircle, SkipForward, DollarSign,
   ArrowUpRight, ArrowDownRight, Percent, Package,
 } from "lucide-react";
 
@@ -93,7 +93,7 @@ const SubscriptionReports = () => {
         {[
           { label: "Active Subscribers", value: kpi.activeSubscribers, icon: Users, color: "text-green-600" },
           { label: "New Signups", value: kpi.newSignups, icon: ArrowUpRight, color: "text-blue-600" },
-          { label: "Revenue", value: `₹${(kpi.totalRevenue / 1000).toFixed(0)}K`, icon: IndianRupee, color: "text-primary" },
+          { label: "Revenue", value: `$${(kpi.totalRevenue / 1000).toFixed(0)}K`, icon: DollarSign, color: "text-primary" },
           { label: "On-Time %", value: `${kpi.onTimeRate}%`, icon: Clock, color: kpi.onTimeRate >= 90 ? "text-green-600" : "text-yellow-600" },
           { label: "Avg Rating", value: kpi.avgRating, icon: Star, color: "text-yellow-600" },
           { label: "Churn Rate", value: `${kpi.churnRate}%`, icon: ArrowDownRight, color: kpi.churnRate > 3 ? "text-destructive" : "text-green-600" },
@@ -138,7 +138,7 @@ const SubscriptionReports = () => {
                   <TableRow key={p.plan}>
                     <TableCell className="text-[10px] font-medium">{p.plan}</TableCell>
                     <TableCell className="text-[10px]">{p.subscribers}</TableCell>
-                    <TableCell className="text-[10px] font-medium">₹{(p.revenue / 1000).toFixed(0)}K</TableCell>
+                    <TableCell className="text-[10px] font-medium">${(p.revenue / 1000).toFixed(0)}K</TableCell>
                     <TableCell className="text-[10px]">
                       <span className="flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-yellow-500" />{p.avgRating}</span>
                     </TableCell>
@@ -195,7 +195,7 @@ const SubscriptionReports = () => {
                     <TableCell className="text-[10px]">
                       <span className="flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-yellow-500" />{p.avgRating}</span>
                     </TableCell>
-                    <TableCell className="text-[10px] font-medium">₹{(p.revenue / 1000).toFixed(0)}K</TableCell>
+                    <TableCell className="text-[10px] font-medium">${(p.revenue / 1000).toFixed(0)}K</TableCell>
                     <TableCell className="text-[10px]">{p.complaints}</TableCell>
                     <TableCell>
                       <Badge className={`text-[8px] font-bold ${gradeColors[p.grade]}`}>{p.grade}</Badge>

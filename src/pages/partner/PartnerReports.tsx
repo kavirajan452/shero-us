@@ -14,7 +14,7 @@ import { useRegion } from "@/contexts/RegionContext";
 import { cn } from "@/lib/utils";
 import {
   TrendingUp, TrendingDown, CalendarIcon,
-  AlertTriangle, CheckCircle2, ArrowRight, IndianRupee, ClipboardList,
+  AlertTriangle, CheckCircle2, ArrowRight, DollarSign, ClipboardList,
   Star as StarIcon, Award, FileSpreadsheet, Ban, Users,
 } from "lucide-react";
 import {
@@ -112,7 +112,7 @@ const offsetDate = (baseDate: string, weeksBack: number): string => {
 const ledgerEntries: LedgerEntry[] = [
   // Week 0 (current week)
   { id: "L001", date: offsetDate("2026-02-28", 0), type: "income", description: "Order #SH4821 — Hyderabadi Biryani × 2, Raita × 2", amount: 598, runningBalance: 24300, orderId: "SH4821", orderItems: [{ name: "Hyderabadi Biryani", qty: 2, price: 249 }, { name: "Raita", qty: 2, price: 50 }], customerName: "Priya Sharma" },
-  { id: "L002", date: offsetDate("2026-02-28", 0), type: "penalty", description: "Late preparation — Order #SH4815", amount: -50, runningBalance: 23702, orderId: "SH4815", penaltyReason: "Order was marked ready 18 minutes after the promised time. Platform SLA allows max 10 min delay. Penalty: ₹50 flat deduction." },
+  { id: "L002", date: offsetDate("2026-02-28", 0), type: "penalty", description: "Late preparation — Order #SH4815", amount: -50, runningBalance: 23702, orderId: "SH4815", penaltyReason: "Order was marked ready 18 minutes after the promised time. Platform SLA allows max 10 min delay. Penalty: $50 flat deduction." },
   { id: "L003", date: offsetDate("2026-02-27", 0), type: "income", description: "Order #SH4798 — Butter Chicken × 1, Naan × 3", amount: 420, runningBalance: 23752, orderId: "SH4798", orderItems: [{ name: "Butter Chicken", qty: 1, price: 299 }, { name: "Butter Naan", qty: 3, price: 40 }], customerName: "Rahul Verma" },
   { id: "L004", date: offsetDate("2026-02-27", 0), type: "income", description: "Order #SH4795 — Masala Dosa × 3, Coffee × 3", amount: 390, runningBalance: 24172, orderId: "SH4795", orderItems: [{ name: "Masala Dosa", qty: 3, price: 80 }, { name: "Filter Coffee", qty: 3, price: 50 }], customerName: "Kavitha S." },
   // Week 1 (previous week)
@@ -120,9 +120,9 @@ const ledgerEntries: LedgerEntry[] = [
   { id: "L006", date: offsetDate("2026-02-26", 1), type: "income", description: "Order #SH4775 — Masala Dosa × 4, Filter Coffee × 4", amount: 520, runningBalance: 38432, orderId: "SH4775", orderItems: [{ name: "Masala Dosa", qty: 4, price: 80 }, { name: "Filter Coffee", qty: 4, price: 50 }], customerName: "Anita Reddy" },
   { id: "L007", date: offsetDate("2026-02-25", 1), type: "adjustment", description: "Platform fee reversal — Promo order reimbursement", amount: 75, runningBalance: 37912 },
   { id: "L008", date: offsetDate("2026-02-25", 1), type: "income", description: "Order #SH4760 — Veg Thali × 2", amount: 240, runningBalance: 37837, orderId: "SH4760", orderItems: [{ name: "Veg Thali", qty: 2, price: 120 }], customerName: "Meena Iyer" },
-  { id: "L009", date: offsetDate("2026-02-24", 1), type: "penalty", description: "Customer complaint — Order #SH4790 (quality issue)", amount: -100, runningBalance: 23332, orderId: "SH4790", penaltyReason: "Customer reported cold food & missing item (1× Gulab Jamun). Complaint verified by support. Penalty: ₹100." },
+  { id: "L009", date: offsetDate("2026-02-24", 1), type: "penalty", description: "Customer complaint — Order #SH4790 (quality issue)", amount: -100, runningBalance: 23332, orderId: "SH4790", penaltyReason: "Customer reported cold food & missing item (1× Gulab Jamun). Complaint verified by support. Penalty: $100." },
   // Week 2
-  { id: "L010", date: offsetDate("2026-02-24", 2), type: "penalty", description: "Order rejected by partner — Order #SH4745", amount: -25, runningBalance: 37597, orderId: "SH4745", penaltyReason: "Partner rejected an accepted order after 5 minutes. Penalty: ₹25." },
+  { id: "L010", date: offsetDate("2026-02-24", 2), type: "penalty", description: "Order rejected by partner — Order #SH4745", amount: -25, runningBalance: 37597, orderId: "SH4745", penaltyReason: "Partner rejected an accepted order after 5 minutes. Penalty: $25." },
   { id: "L011", date: offsetDate("2026-02-24", 2), type: "income", description: "Order #SH4738 — Gulab Jamun Box × 3", amount: 300, runningBalance: 37622, orderId: "SH4738", orderItems: [{ name: "Gulab Jamun (Box)", qty: 3, price: 100 }], customerName: "Deepak Nair" },
   { id: "L012", date: offsetDate("2026-02-22", 2), type: "referral" as LedgerType, description: "Referral Reward — Radha Menon listed as partner", amount: 750, runningBalance: 37322 },
   { id: "L013", date: offsetDate("2026-02-22", 2), type: "income", description: "Order #SH4720 — Chicken Biryani × 2", amount: 498, runningBalance: 36572, orderId: "SH4720", orderItems: [{ name: "Chicken Biryani", qty: 2, price: 249 }], customerName: "Sanjay R." },
@@ -137,7 +137,7 @@ const ledgerEntries: LedgerEntry[] = [
 const typeConfig: Record<LedgerType, { label: string; color: string; icon: React.ElementType }> = {
   income: { label: "Income", color: "bg-accent/15 text-accent", icon: CheckCircle2 },
   penalty: { label: "Penalty", color: "bg-destructive/15 text-destructive", icon: AlertTriangle },
-  payment: { label: "Payment", color: "bg-primary/15 text-primary", icon: IndianRupee },
+  payment: { label: "Payment", color: "bg-primary/15 text-primary", icon: DollarSign },
   adjustment: { label: "Adjustment", color: "bg-secondary text-secondary-foreground", icon: ArrowRight },
   referral: { label: "Referral Reward", color: "bg-purple-50 text-purple-600 dark:bg-purple-950 dark:text-purple-300", icon: Award },
   wallet_bonus: { label: "Wallet Bonus", color: "bg-primary/15 text-primary", icon: Award },
@@ -223,9 +223,9 @@ const PartnerReports = () => {
       "Date": format(new Date(e.date), "dd MMM yyyy"),
       "Type": typeConfig[e.type].label,
       "Description": e.description,
-      "Debit (₹)": e.amount < 0 ? Math.abs(e.amount) : 0,
-      "Credit (₹)": e.amount > 0 ? e.amount : 0,
-      "Balance (₹)": e.runningBalance,
+      "Debit ($)": e.amount < 0 ? Math.abs(e.amount) : 0,
+      "Credit ($)": e.amount > 0 ? e.amount : 0,
+      "Balance ($)": e.runningBalance,
     }));
     const ws = XLSX.utils.json_to_sheet(rows);
     const wb = XLSX.utils.book_new();
@@ -471,9 +471,9 @@ const PartnerReports = () => {
           {/* Quick KPI cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {[
-              { label: "Today", value: formatPrice(earningsSummary.today), icon: IndianRupee, sub: "earnings" },
+              { label: "Today", value: formatPrice(earningsSummary.today), icon: DollarSign, sub: "earnings" },
               { label: "This Week", value: formatPrice(earningsSummary.thisWeek), icon: TrendingUp, sub: "earnings" },
-              { label: "This Month", value: formatPrice(earningsSummary.thisMonth), icon: IndianRupee, sub: "earnings" },
+              { label: "This Month", value: formatPrice(earningsSummary.thisMonth), icon: DollarSign, sub: "earnings" },
               { label: "Total Orders", value: earningsSummary.totalOrders.toString(), icon: ClipboardList, sub: "all time" },
               { label: "Avg Rating", value: earningsSummary.avgRating.toFixed(1), icon: StarIcon, sub: "from customers" },
               { label: "Completion", value: `${earningsSummary.completionRate}%`, icon: TrendingUp, sub: "rate" },

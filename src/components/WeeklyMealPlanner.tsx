@@ -343,7 +343,7 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
           <div className="flex items-center justify-between px-3 py-2.5 bg-card hover:bg-muted/30 transition-colors">
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-foreground">{label}</span>
-              <span className="text-[9px] text-muted-foreground">₹{MEAL_PRICES[meal]}/day</span>
+              <span className="text-[9px] text-muted-foreground">${MEAL_PRICES[meal]}/day</span>
               {complete && (
                 <Badge className="text-[8px] bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400 border-0 gap-0.5 px-1.5 py-0">
                   <Check className="w-2.5 h-2.5" /> Done
@@ -417,7 +417,7 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
                   <span className="text-2xl">{opt.emoji}</span>
                   <div className="flex-1">
                     <p className="text-sm font-bold text-foreground">{opt.label}</p>
-                    <p className="text-[11px] text-muted-foreground">₹{opt.price}/day per meal</p>
+                    <p className="text-[11px] text-muted-foreground">${opt.price}/day per meal</p>
                   </div>
                   <div className={cn(
                     "w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all",
@@ -467,7 +467,7 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
           {enabledMeals.size > 0 && (
             <div className="mt-4 p-3 rounded-lg bg-muted/50 text-center">
               <p className="text-xs text-muted-foreground">
-                ₹{dailyMaxTotal * persons}/day for {persons} person{persons > 1 ? "s" : ""} · ₹{dailyMaxTotal * persons * 7}/week
+                ${dailyMaxTotal * persons}/day for {persons} person{persons > 1 ? "s" : ""} · ${dailyMaxTotal * persons * 7}/week
               </p>
             </div>
           )}
@@ -503,7 +503,7 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
               </div>
               <div className="text-right">
                 <p className="text-xs text-muted-foreground">{activeDaysCount} days · {persons} person{persons > 1 ? "s" : ""}</p>
-                <p className="text-sm font-bold text-foreground">₹{weekTotal}/week</p>
+                <p className="text-sm font-bold text-foreground">${weekTotal}/week</p>
               </div>
             </div>
           </div>
@@ -535,7 +535,7 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
                       )}
                     </div>
                     <div className="flex items-center gap-2">
-                      {!isSkipped && <span className="text-[10px] font-semibold text-muted-foreground">₹{dailyTotal(i)}/day</span>}
+                      {!isSkipped && <span className="text-[10px] font-semibold text-muted-foreground">${dailyTotal(i)}/day</span>}
                       <ChevronDown className="w-4 h-4 text-muted-foreground transition-transform [[data-state=open]>&]:rotate-180" />
                     </div>
                   </div>
@@ -573,9 +573,9 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
           <div className="container mx-auto px-4 py-3">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[11px] text-muted-foreground">
-                {activeDaysCount} days × {persons} person{persons > 1 ? "s" : ""} × ₹{dailyMaxTotal}/day
+                {activeDaysCount} days × {persons} person{persons > 1 ? "s" : ""} × ${dailyMaxTotal}/day
               </span>
-              <span className="text-sm font-bold text-foreground">Total: ₹{weekTotal}/week</span>
+              <span className="text-sm font-bold text-foreground">Total: ${weekTotal}/week</span>
             </div>
             <Button
               className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
@@ -643,7 +643,7 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
                       return (
                         <div key={meal}>
                           <p className="text-[10px] font-semibold text-muted-foreground uppercase mb-1">
-                            {label} — ₹{MEAL_PRICES[meal]}
+                            {label} — ${MEAL_PRICES[meal]}
                           </p>
                           <div className="grid grid-cols-3 gap-2">
                             {(["main", "side1", "side2"] as ColumnType[]).map((col) => (
@@ -682,7 +682,7 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
                 return (
                   <div key={meal} className="flex justify-between text-muted-foreground">
                     <span>{label} × {weeklyBreakdown.days} days{persons > 1 ? ` × ${persons}` : ""}</span>
-                    <span>₹{cost.toLocaleString()}</span>
+                    <span>${cost.toLocaleString()}</span>
                   </div>
                 );
               })}
@@ -694,15 +694,15 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
               )}
               <div className="border-t border-border pt-2 flex justify-between text-foreground">
                 <span>Subtotal</span>
-                <span>₹{(weeklyBreakdown.subtotal * persons).toLocaleString()}/week</span>
+                <span>${(weeklyBreakdown.subtotal * persons).toLocaleString()}/week</span>
               </div>
               <div className="flex justify-between text-muted-foreground text-xs">
-                <span>Packing charges ({enabledMealsArr.map(m => `${m.charAt(0).toUpperCase() + m.slice(1)} ₹${PACKING_CHARGES[m]}`).join(", ")})</span>
-                <span>₹{weeklyBreakdown.totalPacking.toLocaleString()}/week</span>
+                <span>Packing charges ({enabledMealsArr.map(m => `${m.charAt(0).toUpperCase() + m.slice(1)} $${PACKING_CHARGES[m]}`).join(", ")})</span>
+                <span>${weeklyBreakdown.totalPacking.toLocaleString()}/week</span>
               </div>
               <div className="flex justify-between text-muted-foreground text-xs">
                 <span>Delivery charges (approx.)</span>
-                <span>₹{DELIVERY_CHARGE_RANGE.min}–₹{DELIVERY_CHARGE_RANGE.max}/day</span>
+                <span>${DELIVERY_CHARGE_RANGE.min}–${DELIVERY_CHARGE_RANGE.max}/day</span>
               </div>
               <div className="flex justify-between text-muted-foreground text-xs">
                 <span>Taxes (GST 5%)</span>
@@ -710,11 +710,11 @@ const WeeklyMealPlanner = ({ planName, onClose, onConfirm }: Props) => {
               </div>
               <div className="border-t border-border pt-2 flex justify-between font-bold text-foreground">
                 <span>Estimated Total</span>
-                <span>₹{((weeklyBreakdown.subtotal * persons) + weeklyBreakdown.totalPacking + (DELIVERY_CHARGE_RANGE.min * activeDaysCount)).toLocaleString()}–₹{((weeklyBreakdown.subtotal * persons) + weeklyBreakdown.totalPacking + (DELIVERY_CHARGE_RANGE.max * activeDaysCount)).toLocaleString()}/week</span>
+                <span>${((weeklyBreakdown.subtotal * persons) + weeklyBreakdown.totalPacking + (DELIVERY_CHARGE_RANGE.min * activeDaysCount)).toLocaleString()}–${((weeklyBreakdown.subtotal * persons) + weeklyBreakdown.totalPacking + (DELIVERY_CHARGE_RANGE.max * activeDaysCount)).toLocaleString()}/week</span>
               </div>
             </div>
             <p className="text-[10px] text-muted-foreground mt-3 bg-muted/50 rounded p-2">
-              Delivery charges vary based on distance (₹{DELIVERY_CHARGE_RANGE.min}–₹{DELIVERY_CHARGE_RANGE.max}/day). Final amount with exact delivery &amp; taxes at checkout.
+              Delivery charges vary based on distance (${DELIVERY_CHARGE_RANGE.min}–${DELIVERY_CHARGE_RANGE.max}/day). Final amount with exact delivery &amp; taxes at checkout.
             </p>
           </CardContent>
         </Card>

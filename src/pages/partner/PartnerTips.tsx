@@ -34,7 +34,7 @@ const tips = [
   {
     icon: Users,
     title: "Refer Other Chefs",
-    description: "Earn up to ₹2,250 per successful referral. When your referred chef completes their first 10 orders, you earn ₹750. When they get listed, another ₹750.",
+    description: "Earn up to $2,250 per successful referral. When your referred chef completes their first 10 orders, you earn $750. When they get listed, another $750.",
     impact: "Earnings Boost",
     category: "Referral",
   },

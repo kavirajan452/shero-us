@@ -121,7 +121,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Check min order
       if (data.min_order_amount && subtotal < data.min_order_amount) {
-        toast({ title: "Minimum not met", description: `Add ₹${data.min_order_amount - subtotal} more to use this code.`, variant: "destructive" });
+        toast({ title: "Minimum not met", description: `Add $${data.min_order_amount - subtotal} more to use this code.`, variant: "destructive" });
         setPromoLoading(false);
         return false;
       }

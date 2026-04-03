@@ -15,7 +15,7 @@ import { toast } from "@/hooks/use-toast";
 import {
   Megaphone, Send, Users, ChefHat, Truck, Briefcase, GraduationCap, Building2,
   Search, Plus, Clock, Eye, MessageCircle, Filter, CheckCircle, Radio,
-  Smartphone, Globe, Mail, IndianRupee, Target, AlertTriangle, TrendingUp
+  Smartphone, Globe, Mail, DollarSign, Target, AlertTriangle, TrendingUp
 } from "lucide-react";
 
 // ── Stakeholder Groups ──

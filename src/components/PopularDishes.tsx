@@ -59,7 +59,7 @@ const PopularDishes = () => {
               <div className="p-5">
                 <div className="flex items-start justify-between mb-2">
                   <h4 className="text-lg font-serif font-bold text-foreground">{dish.name}</h4>
-                  <span className="text-lg font-bold text-primary">₹{dish.price}</span>
+                  <span className="text-lg font-bold text-primary">${dish.price}</span>
                 </div>
                 <p className="text-sm text-muted-foreground mb-3">{dish.category}</p>
                 <div className="flex items-center justify-between">

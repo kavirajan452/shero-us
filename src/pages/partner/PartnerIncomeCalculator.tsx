@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { IndianRupee, TrendingUp, Sparkles, Star, ChefHat } from "lucide-react";
+import { DollarSign, TrendingUp, Sparkles, Star, ChefHat } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const AVG_EARNING_PER_ORDER = 200;
@@ -49,14 +49,14 @@ const PartnerIncomeCalculator = () => {
   const cSession = getSessionInfo(value);
   const show3rdHint = value > 10;
 
-  const fmt = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+  const fmt = (n: number) => `$${n.toLocaleString("en-US")}`;
   const randomQuote = quotes[value % quotes.length];
 
   return (
     <div className="space-y-4 max-w-2xl mx-auto">
       <div className="text-center space-y-1">
         <h1 className="text-xl font-bold text-foreground flex items-center justify-center gap-2">
-          <IndianRupee className="h-5 w-5 text-primary" />
+          <DollarSign className="h-5 w-5 text-primary" />
           How Much You Can Earn
         </h1>
         <p className="text-muted-foreground text-xs">Plan your kitchen earnings realistically 🚀</p>

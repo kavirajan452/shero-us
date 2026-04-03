@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { 
   Activity, Shield, CheckCircle, AlertTriangle, XCircle, Clock, 
-  TrendingUp, TrendingDown, IndianRupee, Bike, Plug, Server,
+  TrendingUp, TrendingDown, DollarSign, Bike, Plug, Server,
   Zap, RefreshCw, Bell, ArrowUpRight, ArrowDownRight, Minus,
   CreditCard, Truck, MessageSquare, MapPin, Database, Cloud,
   BarChart3, Eye, FileText, AlertCircle, Timer, Radio
@@ -32,7 +32,7 @@ interface ServiceStatus {
 
 const services: ServiceStatus[] = [
   { name: "Razorpay Gateway", category: "Payments", status: "operational", uptime: 99.97, latency: 120, lastCheck: "30s ago", icon: CreditCard, errorRate: 0.3, requestsToday: 4250 },
-  { name: "Cashfree Payouts", category: "Payments", status: "operational", uptime: 99.95, latency: 180, lastCheck: "1m ago", icon: IndianRupee, errorRate: 0.1, requestsToday: 85 },
+  { name: "Cashfree Payouts", category: "Payments", status: "operational", uptime: 99.95, latency: 180, lastCheck: "1m ago", icon: DollarSign, errorRate: 0.1, requestsToday: 85 },
   { name: "Dunzo Fleet", category: "Delivery", status: "operational", uptime: 99.8, latency: 95, lastCheck: "15s ago", icon: Bike, errorRate: 0.8, requestsToday: 1280 },
   { name: "Shadowfax Fleet", category: "Delivery", status: "operational", uptime: 99.6, latency: 110, lastCheck: "20s ago", icon: Truck, errorRate: 1.2, requestsToday: 950 },
   { name: "Porter Fleet", category: "Delivery", status: "degraded", uptime: 98.2, latency: 340, lastCheck: "45s ago", icon: Truck, errorRate: 3.5, requestsToday: 420 },
@@ -292,7 +292,7 @@ export default function AdminTechDashboard() {
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { label: "Today's Volume", value: `₹${(paymentSummary.todayVolume / 1000).toFixed(1)}K` },
+                  { label: "Today's Volume", value: `$${(paymentSummary.todayVolume / 1000).toFixed(1)}K` },
                   { label: "Transactions", value: paymentSummary.todayCount },
                   { label: "Success Rate", value: `${paymentSummary.successRate}%` },
                   { label: "Failed", value: paymentSummary.failedToday },
@@ -331,7 +331,7 @@ export default function AdminTechDashboard() {
         <TabsContent value="payments" className="space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { label: "Today's Volume", value: `₹${(paymentSummary.todayVolume / 1000).toFixed(1)}K`, icon: IndianRupee, accent: "text-emerald-600", trend: "+12.3%", up: true },
+              { label: "Today's Volume", value: `$${(paymentSummary.todayVolume / 1000).toFixed(1)}K`, icon: DollarSign, accent: "text-emerald-600", trend: "+12.3%", up: true },
               { label: "Success Rate", value: `${paymentSummary.successRate}%`, icon: CheckCircle, accent: "text-emerald-600", trend: "+0.4%", up: true },
               { label: "Avg Processing", value: paymentSummary.avgProcessing, icon: Timer, accent: "text-primary", trend: "-0.1s", up: true },
               { label: "Failed Today", value: paymentSummary.failedToday, icon: XCircle, accent: "text-destructive", trend: "-3", up: true },
@@ -372,8 +372,8 @@ export default function AdminTechDashboard() {
             <div className="rounded-xl border border-border bg-card p-4 space-y-3">
               <h3 className="text-sm font-semibold text-foreground">Settlement & Refunds</h3>
               {[
-                { label: "Pending Settlement", value: `₹${(paymentSummary.pendingSettlement / 1000).toFixed(1)}K`, accent: "text-amber-600" },
-                { label: "Refunds Today", value: `${paymentSummary.refundsToday} (₹${(paymentSummary.refundAmount / 1000).toFixed(1)}K)`, accent: "text-blue-600" },
+                { label: "Pending Settlement", value: `$${(paymentSummary.pendingSettlement / 1000).toFixed(1)}K`, accent: "text-amber-600" },
+                { label: "Refunds Today", value: `${paymentSummary.refundsToday} ($${(paymentSummary.refundAmount / 1000).toFixed(1)}K)`, accent: "text-blue-600" },
                 { label: "Transactions Today", value: paymentSummary.todayCount.toLocaleString(), accent: "text-foreground" },
               ].map((item) => (
                 <div key={item.label} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
