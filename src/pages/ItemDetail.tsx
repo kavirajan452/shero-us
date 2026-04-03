@@ -4,7 +4,7 @@ import { ArrowLeft, Star, Clock, Leaf, Flame, Plus, Minus, ShieldCheck } from "l
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import { useInstantMenuItem, useKitchenPartner } from "@/hooks/useSupabaseData";
-import type { MenuItem, AddOn } from "@/data/mockData";
+import type { MenuItem, AddOn } from "@/types/menu";
 import { useCart } from "@/contexts/CartContext";
 import { useRegion } from "@/contexts/RegionContext";
 import { Badge } from "@/components/ui/badge";

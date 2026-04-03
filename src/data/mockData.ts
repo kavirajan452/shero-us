@@ -3,66 +3,9 @@
    Partner Management (Active Partners) → Attendance (Today) → Menu Toggles → Customer Feed
    ═══════════════════════════════════════════════════════════════ */
 
-// ── Partner identity (from Admin Partner Management → Active Partners) ──
-export interface PartnerProfile {
-  rmn: string; // Registered Mobile Number (partner identifier)
-  name: string;
-  avatar: string;
-  enrollmentStatus: "approved" | "pending" | "rejected";
-  approvedVerticals: string[];
-}
-
-// ── Kitchen identity (SKID - from Partner Management → Active Kitchens) ──
-export interface KitchenPartner {
-  id: string; // SKID
-  partnerId: string; // RMN reference
-  name: string;
-  image: string;
-  rating: number;
-  reviewCount: number;
-  cuisine: string[];
-  deliveryTime: string;
-  minOrder: number;
-  isBranded: boolean;
-  location: string;
-  isVeg: boolean;
-  foodPreference: "veg" | "nonveg" | "both";
-  // Attendance-driven availability
-  isAttendanceMarked: boolean; // Partner checked in today
-  attendanceSlot: string; // e.g. "Morning (6-10 AM)"
-}
-
-// ── Add-on option for a menu item ──
-export interface AddOn {
-  id: string;
-  name: string;
-  price: number;
-  isVeg: boolean;
-  isDefault?: boolean; // pre-selected by default
-}
-
-// ── Menu items (from Admin Master Menu / HCF approved menus) ──
-export interface MenuItem {
-  id: string;
-  kitchenId: string; // SKID reference
-  name: string;
-  description: string;
-  price: number; // MRP (customer price)
-  ppp: number; // Partner Purchase Price (partner earnings, ~65% of MRP)
-  image: string;
-  category: string;
-  isVeg: boolean;
-  isBestseller: boolean;
-  spiceLevel: "mild" | "medium" | "spicy";
-  servingSize: string;
-  preparationTime: string;
-  ingredients: string[];
-  majorVegetables: string[]; // Linked to partner ingredient grid
-  allergens: string[];
-  nutritionInfo: { calories: number; protein: string; carbs: string; fat: string };
-  isToggledOn: boolean; // Partner has toggled this item ON for today
-  addOns?: AddOn[]; // optional add-ons for the item
-}
+// Re-export shared types from canonical location
+import type { PartnerProfile, KitchenPartner, AddOn, MenuItem } from "@/types/menu";
+export type { PartnerProfile, KitchenPartner, AddOn, MenuItem };
 
 /* ───────── Active Partners (from Admin Partner Management) ───────── */
 export const activePartners: PartnerProfile[] = [

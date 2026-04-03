@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
-import type { MenuItem, AddOn } from "@/data/mockData";
+import type { MenuItem, AddOn } from "@/types/menu";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
