@@ -56,14 +56,15 @@ const AboutShero = () => {
           </Link>
           <div className="text-center">
             <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-4">
-              🏠 India's Largest Home Food Platform
+              {ac["about.hero_badge"] || "🏠 America's Newest Home Food Platform"}
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-foreground mb-4 leading-tight">
-              A Home-Food <span className="text-primary">Revolution</span>
+              {(ac["about.hero_title"] || "A Home-Food Revolution").split("Revolution").map((part, i) => (
+                <span key={i}>{part}{i === 0 ? <span className="text-primary">Revolution</span> : ""}</span>
+              ))}
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              We believe every woman deserves the opportunity to turn her kitchen into a livelihood —
-              and every family deserves the taste of genuinely homemade food.
+              {ac["about.hero_subtitle"] || "We believe every woman deserves the opportunity to turn her kitchen into a livelihood — and every family deserves the taste of genuinely homemade food."}
             </p>
           </div>
         </div>
