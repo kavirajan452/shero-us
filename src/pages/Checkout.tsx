@@ -87,7 +87,7 @@ const Checkout = () => {
 
   const deliveryFee = isSnacksOnly ? (subtotal >= 599 ? 0 : 49) : configDeliveryFee;
   const tax = calcTax(subtotal - promoDiscount);
-  const subtotalWithFees = subtotal - promoDiscount + deliveryFee + region.platformFee + tax + tipAmount;
+  const subtotalWithFees = subtotal - promoDiscount + deliveryFee + tax + tipAmount;
   const walletUsable = useWalletBalance ? getUsableAmount(subtotalWithFees) : 0;
   const total = subtotalWithFees - walletUsable;
 
