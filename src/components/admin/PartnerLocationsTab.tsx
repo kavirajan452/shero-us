@@ -93,7 +93,7 @@ export function PartnerLocationsTab({
     return map;
   }, [allLocations]);
 
-  const uniqueZIP Codes = useMemo(() => {
+  const uniqueZipCodes = useMemo(() => {
     const set = new Set<string>();
     allLocations.forEach((l: any) => { if (l.zipcode) set.add(l.zipcode); });
     return set.size;
@@ -139,7 +139,7 @@ export function PartnerLocationsTab({
         </Card>
         <Card>
           <CardContent className="p-3 text-center">
-            <p className="text-2xl font-bold text-foreground">{uniqueZIP Codes.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-foreground">{uniqueZipCodes.toLocaleString()}</p>
             <p className="text-[10px] text-muted-foreground">Unique ZIP Codes</p>
           </CardContent>
         </Card>
