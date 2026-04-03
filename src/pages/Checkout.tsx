@@ -243,7 +243,7 @@ const Checkout = () => {
                   <div className="flex items-center gap-3">
                     <img src={item.image} alt={item.name} className="w-14 h-14 rounded-lg object-cover shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-medium text-foreground truncate">{item.name}</h4>
+                      <h4 className="text-sm font-medium text-foreground">{item.name}</h4>
                       <span className="text-sm text-muted-foreground">{formatPrice(item.price)}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
