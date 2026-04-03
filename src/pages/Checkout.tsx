@@ -468,6 +468,12 @@ const Checkout = () => {
             <div className="flex justify-between"><span className="text-muted-foreground">Delivery Fee</span><span className="text-foreground">{deliveryFee === 0 ? "Free" : formatPrice(deliveryFee)}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Platform Fee</span><span className="text-foreground">{formatPrice(region.platformFee)}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">{region.taxLabel}</span><span className="text-foreground">{formatPrice(tax)}</span></div>
+            {tipAmount > 0 && (
+              <div className="flex justify-between text-primary">
+                <span className="flex items-center gap-1"><Heart className="w-3 h-3" /> Tip</span>
+                <span className="font-semibold">{formatPrice(tipAmount)}</span>
+              </div>
+            )}
 
             {/* Wallet */}
             {balance > 0 && (
