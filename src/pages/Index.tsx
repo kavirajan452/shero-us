@@ -12,6 +12,7 @@ import SubscriptionCTA from "@/components/SubscriptionCTA";
 
 import WhyChooseUs from "@/components/WhyChooseUs";
 import AboutSheroCTA from "@/components/AboutSheroCTA";
+import HomeFAQ from "@/components/HomeFAQ";
 import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
 
@@ -36,6 +37,7 @@ const Index = () => {
         <TrendingDishesCarousel />
         <AboutSheroCTA />
         <SubscriptionCTA />
+        <HomeFAQ />
         
         
       </main>
