@@ -75,7 +75,7 @@ export interface EarningsSummary {
 export const partnerOrders: PartnerOrder[] = [
   {
     id: "PO-1001", customerName: "David Chen", total: 48,
-    items: [{ name: "Hyderabadi Biryani", qty: 2, price: 18 }, { name: "Raita", qty: 1, price: 5 }, { name: "Gulab Jamun", qty: 2, price: 3.5 }],
+    items: [{ name: "New Yorki Biryani", qty: 2, price: 18 }, { name: "Raita", qty: 1, price: 5 }, { name: "Gulab Jamun", qty: 2, price: 3.5 }],
     status: "new", placedAt: "2 min ago", deliveryAddress: "Apt 4B, 123 Main St, Manhattan", paymentMode: "online", orderType: "instant",
     source: "shero",
     allergens: ["Nuts", "Dairy"], cookingInstructions: "No cashew garnish, mild spice level",
@@ -237,26 +237,26 @@ export const earningsSummary: EarningsSummary = {
 };
 
 export const weeklyEarnings = [
-  { day: "Mon", amount: 1850, potential: 3200 },
-  { day: "Tue", amount: 2340, potential: 3200 },
-  { day: "Wed", amount: 0, potential: 3200 },      // On leave
-  { day: "Thu", amount: 2780, potential: 3400 },
-  { day: "Fri", amount: 3150, potential: 5100 },    // Fri 1.5x potential
-  { day: "Sat", amount: 3890, potential: 7800 },    // Sat 2x (weekend/holiday surge)
-  { day: "Sun", amount: 2650, potential: 7000 },    // Sun 2x (weekend/holiday surge)
+  { day: "Mon", amount: 185, potential: 320 },
+  { day: "Tue", amount: 234, potential: 320 },
+  { day: "Wed", amount: 0, potential: 320 },      // On leave
+  { day: "Thu", amount: 278, potential: 340 },
+  { day: "Fri", amount: 315, potential: 510 },    // Fri 1.5x potential
+  { day: "Sat", amount: 389, potential: 780 },    // Sat 2x (weekend/holiday surge)
+  { day: "Sun", amount: 265, potential: 700 },    // Sun 2x (weekend/holiday surge)
 ];
 
 // Opportunity calculations for partner (weekends/holidays have 2x potential)
 export const opportunitySummary = {
-  actualThisWeek: 16660,
-  potentialThisWeek: 32900,     // Weekends inflated 2x
-  missedThisWeek: 16240,
-  actualThisMonth: 52430,
-  potentialThisMonth: 85000,    // Holidays & weekends boost
-  missedThisMonth: 32570,
-  actualToday: 2340,
-  potentialToday: 3200,
-  missedToday: 860,
+  actualThisWeek: 1666,
+  potentialThisWeek: 3290,     // Weekends inflated 2x
+  missedThisWeek: 1624,
+  actualThisMonth: 5243,
+  potentialThisMonth: 8500,    // Holidays & weekends boost
+  missedThisMonth: 3257,
+  actualToday: 234,
+  potentialToday: 320,
+  missedToday: 86,
 };
 
 // ── CVAT Performance System ──
