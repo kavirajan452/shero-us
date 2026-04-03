@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Tag } from "lucide-react";
-import { ArrowLeft, Minus, Plus, Trash2, MapPin, Phone, User, Clock, Truck, Store, Package, Shield, Wallet, AlertTriangle } from "lucide-react";
+import { Tag, Heart } from "lucide-react";
+import { ArrowLeft, Minus, Plus, Trash2, MapPin, Phone, User, Clock, Truck, Package, Shield, Wallet, AlertTriangle } from "lucide-react";
 import CheckoutAuth from "@/components/CheckoutAuth";
 import PaymentSection from "@/components/PaymentSection";
 import type { PaymentMethod } from "@/components/PaymentSection";
@@ -16,12 +16,10 @@ import { useCreateInstantOrder, useSaveIncompleteOrder } from "@/hooks/useSupaba
 import { useServiceability } from "@/hooks/useServiceability";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
-const deliveryOptionsBase = [
-  { id: "self-pickup", label: "Self Pickup", description: "Pick up from kitchen", icon: Store },
-  { id: "self-delivery", label: "Self Delivery", description: "Kitchen's own delivery", icon: Truck },
-  { id: "third-party", label: "Third-Party Delivery", description: "Delivered via partner service", icon: Package },
-];
+const DELIVERY_FEE_DEFAULT = 30;
+const TIP_PRESETS_DEFAULT = [5, 10, 15, 20];
 
 const Checkout = () => {
   const { items, updateQuantity, removeItem, subtotal, clearCart, totalItems, appliedPromo, promoDiscount, applyPromoCode, removePromoCode, promoLoading } = useCart();
@@ -36,10 +34,30 @@ const Checkout = () => {
   const { detectAndCheck, checkByZip, detectedLocation, checking: geoChecking, radiusMiles, hasKitchens } = useServiceability();
   const [serviceableStatus, setServiceableStatus] = useState<"unknown" | "checking" | "serviceable" | "not_serviceable">("unknown");
 
+  // Tips state
+  const [tipAmount, setTipAmount] = useState(0);
+  const [customTip, setCustomTip] = useState("");
+  const [showCustomTip, setShowCustomTip] = useState(false);
+  const [tipPresets, setTipPresets] = useState(TIP_PRESETS_DEFAULT);
+  const [configDeliveryFee, setConfigDeliveryFee] = useState(DELIVERY_FEE_DEFAULT);
+
+  // Load delivery fee and tip presets from backend config
+  useEffect(() => {
+    supabase.from("app_config").select("value").eq("key", "invoice_settings").maybeSingle().then(({ data }) => {
+      if (data?.value && typeof data.value === "object") {
+        const cfg = data.value as Record<string, string>;
+        if (cfg.deliveryFee) setConfigDeliveryFee(parseFloat(cfg.deliveryFee) || DELIVERY_FEE_DEFAULT);
+        if (cfg.tipPresets) {
+          try { setTipPresets(JSON.parse(cfg.tipPresets)); } catch {}
+        }
+      }
+    });
+  }, []);
+
   // Detect if cart is snacks-only (shipped items, no time slots needed)
   const isSnacksOnly = items.length > 0 && items.every((ci) => ci.item.kitchenId === "snacks");
 
-  const [deliveryType, setDeliveryType] = useState(isSnacksOnly ? "shipping" : "self-delivery");
+  const deliveryType = isSnacksOnly ? "shipping" : "self-delivery";
   const [selectedSlot, setSelectedSlot] = useState(isSnacksOnly ? "shipping" : "");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -59,7 +77,7 @@ const Checkout = () => {
     });
   }, [hasKitchens]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Also check when ZIP code is entered (for snacks or manual entry)
+  // Also check when ZIP code is entered
   useEffect(() => {
     if (zipCode.length === 5 && hasKitchens) {
       const isServiceable = checkByZip(zipCode);
@@ -67,14 +85,9 @@ const Checkout = () => {
     }
   }, [zipCode, hasKitchens, checkByZip]);
 
-  const deliveryFees: Record<string, Record<string, number>> = {
-    IN: { "self-pickup": 0, "self-delivery": 30, "third-party": 50 },
-    US: { "self-pickup": 0, "self-delivery": 4, "third-party": 7 },
-  };
-
-  const deliveryFee = isSnacksOnly ? (subtotal >= 599 ? 0 : 49) : (deliveryFees[region.code]?.[deliveryType] || 0);
+  const deliveryFee = isSnacksOnly ? (subtotal >= 599 ? 0 : 49) : configDeliveryFee;
   const tax = calcTax(subtotal - promoDiscount);
-  const subtotalWithFees = subtotal - promoDiscount + deliveryFee + region.platformFee + tax;
+  const subtotalWithFees = subtotal - promoDiscount + deliveryFee + region.platformFee + tax + tipAmount;
   const walletUsable = useWalletBalance ? getUsableAmount(subtotalWithFees) : 0;
   const total = subtotalWithFees - walletUsable;
 
