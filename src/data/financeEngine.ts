@@ -315,17 +315,17 @@ export function generateSubscriptionVouchers(): Voucher[] {
     narration: "Chettinad Veg Thali — 30 days × $150/day",
     entries: [
       entry(s1, "sales", "new_subscription", "accounts_receivable", 4500, 0, "Subscription receivable", "SUB-1001", "subscription", "2026-03-01"),
-      entry(s1, "sales", "new_subscription", "sales_meal_subscription", 0, 4286, "Meal revenue (excl GST 5%)", "SUB-1001", "subscription", "2026-03-01"),
-      entry(s1, "sales", "new_subscription", "sales_tax_food", 0, 214, "GST 5% on food", "SUB-1001", "subscription", "2026-03-01"),
+      entry(s1, "sales", "new_subscription", "sales_meal_subscription", 0, 4286, "Meal revenue (excl Sales Tax)", "SUB-1001", "subscription", "2026-03-01"),
+      entry(s1, "sales", "new_subscription", "sales_tax_food", 0, 214, "Sales Tax on food", "SUB-1001", "subscription", "2026-03-01"),
     ],
   });
 
-  // 2. Receipt — Payment via Razorpay
+  // 2. Receipt — Payment via Stripe
   const s2 = vid("RCT");
   v.push({ id: s2, type: "receipt", date: "2026-03-01", trigger: "new_subscription", referenceId: "SUB-1001", partyName: "Priya Reddy", amount: 4500, status: "posted", subVertical: "subscription",
-    narration: "Online payment received via Razorpay",
+    narration: "Online payment received via Stripe",
     entries: [
-      entry(s2, "receipt", "new_subscription", "bank_account_primary", 4500, 0, "Payment received — Razorpay", "SUB-1001", "subscription", "2026-03-01"),
+      entry(s2, "receipt", "new_subscription", "bank_account_primary", 4500, 0, "Payment received — Stripe", "SUB-1001", "subscription", "2026-03-01"),
       entry(s2, "receipt", "new_subscription", "accounts_receivable", 0, 4500, "Receivable cleared", "SUB-1001", "subscription", "2026-03-01"),
     ],
   });
@@ -361,7 +361,7 @@ export function generateSubscriptionVouchers(): Voucher[] {
     narration: "Subscription paused — 18 remaining meals frozen as deferred revenue",
     entries: [
       entry(s5, "journal", "subscription_paused", "sales_meal_subscription", 2571, 0, "Reverse undelivered revenue (18 × $143)", "SUB-1003", "subscription", "2026-03-10"),
-      entry(s5, "journal", "subscription_paused", "sales_tax_food", 129, 0, "Reverse GST on undelivered", "SUB-1003", "subscription", "2026-03-10"),
+      entry(s5, "journal", "subscription_paused", "sales_tax_food", 129, 0, "Reverse Sales Tax on undelivered", "SUB-1003", "subscription", "2026-03-10"),
       entry(s5, "journal", "subscription_paused", "revenue_deferred", 0, 2700, "Park as deferred revenue", "SUB-1003", "subscription", "2026-03-10"),
     ],
   });
@@ -379,7 +379,7 @@ export function generateSubscriptionVouchers(): Voucher[] {
   // 7. Payment — Refund Disbursed
   const s7 = vid("PMT");
   v.push({ id: s7, type: "payment", date: "2026-03-12", trigger: "refund_issued", referenceId: "SUB-1005", partyName: "Meera Joshi", amount: 1800, status: "posted", subVertical: "subscription",
-    narration: "Refund disbursed via NEFT",
+    narration: "Refund disbursed via ACH",
     entries: [
       entry(s7, "payment", "refund_issued", "refund_payable", 1800, 0, "Settle refund liability", "SUB-1005", "subscription", "2026-03-12"),
       entry(s7, "payment", "refund_issued", "bank_account_primary", 0, 1800, "Bank transfer — refund", "SUB-1005", "subscription", "2026-03-12"),
@@ -392,7 +392,7 @@ export function generateSubscriptionVouchers(): Voucher[] {
     narration: "Weekly PPP settlement — 150 meals × $82.50",
     entries: [
       entry(s8, "payment", "partner_payout", "accounts_payable_partner", 12375, 0, "Settlement — Chef Lakshmi", "PTNR-001", "subscription", "2026-03-08"),
-      entry(s8, "payment", "partner_payout", "bank_account_settlement", 0, 12375, "NEFT transfer", "PTNR-001", "subscription", "2026-03-08"),
+      entry(s8, "payment", "partner_payout", "bank_account_settlement", 0, 12375, "ACH transfer", "PTNR-001", "subscription", "2026-03-08"),
     ],
   });
 
@@ -435,8 +435,8 @@ export function generateSubscriptionVouchers(): Voucher[] {
   v.push({ id: s12, type: "purchase", date: "2026-03-03", trigger: "packing_purchased", referenceId: "PO-PACK-001", partyName: "GreenPack Supplies", amount: 15000, status: "posted", subVertical: "subscription",
     narration: "Monthly packing material — eco-friendly containers",
     entries: [
-      entry(s12, "purchase", "packing_purchased", "purchase_packing_material", 12712, 0, "Packing material (excl GST)", "PO-PACK-001", "subscription", "2026-03-03"),
-      entry(s12, "purchase", "packing_purchased", "tax_input_credit", 2288, 0, "GST 18% input credit", "PO-PACK-001", "subscription", "2026-03-03"),
+      entry(s12, "purchase", "packing_purchased", "purchase_packing_material", 12712, 0, "Packing material (excl tax)", "PO-PACK-001", "subscription", "2026-03-03"),
+      entry(s12, "purchase", "packing_purchased", "tax_input_credit", 2288, 0, "Sales Tax input credit", "PO-PACK-001", "subscription", "2026-03-03"),
       entry(s12, "purchase", "packing_purchased", "accounts_payable_vendor", 0, 15000, "Vendor payable", "PO-PACK-001", "subscription", "2026-03-03"),
     ],
   });
@@ -453,7 +453,7 @@ export function generateSubscriptionVouchers(): Voucher[] {
 
   // 14. Journal — Payment Gateway Fee
   const s14 = vid("JRN");
-  v.push({ id: s14, type: "journal", date: "2026-03-08", trigger: "marketing_spend", referenceId: "GW-MAR", partyName: "Razorpay", amount: 3200, status: "posted", subVertical: "subscription",
+  v.push({ id: s14, type: "journal", date: "2026-03-08", trigger: "marketing_spend", referenceId: "GW-MAR", partyName: "Stripe", amount: 3200, status: "posted", subVertical: "subscription",
     narration: "Monthly gateway processing fee — 2% of collections",
     entries: [
       entry(s14, "journal", "marketing_spend", "expense_payment_gateway", 3200, 0, "Gateway fee 2%", "GW-MAR", "subscription", "2026-03-08"),
@@ -464,10 +464,10 @@ export function generateSubscriptionVouchers(): Voucher[] {
   // 15. Journal — TDS Deducted on Partner Payout
   const s15 = vid("JRN");
   v.push({ id: s15, type: "journal", date: "2026-03-08", trigger: "tds_deducted", referenceId: "TDS-001", partyName: "Chef Lakshmi Kitchen", amount: 124, status: "posted", subVertical: "subscription",
-    narration: "TDS 1% deducted on PPP payout",
+    narration: "Withholding 1% deducted on PPP payout",
     entries: [
-      entry(s15, "journal", "tds_deducted", "accounts_payable_partner", 124, 0, "TDS deduction from payout", "TDS-001", "subscription", "2026-03-08"),
-      entry(s15, "journal", "tds_deducted", "tds_payable", 0, 124, "TDS liability — to be deposited with Govt", "TDS-001", "subscription", "2026-03-08"),
+      entry(s15, "journal", "tds_deducted", "accounts_payable_partner", 124, 0, "Withholding deduction from payout", "TDS-001", "subscription", "2026-03-08"),
+      entry(s15, "journal", "tds_deducted", "tds_payable", 0, 124, "Withholding liability — to be deposited with IRS", "TDS-001", "subscription", "2026-03-08"),
     ],
   });
 
@@ -485,8 +485,8 @@ export function generatePartyVouchers(): Voucher[] {
     narration: "Wedding reception — 50 guests, Chettinad cuisine",
     entries: [
       entry(p1, "sales", "party_order_placed", "accounts_receivable", 42500, 0, "Party order receivable", "PO-3421", "party", "2026-03-08"),
-      entry(p1, "sales", "party_order_placed", "sales_meal_party", 0, 38636, "MRP revenue (excl GST 5% + ancillary)", "PO-3421", "party", "2026-03-08"),
-      entry(p1, "sales", "party_order_placed", "sales_tax_food", 0, 2024, "GST 5% on food", "PO-3421", "party", "2026-03-08"),
+      entry(p1, "sales", "party_order_placed", "sales_meal_party", 0, 38636, "MRP revenue (excl Sales Tax + ancillary)", "PO-3421", "party", "2026-03-08"),
+      entry(p1, "sales", "party_order_placed", "sales_tax_food", 0, 2024, "Sales Tax on food", "PO-3421", "party", "2026-03-08"),
       entry(p1, "sales", "party_order_placed", "sales_packaging_charge", 0, 850, "Packaging charge", "PO-3421", "party", "2026-03-08"),
       entry(p1, "sales", "party_order_placed", "sales_transport_charge", 0, 500, "Transport charge", "PO-3421", "party", "2026-03-08"),
       entry(p1, "sales", "party_order_placed", "discount_contra", 490, 0, "Early bird discount", "PO-3421", "party", "2026-03-08"),
@@ -551,7 +551,7 @@ export function generatePartyVouchers(): Voucher[] {
     narration: "PPP settlement for PO-3421",
     entries: [
       entry(p6, "payment", "partner_payout", "accounts_payable_partner", 23375, 0, "Settlement", "PTNR-001", "party", "2026-03-14"),
-      entry(p6, "payment", "partner_payout", "bank_account_settlement", 0, 23375, "NEFT transfer", "PTNR-001", "party", "2026-03-14"),
+      entry(p6, "payment", "partner_payout", "bank_account_settlement", 0, 23375, "ACH transfer", "PTNR-001", "party", "2026-03-14"),
     ],
   });
 
@@ -578,8 +578,8 @@ export function generateInstantVouchers(): Voucher[] {
     narration: "Chicken Biryani + Raita — instant delivery",
     entries: [
       entry(i1, "sales", "instant_order_placed", "accounts_receivable", 380, 0, "Order receivable", "INS-7801", "instant", "2026-03-15"),
-      entry(i1, "sales", "instant_order_placed", "sales_meal_instant", 0, 310, "Food MRP (excl GST + delivery)", "INS-7801", "instant", "2026-03-15"),
-      entry(i1, "sales", "instant_order_placed", "sales_tax_food", 0, 16, "GST 5%", "INS-7801", "instant", "2026-03-15"),
+      entry(i1, "sales", "instant_order_placed", "sales_meal_instant", 0, 310, "Food MRP (excl tax + delivery)", "INS-7801", "instant", "2026-03-15"),
+      entry(i1, "sales", "instant_order_placed", "sales_tax_food", 0, 16, "Sales Tax", "INS-7801", "instant", "2026-03-15"),
       entry(i1, "sales", "instant_order_placed", "sales_delivery_fee", 0, 35, "Delivery fee", "INS-7801", "instant", "2026-03-15"),
       entry(i1, "sales", "instant_order_placed", "sales_packaging_charge", 0, 19, "Packaging", "INS-7801", "instant", "2026-03-15"),
     ],
@@ -587,9 +587,9 @@ export function generateInstantVouchers(): Voucher[] {
 
   const i2 = vid("RCT");
   v.push({ id: i2, type: "receipt", date: "2026-03-15", trigger: "instant_order_placed", referenceId: "INS-7801", partyName: "Deepa R.", amount: 380, status: "posted", subVertical: "instant",
-    narration: "Online payment — UPI",
+    narration: "Online payment — Card",
     entries: [
-      entry(i2, "receipt", "instant_order_placed", "bank_account_primary", 380, 0, "UPI payment", "INS-7801", "instant", "2026-03-15"),
+      entry(i2, "receipt", "instant_order_placed", "bank_account_primary", 380, 0, "Card payment", "INS-7801", "instant", "2026-03-15"),
       entry(i2, "receipt", "instant_order_placed", "accounts_receivable", 0, 380, "Receivable cleared", "INS-7801", "instant", "2026-03-15"),
     ],
   });
@@ -640,8 +640,8 @@ export function generateServicesVouchers(): Voucher[] {
     narration: "Home cook — Birthday dinner prep, 4 hours",
     entries: [
       entry(sv1, "sales", "service_booked", "accounts_receivable", 1500, 0, "Service receivable", "SVC-501", "services", "2026-03-10"),
-      entry(sv1, "sales", "service_booked", "sales_service_booking", 0, 1271, "Service revenue (excl GST 18%)", "SVC-501", "services", "2026-03-10"),
-      entry(sv1, "sales", "service_booked", "sales_tax_services", 0, 229, "GST 18% on services", "SVC-501", "services", "2026-03-10"),
+      entry(sv1, "sales", "service_booked", "sales_service_booking", 0, 1271, "Service revenue (excl Sales Tax)", "SVC-501", "services", "2026-03-10"),
+      entry(sv1, "sales", "service_booked", "sales_tax_services", 0, 229, "Sales Tax on services", "SVC-501", "services", "2026-03-10"),
     ],
   });
 
@@ -680,7 +680,7 @@ export function generateServicesVouchers(): Voucher[] {
     narration: "Service provider payout — SVC-501",
     entries: [
       entry(sv5, "payment", "partner_payout", "accounts_payable_partner", 900, 0, "Settlement", "PTNR-SVC-001", "services", "2026-03-12"),
-      entry(sv5, "payment", "partner_payout", "bank_account_settlement", 0, 900, "NEFT transfer", "PTNR-SVC-001", "services", "2026-03-12"),
+      entry(sv5, "payment", "partner_payout", "bank_account_settlement", 0, 900, "ACH transfer", "PTNR-SVC-001", "services", "2026-03-12"),
     ],
   });
 
@@ -698,14 +698,14 @@ export function generateSnacksVouchers(): Voucher[] {
     narration: "Murukku 500g + Mysore Pak 250g + Adhirasam 6pc",
     entries: [
       entry(sk1, "sales", "snack_order_placed", "accounts_receivable", 850, 0, "Snack order receivable", "SNK-201", "snacks", "2026-03-10"),
-      entry(sk1, "sales", "snack_order_placed", "sales_meal_instant", 0, 810, "Snacks revenue (excl GST 5%)", "SNK-201", "snacks", "2026-03-10"),
-      entry(sk1, "sales", "snack_order_placed", "sales_tax_food", 0, 40, "GST 5%", "SNK-201", "snacks", "2026-03-10"),
+      entry(sk1, "sales", "snack_order_placed", "sales_meal_instant", 0, 810, "Snacks revenue (excl Sales Tax)", "SNK-201", "snacks", "2026-03-10"),
+      entry(sk1, "sales", "snack_order_placed", "sales_tax_food", 0, 40, "Sales Tax", "SNK-201", "snacks", "2026-03-10"),
     ],
   });
 
   const sk2 = vid("RCT");
   v.push({ id: sk2, type: "receipt", date: "2026-03-10", trigger: "snack_order_placed", referenceId: "SNK-201", partyName: "Anitha M.", amount: 850, status: "posted", subVertical: "snacks",
-    narration: "UPI payment received",
+    narration: "Card payment received",
     entries: [
       entry(sk2, "receipt", "snack_order_placed", "bank_account_primary", 850, 0, "Payment received", "SNK-201", "snacks", "2026-03-10"),
       entry(sk2, "receipt", "snack_order_placed", "accounts_receivable", 0, 850, "Receivable cleared", "SNK-201", "snacks", "2026-03-10"),
@@ -740,7 +740,7 @@ export function generateSnacksVouchers(): Voucher[] {
     narration: "Weekly snacks partner payout",
     entries: [
       entry(sk5, "payment", "partner_payout", "accounts_payable_partner", 425, 0, "Settlement", "PTNR-SNK-001", "snacks", "2026-03-13"),
-      entry(sk5, "payment", "partner_payout", "bank_account_settlement", 0, 425, "NEFT transfer", "PTNR-SNK-001", "snacks", "2026-03-13"),
+      entry(sk5, "payment", "partner_payout", "bank_account_settlement", 0, 425, "ACH transfer", "PTNR-SNK-001", "snacks", "2026-03-13"),
     ],
   });
 
@@ -758,8 +758,8 @@ export function generateCookeryVouchers(): Voucher[] {
     narration: "Chettinad Masterclass — 3-hour hands-on session",
     entries: [
       entry(ck1, "sales", "cookery_class_booked", "accounts_receivable", 1200, 0, "Class booking receivable", "CKC-101", "cookery", "2026-03-05"),
-      entry(ck1, "sales", "cookery_class_booked", "sales_service_booking", 0, 1017, "Class fee (excl GST 18%)", "CKC-101", "cookery", "2026-03-05"),
-      entry(ck1, "sales", "cookery_class_booked", "sales_tax_services", 0, 183, "GST 18% on education", "CKC-101", "cookery", "2026-03-05"),
+      entry(ck1, "sales", "cookery_class_booked", "sales_service_booking", 0, 1017, "Class fee (excl Sales Tax)", "CKC-101", "cookery", "2026-03-05"),
+      entry(ck1, "sales", "cookery_class_booked", "sales_tax_services", 0, 183, "Sales Tax on education", "CKC-101", "cookery", "2026-03-05"),
     ],
   });
 
@@ -800,7 +800,7 @@ export function generateCookeryVouchers(): Voucher[] {
     narration: "Instructor payout — CKC-101",
     entries: [
       entry(ck5, "payment", "instructor_payout", "accounts_payable_partner", 480, 0, "Settlement", "INST-CK-001", "cookery", "2026-03-08"),
-      entry(ck5, "payment", "instructor_payout", "bank_account_settlement", 0, 480, "NEFT transfer", "INST-CK-001", "cookery", "2026-03-08"),
+      entry(ck5, "payment", "instructor_payout", "bank_account_settlement", 0, 480, "ACH transfer", "INST-CK-001", "cookery", "2026-03-08"),
     ],
   });
 
@@ -818,8 +818,8 @@ export function generateSheroClassesVouchers(): Voucher[] {
     narration: "Yoga for Beginners — 1-hour virtual session",
     entries: [
       entry(sh1, "sales", "shero_class_booked", "accounts_receivable", 600, 0, "Class booking receivable", "SHC-301", "shero_classes", "2026-03-07"),
-      entry(sh1, "sales", "shero_class_booked", "sales_service_booking", 0, 508, "Class fee (excl GST 18%)", "SHC-301", "shero_classes", "2026-03-07"),
-      entry(sh1, "sales", "shero_class_booked", "sales_tax_services", 0, 92, "GST 18%", "SHC-301", "shero_classes", "2026-03-07"),
+      entry(sh1, "sales", "shero_class_booked", "sales_service_booking", 0, 508, "Class fee (excl Sales Tax)", "SHC-301", "shero_classes", "2026-03-07"),
+      entry(sh1, "sales", "shero_class_booked", "sales_tax_services", 0, 92, "Sales Tax", "SHC-301", "shero_classes", "2026-03-07"),
     ],
   });
 
@@ -860,7 +860,7 @@ export function generateSheroClassesVouchers(): Voucher[] {
     narration: "Instructor payout — SHC-301",
     entries: [
       entry(sh5, "payment", "instructor_payout", "accounts_payable_partner", 240, 0, "Settlement", "INST-SH-001", "shero_classes", "2026-03-10"),
-      entry(sh5, "payment", "instructor_payout", "bank_account_settlement", 0, 240, "NEFT transfer", "INST-SH-001", "shero_classes", "2026-03-10"),
+      entry(sh5, "payment", "instructor_payout", "bank_account_settlement", 0, 240, "ACH transfer", "INST-SH-001", "shero_classes", "2026-03-10"),
     ],
   });
 
@@ -879,7 +879,7 @@ export function generateSubscriptionPL(): PLLineItem[] {
     { label: "NET REVENUE", amount: 531480, type: "subtotal", bold: true },
     { label: "", amount: 0, type: "header" },
     { label: "TAX COLLECTED (Liability)", amount: 0, type: "header" },
-    { label: "GST Output 5% — Food", amount: -25308, type: "expense", indent: 1 },
+    { label: "Sales Tax 8.25% — Food", amount: -25308, type: "expense", indent: 1 },
     { label: "", amount: 0, type: "header" },
     { label: "DIRECT COSTS (COGS)", amount: 0, type: "header" },
     { label: "Purchase — PPP Partner Payouts (55%)", amount: -270837, type: "expense", indent: 1 },
@@ -918,7 +918,7 @@ export function generatePartyPL(): PLLineItem[] {
     { label: "NET REVENUE", amount: 1719610, type: "subtotal", bold: true },
     { label: "", amount: 0, type: "header" },
     { label: "TAX COLLECTED (Liability)", amount: 0, type: "header" },
-    { label: "GST Output 5% — Food", amount: -85000, type: "expense", indent: 1 },
+    { label: "Sales Tax 8.25% — Food", amount: -85000, type: "expense", indent: 1 },
     { label: "", amount: 0, type: "header" },
     { label: "DIRECT COSTS (COGS)", amount: 0, type: "header" },
     { label: "Purchase — PPP Partner Payouts (55%)", amount: -935000, type: "expense", indent: 1 },
@@ -956,7 +956,7 @@ export function generateInstantPL(): PLLineItem[] {
     { label: "NET REVENUE", amount: 450390, type: "subtotal", bold: true },
     { label: "", amount: 0, type: "header" },
     { label: "TAX COLLECTED (Liability)", amount: 0, type: "header" },
-    { label: "GST Output 5% — Food", amount: -21447, type: "expense", indent: 1 },
+    { label: "Sales Tax 8.25% — Food", amount: -21447, type: "expense", indent: 1 },
     { label: "", amount: 0, type: "header" },
     { label: "DIRECT COSTS (COGS)", amount: 0, type: "header" },
     { label: "Purchase — PPP Partner Payouts (55%)", amount: -211750, type: "expense", indent: 1 },
@@ -1028,7 +1028,7 @@ export function generateSnacksPL(): PLLineItem[] {
     { label: "NET REVENUE", amount: 198500, type: "subtotal", bold: true },
     { label: "", amount: 0, type: "header" },
     { label: "TAX COLLECTED (Liability)", amount: 0, type: "header" },
-    { label: "GST Output 5% — Food", amount: -9452, type: "expense", indent: 1 },
+    { label: "Sales Tax 8.25% — Food", amount: -9452, type: "expense", indent: 1 },
     { label: "", amount: 0, type: "header" },
     { label: "DIRECT COSTS (COGS)", amount: 0, type: "header" },
     { label: "Purchase — PPP Partner Payouts (50%)", amount: -92500, type: "expense", indent: 1 },
@@ -1185,11 +1185,11 @@ export const financialGaps: FinancialGap[] = [
   { id: "FG-003", category: "tax_gap", severity: "critical", title: "GST Liability Not Reconciled with GSTR-3B", description: "GST Output collected $1,51,484 but no reconciliation with filed GSTR-3B. Risk of penalty.", impact: "Tax compliance risk — $1.5L unreconciled", suggestion: "Monthly GSTR-3B reconciliation report; auto-match with Sales Register", subVertical: "all" },
   { id: "FG-004", category: "reconciliation", severity: "high", title: "Overdue Sundry Debtors > 7 Days", description: "$32,325 receivable overdue from 3 customers across sub-verticals.", impact: "Cash collection delay, working capital stress", suggestion: "Auto-SMS/email reminder > 3 days overdue; escalate > 7 days to Team Leader", subVertical: "all" },
   { id: "FG-005", category: "expense_untracked", severity: "high", title: "Party Advances Not Parked as Liability", description: "Advances received (50%) recognized as revenue immediately instead of Advance from Customer.", impact: "Revenue recognized before service delivery", suggestion: "Receipt → Cr Advance from Customer; On delivery → Journal to clear advance vs receivable", subVertical: "party" },
-  { id: "FG-006", category: "compliance", severity: "high", title: "TDS Not Deducted on All Partner Payouts", description: "TDS 1% under Sec 194C mandatory on all PPP payouts > $30,000/year. Only 40% partners have TDS deducted.", impact: "Non-compliance penalty risk", suggestion: "Auto-deduct TDS on all Payment vouchers; maintain TDS Payable ledger", subVertical: "all" },
+  { id: "FG-006", category: "compliance", severity: "high", title: "TDS Not Deducted on All Partner Payouts", description: "Withholding 1% under Sec 194C mandatory on all PPP payouts > $30,000/year. Only 40% partners have TDS deducted.", impact: "Non-compliance penalty risk", suggestion: "Auto-deduct TDS on all Payment vouchers; maintain Withholding Tax Payable ledger", subVertical: "all" },
   { id: "FG-007", category: "revenue_leakage", severity: "medium", title: "Instant Delivery Surge Not Tracked Separately", description: "Surge charges mixed with food revenue. Cannot analyze surge contribution.", impact: "Revenue analysis incomplete", suggestion: "Separate Sales — Surge Pricing ledger; auto-post on surge orders", subVertical: "instant" },
   { id: "FG-008", category: "expense_untracked", severity: "medium", title: "Delivery Return Costs Untracked", description: "Failed deliveries incur return costs not recorded. Estimated $3,200/month.", impact: "Hidden expense", suggestion: "Track delivery failures; Journal return costs to Delivery Return account", subVertical: "all" },
   { id: "FG-009", category: "reconciliation", severity: "medium", title: "Partner Settlement Mismatch > 7 Days", description: "2 partners show outstanding payables > 7 days past agreed settlement date.", impact: "Partner relationship risk", suggestion: "Weekly auto-reconciliation; flag overdue settlements", subVertical: "all" },
-  { id: "FG-010", category: "tax_gap", severity: "high", title: "Services GST @ 18% vs Food GST @ 5% Mixed", description: "Service bookings taxed at 18% but no separate GST Output account. Risk of under-reporting.", impact: "Mixed GST rates = wrong GSTR filing", suggestion: "Maintain separate GST Output 5% and GST Output 18% ledgers", subVertical: "services" },
+  { id: "FG-010", category: "tax_gap", severity: "high", title: "Services GST @ 18% vs Food GST @ 5% Mixed", description: "Service bookings taxed at 18% but no separate GST Output account. Risk of under-reporting.", impact: "Mixed GST rates = wrong GSTR filing", suggestion: "Maintain separate Sales Tax 8.25% and GST Output 18% ledgers", subVertical: "services" },
 ];
 
 // ═══════════════════════════════════════════
