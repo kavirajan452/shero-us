@@ -119,10 +119,10 @@ const Experiences = () => {
             >
               <ArrowLeft className="w-4 h-4" /> Back to Home
             </Link>
-            <h2 className="text-4xl font-serif font-bold mb-3">Shero Dining Experiences</h2>
-            <p className="text-primary-foreground/70 max-w-lg">
-              Book a seat at a Shero's table. Enjoy authentic homemade meals in a cozy, personal setting.
-            </p>
+             <h2 className="text-4xl font-serif font-bold mb-3">{ec["experiences.hero_title"] || "Shero Dining Experiences"}</h2>
+             <p className="text-primary-foreground/70 max-w-lg">
+               {ec["experiences.hero_subtitle"] || "Book a seat at a Shero's table. Enjoy authentic homemade meals in a cozy, personal setting."}
+             </p>
           </div>
         </div>
 

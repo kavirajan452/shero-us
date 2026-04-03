@@ -21,13 +21,13 @@ const values = [
   { icon: Leaf, title: "Fresh & Sustainable", desc: "Locally sourced ingredients, minimal packaging waste. 500+ varieties of wholesome dishes delivered fresh daily.", color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-950/30" },
 ];
 
-const stats = [
-  { number: "2,400+", label: "Home Kitchens", icon: ChefHat },
-  { number: "72", label: "Cities", icon: MapPin },
-  { number: "14", label: "States", icon: Globe },
-  { number: "1.4M+", label: "Orders Delivered", icon: TrendingUp },
-  { number: "500+", label: "Dish Varieties", icon: Star },
-  { number: "5", label: "Years of Love", icon: Heart },
+const defaultStats = [
+  { key: "stat_kitchens", number: "2,400+", label: "Home Kitchens", icon: ChefHat },
+  { key: "stat_cities", number: "72", label: "Cities", icon: MapPin },
+  { key: "stat_states", number: "14", label: "States", icon: Globe },
+  { key: "stat_orders", number: "1.4M+", label: "Orders Delivered", icon: TrendingUp },
+  { key: "stat_dishes", number: "500+", label: "Dish Varieties", icon: Star },
+  { key: "stat_years", number: "5", label: "Years of Love", icon: Heart },
 ];
 
 const awards = [
