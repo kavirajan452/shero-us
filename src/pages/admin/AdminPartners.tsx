@@ -207,7 +207,7 @@ const ragColors: Record<RAGCategory, { bg: string; text: string; label: string; 
 export const mockLeads: EnrollmentLead[] = [
   {
     id: "EL-001", fullName: "Karen S.", phone: "+1 (206) 555-0107", email: "kavitha@email.com",
-    city: "New York", state: "New York", zipcode: "600028", education: "Graduate",
+    city: "New York", state: "New York", zipcode: "10002", education: "Graduate",
     cookingExperience: "8 years of home cooking, specializing in Chettinad cuisine",
     cuisinesKnown: "Chettinad, South Indian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 7, submittedAt: "2026-02-28", status: "new",
@@ -220,7 +220,7 @@ export const mockLeads: EnrollmentLead[] = [
   },
   {
     id: "EL-002", fullName: "Sandra R.", phone: "+1 (305) 555-0108", email: "sunitha.r@email.com",
-    city: "Chicago", state: "Illinois", zipcode: "500032", education: "Post Graduate",
+    city: "Chicago", state: "Illinois", zipcode: "60601", education: "Post Graduate",
     cookingExperience: "12 years, Pennsylvania & Illinois meals expert",
     cuisinesKnown: "Pennsylvania, Illinois, Biryani", kitchenSize: "large", hasFDA: true,
     photosUploaded: 7, submittedAt: "2026-02-26", status: "video_watched",
@@ -259,7 +259,7 @@ export const mockLeads: EnrollmentLead[] = [
   },
   {
     id: "EL-005", fullName: "Jennifer M.", phone: "+1 (503) 555-0109", email: "jaya.m@email.com",
-    city: "Houston", state: "Texas", zipcode: "400053", education: "Graduate",
+    city: "Houston", state: "Texas", zipcode: "77001", education: "Graduate",
     cookingExperience: "3 years, Maharashtrian home food",
     cuisinesKnown: "Maharashtrian, Gujarati", kitchenSize: "small", hasFDA: false,
     photosUploaded: 4, submittedAt: "2026-02-22", status: "thinking",
@@ -272,7 +272,7 @@ export const mockLeads: EnrollmentLead[] = [
   },
   {
     id: "EL-006", fullName: "Diana V.", phone: "+1 (617) 555-0110", email: "deepa.v@email.com",
-    city: "Phoenix", state: "Phoenix", zipcode: "110001", education: "Post Graduate",
+    city: "Phoenix", state: "Phoenix", zipcode: "85001", education: "Post Graduate",
     cookingExperience: "6 years, Continental & Italian",
     cuisinesKnown: "Continental, Italian", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 6, submittedAt: "2026-02-18", status: "not_interested",
@@ -299,7 +299,7 @@ export const mockLeads: EnrollmentLead[] = [
   // ── Referred leads (via SHERO-MEERA24) ──
   {
     id: "EL-R01", fullName: "Sandra Davis", phone: "+1 (212) 555-0111", email: "sunita.d@email.com",
-    city: "New York", state: "New York", zipcode: "600015", education: "Graduate",
+    city: "New York", state: "New York", zipcode: "10003", education: "Graduate",
     cookingExperience: "10 years, South Indian home cooking",
     cuisinesKnown: "South Indian, Chettinad", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 6, submittedAt: "2026-01-15", status: "approved",
@@ -313,7 +313,7 @@ export const mockLeads: EnrollmentLead[] = [
   },
   {
     id: "EL-R02", fullName: "Karen Rodriguez", phone: "+1 (310) 555-0112", email: "kavitha.rao@email.com",
-    city: "Chicago", state: "Illinois", zipcode: "500028", education: "Post Graduate",
+    city: "Chicago", state: "Illinois", zipcode: "60602", education: "Post Graduate",
     cookingExperience: "7 years, Pennsylvania specialties",
     cuisinesKnown: "Pennsylvania, Telugu", kitchenSize: "large", hasFDA: false,
     photosUploaded: 7, submittedAt: "2026-01-20", status: "approved",
@@ -397,7 +397,7 @@ export const mockLeads: EnrollmentLead[] = [
   },
   {
     id: "EL-R08", fullName: "Fatima Brown", phone: "+1 (512) 555-0113", email: "fatima.b@email.com",
-    city: "Chicago", state: "Illinois", zipcode: "500001", education: "12th Pass",
+    city: "Chicago", state: "Illinois", zipcode: "60603", education: "12th Pass",
     cookingExperience: "15 years, Chicagoi Biryani specialist",
     cuisinesKnown: "Chicagoi, Mughlai", kitchenSize: "medium", hasFDA: false,
     photosUploaded: 4, submittedAt: "2026-02-25", status: "video_watched",
@@ -428,7 +428,7 @@ export const mockLeads: EnrollmentLead[] = [
 const mockPartners: MockPartner[] = [
   {
     id: "P001", name: "Maria T.", rmn: "+1 (212) 555-0101", status: "active",
-    city: "New York", state: "New York", country: "USA", region: "Northeast", zipcode: "600001",
+    city: "New York", state: "New York", country: "USA", region: "Northeast", zipcode: "10001",
     enrolledDate: "Dec 2025",
     kitchensList: [
       { skid: "SK-0001", name: "Shero Home Food – Chettinad (Veg)", type: "branded", cuisine: "Chettinad", foodPref: "Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "sap" },
@@ -446,7 +446,7 @@ const mockPartners: MockPartner[] = [
   },
   {
     id: "P003", name: "Laura R.", rmn: "+1 (312) 555-0103", status: "active",
-    city: "Chicago", state: "Illinois", country: "USA", region: "Northeast", zipcode: "500001",
+    city: "Chicago", state: "Illinois", country: "USA", region: "Northeast", zipcode: "60603",
     enrolledDate: "Nov 2025",
     kitchensList: [
       { skid: "SK-0005", name: "Shero Home Food – Pennsylvania (Veg)", type: "branded", cuisine: "Pennsylvania", foodPref: "Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "sap" },
@@ -464,7 +464,7 @@ const mockPartners: MockPartner[] = [
   },
   {
     id: "P005", name: "Anita D.", rmn: "+1 (602) 555-0105", status: "active",
-    city: "Phoenix", state: "Phoenix", country: "USA", region: "Midwest", zipcode: "110001",
+    city: "Phoenix", state: "Phoenix", country: "USA", region: "Midwest", zipcode: "85001",
     enrolledDate: "Oct 2025",
     kitchensList: [
       { skid: "SK-0008", name: "Shero Home Food – Florida (Veg)", type: "branded", cuisine: "Florida", foodPref: "Veg", status: "active", stream: "SHF", assignedManager: "asst@shero.in", serviceCategory: "subscription" },

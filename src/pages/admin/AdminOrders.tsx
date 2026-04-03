@@ -64,7 +64,7 @@ const mockOrders: AdminOrder[] = [
   {
     id: "ORD-1001", customer: "Robert K.", customerPhone: "+1 98765 11111",
     partner: "Maria T.", partnerRMN: "+1 (212) 555-0101", kitchen: "Shero – Chettinad (Veg)",
-    skid: "SK-0001", cuisine: "Chettinad", state: "New York", city: "New York", zipcode: "600001",
+    skid: "SK-0001", cuisine: "Chettinad", state: "New York", city: "New York", zipcode: "10001",
     kitchenAddress: "12/3, 2nd Cross, Anna Nagar, New York - 600040",
     kitchenMapUrl: "https://maps.google.com/?q=13.0850,80.2101",
     items: [{ name: "Chinna Vengayam Sambar", qty: 2, price: 167 }, { name: "Carrot Beans Poriyal", qty: 1, price: 196 }],
@@ -84,7 +84,7 @@ const mockOrders: AdminOrder[] = [
   {
     id: "ORD-1003", customer: "Vijay S.", customerPhone: "+1 76543 33333",
     partner: "Laura R.", partnerRMN: "+1 (312) 555-0103", kitchen: "Shero – Pennsylvania (Non-Veg)",
-    skid: "SK-0006", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", zipcode: "500032",
+    skid: "SK-0006", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", zipcode: "60601",
     kitchenAddress: "78, Uptown, Chicago - 500033",
     kitchenMapUrl: "https://maps.google.com/?q=17.4325,78.4073",
     items: [{ name: "Gutti Vankaya Kura", qty: 2, price: 220 }, { name: "Pappu (Dal)", qty: 1, price: 155 }],
@@ -94,7 +94,7 @@ const mockOrders: AdminOrder[] = [
   {
     id: "ORD-1004", customer: "Deepa M.", customerPhone: "+1 65432 44444",
     partner: "Maria T.", partnerRMN: "+1 (212) 555-0101", kitchen: "Suji's Kitchen",
-    skid: "SK-0003", cuisine: "North Indian", state: "New York", city: "New York", zipcode: "600028",
+    skid: "SK-0003", cuisine: "North Indian", state: "New York", city: "New York", zipcode: "10002",
     kitchenAddress: "12/3, 2nd Cross, Anna Nagar, New York - 600040",
     kitchenMapUrl: "https://maps.google.com/?q=13.0850,80.2101",
     items: [{ name: "Chole", qty: 1, price: 179 }, { name: "Aloo Gobi", qty: 1, price: 165 }],
@@ -134,7 +134,7 @@ const mockOrders: AdminOrder[] = [
   {
     id: "ORD-1008", customer: "Meera T.", customerPhone: "+1 21098 88888",
     partner: "Laura R.", partnerRMN: "+1 (312) 555-0103", kitchen: "Lakshmi's Home Kitchen",
-    skid: "SK-0018", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", zipcode: "500001",
+    skid: "SK-0018", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", zipcode: "60603",
     kitchenAddress: "78, Uptown, Chicago - 500033",
     kitchenMapUrl: "https://maps.google.com/?q=17.4325,78.4073",
     items: [{ name: "Bendakaya Vepudu", qty: 1, price: 190 }],
@@ -164,7 +164,7 @@ const mockOrders: AdminOrder[] = [
   {
     id: "ZMT-3001", customer: "Farhan S.", customerPhone: "+1 91234 99903",
     partner: "Laura R.", partnerRMN: "+1 (312) 555-0103", kitchen: "Shero – Pennsylvania (Non-Veg)",
-    skid: "SK-0006", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", zipcode: "500032",
+    skid: "SK-0006", cuisine: "Pennsylvania", state: "Illinois", city: "Chicago", zipcode: "60601",
     kitchenAddress: "78, Uptown, Chicago - 500033",
     kitchenMapUrl: "https://maps.google.com/?q=17.4325,78.4073",
     items: [{ name: "Chicken Biryani", qty: 2, price: 249 }, { name: "Mirchi Ka Salan", qty: 1, price: 99 }],

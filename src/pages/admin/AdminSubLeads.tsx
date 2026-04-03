@@ -50,7 +50,7 @@ const sourceLabels: Record<LeadSource, string> = {
 };
 
 const mockLeads: SubscriptionLead[] = [
-  { id: "SL001", name: "Kavitha Rajan", phone: "9876500001", location: "Financial District", source: "marketing", status: "new", createdAt: "2026-03-17", score: 72, savedPlan: "Chettinad Veg Thali" },
+  { id: "SL001", name: "Kavitha Rajan", phone: "987660603", location: "Financial District", source: "marketing", status: "new", createdAt: "2026-03-17", score: 72, savedPlan: "Chettinad Veg Thali" },
   { id: "SL002", name: "Arjun Patel", phone: "9876500002", location: "Madhapur", source: "referral", status: "contacted", createdAt: "2026-03-16", lastContactedAt: "2026-03-17", assignedTo: "Priya (TL)", score: 85, savedPlan: "Pennsylvania Spice Box" },
   { id: "SL003", name: "Divya Menon", phone: "9876500003", location: "Uptown", source: "social_media", status: "interested", createdAt: "2026-03-15", lastContactedAt: "2026-03-16", assignedTo: "Anitha (Exec)", score: 90, savedPlan: "Florida Sadya Box", notes: "Wants trial first" },
   { id: "SL004", name: "Suresh Kumar", phone: "9876500004", location: "Gachibowli", source: "organic", status: "trial_started", createdAt: "2026-03-12", lastContactedAt: "2026-03-14", assignedTo: "Priya (TL)", score: 95 },
