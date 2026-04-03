@@ -39,27 +39,6 @@ const AboutSheroCTA = () => {
               </Link>
             </div>
 
-            {/* Right: trust metrics */}
-            <div className="flex flex-col gap-3">
-              {[
-                { icon: Heart, label: "Cooked in real homes, not commercial kitchens", value: "Not Restaurant Food", color: "text-red-500", bg: "bg-red-500/8 border-red-500/15" },
-                { icon: ChefHat, label: "Home Chefs", value: "50+", color: "text-primary", bg: "bg-primary/8 border-primary/15" },
-                { icon: Shield, label: "Quality Assured", value: "FSSAI", color: "text-amber-600", bg: "bg-amber-500/8 border-amber-500/15" },
-              ].map((pill) => (
-                <div
-                  key={pill.label}
-                  className={`flex items-center gap-3 px-5 py-3 rounded-2xl border backdrop-blur-sm ${pill.bg} transition-transform hover:scale-[1.03]`}
-                >
-                  <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-card shadow-sm border border-border/50">
-                    <pill.icon className={`w-4 h-4 ${pill.color} shrink-0`} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-foreground leading-none">{pill.value}</p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">{pill.label}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>
