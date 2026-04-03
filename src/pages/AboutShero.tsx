@@ -3,6 +3,7 @@ import { ArrowLeft, Heart, Users, Award, MapPin, Shield, ChefHat, Leaf, Clock, S
 import DesktopNav from "@/components/DesktopNav";
 import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
+import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 
 const milestones = [
   { year: "2021", title: "The Spark", desc: "Founded with 12 home chefs in Chicago — a mission to empower women through food." },
