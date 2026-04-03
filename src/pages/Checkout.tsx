@@ -236,7 +236,7 @@ const Checkout = () => {
         <section className="bg-card border border-border rounded-2xl p-5 mb-5">
           <h2 className="font-semibold text-foreground mb-4">Your Order ({totalItems} items)</h2>
           <div className="space-y-3">
-            {items.map(({ item, quantity, selectedAddOns }) => {
+            {items.map(({ item, quantity, selectedAddOns }, index) => {
               const addOnsPrice = selectedAddOns.reduce((s, a) => s + a.price, 0);
               return (
                 <div key={item.id} className="space-y-2 pb-3 border-b border-border last:border-0 last:pb-0">
