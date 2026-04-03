@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "হোম",
+    "subscriptions": "সাবস্ক্রিপশন",
+    "partyOrders": "পার্টি অর্ডার",
+    "sweetsSnacks": "মিষ্টি ও স্ন্যাক্স",
+    "foodProducts": "খাদ্য পণ্য",
+    "services": "সেবা",
+    "orderNow": "এখনই অর্ডার করুন",
+    "loginSignUp": "লগইন / সাইন আপ",
+    "explore": "অন্বেষণ",
+    "orders": "অর্ডার",
+    "profile": "প্রোফাইল"
+  },
+  "hero": {
+    "badge": "🏠 ৫ বছরের সত্যিকারের ঘরোয়া ভালোবাসা",
+    "titleLine1": "একটি ঘরের-খাবার",
+    "titleLine2": "বিপ্লব",
+    "subtitle": "ভারতের বৃহত্তম হোম ফুড প্ল্যাটফর্ম।",
+    "description": "কাছের হোম কুকদের থেকে তাজা ঘরের রান্না।",
+    "orderNow": "এখনই অর্ডার করুন",
+    "beAShero": "শীরো হন"
+  },
+  "popular": {
+    "title": "জনপ্রিয় খাবার",
+    "subtitle": "আজ সবচেয়ে বেশি অর্ডার করা খাবার",
+    "viewAll": "সব দেখুন →",
+    "add": "যোগ করুন +"
+  },
+  "subscription": {
+    "weeklyMonthly": "সাপ্তাহিক ও মাসিক",
+    "mealPlansTitle": "খাবার সাবস্ক্রিপশন প্ল্যান",
+    "mealPlansDesc": "শীরো হোম শেফদের থেকে দৈনিক ঘরের খাবার সাবস্ক্রাইব করুন।",
+    "browsePlans": "প্ল্যান দেখুন",
+    "uniqueExperiences": "অনন্য অভিজ্ঞতা",
+    "diningTitle": "হোম ডাইনিং অভিজ্ঞতা বুক করুন",
+    "diningDesc": "শীরোর টেবিলে খাবার খান।",
+    "exploreExperiences": "অভিজ্ঞতা দেখুন"
+  },
+  "why": {
+    "title": "শীরো কীভাবে আলাদা",
+    "subtitle": "আপনার সাধারণ ফুড ডেলিভারি নয়",
+    "nostalgia": "স্মৃতি পৌঁছে দেওয়া",
+    "nostalgiaDesc": "কাছের হোম কুকদের থেকে তাজা ঘরের রান্না।",
+    "formula": "সূত্র বদলানো",
+    "formulaDesc": "বিকেন্দ্রীকৃত হোম কিচেনের সাথে নতুন দৃষ্টিভঙ্গি।",
+    "sheroes": "শীরো তৈরি করা",
+    "sheroesDesc": "মহিলাদের রান্নার প্রতিভার মাধ্যমে আর্থিক স্বাধীনতা।",
+    "fresh": "তাজা ও সময়মতো",
+    "freshDesc": "৫০০+ ধরনের স্বাস্থ্যকর খাবার প্রতিদিন তাজা।"
+  },
+  "footer": {
+    "tagline": "ভারতের বৃহত্তম হোম ফুড প্ল্যাটফর্ম।",
+    "quickLinks": "দ্রুত লিঙ্ক",
+    "whoWeAre": "আমরা কে",
+    "beAShero": "শীরো হন",
+    "franchise": "ফ্র্যাঞ্চাইজ",
+    "awards": "পুরস্কার ও ইভেন্ট",
+    "faq": "FAQ",
+    "contact": "যোগাযোগ",
+    "contactSupport": "📞 সাপোর্টে যোগাযোগ করুন",
+    "email": "✉️ hello@sherohomefood.com",
+    "locations": "📍 ৭২ শহর, ১৪ রাজ্য, ভারত",
+    "copyright": "© ২০২৬ Shero Home Food. সর্বস্বত্ব সংরক্ষিত।"
+  },
+  "common": {
+    "backToHome": "হোমে ফিরুন",
+    "bestSeller": "বেস্ট সেলার",
+    "popular": "জনপ্রিয়",
+    "quick": "দ্রুত",
+    "special": "বিশেষ",
+    "breakfast": "সকালের নাস্তা",
+    "premium": "প্রিমিয়াম",
+    "min": "মিনিট",
+    "delivered": "ডেলিভারি হয়েছে",
+    "settings": "সেটিংস",
+    "language": "ভাষা",
+    "selectLanguage": "ভাষা নির্বাচন করুন",
+    "orders": "অর্ডার",
+    "items": "আইটেম",
+    "viewMenu": "মেনু দেখুন"
+  },
+  "notifications": {
+    "orderNotifications": "অর্ডার বিজ্ঞপ্তি",
+    "voice": "ভয়েস",
+    "noPending": "কোনো মুলতুবি বিজ্ঞপ্তি নেই",
+    "newOrders": "নতুন অর্ডার",
+    "pendingOrders": "মুলতুবি অর্ডার",
+    "new": "নতুন",
+    "accepted": "গৃহীত",
+    "preparing": "প্রস্তুত হচ্ছে",
+    "allergens": "অ্যালার্জি",
+    "readAloud": "পড়ুন",
+    "viewAllOrders": "সব অর্ডার দেখুন",
+    "cookingInstructions": "রান্নার নির্দেশনা"
+  },
+  "chefs": {
+    "title": "আমাদের শীরোরা",
+    "subtitle": "আপনার খাবারের পেছনে থাকা অসাধারণ মহিলাদের সাথে দেখা করুন"
+  },
+  "categories": {
+    "title": "কী খেতে মন চাইছে?",
+    "subtitle": "আপনার পছন্দের খাদ্য বিভাগ বেছে নিন",
+    "rice": "ভাত",
+    "dosa": "দোসা",
+    "idli": "ইডলি",
+    "biryani": "বিরিয়ানি",
+    "chapati": "চাপাতি",
+    "curries": "তরকারি",
+    "snacks": "স্ন্যাক্স",
+    "sweets": "মিষ্টি"
+  },
+  "serviceCategories": {
+    "title": "আমরা আপনার জন্য কী করতে পারি?",
+    "subtitle": "আমাদের হোম ফুড ও সেবা থেকে বেছে নিন",
+    "instantDelivery": "তাৎক্ষণিক ফুড ডেলিভারি",
+    "instantDeliveryDesc": "তাজা ঘরের রান্না, দ্রুত ডেলিভারি",
+    "subscriptions": "সাবস্ক্রিপশন",
+    "subscriptionsDesc": "দৈনিক, সাপ্তাহিক ও মাসিক মিল প্ল্যান",
+    "partyOrders": "পার্টি অর্ডার",
+    "partyOrdersDesc": "ইভেন্ট ও সমাবেশের জন্য বাল্ক অর্ডার",
+    "sweetsSnacks": "মিষ্টি ও স্ন্যাক্স",
+    "sweetsSnacksDesc": "ঘরে তৈরি মিষ্টি, স্ন্যাক্স ও ট্রিটস",
+    "sheroClasses": "শীরো ক্লাস",
+    "sheroClassesDesc": "যোগ, ফিটনেস, সুস্থতা ও আরও",
+    "cookeryClasses": "রান্নার ক্লাস",
+    "cookeryClassesDesc": "বিশেষজ্ঞ হোম শেফদের কাছ থেকে শিখুন"
+  },
+  "party": {
+    "title": "পার্টি অর্ডার", "subtitle": "সমস্ত পার্টি বুকিং দেখুন", "welcomeMessage": "আপনার অতিথিদের জন্য সত্যিকারের ঘরের রান্না বেছে নেওয়ার জন্য ধন্যবাদ!", "vegOrNonVeg": "নিরামিষ না আমিষ?", "vegetarian": "নিরামিষ", "vegDesc": "মাংস বা ডিম ছাড়া শুদ্ধ নিরামিষ", "nonVegetarian": "আমিষ", "nonVegDesc": "চিকেন, মটন, মাছ ও আরও", "selectMealSessions": "খাবারের সময় নির্বাচন করুন", "sessionInfo": "এক বা একাধিক বেছে নিন।", "breakfast": "সকালের খাবার", "lunch": "দুপুরের খাবার", "snacks": "স্ন্যাক্স", "dinner": "রাতের খাবার", "next": "পরবর্তী", "back": "পেছনে", "eventDetails": "ইভেন্ট বিবরণ", "guestsMin": "অতিথি (সর্বনিম্ন 10)", "occasion": "অনুষ্ঠান", "selectOccasion": "নির্বাচন করুন", "eventDate": "ইভেন্টের তারিখ", "servingTime": "পরিবেশনের সময়", "selectTime": "সময় নির্বাচন করুন", "minGuestsRequired": "সর্বনিম্ন 10 অতিথি প্রয়োজন", "minGuestsDesc": "পার্টি অর্ডারে সর্বনিম্ন 10 অতিথি প্রয়োজন।", "selected": "নির্বাচিত", "options": "বিকল্প", "perHead": "জনপ্রতি", "addOns": "অ্যাড-অন", "plate": "প্লেট", "summary": "সারাংশ", "orderSummary": "অর্ডার সারাংশ", "sessionSubtotal": "সেশন উপ-মোট", "guests": "অতিথি", "items": "আইটেম", "cookingInstructions": "রান্নার নির্দেশনা", "cookingInstructionsOptional": "ঐচ্ছিক", "cookingInstructionsPlaceholder": "যেমন: রসুন নেই, কম তেল, বেশি মশলা...", "delivery": "ডেলিভারি", "deliveryOption": "ডেলিভারি", "selfPickup": "নিজে নিন", "noDeliveryCharge": "ডেলিভারি চার্জ নেই", "deliveryAtActuals": "প্রকৃত মূল্যে ডেলিভারি", "grandTotal": "মোট", "meal": "খাবার", "packing": "প্যাকিং", "boxes": "বাক্স", "packingDetails": "প্যাকিং বিবরণ", "total": "মোট", "paymentOption": "পেমেন্ট বিকল্প", "fullPayment": "সম্পূর্ণ পেমেন্ট", "fiftyAdvance": "50% অগ্রিম", "now": "এখন",
+    "terms": { "minAdvance": "বুকিংয়ে সর্বনিম্ন 50% অগ্রিম।", "balanceDue": "বাকি পেমেন্ট ইভেন্টের 1 দিন আগে।", "freeCancellation": "ইভেন্টের 2 দিন আগে বিনামূল্যে বাতিল।", "deliveryCharges": "ডেলিভারি চার্জ প্রকৃত মূল্যে।" },
+    "pdf": "PDF", "whatsapp": "WhatsApp", "save": "সেভ", "share": "শেয়ার", "chatWithAgent": "এজেন্টের সাথে চ্যাট", "edit": "সম্পাদনা", "proceedToPayment": "পেমেন্ট করুন", "payment": "পেমেন্ট", "orderTotal": "অর্ডার মোট", "advance": "অগ্রিম (50%)", "balanceDueBefore": "বাকি (1 দিন আগে)", "sessions": "সেশন", "backToSummary": "সারাংশে ফিরুন", "thankYou": "ধন্যবাদ!", "redirecting": "হোমে যাচ্ছে...", "welcomeBack": "ফিরে স্বাগতম, {{name}}!", "retrieveSavedOrder": "সেভ করা অর্ডার আনুন", "startNewOrder": "নতুন অর্ডার", "foodType": "খাবারের ধরন", "veg": "নিরামিষ", "nonVeg": "আমিষ",
+    "partner": { "title": "পার্টি অর্ডার", "subtitle": "বরাদ্দ অর্ডার দেখুন।", "noOrders": "কোনো পার্টি অর্ডার বরাদ্দ হয়নি।", "orders": "অর্ডার", "productionChart": "উৎপাদন চার্ট", "yourEarnings": "আপনার আয়", "viewDetails": "বিবরণ দেখুন", "acceptOrder": "অর্ডার গ্রহণ", "acceptThisOrder": "এই অর্ডার গ্রহণ করুন", "customerCookingInstructions": "গ্রাহকের রান্নার নির্দেশনা", "productionSheet": "উৎপাদন শীট", "plates": "প্লেট", "item": "আইটেম", "mealCol": "খাবার", "perPlate": "প্লেটে", "totalVol": "মোট পরিমাণ", "earnings": "আয়", "totalEarnings": "মোট আয়", "newAccept": "নতুন — গ্রহণ?", "accepted": "গৃহীত", "preparing": "তৈরি হচ্ছে", "delivered": "ডেলিভার হয়েছে", "selectOrderPrompt": "উৎপাদন চার্ট দেখতে অর্ডার নির্বাচন করুন।" },
+    "admin": { "title": "পার্টি অর্ডার", "subtitle": "সমস্ত বুকিং পরিচালনা করুন", "totalOrders": "মোট অর্ডার", "pending": "মুলতুবি", "allocated": "বরাদ্দ", "totalMRP": "মোট MRP", "pppValue": "PPP মূল্য (55%)", "searchPlaceholder": "অর্ডার ID, নাম, বা ফোন দিয়ে খুঁজুন...", "all": "সব", "customerDetails": "গ্রাহক বিবরণ", "eventDetailsLabel": "ইভেন্ট বিবরণ", "dateTime": "তারিখ ও সময়", "type": "ধরন", "meals": "খাবার", "menuItems": "মেনু আইটেম", "cookingInstructionsLabel": "রান্নার নির্দেশনা", "paymentLabel": "পেমেন্ট", "totalAmount": "মোট পরিমাণ", "allocatedPartner": "বরাদ্দ অংশীদার", "allocatedOn": "বরাদ্দের তারিখ", "orderPlacedOn": "অর্ডারের তারিখ", "statusPending": "মুলতুবি", "statusAllocated": "বরাদ্দ", "statusAccepted": "গৃহীত", "statusPreparing": "তৈরি হচ্ছে", "statusDelivered": "ডেলিভার" }
+  }
+}

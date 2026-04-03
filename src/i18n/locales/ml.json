@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "ഹോം",
+    "subscriptions": "സബ്‌സ്‌ക്രിപ്ഷനുകൾ",
+    "partyOrders": "പാർട്ടി ഓർഡറുകൾ",
+    "sweetsSnacks": "മധുരങ്ങൾ & ലഘുഭക്ഷണങ്ങൾ",
+    "foodProducts": "ഭക്ഷ്യ ഉൽപ്പന്നങ്ങൾ",
+    "services": "സേവനങ്ങൾ",
+    "orderNow": "ഇപ്പോൾ ഓർഡർ ചെയ്യുക",
+    "loginSignUp": "ലോഗിൻ / സൈൻ അപ്പ്",
+    "explore": "പര്യവേക്ഷണം",
+    "orders": "ഓർഡറുകൾ",
+    "profile": "പ്രൊഫൈൽ"
+  },
+  "hero": {
+    "badge": "🏠 5 വർഷത്തെ യഥാർത്ഥ വീട്ടു സ്നേഹം",
+    "titleLine1": "ഒരു വീട്ടു-ഭക്ഷണ",
+    "titleLine2": "വിപ്ലവം",
+    "subtitle": "ഇന്ത്യയിലെ ഏറ്റവും വലിയ ഹോം ഫുഡ് പ്ലാറ്റ്ഫോം.",
+    "description": "സമീപത്തുള്ള ഹോം കുക്കുകളിൽ നിന്ന് പുതിയ വീട്ടു ഭക്ഷണം.",
+    "orderNow": "ഇപ്പോൾ ഓർഡർ ചെയ്യുക",
+    "beAShero": "ഷീറോ ആകൂ"
+  },
+  "popular": {
+    "title": "ജനപ്രിയ വിഭവങ്ങൾ",
+    "subtitle": "ഇന്ന് ഏറ്റവും കൂടുതൽ ഓർഡർ ചെയ്ത ഭക്ഷണങ്ങൾ",
+    "viewAll": "എല്ലാം കാണുക →",
+    "add": "ചേർക്കുക +"
+  },
+  "subscription": {
+    "weeklyMonthly": "ആഴ്ച & മാസം",
+    "mealPlansTitle": "ഭക്ഷണ സബ്‌സ്‌ക്രിപ്ഷൻ പ്ലാനുകൾ",
+    "mealPlansDesc": "ഷീറോ ഹോം ഷെഫുകളിൽ നിന്ന് ദൈനംദിന വീട്ടു ഭക്ഷണം സബ്‌സ്‌ക്രൈബ് ചെയ്യുക.",
+    "browsePlans": "പ്ലാനുകൾ കാണുക",
+    "uniqueExperiences": "അതുല്യ അനുഭവങ്ങൾ",
+    "diningTitle": "ഹോം ഡൈനിംഗ് അനുഭവം ബുക്ക് ചെയ്യുക",
+    "diningDesc": "ഷീറോയുടെ മേശയിൽ ഭക്ഷണം കഴിക്കുക.",
+    "exploreExperiences": "അനുഭവങ്ങൾ കാണുക"
+  },
+  "why": {
+    "title": "ഷീറോ എങ്ങനെ വ്യത്യസ്തമാണ്",
+    "subtitle": "നിങ്ങളുടെ സാധാരണ ഫുഡ് ഡെലിവറി അല്ല",
+    "nostalgia": "ഓർമ്മകൾ എത്തിക്കൽ",
+    "nostalgiaDesc": "സമീപത്തുള്ള ഹോം കുക്കുകളിൽ നിന്ന് പുതിയ വീട്ടു ഭക്ഷണം.",
+    "formula": "ഫോർമുല മാറ്റൽ",
+    "formulaDesc": "വികേന്ദ്രീകൃത ഹോം കിച്ചണുകളുമായി പുതിയ കാഴ്ചപ്പാട്.",
+    "sheroes": "ഷീറോകളെ ഉണ്ടാക്കൽ",
+    "sheroesDesc": "സ്ത്രീകൾക്ക് അവരുടെ പാചക പ്രതിഭയിലൂടെ സാമ്പത്തിക സ്വാതന്ത്ര്യം.",
+    "fresh": "പുതിയത് & സമയത്ത്",
+    "freshDesc": "500+ തരം ആരോഗ്യകരമായ വിഭവങ്ങൾ ദിവസവും പുതുതായി."
+  },
+  "footer": {
+    "tagline": "ഇന്ത്യയിലെ ഏറ്റവും വലിയ ഹോം ഫുഡ് പ്ലാറ്റ്ഫോം.",
+    "quickLinks": "ദ്രുത ലിങ്കുകൾ",
+    "whoWeAre": "ഞങ്ങൾ ആരാണ്",
+    "beAShero": "ഷീറോ ആകൂ",
+    "franchise": "ഫ്രാഞ്ചൈസ്",
+    "awards": "അവാർഡുകൾ & ഇവന്റുകൾ",
+    "faq": "FAQ",
+    "contact": "ബന്ധപ്പെടുക",
+    "contactSupport": "📞 സപ്പോർട്ട് ബന്ധപ്പെടുക",
+    "email": "✉️ hello@sherohomefood.com",
+    "locations": "📍 72 നഗരങ്ങൾ, 14 സംസ്ഥാനങ്ങൾ, ഇന്ത്യ",
+    "copyright": "© 2026 Shero Home Food. എല്ലാ അവകാശങ്ങളും സംരക്ഷിതം."
+  },
+  "common": {
+    "backToHome": "ഹോമിലേക്ക് മടങ്ങുക",
+    "bestSeller": "ബെസ്റ്റ് സെല്ലർ",
+    "popular": "ജനപ്രിയ",
+    "quick": "ദ്രുത",
+    "special": "പ്രത്യേക",
+    "breakfast": "പ്രഭാത ഭക്ഷണം",
+    "premium": "പ്രീമിയം",
+    "min": "മിനിറ്റ്",
+    "delivered": "ഡെലിവർ ചെയ്തു",
+    "settings": "ക്രമീകരണങ്ങൾ",
+    "language": "ഭാഷ",
+    "selectLanguage": "ഭാഷ തിരഞ്ഞെടുക്കുക",
+    "orders": "ഓർഡറുകൾ",
+    "items": "ഇനങ്ങൾ",
+    "viewMenu": "മെനു കാണുക"
+  },
+  "notifications": {
+    "orderNotifications": "ഓർഡർ അറിയിപ്പുകൾ",
+    "voice": "ശബ്ദം",
+    "noPending": "തീർപ്പാക്കാത്ത അറിയിപ്പുകളില്ല",
+    "newOrders": "പുതിയ ഓർഡറുകൾ",
+    "pendingOrders": "തീർപ്പാക്കാത്ത ഓർഡറുകൾ",
+    "new": "പുതിയത്",
+    "accepted": "അംഗീകരിച്ചു",
+    "preparing": "തയ്യാറാക്കുന്നു",
+    "allergens": "അലർജി",
+    "readAloud": "വായിക്കുക",
+    "viewAllOrders": "എല്ലാ ഓർഡറുകളും കാണുക",
+    "cookingInstructions": "പാചക നിർദ്ദേശങ്ങൾ"
+  },
+  "chefs": {
+    "title": "ഞങ്ങളുടെ ഷീറോകൾ",
+    "subtitle": "നിങ്ങളുടെ ഭക്ഷണത്തിന് പിന്നിലെ അത്ഭുതകരമായ സ്ത്രീകളെ കാണുക"
+  },
+  "categories": {
+    "title": "നിങ്ങൾക്ക് എന്ത് കഴിക്കാൻ ആഗ്രഹം?",
+    "subtitle": "നിങ്ങളുടെ ഇഷ്ടപ്പെട്ട ഭക്ഷണ വിഭാഗം തിരഞ്ഞെടുക്കുക",
+    "rice": "ചോറ്",
+    "dosa": "ദോശ",
+    "idli": "ഇഡ്ഡലി",
+    "biryani": "ബിരിയാണി",
+    "chapati": "ചപ്പാത്തി",
+    "curries": "കറികൾ",
+    "snacks": "ലഘുഭക്ഷണങ്ങൾ",
+    "sweets": "മധുരങ്ങൾ"
+  },
+  "serviceCategories": {
+    "title": "ഞങ്ങൾ നിങ്ങൾക്കായി എന്ത് ചെയ്യാം?",
+    "subtitle": "ഞങ്ങളുടെ ഹോം ഫുഡ് & സേവനങ്ങളിൽ നിന്ന് തിരഞ്ഞെടുക്കുക",
+    "instantDelivery": "തൽക്ഷണ ഫുഡ് ഡെലിവറി",
+    "instantDeliveryDesc": "പുതിയ വീട്ടു ഭക്ഷണം, വേഗത്തിൽ ഡെലിവറി",
+    "subscriptions": "സബ്‌സ്‌ക്രിപ്ഷനുകൾ",
+    "subscriptionsDesc": "ദൈനംദിന, ആഴ്ച & മാസ ഭക്ഷണ പ്ലാനുകൾ",
+    "partyOrders": "പാർട്ടി ഓർഡറുകൾ",
+    "partyOrdersDesc": "ഇവന്റുകൾ & കൂട്ടായ്മകൾക്കുള്ള ബൾക്ക് ഓർഡറുകൾ",
+    "sweetsSnacks": "മധുരങ്ങൾ & ലഘുഭക്ഷണങ്ങൾ",
+    "sweetsSnacksDesc": "വീട്ടിൽ ഉണ്ടാക്കിയ മധുരങ്ങൾ, ലഘുഭക്ഷണങ്ങൾ & ട്രീറ്റ്സ്",
+    "sheroClasses": "ഷീറോ ക്ലാസുകൾ",
+    "sheroClassesDesc": "യോഗ, ഫിറ്റ്‌നസ്, വെൽനസ് & കൂടുതൽ",
+    "cookeryClasses": "പാചക ക്ലാസുകൾ",
+    "cookeryClassesDesc": "വിദഗ്ധ ഹോം ഷെഫുകളിൽ നിന്ന് പഠിക്കുക"
+  },
+  "party": {
+    "title": "പാർട്ടി ഓർഡറുകൾ", "subtitle": "എല്ലാ പാർട്ടി ബുക്കിങ്ങുകളും കാണുക", "welcomeMessage": "നിങ്ങളുടെ അതിഥികൾക്ക് യഥാർത്ഥ വീട്ടു ഭക്ഷണം തിരഞ്ഞെടുത്തതിന് നന്ദി!", "vegOrNonVeg": "വെജ് അല്ലെങ്കിൽ നോൺ-വെജ്?", "vegetarian": "സസ്യാഹാരം", "vegDesc": "മാംസമോ മുട്ടയോ ഇല്ലാത്ത ശുദ്ധ സസ്യാഹാരം", "nonVegetarian": "മാംസാഹാരം", "nonVegDesc": "ചിക്കൻ, മട്ടൺ, മീൻ & കൂടുതൽ", "selectMealSessions": "ഭക്ഷണ സമയം തിരഞ്ഞെടുക്കുക", "sessionInfo": "ഒന്നോ അതിലധികമോ തിരഞ്ഞെടുക്കുക.", "breakfast": "പ്രാതൽ", "lunch": "ഉച്ചഭക്ഷണം", "snacks": "ലഘുഭക്ഷണം", "dinner": "അത്താഴം", "next": "അടുത്തത്", "back": "മടങ്ങുക", "eventDetails": "ഇവന്റ് വിശദാംശങ്ങൾ", "guestsMin": "അതിഥികൾ (കുറഞ്ഞത് 10)", "occasion": "അവസരം", "selectOccasion": "തിരഞ്ഞെടുക്കുക", "eventDate": "ഇവന്റ് തീയതി", "servingTime": "വിളമ്പൽ സമയം", "selectTime": "സമയം തിരഞ്ഞെടുക്കുക", "minGuestsRequired": "കുറഞ്ഞത് 10 അതിഥികൾ ആവശ്യമാണ്", "minGuestsDesc": "പാർട്ടി ഓർഡറുകൾക്ക് കുറഞ്ഞത് 10 അതിഥികൾ ആവശ്യമാണ്.", "selected": "തിരഞ്ഞെടുത്തത്", "options": "ഓപ്ഷനുകൾ", "perHead": "ആളുക്ക്", "addOns": "ആഡ്-ഓണുകൾ", "plate": "പ്ലേറ്റ്", "summary": "സംഗ്രഹം", "orderSummary": "ഓർഡർ സംഗ്രഹം", "sessionSubtotal": "സെഷൻ ഉപ-ആകെ", "guests": "അതിഥികൾ", "items": "ഇനങ്ങൾ", "cookingInstructions": "പാചക നിർദ്ദേശങ്ങൾ", "cookingInstructionsOptional": "ഐച്ഛികം", "cookingInstructionsPlaceholder": "ഉദാ. വെളുത്തുള്ളി വേണ്ട, കുറച്ച് എണ്ണ, കൂടുതൽ മസാല...", "delivery": "ഡെലിവറി", "deliveryOption": "ഡെലിവറി", "selfPickup": "സ്വയം എടുക്കൽ", "noDeliveryCharge": "ഡെലിവറി ചാർജ് ഇല്ല", "deliveryAtActuals": "യഥാർത്ഥ വിലയിൽ ഡെലിവറി", "grandTotal": "ആകെ മൊത്തം", "meal": "ഭക്ഷണം", "packing": "പാക്കിംഗ്", "boxes": "ബോക്സുകൾ", "packingDetails": "പാക്കിംഗ് വിശദാംശങ്ങൾ", "total": "ആകെ", "paymentOption": "പേയ്മെന്റ് ഓപ്ഷൻ", "fullPayment": "മുഴുവൻ പേയ്മെന്റ്", "fiftyAdvance": "50% അഡ്വാൻസ്", "now": "ഇപ്പോൾ",
+    "terms": { "minAdvance": "ബുക്കിംഗിൽ കുറഞ്ഞത് 50% അഡ്വാൻസ്.", "balanceDue": "ബാക്കി പേയ്മെന്റ് ഇവന്റിന് 1 ദിവസം മുമ്പ്.", "freeCancellation": "ഇവന്റിന് 2 ദിവസം മുമ്പ് സൗജന്യ റദ്ദാക്കൽ.", "deliveryCharges": "ഡെലിവറി ചാർജ് യഥാർത്ഥ വിലയിൽ." },
+    "pdf": "PDF", "whatsapp": "WhatsApp", "save": "സേവ്", "share": "ഷെയർ", "chatWithAgent": "ഏജന്റുമായി ചാറ്റ്", "edit": "മാറ്റുക", "proceedToPayment": "പേയ്മെന്റിന്", "payment": "പേയ്മെന്റ്", "orderTotal": "ഓർഡർ ആകെ", "advance": "അഡ്വാൻസ് (50%)", "balanceDueBefore": "ബാക്കി (1 ദിവസം മുമ്പ്)", "sessions": "സെഷനുകൾ", "backToSummary": "സംഗ്രഹത്തിലേക്ക്", "thankYou": "നന്ദി!", "redirecting": "ഹോമിലേക്ക്...", "welcomeBack": "തിരികെ സ്വാഗതം, {{name}}!", "retrieveSavedOrder": "സേവ് ചെയ്ത ഓർഡർ", "startNewOrder": "പുതിയ ഓർഡർ", "foodType": "ഭക്ഷണ തരം", "veg": "വെജ്", "nonVeg": "നോൺ-വെജ്",
+    "partner": { "title": "പാർട്ടി ഓർഡറുകൾ", "subtitle": "അലോക്കേറ്റ് ചെയ്ത ഓർഡറുകൾ കാണുക.", "noOrders": "പാർട്ടി ഓർഡറുകൾ അലോക്കേറ്റ് ചെയ്തിട്ടില്ല.", "orders": "ഓർഡറുകൾ", "productionChart": "ഉത്പാദന ചാർട്ട്", "yourEarnings": "നിങ്ങളുടെ വരുമാനം", "viewDetails": "വിശദാംശങ്ങൾ", "acceptOrder": "ഓർഡർ സ്വീകരിക്കുക", "acceptThisOrder": "ഈ ഓർഡർ സ്വീകരിക്കുക", "customerCookingInstructions": "കസ്റ്റമർ പാചക നിർദ്ദേശങ്ങൾ", "productionSheet": "ഉത്പാദന ഷീറ്റ്", "plates": "പ്ലേറ്റുകൾ", "item": "ഇനം", "mealCol": "ഭക്ഷണം", "perPlate": "പ്ലേറ്റിന്", "totalVol": "ആകെ അളവ്", "earnings": "വരുമാനം", "totalEarnings": "ആകെ വരുമാനം", "newAccept": "പുതിയത് — സ്വീകരിക്കണോ?", "accepted": "സ്വീകരിച്ചു", "preparing": "തയ്യാറാക്കുന്നു", "delivered": "ഡെലിവർ ചെയ്തു", "selectOrderPrompt": "ഉത്പാദന ചാർട്ട് കാണാൻ ഓർഡർ തിരഞ്ഞെടുക്കുക." },
+    "admin": { "title": "പാർട്ടി ഓർഡറുകൾ", "subtitle": "എല്ലാ ബുക്കിങ്ങുകളും നിയന്ത്രിക്കുക", "totalOrders": "ആകെ ഓർഡറുകൾ", "pending": "തീർപ്പാക്കാത്ത", "allocated": "അലോക്കേറ്റ് ചെയ്തത്", "totalMRP": "ആകെ MRP", "pppValue": "PPP മൂല്യം (55%)", "searchPlaceholder": "ഓർഡർ ID, പേര്, അല്ലെങ്കിൽ ഫോൺ...", "all": "എല്ലാം", "customerDetails": "കസ്റ്റമർ വിശദാംശങ്ങൾ", "eventDetailsLabel": "ഇവന്റ് വിശദാംശങ്ങൾ", "dateTime": "തീയതി & സമയം", "type": "തരം", "meals": "ഭക്ഷണങ്ങൾ", "menuItems": "മെനു ഇനങ്ങൾ", "cookingInstructionsLabel": "പാചക നിർദ്ദേശങ്ങൾ", "paymentLabel": "പേയ്മെന്റ്", "totalAmount": "ആകെ തുക", "allocatedPartner": "അലോക്കേറ്റ് ചെയ്ത പങ്കാളി", "allocatedOn": "അലോക്കേറ്റ് ചെയ്ത തീയതി", "orderPlacedOn": "ഓർഡർ തീയതി", "statusPending": "തീർപ്പാക്കാത്ത", "statusAllocated": "അലോക്കേറ്റ്", "statusAccepted": "സ്വീകരിച്ചു", "statusPreparing": "തയ്യാറാക്കുന്നു", "statusDelivered": "ഡെലിവർ ചെയ്തു" }
+  }
+}

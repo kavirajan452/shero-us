@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "ಮುಖಪುಟ",
+    "subscriptions": "ಚಂದಾದಾರಿಕೆಗಳು",
+    "partyOrders": "ಪಾರ್ಟಿ ಆರ್ಡರ್‌ಗಳು",
+    "sweetsSnacks": "ಸಿಹಿ & ತಿಂಡಿಗಳು",
+    "foodProducts": "ಆಹಾರ ಉತ್ಪನ್ನಗಳು",
+    "services": "ಸೇವೆಗಳು",
+    "orderNow": "ಈಗ ಆರ್ಡರ್ ಮಾಡಿ",
+    "loginSignUp": "ಲಾಗಿನ್ / ಸೈನ್ ಅಪ್",
+    "explore": "ಅನ್ವೇಷಿಸಿ",
+    "orders": "ಆರ್ಡರ್‌ಗಳು",
+    "profile": "ಪ್ರೊಫೈಲ್"
+  },
+  "hero": {
+    "badge": "🏠 5 ವರ್ಷಗಳ ನಿಜವಾದ ಮನೆ ಪ್ರೀತಿ",
+    "titleLine1": "ಒಂದು ಮನೆ-ಆಹಾರ",
+    "titleLine2": "ಕ್ರಾಂತಿ",
+    "subtitle": "ಭಾರತದ ಅತಿದೊಡ್ಡ ಹೋಮ್ ಫುಡ್ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್.",
+    "description": "ಹತ್ತಿರದ ಹೋಮ್ ಕುಕ್‌ಗಳಿಂದ ತಾಜಾ ಮನೆ ಅಡುಗೆ.",
+    "orderNow": "ಈಗ ಆರ್ಡರ್ ಮಾಡಿ",
+    "beAShero": "ಶೀರೋ ಆಗಿ"
+  },
+  "popular": {
+    "title": "ಜನಪ್ರಿಯ ಭಕ್ಷ್ಯಗಳು",
+    "subtitle": "ಇಂದು ಹೆಚ್ಚು ಆರ್ಡರ್ ಮಾಡಿದ ಊಟಗಳು",
+    "viewAll": "ಎಲ್ಲಾ ನೋಡಿ →",
+    "add": "ಸೇರಿಸಿ +"
+  },
+  "subscription": {
+    "weeklyMonthly": "ವಾರ & ತಿಂಗಳ",
+    "mealPlansTitle": "ಊಟ ಚಂದಾ ಯೋಜನೆಗಳು",
+    "mealPlansDesc": "ಶೀರೋ ಹೋಮ್ ಶೆಫ್‌ಗಳಿಂದ ದೈನಂದಿನ ಮನೆ ಊಟವನ್ನು ಚಂದಾ ಮಾಡಿ.",
+    "browsePlans": "ಯೋಜನೆಗಳನ್ನು ನೋಡಿ",
+    "uniqueExperiences": "ವಿಶಿಷ್ಟ ಅನುಭವಗಳು",
+    "diningTitle": "ಹೋಮ್ ಡೈನಿಂಗ್ ಅನುಭವ ಬುಕ್ ಮಾಡಿ",
+    "diningDesc": "ಶೀರೋ ಮೇಜಿನಲ್ಲಿ ಊಟ ಮಾಡಿ.",
+    "exploreExperiences": "ಅನುಭವಗಳನ್ನು ನೋಡಿ"
+  },
+  "why": {
+    "title": "ಶೀರೋ ಹೇಗೆ ಭಿನ್ನ",
+    "subtitle": "ನಿಮ್ಮ ಸಾಮಾನ್ಯ ಫುಡ್ ಡೆಲಿವರಿ ಅಲ್ಲ",
+    "nostalgia": "ನೆನಪುಗಳನ್ನು ತಲುಪಿಸುವುದು",
+    "nostalgiaDesc": "ಹತ್ತಿರದ ಹೋಮ್ ಕುಕ್‌ಗಳಿಂದ ತಾಜಾ ಮನೆ ಅಡುಗೆ.",
+    "formula": "ಸೂತ್ರವನ್ನು ಬದಲಾಯಿಸುವುದು",
+    "formulaDesc": "ವಿಕೇಂದ್ರೀಕೃತ ಹೋಮ್ ಕಿಚನ್‌ಗಳೊಂದಿಗೆ ಹೊಸ ದೃಷ್ಟಿಕೋನ.",
+    "sheroes": "ಶೀರೋಗಳನ್ನು ಮಾಡುವುದು",
+    "sheroesDesc": "ಮಹಿಳೆಯರಿಗೆ ಅವರ ಅಡುಗೆ ಪ್ರತಿಭೆಯ ಮೂಲಕ ಆರ್ಥಿಕ ಸ್ವಾತಂತ್ರ್ಯ.",
+    "fresh": "ತಾಜಾ & ಸಮಯಕ್ಕೆ",
+    "freshDesc": "500+ ವಿಧದ ಆರೋಗ್ಯಕರ ಭಕ್ಷ್ಯಗಳು ಪ್ರತಿದಿನ ತಾಜಾ."
+  },
+  "footer": {
+    "tagline": "ಭಾರತದ ಅತಿದೊಡ್ಡ ಹೋಮ್ ಫುಡ್ ಪ್ಲಾಟ್‌ಫಾರ್ಮ್.",
+    "quickLinks": "ತ್ವರಿತ ಲಿಂಕ್‌ಗಳು",
+    "whoWeAre": "ನಾವು ಯಾರು",
+    "beAShero": "ಶೀರೋ ಆಗಿ",
+    "franchise": "ಫ್ರಾಂಚೈಸ್",
+    "awards": "ಪ್ರಶಸ್ತಿಗಳು & ಕಾರ್ಯಕ್ರಮಗಳು",
+    "faq": "FAQ",
+    "contact": "ಸಂಪರ್ಕಿಸಿ",
+    "contactSupport": "📞 ಬೆಂಬಲ ಸಂಪರ್ಕಿಸಿ",
+    "email": "✉️ hello@sherohomefood.com",
+    "locations": "📍 72 ನಗರಗಳು, 14 ರಾಜ್ಯಗಳು, ಭಾರತ",
+    "copyright": "© 2026 Shero Home Food. ಎಲ್ಲ ಹಕ್ಕುಗಳು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ."
+  },
+  "common": {
+    "backToHome": "ಮುಖಪುಟಕ್ಕೆ ಹಿಂತಿರುಗಿ",
+    "bestSeller": "ಬೆಸ್ಟ್ ಸೆಲ್ಲರ್",
+    "popular": "ಜನಪ್ರಿಯ",
+    "quick": "ತ್ವರಿತ",
+    "special": "ವಿಶೇಷ",
+    "breakfast": "ಬೆಳಗಿನ ಊಟ",
+    "premium": "ಪ್ರೀಮಿಯಂ",
+    "min": "ನಿಮಿಷ",
+    "delivered": "ತಲುಪಿಸಲಾಗಿದೆ",
+    "settings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+    "language": "ಭಾಷೆ",
+    "selectLanguage": "ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ",
+    "orders": "ಆರ್ಡರ್‌ಗಳು",
+    "items": "ಐಟಂಗಳು",
+    "viewMenu": "ಮೆನು ನೋಡಿ"
+  },
+  "notifications": {
+    "orderNotifications": "ಆರ್ಡರ್ ಅಧಿಸೂಚನೆಗಳು",
+    "voice": "ಧ್ವನಿ",
+    "noPending": "ಬಾಕಿ ಅಧಿಸೂಚನೆಗಳಿಲ್ಲ",
+    "newOrders": "ಹೊಸ ಆರ್ಡರ್‌ಗಳು",
+    "pendingOrders": "ಬಾಕಿ ಆರ್ಡರ್‌ಗಳು",
+    "new": "ಹೊಸ",
+    "accepted": "ಸ್ವೀಕರಿಸಲಾಗಿದೆ",
+    "preparing": "ತಯಾರಿಸಲಾಗುತ್ತಿದೆ",
+    "allergens": "ಅಲರ್ಜಿ",
+    "readAloud": "ಓದಿ",
+    "viewAllOrders": "ಎಲ್ಲಾ ಆರ್ಡರ್‌ಗಳನ್ನು ನೋಡಿ",
+    "cookingInstructions": "ಅಡುಗೆ ಸೂಚನೆಗಳು"
+  },
+  "chefs": {
+    "title": "ನಮ್ಮ ಶೀರೋಗಳು",
+    "subtitle": "ನಿಮ್ಮ ಊಟದ ಹಿಂದಿನ ಅದ್ಭುತ ಮಹಿಳೆಯರನ್ನು ಭೇಟಿ ಮಾಡಿ"
+  },
+  "categories": {
+    "title": "ನಿಮಗೆ ಏನು ತಿನ್ನಲು ಆಸೆ?",
+    "subtitle": "ನಿಮ್ಮ ಮೆಚ್ಚಿನ ಆಹಾರ ವರ್ಗವನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+    "rice": "ಅನ್ನ",
+    "dosa": "ದೋಸೆ",
+    "idli": "ಇಡ್ಲಿ",
+    "biryani": "ಬಿರಿಯಾನಿ",
+    "chapati": "ಚಪಾತಿ",
+    "curries": "ಕರಿಗಳು",
+    "snacks": "ತಿಂಡಿಗಳು",
+    "sweets": "ಸಿಹಿ"
+  },
+  "serviceCategories": {
+    "title": "ನಾವು ನಿಮಗೆ ಏನು ಮಾಡಬಹುದು?",
+    "subtitle": "ನಮ್ಮ ಹೋಮ್ ಫುಡ್ & ಸೇವೆಗಳಿಂದ ಆಯ್ಕೆಮಾಡಿ",
+    "instantDelivery": "ತಕ್ಷಣ ಫುಡ್ ಡೆಲಿವರಿ",
+    "instantDeliveryDesc": "ತಾಜಾ ಮನೆ ಅಡುಗೆ, ವೇಗವಾಗಿ ಡೆಲಿವರಿ",
+    "subscriptions": "ಚಂದಾದಾರಿಕೆಗಳು",
+    "subscriptionsDesc": "ದೈನಂದಿನ, ವಾರ & ತಿಂಗಳ ಊಟ ಯೋಜನೆಗಳು",
+    "partyOrders": "ಪಾರ್ಟಿ ಆರ್ಡರ್‌ಗಳು",
+    "partyOrdersDesc": "ಕಾರ್ಯಕ್ರಮಗಳು & ಸಮಾವೇಶಗಳಿಗೆ ಬಲ್ಕ್ ಆರ್ಡರ್‌ಗಳು",
+    "sweetsSnacks": "ಸಿಹಿ & ತಿಂಡಿಗಳು",
+    "sweetsSnacksDesc": "ಮನೆಯಲ್ಲಿ ಮಾಡಿದ ಸಿಹಿ, ತಿಂಡಿ & ಟ್ರೀಟ್ಸ್",
+    "sheroClasses": "ಶೀರೋ ತರಗತಿಗಳು",
+    "sheroClassesDesc": "ಯೋಗ, ಫಿಟ್‌ನೆಸ್, ಸ್ವಾಸ್ಥ್ಯ & ಇನ್ನಷ್ಟು",
+    "cookeryClasses": "ಅಡುಗೆ ತರಗತಿಗಳು",
+    "cookeryClassesDesc": "ತಜ್ಞ ಹೋಮ್ ಶೆಫ್‌ಗಳಿಂದ ಕಲಿಯಿರಿ"
+  },
+  "party": {
+    "title": "ಪಾರ್ಟಿ ಆರ್ಡರ್‌ಗಳು", "subtitle": "ಎಲ್ಲ ಪಾರ್ಟಿ ಬುಕಿಂಗ್‌ಗಳನ್ನು ನೋಡಿ", "welcomeMessage": "ನಿಮ್ಮ ಅತಿಥಿಗಳಿಗೆ ನಿಜವಾದ ಮನೆಯ ಅಡುಗೆ ಆಯ್ಕೆ ಮಾಡಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದ!", "vegOrNonVeg": "ಸಸ್ಯಾಹಾರ ಅಥವಾ ಮಾಂಸಾಹಾರ?", "vegetarian": "ಸಸ್ಯಾಹಾರ", "vegDesc": "ಮಾಂಸ ಅಥವಾ ಮೊಟ್ಟೆ ಇಲ್ಲದ ಶುದ್ಧ ಸಸ್ಯಾಹಾರ", "nonVegetarian": "ಮಾಂಸಾಹಾರ", "nonVegDesc": "ಚಿಕನ್, ಮಟನ್, ಮೀನು & ಹೆಚ್ಚು", "selectMealSessions": "ಊಟದ ಸಮಯ ಆಯ್ಕೆ ಮಾಡಿ", "sessionInfo": "ಒಂದು ಅಥವಾ ಹೆಚ್ಚು ಆಯ್ಕೆ ಮಾಡಿ.", "breakfast": "ಬೆಳಗಿನ ತಿಂಡಿ", "lunch": "ಮಧ್ಯಾಹ್ನದ ಊಟ", "snacks": "ತಿಂಡಿಗಳು", "dinner": "ರಾತ್ರಿ ಊಟ", "next": "ಮುಂದೆ", "back": "ಹಿಂದೆ", "eventDetails": "ಈವೆಂಟ್ ವಿವರಗಳು", "guestsMin": "ಅತಿಥಿಗಳು (ಕನಿಷ್ಠ 10)", "occasion": "ಸಂದರ್ಭ", "selectOccasion": "ಆಯ್ಕೆ ಮಾಡಿ", "eventDate": "ಈವೆಂಟ್ ದಿನಾಂಕ", "servingTime": "ಬಡಿಸುವ ಸಮಯ", "selectTime": "ಸಮಯ ಆಯ್ಕೆ ಮಾಡಿ", "minGuestsRequired": "ಕನಿಷ್ಠ 10 ಅತಿಥಿಗಳು ಅಗತ್ಯ", "minGuestsDesc": "ಪಾರ್ಟಿ ಆರ್ಡರ್‌ಗಳಿಗೆ ಕನಿಷ್ಠ 10 ಅತಿಥಿಗಳು ಅಗತ್ಯ.", "selected": "ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ", "options": "ಆಯ್ಕೆಗಳು", "perHead": "ತಲೆಗೆ", "addOns": "ಹೆಚ್ಚುವರಿ", "plate": "ಪ್ಲೇಟ್", "summary": "ಸಾರಾಂಶ", "orderSummary": "ಆರ್ಡರ್ ಸಾರಾಂಶ", "sessionSubtotal": "ಸೆಷನ್ ಉಪ-ಮೊತ್ತ", "guests": "ಅತಿಥಿಗಳು", "items": "ಐಟಂಗಳು", "cookingInstructions": "ಅಡುಗೆ ಸೂಚನೆಗಳು", "cookingInstructionsOptional": "ಐಚ್ಛಿಕ", "cookingInstructionsPlaceholder": "ಉದಾ. ಬೆಳ್ಳುಳ್ಳಿ ಬೇಡ, ಕಡಿಮೆ ಎಣ್ಣೆ, ಹೆಚ್ಚು ಮಸಾಲೆ...", "delivery": "ಡೆಲಿವರಿ", "deliveryOption": "ಡೆಲಿವರಿ", "selfPickup": "ಸ್ವಯಂ ಪಿಕಪ್", "noDeliveryCharge": "ಡೆಲಿವರಿ ಶುಲ್ಕ ಇಲ್ಲ", "deliveryAtActuals": "ನಿಜವಾದ ಬೆಲೆಗೆ ಡೆಲಿವರಿ", "grandTotal": "ಒಟ್ಟು ಮೊತ್ತ", "meal": "ಊಟ", "packing": "ಪ್ಯಾಕಿಂಗ್", "boxes": "ಬಾಕ್ಸ್‌ಗಳು", "packingDetails": "ಪ್ಯಾಕಿಂಗ್ ವಿವರಗಳು", "total": "ಒಟ್ಟು", "paymentOption": "ಪಾವತಿ ಆಯ್ಕೆ", "fullPayment": "ಪೂರ್ಣ ಪಾವತಿ", "fiftyAdvance": "50% ಮುಂಗಡ", "now": "ಈಗ",
+    "terms": { "minAdvance": "ಬುಕಿಂಗ್‌ನಲ್ಲಿ ಕನಿಷ್ಠ 50% ಮುಂಗಡ.", "balanceDue": "ಬಾಕಿ ಪಾವತಿ ಈವೆಂಟ್‌ಗೆ 1 ದಿನ ಮುಂಚೆ.", "freeCancellation": "ಈವೆಂಟ್‌ಗೆ 2 ದಿನ ಮುಂಚೆ ಉಚಿತ ರದ್ದು.", "deliveryCharges": "ಡೆಲಿವರಿ ಶುಲ್ಕ ನಿಜವಾದ ಬೆಲೆಗೆ." },
+    "pdf": "PDF", "whatsapp": "WhatsApp", "save": "ಉಳಿಸಿ", "share": "ಹಂಚಿ", "chatWithAgent": "ಏಜೆಂಟ್ ಜೊತೆ ಚಾಟ್", "edit": "ಬದಲಾಯಿಸಿ", "proceedToPayment": "ಪಾವತಿಗೆ", "payment": "ಪಾವತಿ", "orderTotal": "ಆರ್ಡರ್ ಒಟ್ಟು", "advance": "ಮುಂಗಡ (50%)", "balanceDueBefore": "ಬಾಕಿ (1 ದಿನ ಮುಂಚೆ)", "sessions": "ಸೆಷನ್‌ಗಳು", "backToSummary": "ಸಾರಾಂಶಕ್ಕೆ ಹಿಂತಿರುಗಿ", "thankYou": "ಧನ್ಯವಾದಗಳು!", "redirecting": "ಹೋಮ್‌ಗೆ ಮರುನಿರ್ದೇಶಿಸಲಾಗುತ್ತಿದೆ...", "welcomeBack": "ಮರಳಿ ಸ್ವಾಗತ, {{name}}!", "retrieveSavedOrder": "ಉಳಿಸಿದ ಆರ್ಡರ್ ತರಿ", "startNewOrder": "ಹೊಸ ಆರ್ಡರ್ ಪ್ರಾರಂಭಿಸಿ", "foodType": "ಆಹಾರ ಪ್ರಕಾರ", "veg": "ಸಸ್ಯಾಹಾರ", "nonVeg": "ಮಾಂಸಾಹಾರ",
+    "partner": { "title": "ಪಾರ್ಟಿ ಆರ್ಡರ್‌ಗಳು", "subtitle": "ನಿಯೋಜಿತ ಆರ್ಡರ್‌ಗಳು ನೋಡಿ.", "noOrders": "ನಿಮಗೆ ಪಾರ್ಟಿ ಆರ್ಡರ್ ನಿಯೋಜಿಸಲಾಗಿಲ್ಲ.", "orders": "ಆರ್ಡರ್‌ಗಳು", "productionChart": "ಉತ್ಪಾದನೆ ಚಾರ್ಟ್", "yourEarnings": "ನಿಮ್ಮ ಗಳಿಕೆ", "viewDetails": "ವಿವರಗಳು ನೋಡಿ", "acceptOrder": "ಆರ್ಡರ್ ಸ್ವೀಕರಿಸಿ", "acceptThisOrder": "ಈ ಆರ್ಡರ್ ಸ್ವೀಕರಿಸಿ", "customerCookingInstructions": "ಗ್ರಾಹಕ ಅಡುಗೆ ಸೂಚನೆಗಳು", "productionSheet": "ಉತ್ಪಾದನೆ ಶೀಟ್", "plates": "ಪ್ಲೇಟ್‌ಗಳು", "item": "ಐಟಂ", "mealCol": "ಊಟ", "perPlate": "ಪ್ಲೇಟ್‌ಗೆ", "totalVol": "ಒಟ್ಟು ಪ್ರಮಾಣ", "earnings": "ಗಳಿಕೆ", "totalEarnings": "ಒಟ್ಟು ಗಳಿಕೆ", "newAccept": "ಹೊಸದು — ಸ್ವೀಕರಿಸುವುದೇ?", "accepted": "ಸ್ವೀಕರಿಸಲಾಗಿದೆ", "preparing": "ತಯಾರಿಸುತ್ತಿದೆ", "delivered": "ಡೆಲಿವರಿ ಆಗಿದೆ", "selectOrderPrompt": "ಉತ್ಪಾದನೆ ಚಾರ್ಟ್ ನೋಡಲು ಆರ್ಡರ್ ಆಯ್ಕೆ ಮಾಡಿ." },
+    "admin": { "title": "ಪಾರ್ಟಿ ಆರ್ಡರ್‌ಗಳು", "subtitle": "ಎಲ್ಲ ಪಾರ್ಟಿ ಬುಕಿಂಗ್ ನಿರ್ವಹಿಸಿ", "totalOrders": "ಒಟ್ಟು ಆರ್ಡರ್", "pending": "ಬಾಕಿ", "allocated": "ನಿಯೋಜಿತ", "totalMRP": "ಒಟ್ಟು MRP", "pppValue": "PPP ಮೌಲ್ಯ (55%)", "searchPlaceholder": "ಆರ್ಡರ್ ID, ಹೆಸರು, ಅಥವಾ ಫೋನ್ ಮೂಲಕ ಹುಡುಕಿ...", "all": "ಎಲ್ಲಾ", "customerDetails": "ಗ್ರಾಹಕ ವಿವರಗಳು", "eventDetailsLabel": "ಈವೆಂಟ್ ವಿವರಗಳು", "dateTime": "ದಿನಾಂಕ & ಸಮಯ", "type": "ಪ್ರಕಾರ", "meals": "ಊಟಗಳು", "menuItems": "ಮೆನು ಐಟಂಗಳು", "cookingInstructionsLabel": "ಅಡುಗೆ ಸೂಚನೆಗಳು", "paymentLabel": "ಪಾವತಿ", "totalAmount": "ಒಟ್ಟು ಮೊತ್ತ", "allocatedPartner": "ನಿಯೋಜಿತ ಪಾಲುದಾರ", "allocatedOn": "ನಿಯೋಜಿತ ದಿನಾಂಕ", "orderPlacedOn": "ಆರ್ಡರ್ ದಿನಾಂಕ", "statusPending": "ಬಾಕಿ", "statusAllocated": "ನಿಯೋಜಿತ", "statusAccepted": "ಸ್ವೀಕರಿಸಲಾಗಿದೆ", "statusPreparing": "ತಯಾರಿಸುತ್ತಿದೆ", "statusDelivered": "ಡೆಲಿವರಿ ಆಗಿದೆ" }
+  }
+}

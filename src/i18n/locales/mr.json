@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "मुख्यपृष्ठ",
+    "subscriptions": "सबस्क्रिप्शन",
+    "partyOrders": "पार्टी ऑर्डर",
+    "sweetsSnacks": "मिठाई आणि स्नॅक्स",
+    "foodProducts": "खाद्य उत्पादने",
+    "services": "सेवा",
+    "orderNow": "आत्ता ऑर्डर करा",
+    "loginSignUp": "लॉगिन / साइन अप",
+    "explore": "शोधा",
+    "orders": "ऑर्डर",
+    "profile": "प्रोफाइल"
+  },
+  "hero": {
+    "badge": "🏠 5 वर्षांचे खरे घरगुती प्रेम",
+    "titleLine1": "एक घर-अन्न",
+    "titleLine2": "क्रांती",
+    "subtitle": "भारतातील सर्वात मोठे होम फूड प्लॅटफॉर्म.",
+    "description": "जवळच्या होम कुक्स कडून ताजे घरचे जेवण.",
+    "orderNow": "आत्ता ऑर्डर करा",
+    "beAShero": "शीरो व्हा"
+  },
+  "popular": {
+    "title": "लोकप्रिय पदार्थ",
+    "subtitle": "आज सर्वाधिक ऑर्डर केलेले जेवण",
+    "viewAll": "सर्व पहा →",
+    "add": "जोडा +"
+  },
+  "subscription": {
+    "weeklyMonthly": "साप्ताहिक आणि मासिक",
+    "mealPlansTitle": "जेवण सबस्क्रिप्शन प्लॅन",
+    "mealPlansDesc": "शीरो होम शेफ कडून रोजचे घरचे जेवण सबस्क्राइब करा.",
+    "browsePlans": "प्लॅन पहा",
+    "uniqueExperiences": "अनोखे अनुभव",
+    "diningTitle": "होम डायनिंग अनुभव बुक करा",
+    "diningDesc": "शीरोच्या टेबलवर जेवा.",
+    "exploreExperiences": "अनुभव शोधा"
+  },
+  "why": {
+    "title": "शीरो कसे वेगळे आहे",
+    "subtitle": "तुमचे नेहमीचे फूड डिलिव्हरी नाही",
+    "nostalgia": "आठवणी पोहोचवणे",
+    "nostalgiaDesc": "जवळच्या होम कुक्स कडून ताजे घरचे जेवण.",
+    "formula": "फॉर्म्युला बदलणे",
+    "formulaDesc": "विकेंद्रीकृत होम किचन सह नवी दृष्टी.",
+    "sheroes": "शीरोज बनवणे",
+    "sheroesDesc": "महिलांना त्यांच्या पाककला गुणवत्तेतून आर्थिक स्वातंत्र्य.",
+    "fresh": "ताजे आणि वेळेवर",
+    "freshDesc": "500+ प्रकारचे आरोग्यदायी पदार्थ दररोज ताजे."
+  },
+  "footer": {
+    "tagline": "भारतातील सर्वात मोठे होम फूड प्लॅटफॉर्म.",
+    "quickLinks": "जलद दुवे",
+    "whoWeAre": "आम्ही कोण",
+    "beAShero": "शीरो व्हा",
+    "franchise": "फ्रँचायझी",
+    "awards": "पुरस्कार आणि कार्यक्रम",
+    "faq": "FAQ",
+    "contact": "संपर्क",
+    "contactSupport": "📞 सपोर्टशी संपर्क करा",
+    "email": "✉️ hello@sherohomefood.com",
+    "locations": "📍 72 शहरे, 14 राज्ये, भारत",
+    "copyright": "© 2026 Shero Home Food. सर्व हक्क राखीव."
+  },
+  "common": {
+    "backToHome": "मुख्यपृष्ठावर परत",
+    "bestSeller": "बेस्ट सेलर",
+    "popular": "लोकप्रिय",
+    "quick": "जलद",
+    "special": "विशेष",
+    "breakfast": "नाश्ता",
+    "premium": "प्रीमियम",
+    "min": "मिनिटे",
+    "delivered": "डिलिव्हर झाले",
+    "settings": "सेटिंग्ज",
+    "language": "भाषा",
+    "selectLanguage": "भाषा निवडा",
+    "orders": "ऑर्डर",
+    "items": "आयटम",
+    "viewMenu": "मेनू पहा"
+  },
+  "notifications": {
+    "orderNotifications": "ऑर्डर सूचना",
+    "voice": "आवाज",
+    "noPending": "कोणतीही प्रलंबित सूचना नाही",
+    "newOrders": "नवीन ऑर्डर",
+    "pendingOrders": "प्रलंबित ऑर्डर",
+    "new": "नवीन",
+    "accepted": "स्वीकृत",
+    "preparing": "तयार होत आहे",
+    "allergens": "ॲलर्जी",
+    "readAloud": "वाचा",
+    "viewAllOrders": "सर्व ऑर्डर पहा",
+    "cookingInstructions": "स्वयंपाक सूचना"
+  },
+  "chefs": {
+    "title": "आमच्या शीरोज",
+    "subtitle": "तुमच्या जेवणामागच्या अद्भुत महिलांना भेटा"
+  },
+  "categories": {
+    "title": "तुम्हाला काय खायचे आहे?",
+    "subtitle": "तुमची आवडती खाद्य श्रेणी निवडा",
+    "rice": "भात",
+    "dosa": "डोसा",
+    "idli": "इडली",
+    "biryani": "बिर्याणी",
+    "chapati": "चपाती",
+    "curries": "भाज्या",
+    "snacks": "स्नॅक्स",
+    "sweets": "मिठाई"
+  },
+  "serviceCategories": {
+    "title": "आम्ही तुमच्यासाठी काय करू शकतो?",
+    "subtitle": "आमच्या होम फूड आणि सेवांमधून निवडा",
+    "instantDelivery": "तात्काळ फूड डिलिव्हरी",
+    "instantDeliveryDesc": "ताजे घरचे जेवण, जलद डिलिव्हरी",
+    "subscriptions": "सबस्क्रिप्शन",
+    "subscriptionsDesc": "दैनिक, साप्ताहिक आणि मासिक मील प्लॅन",
+    "partyOrders": "पार्टी ऑर्डर",
+    "partyOrdersDesc": "इव्हेंट आणि समारंभांसाठी बल्क ऑर्डर",
+    "sweetsSnacks": "मिठाई आणि स्नॅक्स",
+    "sweetsSnacksDesc": "घरी बनवलेली मिठाई, स्नॅक्स आणि ट्रीट्स",
+    "sheroClasses": "शीरो वर्ग",
+    "sheroClassesDesc": "योग, फिटनेस, वेलनेस आणि बरेच काही",
+    "cookeryClasses": "स्वयंपाक वर्ग",
+    "cookeryClassesDesc": "तज्ञ होम शेफ कडून शिका"
+  },
+  "party": {
+    "title": "पार्टी ऑर्डर", "subtitle": "सर्व पार्टी बुकिंग पहा", "welcomeMessage": "तुमच्या पाहुण्यांसाठी खरे घरचे जेवण निवडल्याबद्दल धन्यवाद!", "vegOrNonVeg": "शाकाहारी की मांसाहारी?", "vegetarian": "शाकाहारी", "vegDesc": "मांस किंवा अंडी नसलेले शुद्ध शाकाहारी", "nonVegetarian": "मांसाहारी", "nonVegDesc": "चिकन, मटण, मासे आणि बरेच काही", "selectMealSessions": "जेवणाची वेळ निवडा", "sessionInfo": "एक किंवा अधिक निवडा.", "breakfast": "नाश्ता", "lunch": "दुपारचे जेवण", "snacks": "स्नॅक्स", "dinner": "रात्रीचे जेवण", "next": "पुढे", "back": "मागे", "eventDetails": "कार्यक्रम तपशील", "guestsMin": "पाहुणे (किमान 10)", "occasion": "प्रसंग", "selectOccasion": "निवडा", "eventDate": "कार्यक्रमाची तारीख", "servingTime": "सर्व्हिंग वेळ", "selectTime": "वेळ निवडा", "minGuestsRequired": "किमान 10 पाहुणे आवश्यक", "selected": "निवडलेले", "options": "पर्याय", "perHead": "प्रत्येकी", "addOns": "ॲड-ऑन", "plate": "प्लेट", "summary": "सारांश", "orderSummary": "ऑर्डर सारांश", "sessionSubtotal": "सत्र उप-एकूण", "guests": "पाहुणे", "items": "आयटम", "cookingInstructions": "स्वयंपाक सूचना", "cookingInstructionsOptional": "पर्यायी", "cookingInstructionsPlaceholder": "उदा. लसूण नको, कमी तेल, जास्त मसाला...", "delivery": "डिलिव्हरी", "deliveryOption": "डिलिव्हरी", "selfPickup": "स्वतः घ्या", "noDeliveryCharge": "डिलिव्हरी शुल्क नाही", "deliveryAtActuals": "वास्तविक किमतीत डिलिव्हरी", "grandTotal": "एकूण", "meal": "जेवण", "packing": "पॅकिंग", "boxes": "बॉक्स", "total": "एकूण", "paymentOption": "पेमेंट पर्याय", "fullPayment": "पूर्ण पेमेंट", "fiftyAdvance": "50% आगाऊ", "now": "आता",
+    "terms": { "minAdvance": "बुकिंगवर किमान 50% आगाऊ.", "balanceDue": "उर्वरित पेमेंट कार्यक्रमाच्या 1 दिवस आधी.", "freeCancellation": "कार्यक्रमाच्या 2 दिवस आधी मोफत रद्द.", "deliveryCharges": "डिलिव्हरी शुल्क वास्तविक किमतीत." },
+    "pdf": "PDF", "whatsapp": "WhatsApp", "save": "सेव्ह", "share": "शेअर", "chatWithAgent": "एजंटशी चॅट", "edit": "बदला", "proceedToPayment": "पेमेंटसाठी", "payment": "पेमेंट", "orderTotal": "ऑर्डर एकूण", "advance": "आगाऊ (50%)", "balanceDueBefore": "उर्वरित (1 दिवस आधी)", "sessions": "सत्रे", "backToSummary": "सारांशाकडे", "thankYou": "धन्यवाद!", "redirecting": "होमकडे...", "welcomeBack": "परत स्वागत, {{name}}!", "retrieveSavedOrder": "सेव्ह केलेला ऑर्डर आणा", "startNewOrder": "नवीन ऑर्डर", "foodType": "खाद्य प्रकार", "veg": "शाकाहारी", "nonVeg": "मांसाहारी",
+    "partner": { "title": "पार्टी ऑर्डर", "subtitle": "वाटप केलेले ऑर्डर पहा.", "noOrders": "तुम्हाला अजून पार्टी ऑर्डर वाटप झालेले नाहीत.", "orders": "ऑर्डर", "productionChart": "उत्पादन चार्ट", "yourEarnings": "तुमची कमाई", "viewDetails": "तपशील पहा", "acceptOrder": "ऑर्डर स्वीकारा", "acceptThisOrder": "हा ऑर्डर स्वीकारा", "customerCookingInstructions": "ग्राहक स्वयंपाक सूचना", "productionSheet": "उत्पादन शीट", "plates": "प्लेट्स", "item": "आयटम", "mealCol": "जेवण", "perPlate": "प्लेटला", "totalVol": "एकूण प्रमाण", "earnings": "कमाई", "totalEarnings": "एकूण कमाई", "newAccept": "नवीन — स्वीकारायचे?", "accepted": "स्वीकारले", "preparing": "तयार करत आहे", "delivered": "डिलिव्हर झाले", "selectOrderPrompt": "उत्पादन चार्ट पाहण्यासाठी ऑर्डर निवडा." },
+    "admin": { "title": "पार्टी ऑर्डर", "subtitle": "सर्व बुकिंग व्यवस्थापित करा", "totalOrders": "एकूण ऑर्डर", "pending": "प्रलंबित", "allocated": "वाटप", "totalMRP": "एकूण MRP", "pppValue": "PPP मूल्य (55%)", "searchPlaceholder": "ऑर्डर ID, नाव, किंवा फोन...", "all": "सर्व", "customerDetails": "ग्राहक तपशील", "eventDetailsLabel": "कार्यक्रम तपशील", "dateTime": "तारीख व वेळ", "type": "प्रकार", "meals": "जेवण", "menuItems": "मेनू आयटम", "cookingInstructionsLabel": "स्वयंपाक सूचना", "paymentLabel": "पेमेंट", "totalAmount": "एकूण रक्कम", "allocatedPartner": "वाटप केलेला भागीदार", "allocatedOn": "वाटप तारीख", "orderPlacedOn": "ऑर्डर तारीख", "statusPending": "प्रलंबित", "statusAllocated": "वाटप", "statusAccepted": "स्वीकारले", "statusPreparing": "तयार करत आहे", "statusDelivered": "डिलिव्हर" }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "subscriptions": "Abonnements",
+    "partyOrders": "Commandes de Fête",
+    "sweetsSnacks": "Sucreries & Snacks",
+    "foodProducts": "Produits Alimentaires",
+    "services": "Services",
+    "orderNow": "Commander",
+    "loginSignUp": "Connexion / Inscription",
+    "explore": "Explorer",
+    "orders": "Commandes",
+    "profile": "Profil"
+  },
+  "hero": {
+    "badge": "🏠 5 Ans d'Amour Fait Maison",
+    "titleLine1": "Une Cuisine Maison",
+    "titleLine2": "Révolution",
+    "subtitle": "La plus grande plateforme de cuisine maison en Inde.",
+    "description": "Des repas frais faits maison par des cuisiniers proches.",
+    "orderNow": "Commander",
+    "beAShero": "Devenir Shero"
+  },
+  "popular": {
+    "title": "Plats Populaires",
+    "subtitle": "Les repas les plus commandés aujourd'hui",
+    "viewAll": "Voir Tout →",
+    "add": "Ajouter +"
+  },
+  "subscription": {
+    "weeklyMonthly": "Hebdomadaire & Mensuel",
+    "mealPlansTitle": "Abonnements Repas",
+    "mealPlansDesc": "Abonnez-vous aux repas quotidiens des chefs Shero.",
+    "browsePlans": "Voir les Plans",
+    "uniqueExperiences": "Expériences Uniques",
+    "diningTitle": "Réserver une Expérience Culinaire à Domicile",
+    "diningDesc": "Dînez à la table d'une Shero.",
+    "exploreExperiences": "Explorer les Expériences"
+  },
+  "why": {
+    "title": "Ce Qui Rend Shero Différent",
+    "subtitle": "Pas votre plateforme de livraison habituelle",
+    "nostalgia": "Livrer la Nostalgie",
+    "nostalgiaDesc": "Des repas frais faits maison par des cuisiniers proches.",
+    "formula": "Changer la Formule",
+    "formulaDesc": "Une nouvelle vision avec des cuisines décentralisées.",
+    "sheroes": "Créer des Sheroes",
+    "sheroesDesc": "Indépendance financière pour les femmes grâce à leur talent culinaire.",
+    "fresh": "Frais & à l'Heure",
+    "freshDesc": "500+ variétés de plats sains livrés frais chaque jour."
+  },
+  "footer": {
+    "tagline": "La plus grande plateforme de cuisine maison en Inde.",
+    "quickLinks": "Liens Rapides",
+    "whoWeAre": "Qui Sommes-Nous",
+    "beAShero": "Devenir Shero",
+    "franchise": "Franchise",
+    "awards": "Prix & Événements",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "contactSupport": "📞 Contacter le Support",
+    "email": "✉️ hello@sherohomefood.com",
+    "locations": "📍 72 Villes, 14 États, Inde",
+    "copyright": "© 2026 Shero Home Food. Tous droits réservés."
+  },
+  "common": {
+    "backToHome": "Retour à l'Accueil",
+    "bestSeller": "Meilleure Vente",
+    "popular": "Populaire",
+    "quick": "Rapide",
+    "special": "Spécial",
+    "breakfast": "Petit-Déjeuner",
+    "premium": "Premium",
+    "min": "min",
+    "delivered": "Livré",
+    "settings": "Paramètres",
+    "language": "Langue",
+    "selectLanguage": "Choisir la Langue",
+    "orders": "commandes",
+    "items": "articles",
+    "viewMenu": "Voir le Menu"
+  },
+  "notifications": {
+    "orderNotifications": "Notifications de Commandes",
+    "voice": "Voix",
+    "noPending": "Aucune notification en attente",
+    "newOrders": "Nouvelles Commandes",
+    "pendingOrders": "Commandes en Attente",
+    "new": "NOUVEAU",
+    "accepted": "ACCEPTÉ",
+    "preparing": "EN PRÉPARATION",
+    "allergens": "Allergènes",
+    "readAloud": "Lire à haute voix",
+    "viewAllOrders": "Voir Toutes les Commandes",
+    "cookingInstructions": "Instructions de cuisson"
+  },
+  "chefs": {
+    "title": "Nos Sheroes",
+    "subtitle": "Rencontrez les femmes incroyables derrière vos repas"
+  },
+  "categories": {
+    "title": "Qu'est-ce qui Vous Tente ?",
+    "subtitle": "Choisissez votre catégorie de cuisine préférée",
+    "rice": "Riz",
+    "dosa": "Dosa",
+    "idli": "Idli",
+    "biryani": "Biryani",
+    "chapati": "Chapati",
+    "curries": "Currys",
+    "snacks": "Snacks",
+    "sweets": "Sucreries"
+  },
+  "serviceCategories": {
+    "title": "Que Pouvons-Nous Faire pour Vous ?",
+    "subtitle": "Choisissez parmi notre gamme de cuisine maison et services",
+    "instantDelivery": "Livraison Instantanée",
+    "instantDeliveryDesc": "Repas frais faits maison, livrés rapidement",
+    "subscriptions": "Abonnements",
+    "subscriptionsDesc": "Plans repas quotidiens, hebdomadaires et mensuels",
+    "partyOrders": "Commandes de Fête",
+    "partyOrdersDesc": "Commandes en gros pour événements et réunions",
+    "sweetsSnacks": "Sucreries & Snacks",
+    "sweetsSnacksDesc": "Sucreries maison, snacks et gourmandises",
+    "sheroClasses": "Cours Shero",
+    "sheroClassesDesc": "Yoga, fitness, bien-être et plus",
+    "cookeryClasses": "Cours de Cuisine",
+    "cookeryClassesDesc": "Apprenez auprès de chefs maison experts"
+  },
+  "party": {
+    "title": "Commandes de Fête", "subtitle": "Voir et gérer toutes les commandes de fête", "vegOrNonVeg": "Végétarien ou Non-Végétarien?", "vegetarian": "Végétarien", "nonVegetarian": "Non-Végétarien", "selectMealSessions": "Sélectionner les Sessions", "breakfast": "Petit-déjeuner", "lunch": "Déjeuner", "snacks": "Collations", "dinner": "Dîner", "next": "Suivant", "back": "Retour", "eventDetails": "Détails de l'Événement", "guestsMin": "Invités (min 10)", "occasion": "Occasion", "eventDate": "Date", "servingTime": "Heure de Service", "selected": "sélectionnés", "addOns": "Suppléments", "summary": "Résumé", "orderSummary": "Résumé de Commande", "guests": "invités", "items": "articles", "cookingInstructions": "Instructions de Cuisson", "cookingInstructionsOptional": "optionnel", "cookingInstructionsPlaceholder": "Ex. Pas d'ail, moins d'huile, plus épicé...", "delivery": "Livraison", "selfPickup": "Retrait", "grandTotal": "Total Général", "meal": "Repas", "packing": "Emballage", "total": "Total", "paymentOption": "Option de Paiement", "fullPayment": "Paiement Complet", "fiftyAdvance": "50% d'Avance", "now": "maintenant",
+    "terms": { "minAdvance": "Minimum 50% d'avance à la réservation.", "balanceDue": "Solde dû 1 jour avant.", "freeCancellation": "Annulation gratuite 2 jours avant.", "deliveryCharges": "Frais de livraison séparés." },
+    "pdf": "PDF", "whatsapp": "WhatsApp", "save": "Enregistrer", "share": "Partager", "chatWithAgent": "Chat avec Agent", "edit": "Modifier", "proceedToPayment": "Procéder au Paiement", "payment": "Paiement", "backToSummary": "Retour au Résumé", "thankYou": "Merci!", "redirecting": "Redirection...", "foodType": "Type de Repas", "veg": "Vég", "nonVeg": "Non-Vég",
+    "partner": { "title": "Commandes de Fête", "subtitle": "Voir les commandes assignées.", "noOrders": "Aucune commande assignée.", "orders": "Commandes", "productionChart": "Tableau de Production", "yourEarnings": "Vos Gains", "viewDetails": "Voir Détails", "acceptOrder": "Accepter", "acceptThisOrder": "Accepter Cette Commande", "customerCookingInstructions": "Instructions Client", "productionSheet": "Fiche de Production", "plates": "assiettes", "item": "Article", "totalEarnings": "Gains Totaux", "accepted": "Accepté", "preparing": "En Préparation", "delivered": "Livré" },
+    "admin": { "title": "Commandes de Fête", "subtitle": "Gérer toutes les réservations", "totalOrders": "Total Commandes", "pending": "En Attente", "allocated": "Assigné", "totalMRP": "MRP Total", "pppValue": "Valeur PPP (55%)", "searchPlaceholder": "Rechercher par ID, nom ou téléphone...", "all": "Tous", "customerDetails": "Détails Client", "eventDetailsLabel": "Détails Événement", "menuItems": "Articles du Menu", "cookingInstructionsLabel": "Instructions de Cuisson", "paymentLabel": "Paiement", "totalAmount": "Montant Total", "statusPending": "En Attente", "statusAllocated": "Assigné", "statusAccepted": "Accepté", "statusPreparing": "En Préparation", "statusDelivered": "Livré" }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "હોમ",
+    "subscriptions": "સબ્સ્ક્રિપ્શન",
+    "partyOrders": "પાર્ટી ઓર્ડર",
+    "sweetsSnacks": "મીઠાઈ અને નાસ્તા",
+    "foodProducts": "ખાદ્ય ઉત્પાદનો",
+    "services": "સેવાઓ",
+    "orderNow": "હવે ઓર્ડર કરો",
+    "loginSignUp": "લોગિન / સાઇન અપ",
+    "explore": "શોધો",
+    "orders": "ઓર્ડર",
+    "profile": "પ્રોફાઇલ"
+  },
+  "hero": {
+    "badge": "🏠 5 વર્ષનો સાચો ઘરેલું પ્રેમ",
+    "titleLine1": "એક ઘર-ભોજન",
+    "titleLine2": "ક્રાંતિ",
+    "subtitle": "ભારતનું સૌથી મોટું હોમ ફૂડ પ્લેટફોર્મ.",
+    "description": "નજીકના હોમ કુક્સ પાસેથી તાજું ઘરનું ભોજન.",
+    "orderNow": "હવે ઓર્ડર કરો",
+    "beAShero": "શીરો બનો"
+  },
+  "popular": {
+    "title": "લોકપ્રિય વાનગીઓ",
+    "subtitle": "આજે સૌથી વધુ ઓર્ડર થયેલ ભોજન",
+    "viewAll": "બધું જુઓ →",
+    "add": "ઉમેરો +"
+  },
+  "subscription": {
+    "weeklyMonthly": "સાપ્તાહિક અને માસિક",
+    "mealPlansTitle": "ભોજન સબ્સ્ક્રિપ્શન પ્લાન",
+    "mealPlansDesc": "શીરો હોમ શેફ પાસેથી દૈનિક ઘરનું ભોજન સબ્સ્ક્રાઇબ કરો.",
+    "browsePlans": "પ્લાન જુઓ",
+    "uniqueExperiences": "અનોખા અનુભવો",
+    "diningTitle": "હોમ ડાઇનિંગ અનુભવ બુક કરો",
+    "diningDesc": "શીરોના ટેબલ પર ભોજન કરો.",
+    "exploreExperiences": "અનુભવો જુઓ"
+  },
+  "why": {
+    "title": "શીરો કેવી રીતે અલગ છે",
+    "subtitle": "તમારું સામાન્ય ફૂડ ડિલિવરી નથી",
+    "nostalgia": "યાદો પહોંચાડવી",
+    "nostalgiaDesc": "નજીકના હોમ કુક્સ પાસેથી તાજું ઘરનું ભોજન.",
+    "formula": "ફોર્મ્યુલા બદલવું",
+    "formulaDesc": "વિકેન્દ્રીકૃત હોમ કિચન સાથે નવો દૃષ્ટિકોણ.",
+    "sheroes": "શીરોઝ બનાવવા",
+    "sheroesDesc": "મહિલાઓને તેમની રસોઈ પ્રતિભા દ્વારા આર્થિક સ્વતંત્રતા.",
+    "fresh": "તાજું અને સમયસર",
+    "freshDesc": "500+ પ્રકારની સ્વસ્થ વાનગીઓ દરરોજ તાજી."
+  },
+  "footer": {
+    "tagline": "ભારતનું સૌથી મોટું હોમ ફૂડ પ્લેટફોર્મ.",
+    "quickLinks": "ઝડપી લિંક્સ",
+    "whoWeAre": "અમે કોણ છીએ",
+    "beAShero": "શીરો બનો",
+    "franchise": "ફ્રેન્ચાઇઝ",
+    "awards": "એવોર્ડ્સ અને ઇવેન્ટ્સ",
+    "faq": "FAQ",
+    "contact": "સંપર્ક",
+    "contactSupport": "📞 સપોર્ટનો સંપર્ક કરો",
+    "email": "✉️ hello@sherohomefood.com",
+    "locations": "📍 72 શહેરો, 14 રાજ્યો, ભારત",
+    "copyright": "© 2026 Shero Home Food. સર્વ હક્ક સુરક્ષિત."
+  },
+  "common": {
+    "backToHome": "હોમ પર પાછા",
+    "bestSeller": "બેસ્ટ સેલર",
+    "popular": "લોકપ્રિય",
+    "quick": "ઝડપી",
+    "special": "વિશેષ",
+    "breakfast": "નાસ્તો",
+    "premium": "પ્રીમિયમ",
+    "min": "મિનિટ",
+    "delivered": "ડિલિવર થયું",
+    "settings": "સેટિંગ્સ",
+    "language": "ભાષા",
+    "selectLanguage": "ભાષા પસંદ કરો",
+    "orders": "ઓર્ડર",
+    "items": "આઇટમ",
+    "viewMenu": "મેનુ જુઓ"
+  },
+  "notifications": {
+    "orderNotifications": "ઓર્ડર સૂચનાઓ",
+    "voice": "અવાજ",
+    "noPending": "કોઈ બાકી સૂચનાઓ નથી",
+    "newOrders": "નવા ઓર્ડર",
+    "pendingOrders": "બાકી ઓર્ડર",
+    "new": "નવું",
+    "accepted": "સ્વીકૃત",
+    "preparing": "તૈયારી",
+    "allergens": "એલર્જી",
+    "readAloud": "વાંચો",
+    "viewAllOrders": "બધા ઓર્ડર જુઓ",
+    "cookingInstructions": "રસોઈ સૂચનાઓ"
+  },
+  "chefs": {
+    "title": "અમારા શીરોઝ",
+    "subtitle": "તમારા ભોજન પાછળની અદ્ભુત મહિલાઓને મળો"
+  },
+  "categories": {
+    "title": "તમને શું ખાવાનું મન છે?",
+    "subtitle": "તમારી પસંદની ખાદ્ય શ્રેણી પસંદ કરો",
+    "rice": "ભાત",
+    "dosa": "ઢોસા",
+    "idli": "ઇડલી",
+    "biryani": "બિરયાની",
+    "chapati": "ચપાતી",
+    "curries": "શાક",
+    "snacks": "નાસ્તા",
+    "sweets": "મીઠાઈ"
+  },
+  "serviceCategories": {
+    "title": "અમે તમારા માટે શું કરી શકીએ?",
+    "subtitle": "અમારા હોમ ફૂડ અને સેવાઓમાંથી પસંદ કરો",
+    "instantDelivery": "તાત્કાલિક ફૂડ ડિલિવરી",
+    "instantDeliveryDesc": "તાજું ઘરનું ભોજન, ઝડપી ડિલિવરી",
+    "subscriptions": "સબ્સ્ક્રિપ્શન",
+    "subscriptionsDesc": "દૈનિક, સાપ્તાહિક અને માસિક મીલ પ્લાન",
+    "partyOrders": "પાર્ટી ઓર્ડર",
+    "partyOrdersDesc": "ઇવેન્ટ અને મેળાવડા માટે બલ્ક ઓર્ડર",
+    "sweetsSnacks": "મીઠાઈ અને નાસ્તા",
+    "sweetsSnacksDesc": "ઘરે બનાવેલી મીઠાઈ, નાસ્તા અને ટ્રીટ્સ",
+    "sheroClasses": "શીરો ક્લાસ",
+    "sheroClassesDesc": "યોગ, ફિટનેસ, વેલનેસ અને વધુ",
+    "cookeryClasses": "રસોઈ ક્લાસ",
+    "cookeryClassesDesc": "નિષ્ણાત હોમ શેફ પાસેથી શીખો"
+  },
+  "party": {
+    "title": "પાર્ટી ઓર્ડર", "subtitle": "બધી પાર્ટી બુકિંગ જુઓ", "welcomeMessage": "તમારા મહેમાનો માટે સાચું ઘરનું ભોજન પસંદ કરવા બદલ આભાર!", "vegOrNonVeg": "શાકાહારી કે માંસાહારી?", "vegetarian": "શાકાહારી", "vegDesc": "માંસ કે ઈંડા વિનાનું શુદ્ધ શાકાહારી", "nonVegetarian": "માંસાહારી", "nonVegDesc": "ચિકન, મટન, માછલી વગેરે", "selectMealSessions": "ભોજનનો સમય પસંદ કરો", "sessionInfo": "એક કે વધુ પસંદ કરો.", "breakfast": "નાસ્તો", "lunch": "બપોરનું ભોજન", "snacks": "નાસ્તા", "dinner": "રાત્રિ ભોજન", "next": "આગળ", "back": "પાછળ", "eventDetails": "ઇવેન્ટ વિગતો", "guestsMin": "મહેમાનો (ઓછામાં ઓછા 10)", "occasion": "પ્રસંગ", "selectOccasion": "પસંદ કરો", "eventDate": "ઇવેન્ટ તારીખ", "servingTime": "પીરસવાનો સમય", "selectTime": "સમય પસંદ કરો", "selected": "પસંદ કરેલ", "options": "વિકલ્પો", "perHead": "દરેકે", "addOns": "ઍડ-ઓન", "plate": "પ્લેટ", "summary": "સારાંશ", "orderSummary": "ઓર્ડર સારાંશ", "guests": "મહેમાનો", "items": "આઇટમ", "cookingInstructions": "રસોઈ સૂચનાઓ", "cookingInstructionsOptional": "વૈકલ્પિક", "cookingInstructionsPlaceholder": "દા.ત. લસણ નહીં, ઓછું તેલ, વધુ મસાલો...", "delivery": "ડિલિવરી", "selfPickup": "જાતે લઈ જવું", "noDeliveryCharge": "ડિલિવરી ચાર્જ નથી", "deliveryAtActuals": "વાસ્તવિક કિંમતે ડિલિવરી", "grandTotal": "કુલ", "meal": "ભોજન", "packing": "પેકિંગ", "total": "કુલ", "paymentOption": "ચુકવણી વિકલ્પ", "fullPayment": "સંપૂર્ણ ચુકવણી", "fiftyAdvance": "50% અગ્રિમ", "now": "હવે",
+    "terms": { "minAdvance": "બુકિંગ પર ઓછામાં ઓછું 50% અગ્રિમ.", "balanceDue": "બાકી ચુકવણી ઇવેન્ટના 1 દિવસ પહેલાં.", "freeCancellation": "ઇવેન્ટના 2 દિવસ પહેલાં મફત રદ.", "deliveryCharges": "ડિલિવરી ચાર્જ વાસ્તવિક કિંમતે." },
+    "pdf": "PDF", "whatsapp": "WhatsApp", "save": "સેવ", "share": "શેર", "chatWithAgent": "એજન્ટ સાથે ચેટ", "edit": "સુધારો", "proceedToPayment": "ચુકવણી કરો", "payment": "ચુકવણી", "orderTotal": "ઓર્ડર કુલ", "backToSummary": "સારાંશ પર", "thankYou": "આભાર!", "redirecting": "હોમ પર...", "welcomeBack": "પાછા સ્વાગત, {{name}}!", "retrieveSavedOrder": "સેવ કરેલ ઓર્ડર", "startNewOrder": "નવો ઓર્ડર", "foodType": "ભોજન પ્રકાર", "veg": "શાકાહારી", "nonVeg": "માંસાહારી",
+    "partner": { "title": "પાર્ટી ઓર્ડર", "subtitle": "ફાળવેલ ઓર્ડર જુઓ.", "noOrders": "તમને હજી પાર્ટી ઓર્ડર ફાળવાયા નથી.", "orders": "ઓર્ડર", "productionChart": "ઉત્પાદન ચાર્ટ", "yourEarnings": "તમારી કમાણી", "viewDetails": "વિગતો જુઓ", "acceptOrder": "ઓર્ડર સ્વીકારો", "acceptThisOrder": "આ ઓર્ડર સ્વીકારો", "customerCookingInstructions": "ગ્રાહક રસોઈ સૂચનાઓ", "productionSheet": "ઉત્પાદન શીટ", "plates": "પ્લેટ", "item": "આઇટમ", "mealCol": "ભોજન", "perPlate": "પ્લેટ દીઠ", "totalVol": "કુલ જથ્થો", "earnings": "કમાણી", "totalEarnings": "કુલ કમાણી", "newAccept": "નવું — સ્વીકારશો?", "accepted": "સ્વીકાર્યું", "preparing": "તૈયાર થઈ રહ્યું છે", "delivered": "ડિલિવર થયું", "selectOrderPrompt": "ઉત્પાદન ચાર્ટ જોવા ઓર્ડર પસંદ કરો." },
+    "admin": { "title": "પાર્ટી ઓર્ડર", "subtitle": "બધી બુકિંગ સંચાલિત કરો", "totalOrders": "કુલ ઓર્ડર", "pending": "બાકી", "allocated": "ફાળવેલ", "totalMRP": "કુલ MRP", "pppValue": "PPP મૂલ્ય (55%)", "searchPlaceholder": "ઓર્ડર ID, નામ, કે ફોન...", "all": "બધા", "customerDetails": "ગ્રાહક વિગતો", "eventDetailsLabel": "ઇવેન્ટ વિગતો", "dateTime": "તારીખ અને સમય", "type": "પ્રકાર", "meals": "ભોજન", "menuItems": "મેનૂ આઇટમ", "cookingInstructionsLabel": "રસોઈ સૂચનાઓ", "paymentLabel": "ચુકવણી", "totalAmount": "કુલ રકમ", "allocatedPartner": "ફાળવેલ ભાગીદાર", "statusPending": "બાકી", "statusAllocated": "ફાળવેલ", "statusAccepted": "સ્વીકાર્યું", "statusPreparing": "તૈયાર થઈ રહ્યું", "statusDelivered": "ડિલિવર" }
+  }
+}

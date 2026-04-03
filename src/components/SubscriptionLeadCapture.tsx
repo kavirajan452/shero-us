@@ -1,0 +1,163 @@
+import { useState, useEffect } from "react";
+import { User, Phone, MapPin, Info, ArrowRight, RotateCcw, UtensilsCrossed } from "lucide-react";
+import { findSubscriptionLeadByPhone, createOrUpdateSubscriptionLead } from "@/data/subscriptionLeadsStore";
+
+interface Props {
+  source: string;
+  onVerified: (data: { name: string; phone: string; location: string; isReturning: boolean }) => void;
+}
+
+const SubscriptionLeadCapture = ({ source, onVerified }: Props) => {
+  const [mode, setMode] = useState<"entry" | "form">("entry");
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [loadingLocation, setLoadingLocation] = useState(false);
+  const [error, setError] = useState("");
+
+  const autoDetectLocation = () => {
+    if (!navigator.geolocation) return;
+    setLoadingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+          const data = await res.json();
+          setLocation(data.display_name?.split(",").slice(0, 3).join(", ") || `${pos.coords.latitude}, ${pos.coords.longitude}`);
+        } catch {
+          setLocation(`${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`);
+        }
+        setLoadingLocation(false);
+      },
+      () => setLoadingLocation(false),
+      { timeout: 5000 }
+    );
+  };
+
+  useEffect(() => { autoDetectLocation(); }, []);
+
+  const handlePhoneCheck = async () => {
+    const cleaned = phone.replace(/\D/g, "");
+    if (cleaned.length < 10) { setError("Enter a valid 10-digit phone number"); return; }
+    const existing = await findSubscriptionLeadByPhone(cleaned);
+    if (existing) {
+      await createOrUpdateSubscriptionLead({ name: existing.name, phone: cleaned, location: existing.location });
+      onVerified({ name: existing.name, phone: cleaned, location: existing.location, isReturning: true });
+    } else {
+      setMode("form");
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!name.trim()) { setError("Name is required"); return; }
+    const cleaned = phone.replace(/\D/g, "");
+    if (cleaned.length < 10) { setError("Enter a valid phone number"); return; }
+    if (!location.trim()) { setError("Location is required"); return; }
+    await createOrUpdateSubscriptionLead({ name: name.trim(), phone: cleaned, location: location.trim(), source });
+    onVerified({ name: name.trim(), phone: cleaned, location: location.trim(), isReturning: false });
+  };
+
+  return (
+    <div className="min-h-[70vh] flex items-center justify-center px-4">
+      <div className="w-full max-w-sm">
+        {/* Welcome header */}
+        <div className="text-center mb-6">
+          <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-3">
+            <UtensilsCrossed className="w-8 h-8 text-primary" />
+          </div>
+          <h1 className="text-xl font-bold text-foreground">Welcome to Shero Meal Plans!</h1>
+          <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+            🙏 Home-cooked meals made with love by real home chefs — fresh ingredients, zero preservatives, delivered to your doorstep daily.
+          </p>
+        </div>
+
+        {/* Why we ask */}
+        <div className="bg-accent/20 border border-accent rounded-xl p-3 mb-4 flex gap-2">
+          <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+          <div className="text-[10px] text-muted-foreground leading-relaxed">
+            <p className="font-semibold text-foreground text-xs mb-0.5">Why do we need your details?</p>
+            <p>• Save your meal preferences and resume anytime</p>
+            <p>• Get personalized plan recommendations</p>
+            <p>• Our team can call back with the best offers</p>
+          </div>
+        </div>
+
+        {mode === "entry" && (
+          <div className="space-y-3">
+            <div>
+              <label className="text-xs font-medium text-foreground flex items-center gap-1 mb-1">
+                <Phone className="w-3 h-3 text-primary" /> Mobile Number
+              </label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => { setPhone(e.target.value); setError(""); }}
+                placeholder="Enter 10-digit mobile number"
+                className="w-full px-3 py-2.5 rounded-xl bg-background border border-border text-foreground text-sm placeholder:text-muted-foreground outline-none focus:border-primary transition-colors"
+                maxLength={12}
+              />
+              {error && <p className="text-[10px] text-destructive mt-1">{error}</p>}
+            </div>
+            <button
+              onClick={handlePhoneCheck}
+              className="w-full py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity"
+            >
+              Continue <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+            <p className="text-[10px] text-center text-muted-foreground">Returning subscriber? Enter your number to pick up where you left off.</p>
+          </div>
+        )}
+
+        {mode === "form" && (
+          <div className="space-y-3">
+            <div className="bg-card border border-border rounded-xl p-3 flex items-center gap-2">
+              <Phone className="w-4 h-4 text-primary" />
+              <span className="text-sm text-foreground font-medium">{phone}</span>
+              <button onClick={() => setMode("entry")} className="ml-auto text-xs text-primary flex items-center gap-0.5">
+                <RotateCcw className="w-3 h-3" /> Change
+              </button>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-foreground flex items-center gap-1 mb-1">
+                <User className="w-3 h-3 text-primary" /> Your Name
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => { setName(e.target.value); setError(""); }}
+                placeholder="Full name"
+                className="w-full px-3 py-2.5 rounded-xl bg-background border border-border text-foreground text-sm placeholder:text-muted-foreground outline-none focus:border-primary transition-colors"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-medium text-foreground flex items-center gap-1 mb-1">
+                <MapPin className="w-3 h-3 text-primary" /> Delivery Area
+              </label>
+              <input
+                type="text"
+                value={location}
+                onChange={(e) => { setLocation(e.target.value); setError(""); }}
+                placeholder={loadingLocation ? "Detecting location…" : "Area, City"}
+                className="w-full px-3 py-2.5 rounded-xl bg-background border border-border text-foreground text-sm placeholder:text-muted-foreground outline-none focus:border-primary transition-colors"
+              />
+              {!location && (
+                <button onClick={autoDetectLocation} className="text-[10px] text-primary mt-1 flex items-center gap-0.5">
+                  <MapPin className="w-2.5 h-2.5" /> Auto-detect my location
+                </button>
+              )}
+            </div>
+            {error && <p className="text-[10px] text-destructive">{error}</p>}
+            <button
+              onClick={handleSubmit}
+              className="w-full py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity"
+            >
+              Explore Meal Plans <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default SubscriptionLeadCapture;

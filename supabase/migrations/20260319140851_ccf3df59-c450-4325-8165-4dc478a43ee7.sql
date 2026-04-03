@@ -1,0 +1,1 @@
+ALTER TABLE public.snack_products ADD COLUMN IF NOT EXISTS city_tag text DEFAULT NULL;

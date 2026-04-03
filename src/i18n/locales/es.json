@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "subscriptions": "Suscripciones",
+    "partyOrders": "Pedidos para Fiestas",
+    "sweetsSnacks": "Dulces y Snacks",
+    "foodProducts": "Productos Alimenticios",
+    "services": "Servicios",
+    "orderNow": "Pedir Ahora",
+    "loginSignUp": "Iniciar Sesión / Registrarse",
+    "explore": "Explorar",
+    "orders": "Pedidos",
+    "profile": "Perfil"
+  },
+  "hero": {
+    "badge": "🏠 5 Años de Verdadero Amor Casero",
+    "titleLine1": "Una Comida Casera",
+    "titleLine2": "Revolución",
+    "subtitle": "La plataforma de comida casera más grande de India.",
+    "description": "Comida casera fresca de cocineros cercanos, preparada con amor.",
+    "orderNow": "Pedir Ahora",
+    "beAShero": "Sé una Shero"
+  },
+  "popular": {
+    "title": "Platos Populares",
+    "subtitle": "Las comidas más pedidas hoy",
+    "viewAll": "Ver Todo →",
+    "add": "Agregar +"
+  },
+  "subscription": {
+    "weeklyMonthly": "Semanal y Mensual",
+    "mealPlansTitle": "Planes de Suscripción de Comidas",
+    "mealPlansDesc": "Suscríbete a comidas caseras diarias de chefs de Shero.",
+    "browsePlans": "Ver Planes",
+    "uniqueExperiences": "Experiencias Únicas",
+    "diningTitle": "Reserva una Experiencia Gastronómica en Casa",
+    "diningDesc": "Come en la mesa de una Shero. Disfruta comidas auténticas.",
+    "exploreExperiences": "Explorar Experiencias"
+  },
+  "why": {
+    "title": "Qué Hace Diferente a Shero",
+    "subtitle": "No es tu plataforma de entrega de comida habitual",
+    "nostalgia": "Entregando Nostalgia",
+    "nostalgiaDesc": "Comida casera fresca de cocineros cercanos.",
+    "formula": "Cambiando la Fórmula",
+    "formulaDesc": "Una nueva perspectiva con cocinas caseras descentralizadas.",
+    "sheroes": "Creando Sheroes",
+    "sheroesDesc": "Independencia financiera para mujeres a través de su talento culinario.",
+    "fresh": "Fresco y a Tiempo",
+    "freshDesc": "500+ variedades de platos saludables entregados frescos diariamente."
+  },
+  "footer": {
+    "tagline": "La plataforma de comida casera más grande de India.",
+    "quickLinks": "Enlaces Rápidos",
+    "whoWeAre": "Quiénes Somos",
+    "beAShero": "Sé una Shero",
+    "franchise": "Franquicia",
+    "awards": "Premios y Eventos",
+    "faq": "FAQ",
+    "contact": "Contacto",
+    "contactSupport": "📞 Contactar Soporte",
+    "email": "✉️ hello@sherohomefood.com",
+    "locations": "📍 72 Ciudades, 14 Estados, India",
+    "copyright": "© 2026 Shero Home Food. Todos los derechos reservados."
+  },
+  "common": {
+    "backToHome": "Volver al Inicio",
+    "bestSeller": "Más Vendido",
+    "popular": "Popular",
+    "quick": "Rápido",
+    "special": "Especial",
+    "breakfast": "Desayuno",
+    "premium": "Premium",
+    "min": "min",
+    "delivered": "Entregado",
+    "settings": "Configuración",
+    "language": "Idioma",
+    "selectLanguage": "Seleccionar Idioma",
+    "orders": "pedidos",
+    "items": "artículos",
+    "viewMenu": "Ver Menú"
+  },
+  "notifications": {
+    "orderNotifications": "Notificaciones de Pedidos",
+    "voice": "Voz",
+    "noPending": "Sin notificaciones pendientes",
+    "newOrders": "Nuevos Pedidos",
+    "pendingOrders": "Pedidos Pendientes",
+    "new": "NUEVO",
+    "accepted": "ACEPTADO",
+    "preparing": "PREPARANDO",
+    "allergens": "Alérgenos",
+    "readAloud": "Leer en voz alta",
+    "viewAllOrders": "Ver Todos los Pedidos",
+    "cookingInstructions": "Instrucciones de cocina"
+  },
+  "chefs": {
+    "title": "Nuestras Sheroes",
+    "subtitle": "Conoce a las increíbles mujeres detrás de tus comidas"
+  },
+  "categories": {
+    "title": "¿Qué se te Antoja?",
+    "subtitle": "Elige tu categoría de comida favorita",
+    "rice": "Arroz",
+    "dosa": "Dosa",
+    "idli": "Idli",
+    "biryani": "Biryani",
+    "chapati": "Chapati",
+    "curries": "Curries",
+    "snacks": "Snacks",
+    "sweets": "Dulces"
+  },
+  "serviceCategories": {
+    "title": "¿Qué Podemos Hacer por Ti?",
+    "subtitle": "Elige de nuestra gama de comida casera y servicios",
+    "instantDelivery": "Entrega Instantánea",
+    "instantDeliveryDesc": "Comida casera fresca, entrega rápida",
+    "subscriptions": "Suscripciones",
+    "subscriptionsDesc": "Planes de comida diarios, semanales y mensuales",
+    "partyOrders": "Pedidos para Fiestas",
+    "partyOrdersDesc": "Pedidos al por mayor para eventos y reuniones",
+    "sweetsSnacks": "Dulces y Snacks",
+    "sweetsSnacksDesc": "Dulces caseros, snacks y golosinas",
+    "sheroClasses": "Clases Shero",
+    "sheroClassesDesc": "Yoga, fitness, bienestar y más",
+    "cookeryClasses": "Clases de Cocina",
+    "cookeryClassesDesc": "Aprende de chefs caseros expertos"
+  },
+  "party": {
+    "title": "Pedidos para Fiestas", "subtitle": "Ver y gestionar todos los pedidos de fiesta", "welcomeMessage": "¡Gracias por elegir comida casera auténtica para sus invitados!", "vegOrNonVeg": "¿Vegetariano o No Vegetariano?", "vegetarian": "Vegetariano", "vegDesc": "Comidas vegetarianas puras sin carne ni huevos", "nonVegetarian": "No Vegetariano", "nonVegDesc": "Incluye pollo, cordero, pescado y más", "selectMealSessions": "Seleccionar Sesiones de Comida", "sessionInfo": "Elija una o más. El menú de cada sesión se configura por separado.", "breakfast": "Desayuno", "lunch": "Almuerzo", "snacks": "Aperitivos", "dinner": "Cena", "next": "Siguiente", "back": "Atrás", "eventDetails": "Detalles del Evento", "guestsMin": "Invitados (mín. 10)", "occasion": "Ocasión", "selectOccasion": "Seleccionar", "eventDate": "Fecha del Evento", "servingTime": "Hora de Servir", "selectTime": "Seleccionar hora", "selected": "seleccionados", "options": "opciones", "perHead": "por persona", "addOns": "Extras", "plate": "plato", "summary": "Resumen", "orderSummary": "Resumen del Pedido", "guests": "invitados", "items": "artículos", "cookingInstructions": "Instrucciones de Cocina", "cookingInstructionsOptional": "opcional", "cookingInstructionsPlaceholder": "Ej. Sin ajo, menos aceite, más picante...", "delivery": "Entrega", "selfPickup": "Recogida", "noDeliveryCharge": "Sin cargo de entrega", "deliveryAtActuals": "Entrega a precio real", "grandTotal": "Total General", "meal": "Comida", "packing": "Empaque", "total": "Total", "paymentOption": "Opción de Pago", "fullPayment": "Pago Completo", "fiftyAdvance": "50% Anticipo", "now": "ahora",
+    "terms": { "minAdvance": "Mínimo 50% anticipo al reservar.", "balanceDue": "Saldo 1 día antes del evento.", "freeCancellation": "Cancelación gratuita 2 días antes.", "deliveryCharges": "Cargos de entrega por separado." },
+    "pdf": "PDF", "whatsapp": "WhatsApp", "save": "Guardar", "share": "Compartir", "chatWithAgent": "Chat con Agente", "edit": "Editar", "proceedToPayment": "Ir al Pago", "payment": "Pago", "orderTotal": "Total del Pedido", "backToSummary": "Volver al Resumen", "thankYou": "¡Gracias!", "redirecting": "Redirigiendo...", "welcomeBack": "¡Bienvenido de vuelta, {{name}}!", "retrieveSavedOrder": "Recuperar Pedido", "startNewOrder": "Nuevo Pedido", "foodType": "Tipo de Comida", "veg": "Veg", "nonVeg": "No Veg",
+    "partner": { "title": "Pedidos para Fiestas", "subtitle": "Ver pedidos asignados.", "noOrders": "No hay pedidos asignados.", "orders": "Pedidos", "productionChart": "Gráfico de Producción", "yourEarnings": "Sus Ganancias", "viewDetails": "Ver Detalles", "acceptOrder": "Aceptar Pedido", "acceptThisOrder": "Aceptar Este Pedido", "customerCookingInstructions": "Instrucciones del Cliente", "productionSheet": "Hoja de Producción", "plates": "platos", "item": "Artículo", "mealCol": "Comida", "perPlate": "Por Plato", "totalVol": "Vol. Total", "earnings": "Ganancias", "totalEarnings": "Ganancias Totales", "newAccept": "Nuevo — ¿Aceptar?", "accepted": "Aceptado", "preparing": "Preparando", "delivered": "Entregado", "selectOrderPrompt": "Seleccione un pedido para ver el gráfico." },
+    "admin": { "title": "Pedidos para Fiestas", "subtitle": "Gestionar todas las reservas", "totalOrders": "Total Pedidos", "pending": "Pendiente", "allocated": "Asignado", "totalMRP": "MRP Total", "pppValue": "Valor PPP (55%)", "searchPlaceholder": "Buscar por ID, nombre o teléfono...", "all": "Todos", "customerDetails": "Datos del Cliente", "eventDetailsLabel": "Datos del Evento", "dateTime": "Fecha y Hora", "type": "Tipo", "meals": "Comidas", "menuItems": "Artículos del Menú", "cookingInstructionsLabel": "Instrucciones de Cocina", "paymentLabel": "Pago", "totalAmount": "Monto Total", "allocatedPartner": "Socio Asignado", "statusPending": "Pendiente", "statusAllocated": "Asignado", "statusAccepted": "Aceptado", "statusPreparing": "Preparando", "statusDelivered": "Entregado" }
+  }
+}

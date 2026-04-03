@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "首页",
+    "subscriptions": "订阅",
+    "partyOrders": "派对订单",
+    "sweetsSnacks": "甜食和小吃",
+    "foodProducts": "食品产品",
+    "services": "服务",
+    "orderNow": "立即下单",
+    "loginSignUp": "登录 / 注册",
+    "explore": "探索",
+    "orders": "订单",
+    "profile": "个人资料"
+  },
+  "hero": {
+    "badge": "🏠 5年真正的家庭之爱",
+    "titleLine1": "一场家庭美食",
+    "titleLine2": "革命",
+    "subtitle": "印度最大的家庭食品平台。",
+    "description": "来自附近家庭厨师的新鲜家常菜。",
+    "orderNow": "立即下单",
+    "beAShero": "成为Shero"
+  },
+  "popular": {
+    "title": "热门菜品",
+    "subtitle": "今日最多订购的餐食",
+    "viewAll": "查看全部 →",
+    "add": "添加 +"
+  },
+  "subscription": {
+    "weeklyMonthly": "每周和每月",
+    "mealPlansTitle": "餐食订阅计划",
+    "mealPlansDesc": "订阅Shero家庭厨师的每日家常餐。",
+    "browsePlans": "浏览计划",
+    "uniqueExperiences": "独特体验",
+    "diningTitle": "预订家庭用餐体验",
+    "diningDesc": "在Shero的餐桌上用餐。",
+    "exploreExperiences": "探索体验"
+  },
+  "why": {
+    "title": "Shero有何不同",
+    "subtitle": "不是普通的外卖平台",
+    "nostalgia": "传递怀旧",
+    "nostalgiaDesc": "来自附近家庭厨师的新鲜家常菜。",
+    "formula": "改变公式",
+    "formulaDesc": "去中心化家庭厨房的新视角。",
+    "sheroes": "创造Sheroes",
+    "sheroesDesc": "通过烹饪才能为女性创造经济独立。",
+    "fresh": "新鲜准时",
+    "freshDesc": "500+种健康菜品每天新鲜配送。"
+  },
+  "footer": {
+    "tagline": "印度最大的家庭食品平台。",
+    "quickLinks": "快速链接",
+    "whoWeAre": "关于我们",
+    "beAShero": "成为Shero",
+    "franchise": "加盟",
+    "awards": "奖项与活动",
+    "faq": "常见问题",
+    "contact": "联系我们",
+    "contactSupport": "📞 联系客服",
+    "email": "✉️ hello@sherohomefood.com",
+    "locations": "📍 72个城市，14个邦，印度",
+    "copyright": "© 2026 Shero Home Food. 版权所有。"
+  },
+  "common": {
+    "backToHome": "返回首页",
+    "bestSeller": "畅销",
+    "popular": "热门",
+    "quick": "快速",
+    "special": "特别",
+    "breakfast": "早餐",
+    "premium": "优选",
+    "min": "分钟",
+    "delivered": "已送达",
+    "settings": "设置",
+    "language": "语言",
+    "selectLanguage": "选择语言",
+    "orders": "订单",
+    "items": "项目",
+    "viewMenu": "查看菜单"
+  },
+  "notifications": {
+    "orderNotifications": "订单通知",
+    "voice": "语音",
+    "noPending": "没有待处理的通知",
+    "newOrders": "新订单",
+    "pendingOrders": "待处理订单",
+    "new": "新",
+    "accepted": "已接受",
+    "preparing": "准备中",
+    "allergens": "过敏原",
+    "readAloud": "朗读",
+    "viewAllOrders": "查看所有订单",
+    "cookingInstructions": "烹饪说明"
+  },
+  "chefs": {
+    "title": "我们的Sheroes",
+    "subtitle": "认识您餐食背后的了不起的女性"
+  },
+  "categories": {
+    "title": "您想吃什么？",
+    "subtitle": "选择您喜欢的食物类别",
+    "rice": "米饭",
+    "dosa": "薄饼",
+    "idli": "蒸糕",
+    "biryani": "手抓饭",
+    "chapati": "烤饼",
+    "curries": "咖喱",
+    "snacks": "小吃",
+    "sweets": "甜食"
+  },
+  "serviceCategories": {
+    "title": "我们能为您做什么？",
+    "subtitle": "从我们的家庭美食和服务中选择",
+    "instantDelivery": "即时配送",
+    "instantDeliveryDesc": "新鲜家常菜，快速配送",
+    "subscriptions": "订阅",
+    "subscriptionsDesc": "每日、每周和每月餐食计划",
+    "partyOrders": "派对订单",
+    "partyOrdersDesc": "活动和聚会的批量订单",
+    "sweetsSnacks": "甜食和小吃",
+    "sweetsSnacksDesc": "自制甜食、小吃和零食",
+    "sheroClasses": "Shero课程",
+    "sheroClassesDesc": "瑜伽、健身、养生等",
+    "cookeryClasses": "烹饪课程",
+    "cookeryClassesDesc": "向专业家庭厨师学习"
+  },
+  "party": {
+    "title": "派对订单", "subtitle": "查看和管理所有派对预订", "vegOrNonVeg": "素食还是非素食？", "vegetarian": "素食", "nonVegetarian": "非素食", "selectMealSessions": "选择用餐时段", "breakfast": "早餐", "lunch": "午餐", "snacks": "小吃", "dinner": "晚餐", "next": "下一步", "back": "返回", "eventDetails": "活动详情", "guestsMin": "宾客（至少10人）", "occasion": "场合", "eventDate": "活动日期", "servingTime": "上菜时间", "selected": "已选", "addOns": "附加项", "summary": "摘要", "orderSummary": "订单摘要", "guests": "宾客", "items": "项目", "cookingInstructions": "烹饪说明", "cookingInstructionsOptional": "可选", "cookingInstructionsPlaceholder": "例如：不要大蒜、少油、更辣...", "delivery": "配送", "selfPickup": "自取", "grandTotal": "总计", "meal": "餐食", "packing": "包装", "total": "合计", "paymentOption": "支付选项", "fullPayment": "全额支付", "fiftyAdvance": "50%预付", "now": "现在",
+    "terms": { "minAdvance": "预订时至少50%预付。", "balanceDue": "余额活动前1天支付。", "freeCancellation": "活动前2天免费取消。", "deliveryCharges": "配送费另计。" },
+    "pdf": "PDF", "whatsapp": "WhatsApp", "save": "保存", "share": "分享", "chatWithAgent": "联系客服", "edit": "编辑", "proceedToPayment": "去支付", "payment": "支付", "backToSummary": "返回摘要", "thankYou": "谢谢！", "redirecting": "跳转中...", "foodType": "食物类型", "veg": "素食", "nonVeg": "非素食",
+    "partner": { "title": "派对订单", "subtitle": "查看分配的订单。", "noOrders": "暂无分配的派对订单。", "orders": "订单", "productionChart": "生产图表", "yourEarnings": "您的收入", "viewDetails": "查看详情", "acceptOrder": "接受订单", "acceptThisOrder": "接受此订单", "customerCookingInstructions": "客户烹饪说明", "productionSheet": "生产表", "plates": "盘", "item": "项目", "totalEarnings": "总收入", "accepted": "已接受", "preparing": "准备中", "delivered": "已送达" },
+    "admin": { "title": "派对订单", "subtitle": "管理所有预订", "totalOrders": "总订单", "pending": "待处理", "allocated": "已分配", "totalMRP": "总MRP", "searchPlaceholder": "按订单ID、姓名或电话搜索...", "all": "全部", "customerDetails": "客户详情", "eventDetailsLabel": "活动详情", "menuItems": "菜单项目", "cookingInstructionsLabel": "烹饪说明", "paymentLabel": "支付", "totalAmount": "总金额", "statusPending": "待处理", "statusAllocated": "已分配", "statusAccepted": "已接受", "statusPreparing": "准备中", "statusDelivered": "已送达" }
+  }
+}

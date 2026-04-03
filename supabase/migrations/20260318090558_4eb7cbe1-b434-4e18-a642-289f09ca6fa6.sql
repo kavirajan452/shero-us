@@ -1,0 +1,1 @@
+ALTER TABLE public.kitchen_categories ADD COLUMN sub_category text;

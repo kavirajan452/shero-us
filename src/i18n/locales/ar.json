@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "subscriptions": "الاشتراكات",
+    "partyOrders": "طلبات الحفلات",
+    "sweetsSnacks": "حلويات ووجبات خفيفة",
+    "foodProducts": "منتجات غذائية",
+    "services": "الخدمات",
+    "orderNow": "اطلب الآن",
+    "loginSignUp": "تسجيل الدخول / التسجيل",
+    "explore": "استكشف",
+    "orders": "الطلبات",
+    "profile": "الملف الشخصي"
+  },
+  "hero": {
+    "badge": "🏠 5 سنوات من الحب المنزلي الحقيقي",
+    "titleLine1": "ثورة الطعام",
+    "titleLine2": "المنزلي",
+    "subtitle": "أكبر منصة طعام منزلي في الهند.",
+    "description": "وجبات منزلية طازجة من طهاة قريبين، مُعدّة بحب.",
+    "orderNow": "اطلب الآن",
+    "beAShero": "كن شيرو"
+  },
+  "popular": {
+    "title": "الأطباق الشائعة",
+    "subtitle": "أكثر الوجبات طلباً اليوم",
+    "viewAll": "عرض الكل →",
+    "add": "أضف +"
+  },
+  "subscription": {
+    "weeklyMonthly": "أسبوعي وشهري",
+    "mealPlansTitle": "خطط اشتراك الوجبات",
+    "mealPlansDesc": "اشترك في وجبات منزلية يومية من طهاة شيرو.",
+    "browsePlans": "تصفح الخطط",
+    "uniqueExperiences": "تجارب فريدة",
+    "diningTitle": "احجز تجربة طعام منزلية",
+    "diningDesc": "تناول الطعام على طاولة شيرو.",
+    "exploreExperiences": "استكشف التجارب"
+  },
+  "why": {
+    "title": "ما يميز شيرو",
+    "subtitle": "ليست منصة توصيل طعام عادية",
+    "nostalgia": "توصيل الحنين",
+    "nostalgiaDesc": "وجبات منزلية طازجة من طهاة قريبين.",
+    "formula": "تغيير الصيغة",
+    "formulaDesc": "رؤية جديدة مع مطابخ منزلية لامركزية.",
+    "sheroes": "صنع الشيروز",
+    "sheroesDesc": "استقلال مالي للنساء من خلال موهبتهن في الطبخ.",
+    "fresh": "طازج وفي الوقت",
+    "freshDesc": "500+ نوع من الأطباق الصحية تُوصل طازجة يومياً."
+  },
+  "footer": {
+    "tagline": "أكبر منصة طعام منزلي في الهند.",
+    "quickLinks": "روابط سريعة",
+    "whoWeAre": "من نحن",
+    "beAShero": "كن شيرو",
+    "franchise": "فرنشايز",
+    "awards": "جوائز وفعاليات",
+    "faq": "الأسئلة الشائعة",
+    "contact": "اتصل بنا",
+    "contactSupport": "📞 اتصل بالدعم",
+    "email": "✉️ hello@sherohomefood.com",
+    "locations": "📍 72 مدينة، 14 ولاية، الهند",
+    "copyright": "© 2026 Shero Home Food. جميع الحقوق محفوظة."
+  },
+  "common": {
+    "backToHome": "العودة للرئيسية",
+    "bestSeller": "الأكثر مبيعاً",
+    "popular": "شائع",
+    "quick": "سريع",
+    "special": "خاص",
+    "breakfast": "فطور",
+    "premium": "مميز",
+    "min": "دقيقة",
+    "delivered": "تم التوصيل",
+    "settings": "الإعدادات",
+    "language": "اللغة",
+    "selectLanguage": "اختر اللغة",
+    "orders": "طلبات",
+    "items": "عناصر",
+    "viewMenu": "عرض القائمة"
+  },
+  "notifications": {
+    "orderNotifications": "إشعارات الطلبات",
+    "voice": "الصوت",
+    "noPending": "لا توجد إشعارات معلقة",
+    "newOrders": "طلبات جديدة",
+    "pendingOrders": "طلبات معلقة",
+    "new": "جديد",
+    "accepted": "مقبول",
+    "preparing": "قيد التحضير",
+    "allergens": "مسببات الحساسية",
+    "readAloud": "اقرأ بصوت عالٍ",
+    "viewAllOrders": "عرض جميع الطلبات",
+    "cookingInstructions": "تعليمات الطبخ"
+  },
+  "chefs": {
+    "title": "شيروزنا",
+    "subtitle": "تعرف على النساء الرائعات وراء وجباتك"
+  },
+  "categories": {
+    "title": "ماذا تشتهي؟",
+    "subtitle": "اختر فئة الطعام المفضلة لديك",
+    "rice": "أرز",
+    "dosa": "دوسا",
+    "idli": "إدلي",
+    "biryani": "برياني",
+    "chapati": "تشاباتي",
+    "curries": "كاري",
+    "snacks": "وجبات خفيفة",
+    "sweets": "حلويات"
+  },
+  "serviceCategories": {
+    "title": "ماذا يمكننا أن نفعل لك؟",
+    "subtitle": "اختر من مجموعة الطعام المنزلي والخدمات",
+    "instantDelivery": "توصيل فوري",
+    "instantDeliveryDesc": "وجبات منزلية طازجة، توصيل سريع",
+    "subscriptions": "الاشتراكات",
+    "subscriptionsDesc": "خطط وجبات يومية وأسبوعية وشهرية",
+    "partyOrders": "طلبات الحفلات",
+    "partyOrdersDesc": "طلبات بالجملة للمناسبات والتجمعات",
+    "sweetsSnacks": "حلويات ووجبات خفيفة",
+    "sweetsSnacksDesc": "حلويات ووجبات خفيفة منزلية",
+    "sheroClasses": "دروس شيرو",
+    "sheroClassesDesc": "يوغا، لياقة، عافية والمزيد",
+    "cookeryClasses": "دروس الطبخ",
+    "cookeryClassesDesc": "تعلم من طهاة منزليين خبراء"
+  },
+  "party": {
+    "title": "طلبات الحفلات", "subtitle": "عرض وإدارة جميع حجوزات الحفلات", "vegOrNonVeg": "نباتي أم غير نباتي؟", "vegetarian": "نباتي", "nonVegetarian": "غير نباتي", "selectMealSessions": "اختر جلسات الوجبات", "breakfast": "فطور", "lunch": "غداء", "snacks": "وجبات خفيفة", "dinner": "عشاء", "next": "التالي", "back": "رجوع", "eventDetails": "تفاصيل الحدث", "guestsMin": "الضيوف (حد أدنى 10)", "occasion": "المناسبة", "eventDate": "تاريخ الحدث", "servingTime": "وقت التقديم", "selected": "محدد", "addOns": "إضافات", "summary": "ملخص", "orderSummary": "ملخص الطلب", "guests": "ضيوف", "items": "عناصر", "cookingInstructions": "تعليمات الطبخ", "cookingInstructionsOptional": "اختياري", "cookingInstructionsPlaceholder": "مثلاً: بدون ثوم، زيت أقل، أكثر حرارة...", "delivery": "توصيل", "selfPickup": "استلام ذاتي", "grandTotal": "المجموع الكلي", "meal": "وجبة", "packing": "تعبئة", "total": "المجموع", "paymentOption": "خيار الدفع", "fullPayment": "دفع كامل", "fiftyAdvance": "50% مقدم", "now": "الآن",
+    "terms": { "minAdvance": "حد أدنى 50% مقدم عند الحجز.", "balanceDue": "الرصيد قبل الحدث بيوم.", "freeCancellation": "إلغاء مجاني قبل يومين.", "deliveryCharges": "رسوم التوصيل منفصلة." },
+    "pdf": "PDF", "whatsapp": "WhatsApp", "save": "حفظ", "share": "مشاركة", "chatWithAgent": "محادثة مع وكيل", "edit": "تعديل", "proceedToPayment": "المتابعة للدفع", "payment": "الدفع", "backToSummary": "العودة للملخص", "thankYou": "شكراً!", "redirecting": "إعادة التوجيه...", "foodType": "نوع الطعام", "veg": "نباتي", "nonVeg": "غير نباتي",
+    "partner": { "title": "طلبات الحفلات", "subtitle": "عرض الطلبات المخصصة.", "noOrders": "لا توجد طلبات مخصصة.", "orders": "الطلبات", "productionChart": "مخطط الإنتاج", "yourEarnings": "أرباحك", "viewDetails": "عرض التفاصيل", "acceptOrder": "قبول الطلب", "acceptThisOrder": "قبول هذا الطلب", "customerCookingInstructions": "تعليمات طبخ العميل", "productionSheet": "ورقة الإنتاج", "plates": "أطباق", "item": "عنصر", "totalEarnings": "إجمالي الأرباح", "accepted": "مقبول", "preparing": "قيد التحضير", "delivered": "تم التوصيل" },
+    "admin": { "title": "طلبات الحفلات", "subtitle": "إدارة جميع الحجوزات", "totalOrders": "إجمالي الطلبات", "pending": "معلق", "allocated": "مخصص", "totalMRP": "إجمالي MRP", "searchPlaceholder": "بحث بالمعرف أو الاسم أو الهاتف...", "all": "الكل", "customerDetails": "بيانات العميل", "eventDetailsLabel": "تفاصيل الحدث", "menuItems": "عناصر القائمة", "cookingInstructionsLabel": "تعليمات الطبخ", "paymentLabel": "الدفع", "totalAmount": "المبلغ الإجمالي", "statusPending": "معلق", "statusAllocated": "مخصص", "statusAccepted": "مقبول", "statusPreparing": "قيد التحضير", "statusDelivered": "تم التوصيل" }
+  }
+}
