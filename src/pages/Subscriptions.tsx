@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
+import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 import SubscriptionLeadCapture from "@/components/SubscriptionLeadCapture";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

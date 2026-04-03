@@ -4,6 +4,7 @@ import { useCreatePartyOrder } from "@/hooks/useSupabaseData";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import jsPDF from "jspdf";
+import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 import { checkMinPrepTime } from "@/utils/prepTimeValidation";
 import Navbar from "@/components/Navbar";
 import bulkFoodImg from "@/assets/bulk-food-icon.png";
