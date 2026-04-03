@@ -122,7 +122,7 @@ const HeroSection = () => {
             <span className="text-primary">{c["hero.title_line2"] || "Revolution"}</span>
           </h1>
           <p className="text-foreground/80 text-[13px] mt-1.5 max-w-[280px] leading-snug drop-shadow-sm">
-            {c["hero.subtitle"] || "India's largest home food platform. 2,400+ kitchens. 12 cities. 1.4M+ orders delivered."}
+            {c["hero.subtitle"] || "India's #1 home food platform — now in the USA. Authentic home-cooked meals delivered to your door."}
           </p>
         </div>
       </div>
