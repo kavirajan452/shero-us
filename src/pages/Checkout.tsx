@@ -310,7 +310,7 @@ const Checkout = () => {
               {showSuggestions && addressSuggestions.length > 0 && (
                 <div className="absolute left-0 right-0 top-full mt-1 bg-card border border-border rounded-xl shadow-lg z-10 max-h-48 overflow-y-auto">
                   {addressSuggestions.map((s, i) => (
-                    <button key={i} onMouseDown={() => { setAddress(s.display); setAddressQuery(s.display); setShowSuggestions(false); }} className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors first:rounded-t-xl last:rounded-b-xl">
+                    <button key={i} onMouseDown={() => { setAddress(s.display); setAddressQuery(s.display); setShowSuggestions(false); if (s.state) setCustomerState(s.state); }} className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors first:rounded-t-xl last:rounded-b-xl">
                       <MapPin className="w-3 h-3 inline mr-2 text-muted-foreground" />{s.display}
                     </button>
                   ))}
