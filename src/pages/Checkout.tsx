@@ -277,8 +277,7 @@ const Checkout = () => {
               </div>
               {attempted && missingPhone && <p className="text-[11px] text-destructive mt-1 ml-1">Valid phone number is required</p>}
             </div>
-            {deliveryType !== "self-pickup" && (
-              <div className="relative">
+            <div className="relative">
                 <MapPin className={`absolute left-3 top-3.5 w-4 h-4 ${attempted && missingAddress ? "text-destructive" : "text-muted-foreground"}`} />
                 <textarea value={address} onChange={(e) => handleAddressChange(e.target.value)} onFocus={() => address.length > 2 && setShowSuggestions(true)} onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} placeholder={region.addressPlaceholder} rows={2} className={`w-full pl-10 pr-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted-foreground outline-none transition-colors resize-none ${attempted && missingAddress ? "border-destructive focus:border-destructive" : "border-border focus:border-primary"}`} />
                 {attempted && missingAddress && <p className="text-[11px] text-destructive mt-1 ml-1">Delivery address is required</p>}
@@ -292,7 +291,6 @@ const Checkout = () => {
                   </div>
                 )}
               </div>
-            )}
             {/* Snacks-specific: ZIP code + city */}
             {isSnacksOnly && (
               <div className="grid grid-cols-2 gap-3">
