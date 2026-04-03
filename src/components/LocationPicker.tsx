@@ -162,11 +162,11 @@ const LocationPicker = ({ address, city, pincode, landmark, googlePinUrl, lat, l
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
           <Label htmlFor="loc-city">City *</Label>
-          <Input id="loc-city" placeholder="Chennai" value={city} onChange={(e) => onUpdate({ city: e.target.value })} />
+          <Input id="loc-city" placeholder="New York" value={city} onChange={(e) => onUpdate({ city: e.target.value })} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="loc-pincode">Pincode</Label>
-          <Input id="loc-pincode" placeholder="600076" value={pincode} onChange={(e) => onUpdate({ pincode: e.target.value })} />
+          <Label htmlFor="loc-pincode">ZIP Code</Label>
+          <Input id="loc-pincode" placeholder="10001" value={pincode} onChange={(e) => onUpdate({ pincode: e.target.value })} maxLength={5} />
         </div>
       </div>
       <div className="space-y-2">
