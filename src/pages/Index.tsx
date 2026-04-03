@@ -36,7 +36,7 @@ const Index = () => {
         <TrendingDishesCarousel />
         <AboutSheroCTA />
         <SubscriptionCTA />
-        <TopChefsCarousel />
+        
         
       </main>
       <Footer />
