@@ -675,25 +675,27 @@ export function useNearbyKitchenPartners(customerLat?: number | null, customerLn
       const kitchens = kitchenRes.data || [];
       const locations = locRes.data || [];
 
-      // If no customer location, return all kitchens
-      if (!customerLat || !customerLng) return kitchens;
-
-      const radius = radiusKm || 7;
-
-      return kitchens.filter((k: any) => {
-        if (k.is_branded) {
-          // Branded: check if ANY partner location for this brand is within radius
-          const kitchenLocs = locations.filter((l: any) => l.kitchen_id === k.id);
-          if (kitchenLocs.length === 0) return true; // no locations yet → show as fallback
-          return kitchenLocs.some((l: any) => {
-            if (!l.latitude || !l.longitude) return true;
-            return haversineDistance(customerLat, customerLng, Number(l.latitude), Number(l.longitude)) <= radius;
-          });
-        } else {
-          // Unbranded: check the kitchen's own lat/lng
-          if (!k.latitude || !k.longitude) return true;
-          return haversineDistance(customerLat, customerLng, Number(k.latitude), Number(k.longitude)) <= radius;
+      // Compute distance for each kitchen
+      return kitchens.map((k: any) => {
+        let distance: number | null = null;
+        if (customerLat && customerLng) {
+          if (k.is_branded) {
+            const kitchenLocs = locations.filter((l: any) => l.kitchen_id === k.id);
+            const distances = kitchenLocs
+              .filter((l: any) => l.latitude && l.longitude)
+              .map((l: any) => haversineDistance(customerLat, customerLng, Number(l.latitude), Number(l.longitude)));
+            distance = distances.length > 0 ? Math.min(...distances) : null;
+          } else {
+            if (k.latitude && k.longitude) {
+              distance = haversineDistance(customerLat, customerLng, Number(k.latitude), Number(k.longitude));
+            }
+          }
         }
+        return { ...k, distance };
+      }).filter((k: any) => {
+        if (!customerLat || !customerLng) return true;
+        if (k.distance === null) return true;
+        return k.distance <= radius;
       });
     },
   });

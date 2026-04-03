@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Search, SlidersHorizontal, Star, Clock, Leaf, X, Bike, AlertTriangle, MapPin } from "lucide-react";
+import { Search, SlidersHorizontal, Leaf, X, Bike, AlertTriangle, MapPin } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
@@ -8,7 +8,7 @@ import { useNearbyKitchenPartners, useInstantMenuCategories, useKitchenVisibilit
 import { Badge } from "@/components/ui/badge";
 import { useRegion } from "@/contexts/RegionContext";
 
-const sortOptions = ["Relevance", "Rating", "Delivery Time", "Min Order"];
+const sortOptions = ["Relevance", "Distance"];
 
 const InstantDelivery = () => {
   const [searchParams] = useSearchParams();
