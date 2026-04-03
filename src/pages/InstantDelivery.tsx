@@ -150,22 +150,16 @@ const InstantDelivery = () => {
                 <img src={kitchen.image} alt={kitchen.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 {kitchen.is_branded && <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs">Shero Branded</Badge>}
                 <Badge className="absolute top-3 right-3 bg-accent/90 text-accent-foreground text-[10px]">🟢 Live</Badge>
-                <div className="absolute bottom-3 right-3 bg-card/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
-                  <Clock className="w-3 h-3 text-muted-foreground" />
-                  <span className="text-xs font-medium text-foreground">{kitchen.delivery_time}</span>
-                </div>
+                {kitchen.distance != null && (
+                  <div className="absolute bottom-3 right-3 bg-card/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
+                    <MapPin className="w-3 h-3 text-primary" />
+                    <span className="text-xs font-medium text-foreground">{kitchen.distance.toFixed(1)} km</span>
+                  </div>
+                )}
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{kitchen.name}</h3>
-                <p className="text-xs text-muted-foreground mb-2">{(kitchen.cuisine || []).join(" • ")} — {kitchen.location}</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                    <span className="text-sm font-semibold text-foreground">{kitchen.rating}</span>
-                    <span className="text-xs text-muted-foreground">({kitchen.review_count})</span>
-                  </div>
-                  <span className="text-xs text-muted-foreground">Min {formatPrice(kitchen.min_order)}</span>
-                </div>
+                <p className="text-xs text-muted-foreground">{(kitchen.cuisine || []).join(" • ")} — {kitchen.location}</p>
               </div>
             </Link>
           ))}
