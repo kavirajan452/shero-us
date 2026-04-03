@@ -63,7 +63,7 @@ const Checkout = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [addressQuery, setAddressQuery] = useState("");
-  const [addressSuggestions, setAddressSuggestions] = useState<{ display: string; lat: string; lon: string }[]>([]);
+  const [addressSuggestions, setAddressSuggestions] = useState<{ display: string; lat: string; lon: string; state: string }[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [searchingAddress, setSearchingAddress] = useState(false);
   const [flatDoor, setFlatDoor] = useState("");
@@ -71,6 +71,7 @@ const Checkout = () => {
   const [addressExtra, setAddressExtra] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [city, setCity] = useState("");
+  const [customerState, setCustomerState] = useState("");
   const [attempted, setAttempted] = useState(false);
 
   // Auto-check serviceability on mount via GPS (non-blocking)
@@ -90,8 +91,29 @@ const Checkout = () => {
     }
   }, [zipCode, hasKitchens, checkByZip]);
 
+  // US state sales tax rates
+  const STATE_TAX_RATES: Record<string, number> = {
+    "Alabama": 0.04, "Alaska": 0, "Arizona": 0.056, "Arkansas": 0.065, "California": 0.0725,
+    "Colorado": 0.029, "Connecticut": 0.0635, "Delaware": 0, "Florida": 0.06, "Georgia": 0.04,
+    "Hawaii": 0.04, "Idaho": 0.06, "Illinois": 0.0625, "Indiana": 0.07, "Iowa": 0.06,
+    "Kansas": 0.065, "Kentucky": 0.06, "Louisiana": 0.0445, "Maine": 0.055, "Maryland": 0.06,
+    "Massachusetts": 0.0625, "Michigan": 0.06, "Minnesota": 0.06875, "Mississippi": 0.07,
+    "Missouri": 0.04225, "Montana": 0, "Nebraska": 0.055, "Nevada": 0.0685, "New Hampshire": 0,
+    "New Jersey": 0.06625, "New Mexico": 0.05125, "New York": 0.04, "North Carolina": 0.0475,
+    "North Dakota": 0.05, "Ohio": 0.0575, "Oklahoma": 0.045, "Oregon": 0, "Pennsylvania": 0.06,
+    "Rhode Island": 0.07, "South Carolina": 0.06, "South Dakota": 0.042, "Tennessee": 0.07,
+    "Texas": 0.0625, "Utah": 0.061, "Vermont": 0.06, "Virginia": 0.053, "Washington": 0.065,
+    "West Virginia": 0.06, "Wisconsin": 0.05, "Wyoming": 0.04, "District of Columbia": 0.06,
+  };
+
+  const localTaxRate = customerState && STATE_TAX_RATES[customerState] !== undefined
+    ? STATE_TAX_RATES[customerState] : region.taxRate;
+  const localTaxLabel = customerState
+    ? `Sales Tax (${(localTaxRate * 100).toFixed(2)}% · ${customerState})`
+    : region.taxLabel;
+
   const deliveryFee = isSnacksOnly ? (subtotal >= 599 ? 0 : 49) : configDeliveryFee;
-  const tax = calcTax(subtotal - promoDiscount);
+  const tax = Math.round((subtotal - promoDiscount) * localTaxRate);
   const subtotalWithFees = subtotal - promoDiscount + deliveryFee + tax + tipAmount;
   const walletUsable = useWalletBalance ? getUsableAmount(subtotalWithFees) : 0;
   const total = subtotalWithFees - walletUsable;
@@ -137,7 +159,7 @@ const Checkout = () => {
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addressQuery)}&format=json&limit=5&addressdetails=1&countrycodes=us`);
         const data = await res.json();
-        setAddressSuggestions(data.map((d: any) => ({ display: d.display_name, lat: d.lat, lon: d.lon })));
+        setAddressSuggestions(data.map((d: any) => ({ display: d.display_name, lat: d.lat, lon: d.lon, state: d.address?.state || "" })));
         setShowSuggestions(true);
       } catch { setAddressSuggestions([]); }
       setSearchingAddress(false);
@@ -309,7 +331,7 @@ const Checkout = () => {
               {showSuggestions && addressSuggestions.length > 0 && (
                 <div className="absolute left-0 right-0 top-full mt-1 bg-card border border-border rounded-xl shadow-lg z-10 max-h-48 overflow-y-auto">
                   {addressSuggestions.map((s, i) => (
-                    <button key={i} onMouseDown={() => { setAddress(s.display); setAddressQuery(s.display); setShowSuggestions(false); }} className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors first:rounded-t-xl last:rounded-b-xl">
+                    <button key={i} onMouseDown={() => { setAddress(s.display); setAddressQuery(s.display); setShowSuggestions(false); if (s.state) setCustomerState(s.state); }} className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors first:rounded-t-xl last:rounded-b-xl">
                       <MapPin className="w-3 h-3 inline mr-2 text-muted-foreground" />{s.display}
                     </button>
                   ))}
@@ -546,7 +568,7 @@ const Checkout = () => {
             )}
             <div className="flex justify-between"><span className="text-muted-foreground">Delivery Fee</span><span className="text-foreground">{deliveryFee === 0 ? "Free" : formatPrice(deliveryFee)}</span></div>
             
-            <div className="flex justify-between"><span className="text-muted-foreground">{region.taxLabel}</span><span className="text-foreground">{formatPrice(tax)}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">{localTaxLabel}</span><span className="text-foreground">{formatPrice(tax)}</span></div>
             {tipAmount > 0 && (
               <div className="flex justify-between text-primary">
                 <span className="flex items-center gap-1"><Heart className="w-3 h-3" /> Tip</span>
