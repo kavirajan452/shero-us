@@ -7,7 +7,7 @@ import heroMascot from "@/assets/shero-mascot-cooking.jpeg";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 
 const HeroSection = () => {
-  const { data: contentItems } = useScreenContent("hero");
+  const { data: contentItems } = useScreenContent("home");
   const c = contentMap(contentItems || []);
 
   const [showDropdown, setShowDropdown] = useState(false);

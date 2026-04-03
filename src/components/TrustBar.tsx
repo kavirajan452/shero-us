@@ -1,13 +1,17 @@
 import { Star, ChefHat, MapPin, Package } from "lucide-react";
-
-const stats = [
-  { icon: ChefHat, value: "500+", label: "Home Kitchens" },
-  { icon: MapPin, value: "12", label: "US Cities" },
-  { icon: Package, value: "50K+", label: "Orders Delivered" },
-  { icon: Star, value: "4.9★", label: "Avg Rating" },
-];
+import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 
 const TrustBar = () => {
+  const { data: contentItems } = useScreenContent("home");
+  const c = contentMap(contentItems || []);
+
+  const stats = [
+    { icon: ChefHat, value: c["home.trust_bar_kitchens"]?.split(" ")[0] || "50+", label: c["home.trust_bar_kitchens"]?.replace(/^\S+\s/, "") || "Home Kitchens" },
+    { icon: MapPin, value: c["home.trust_bar_cities"]?.split(" ")[0] || "12", label: c["home.trust_bar_cities"]?.replace(/^\S+\s/, "") || "US Cities" },
+    { icon: Package, value: c["home.trust_bar_orders"]?.split(" ")[0] || "10,000+", label: c["home.trust_bar_orders"]?.replace(/^\S+\s/, "") || "Orders Served" },
+    { icon: Star, value: c["home.trust_bar_rating"]?.split(" ")[0] || "4.8★", label: c["home.trust_bar_rating"]?.replace(/^\S+\s/, "") || "Average Rating" },
+  ];
+
   return (
     <section className="border-y border-border bg-card/50">
       <div className="container mx-auto px-4 py-4 md:py-5">
