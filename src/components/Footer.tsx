@@ -1,5 +1,6 @@
 import sheroLogo from "@/assets/shero-logo.png";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const { data: items } = useScreenContent("footer");
@@ -20,8 +21,9 @@ const Footer = () => {
           <div>
             <h5 className="font-semibold mb-3">Quick Links</h5>
             <ul className="space-y-2 text-sm text-primary-foreground/60">
-              <li><a href="/about" className="hover:text-primary-foreground transition-colors">Who We Are</a></li>
-              <li><a href="/partner-enrollment" className="hover:text-primary-foreground transition-colors">Be a Shero</a></li>
+              <li><Link to="/about" className="hover:text-primary-foreground transition-colors">Who We Are</Link></li>
+              <li><Link to="/partner-enrollment" className="hover:text-primary-foreground transition-colors">Be a Shero</Link></li>
+              <li><Link to="/allergen-notice" className="hover:text-primary-foreground transition-colors">Allergen Notice</Link></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">FAQ</a></li>
             </ul>
           </div>
@@ -48,7 +50,18 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="border-t border-primary-foreground/10 pt-6 text-center text-sm text-primary-foreground/40">
+
+        {/* Legal Links */}
+        <div className="border-t border-primary-foreground/10 pt-4 pb-2 flex flex-wrap gap-x-4 gap-y-1 justify-center text-xs text-primary-foreground/50">
+          <Link to="/privacy-policy" className="hover:text-primary-foreground transition-colors">Privacy Policy</Link>
+          <Link to="/terms-of-service" className="hover:text-primary-foreground transition-colors">Terms of Service</Link>
+          <Link to="/cookie-policy" className="hover:text-primary-foreground transition-colors">Cookie Policy</Link>
+          <Link to="/accessibility" className="hover:text-primary-foreground transition-colors">Accessibility</Link>
+          <Link to="/allergen-notice" className="hover:text-primary-foreground transition-colors">Allergen Notice</Link>
+          <Link to="/do-not-sell" className="hover:text-primary-foreground transition-colors">Do Not Sell My Info</Link>
+        </div>
+
+        <div className="border-t border-primary-foreground/10 pt-4 text-center text-sm text-primary-foreground/40">
           {c["footer.copyright"] || "© 2026 Shero USA INC. All rights reserved."}
         </div>
       </div>
