@@ -197,7 +197,11 @@ const Checkout = () => {
       spendOnPurchase(walletUsable, subtotalWithFees);
     }
     clearCart();
-    navigate("/order-confirmation");
+    // Pass slot info to confirmation page
+    const slotDay = deliveryDays.find(d => d.index === selectedDay);
+    const slotTime = sessionSlots.find(s => s.value === selectedSlot);
+    const slotLabel = slotDay && slotTime ? `${slotDay.label}, ${slotDay.date} · ${selectedSession} · ${slotTime.label}` : "";
+    navigate(`/order-confirmation?slot=${encodeURIComponent(slotLabel)}`);
   };
 
   const handlePaymentFailure = (method: PaymentMethod) => {
