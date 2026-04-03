@@ -60,8 +60,8 @@ export const COMM_TEMPLATES: CommTemplate[] = [
     id: "t2",
     name: "Payment Processed",
     category: "finance",
-    subject: "Payment of ₹{{amount}} Processed",
-    body: "Hi {{partner_name}},\n\nYour weekly payout of ₹{{amount}} has been processed and will reflect in your bank account within 24-48 hours.\n\nBreakdown:\n• Order Earnings: ₹{{order_earnings}}\n• Bonuses: ₹{{bonuses}}\n• Deductions: ₹{{deductions}}\n\nFor queries, contact your Regional Manager.",
+    subject: "Payment of ${{amount}} Processed",
+    body: "Hi {{partner_name}},\n\nYour weekly payout of ${{amount}} has been processed and will reflect in your bank account within 24-48 hours.\n\nBreakdown:\n• Order Earnings: ${{order_earnings}}\n• Bonuses: ${{bonuses}}\n• Deductions: ${{deductions}}\n\nFor queries, contact your Regional Manager.",
     variables: ["partner_name", "amount", "order_earnings", "bonuses", "deductions"],
   },
   {
@@ -69,7 +69,7 @@ export const COMM_TEMPLATES: CommTemplate[] = [
     name: "Festival Promotion",
     category: "promotion",
     subject: "🎉 {{festival}} Special — Bonus Opportunity!",
-    body: "Hi {{partner_name}},\n\nGreat news! Add {{festival}} special dishes to your menu between {{start_date}} and {{end_date}} and earn a flat ₹{{bonus}} bonus per festive order.\n\nTag your menu items as '{{festival}} Special' to qualify.\n\nLet's make this {{festival}} delicious! 🍽️",
+    body: "Hi {{partner_name}},\n\nGreat news! Add {{festival}} special dishes to your menu between {{start_date}} and {{end_date}} and earn a flat ${{bonus}} bonus per festive order.\n\nTag your menu items as '{{festival}} Special' to qualify.\n\nLet's make this {{festival}} delicious! 🍽️",
     variables: ["partner_name", "festival", "start_date", "end_date", "bonus"],
   },
   {
@@ -101,8 +101,8 @@ export const COMM_TEMPLATES: CommTemplate[] = [
 export const MOCK_COMMUNICATIONS: Communication[] = [
   {
     id: "c1",
-    subject: "Holi Special Menu — Bonus ₹50 Per Order!",
-    body: "Add festive Holi dishes (Gujiya, Thandai, Puran Poli) to your menu between 10–16 March and earn a flat ₹50 bonus on every festive order. Menu items must be tagged as 'Holi Special'.",
+    subject: "Holi Special Menu — Bonus $50 Per Order!",
+    body: "Add festive Holi dishes (Gujiya, Thandai, Puran Poli) to your menu between 10–16 March and earn a flat $50 bonus on every festive order. Menu items must be tagged as 'Holi Special'.",
     category: "promotion",
     channel: "both",
     priority: "high",
@@ -135,8 +135,8 @@ export const MOCK_COMMUNICATIONS: Communication[] = [
   },
   {
     id: "c3",
-    subject: "Weekly Payment Processed — ₹12,450",
-    body: "Your weekly payout of ₹12,450 has been processed. Check your Reports section for the detailed breakdown.",
+    subject: "Weekly Payment Processed — $12,450",
+    body: "Your weekly payout of $12,450 has been processed. Check your Reports section for the detailed breakdown.",
     category: "finance",
     channel: "whatsapp",
     priority: "normal",
@@ -170,7 +170,7 @@ export const MOCK_COMMUNICATIONS: Communication[] = [
   {
     id: "c5",
     subject: "Ramadan Special Menu Drive",
-    body: "Ramadan begins soon! Partners with expertise in Mughlai, Hyderabadi, or Arabic cuisines — add Iftar & Sehri specials to earn 2x visibility and ₹75 bonus per order.",
+    body: "Ramadan begins soon! Partners with expertise in Mughlai, Hyderabadi, or Arabic cuisines — add Iftar & Sehri specials to earn 2x visibility and $75 bonus per order.",
     category: "promotion",
     channel: "both",
     priority: "high",

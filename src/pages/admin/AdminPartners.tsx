@@ -703,8 +703,8 @@ function EnrollmentLeadsSection() {
 
   const nudgeMessages: Record<LeadStatus, { app: string; wa: string }> = {
     new: { app: "Welcome! Please watch the enrollment video to proceed.", wa: "Hi {name}, welcome to Shero! 🎉 Watch the enrollment video to get started: {link}" },
-    video_watched: { app: "Great progress! Complete your payment of ₹999 to proceed.", wa: "Hi {name}, you've watched the video! ✅ Pay ₹999 to complete enrollment: {link}" },
-    payment_pending: { app: "Your payment is pending. Complete ₹999 to get approved.", wa: "Hi {name}, your ₹999 payment is still pending. Pay now: {link}" },
+    video_watched: { app: "Great progress! Complete your payment of $999 to proceed.", wa: "Hi {name}, you've watched the video! ✅ Pay $999 to complete enrollment: {link}" },
+    payment_pending: { app: "Your payment is pending. Complete $999 to get approved.", wa: "Hi {name}, your $999 payment is still pending. Pay now: {link}" },
     thinking: { app: "We'd love to have you! Ready to join Shero?", wa: "Hi {name}, still thinking? We'd love to have you on board! Join Shero today: {link}" },
     paid: { app: "", wa: "" },
     approved: { app: "", wa: "" },
@@ -1132,7 +1132,7 @@ function EnrollmentLeadsSection() {
               {canApprove && ["new", "video_watched", "payment_pending"].includes(selectedLead.status) && (
                 <div className="flex items-center gap-2 pt-2 border-t border-border bg-amber-50 dark:bg-amber-950/20 rounded-lg px-3 py-2">
                   <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-                  <p className="text-xs text-amber-700 dark:text-amber-400 font-medium">Approval available only after payment is completed (₹999).</p>
+                  <p className="text-xs text-amber-700 dark:text-amber-400 font-medium">Approval available only after payment is completed ($999).</p>
                 </div>
               )}
             </div>
@@ -1582,7 +1582,7 @@ function LicenceRenewalsSection() {
                       <span className="text-[10px] text-muted-foreground">· {kitchen.partnerName}</span>
                     </div>
                     <p className="text-[10px] text-muted-foreground/70 mt-1">
-                      Licence: {kitchen.licenceNumber} · Expiry: {kitchen.licenceExpiry.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                      Licence: {kitchen.licenceNumber} · Expiry: {kitchen.licenceExpiry.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" })}
                     </p>
                   </div>
                   <Button size="sm" className="gap-1.5 text-xs h-8 px-3 shrink-0" onClick={() => { setRenewDialog(kitchen); setNewLicenceNumber(kitchen.licenceNumber); }}>

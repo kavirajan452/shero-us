@@ -40,7 +40,7 @@ const TrendingDishesCarousel = () => {
                       <span className="flex items-center gap-0.5"><Clock className="w-2.5 h-2.5" /> {dish.preparation_time || "30 min"}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-foreground">₹{dish.price}</span>
+                      <span className="text-xs font-bold text-foreground">${dish.price}</span>
                       <button className="w-6 h-6 rounded-md border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors text-xs font-bold">
                         <Plus className="w-3 h-3" />
                       </button>

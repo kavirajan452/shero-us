@@ -140,6 +140,42 @@ export type Database = {
         }
         Relationships: []
       }
+      area_leads: {
+        Row: {
+          created_at: string
+          detected_location: string | null
+          email: string | null
+          id: string
+          phone: string | null
+          source: string
+          status: string
+          updated_at: string
+          zip_code: string | null
+        }
+        Insert: {
+          created_at?: string
+          detected_location?: string | null
+          email?: string | null
+          id?: string
+          phone?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+          zip_code?: string | null
+        }
+        Update: {
+          created_at?: string
+          detected_location?: string | null
+          email?: string | null
+          id?: string
+          phone?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+          zip_code?: string | null
+        }
+        Relationships: []
+      }
       cancellations: {
         Row: {
           cancelled_at: string

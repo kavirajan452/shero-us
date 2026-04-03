@@ -84,7 +84,7 @@ const INITIAL_UPLOAD_HISTORY: UploadRecord[] = [
 ];
 
 function formatDateTime(d: Date): string {
-  return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) + ", " + d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+  return d.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" }) + ", " + d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
 }
 
 /* ── Bulk Upload Dialog ── */
@@ -126,9 +126,9 @@ function BulkUploadDialog({
   const errorRows = parsed.filter((r) => r.error);
 
   const downloadTemplate = () => {
-    const mrpHeaders = states.map((s) => `MRP ${s} (₹)`);
+    const mrpHeaders = states.map((s) => `MRP ${s} ($)`);
     const pppHeaders = ["PPP 0-6m (65%)", "PPP 6-12m (60%)", "PPP 12m+ (55%)"];
-    const headers = ["Item Name", "Category", "Description", "Volume", "Veg (Y/N)", "Photo URL", "Major Vegetables", "Brand", "Video URL", "Packing ₹ (Flat)", "Packing % (Pct)", ...mrpHeaders, ...pppHeaders];
+    const headers = ["Item Name", "Category", "Description", "Volume", "Veg (Y/N)", "Photo URL", "Major Vegetables", "Brand", "Video URL", "Packing $ (Flat)", "Packing % (Pct)", ...mrpHeaders, ...pppHeaders];
     const fixedStart = 12; // first MRP column index (0-based) in the row
     const makeSample = (name: string, desc: string, vegs: string, video: string, mrps: number[]) => {
       const row: any[] = [name, "Sambar", desc, "450 ml", "Y", "https://example.com/photo.jpg", vegs, "SHF", video, 5, 3, ...mrps];
@@ -187,7 +187,7 @@ function BulkUploadDialog({
 
         const brandIdx = headerRow.findIndex((h) => h.includes("brand"));
         const videoIdx = headerRow.findIndex((h) => h.includes("video"));
-        const packFlatIdx = headerRow.findIndex((h) => h.includes("packing") && (h.includes("flat") || h.includes("₹")));
+        const packFlatIdx = headerRow.findIndex((h) => h.includes("packing") && (h.includes("flat") || h.includes("$")));
         const packPctIdx = headerRow.findIndex((h) => h.includes("packing") && (h.includes("pct") || h.includes("%")));
 
         const ppp06Idx = headerRow.findIndex((h) => h.includes("ppp") && h.includes("0-6") || h.includes("65%"));
@@ -262,7 +262,7 @@ function BulkUploadDialog({
         <div className="space-y-4">
           <div className="rounded-lg border border-border bg-muted/30 p-3">
             <p className="text-xs text-muted-foreground mb-2">
-              Upload an Excel file with columns: <span className="font-semibold text-foreground">Item Name, Category, Description, Volume, Veg (Y/N), Photo URL, Major Vegetables, Brand, Video URL, Packing ₹ (Flat), Packing % (Pct), MRP per state, PPP 0-6m (65%), PPP 6-12m (60%), PPP 12m+ (55%)</span>. PPP columns auto-calculate from MRP if left blank.
+              Upload an Excel file with columns: <span className="font-semibold text-foreground">Item Name, Category, Description, Volume, Veg (Y/N), Photo URL, Major Vegetables, Brand, Video URL, Packing $ (Flat), Packing % (Pct), MRP per state, PPP 0-6m (65%), PPP 6-12m (60%), PPP 12m+ (55%)</span>. PPP columns auto-calculate from MRP if left blank.
             </p>
             <Button variant="outline" size="sm" className="gap-1.5 text-xs" onClick={downloadTemplate}>
               <Download className="w-3.5 h-3.5" /> Download Template
@@ -300,7 +300,7 @@ function BulkUploadDialog({
                       <TableHead className="text-[10px] font-semibold">Major Vegetables</TableHead>
                       <TableHead className="text-[10px] font-semibold">Brand</TableHead>
                       <TableHead className="text-[10px] font-semibold">Video URL</TableHead>
-                      <TableHead className="text-[10px] font-semibold text-right">Packing ₹</TableHead>
+                      <TableHead className="text-[10px] font-semibold text-right">Packing $</TableHead>
                       <TableHead className="text-[10px] font-semibold text-right">Packing %</TableHead>
                       {states.map((s) => <TableHead key={s} className="text-[10px] font-semibold text-center">MRP {s}</TableHead>)}
                       <TableHead className="text-[10px] font-semibold text-right text-accent">PPP 0-6m</TableHead>
@@ -341,12 +341,12 @@ function BulkUploadDialog({
                         <TableCell className="p-2 text-[10px] text-muted-foreground max-w-[100px] truncate">
                           {row.videoUrl ? <a href={row.videoUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">🎬 Link</a> : "—"}
                         </TableCell>
-                        <TableCell className="text-[10px] text-right p-2">₹{row.packingChargeFlat}</TableCell>
+                        <TableCell className="text-[10px] text-right p-2">${row.packingChargeFlat}</TableCell>
                         <TableCell className="text-[10px] text-right p-2">{row.packingChargePct}%</TableCell>
-                        {states.map((s) => <TableCell key={s} className="text-[10px] text-center p-2">{row.statePrices[s] ? `₹${row.statePrices[s]}` : <span className="text-muted-foreground/50">—</span>}</TableCell>)}
-                        <TableCell className="text-[10px] text-right p-2 text-accent font-medium">₹{row.ppp0to6}</TableCell>
-                        <TableCell className="text-[10px] text-right p-2 text-yellow-600 font-medium">₹{row.ppp6to12}</TableCell>
-                        <TableCell className="text-[10px] text-right p-2 text-destructive font-medium">₹{row.ppp12plus}</TableCell>
+                        {states.map((s) => <TableCell key={s} className="text-[10px] text-center p-2">{row.statePrices[s] ? `$${row.statePrices[s]}` : <span className="text-muted-foreground/50">—</span>}</TableCell>)}
+                        <TableCell className="text-[10px] text-right p-2 text-accent font-medium">${row.ppp0to6}</TableCell>
+                        <TableCell className="text-[10px] text-right p-2 text-yellow-600 font-medium">${row.ppp6to12}</TableCell>
+                        <TableCell className="text-[10px] text-right p-2 text-destructive font-medium">${row.ppp12plus}</TableCell>
                         <TableCell className="p-2">{row.error ? <span className="text-[9px] text-destructive">{row.error}</span> : <CheckCircle2 className="w-3.5 h-3.5 text-accent" />}</TableCell>
                       </TableRow>
                     ))}
@@ -415,7 +415,7 @@ function CuisineMenuPreview({ cuisine }: { cuisine: BrandedCuisineMaster }) {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="flat" className="text-xs">Packing ₹ (Flat)</SelectItem>
+                          <SelectItem value="flat" className="text-xs">Packing $ (Flat)</SelectItem>
                           <SelectItem value="percent" className="text-xs">Packing % </SelectItem>
                           <SelectItem value="both" className="text-xs">Packing (Both)</SelectItem>
                         </SelectContent>
@@ -467,9 +467,9 @@ function CuisineMenuPreview({ cuisine }: { cuisine: BrandedCuisineMaster }) {
                         <TableCell className="text-[10px] text-muted-foreground p-2">{item.volume}</TableCell>
                         <TableCell className="text-xs font-semibold text-foreground text-right p-2">{priceRange(minP, maxP)}</TableCell>
                         <TableCell className="text-xs text-foreground text-right p-2">
-                          {packingMode === "flat" && `₹${item.packingChargeFlat}`}
+                          {packingMode === "flat" && `$${item.packingChargeFlat}`}
                           {packingMode === "percent" && `${item.packingChargePct}%`}
-                          {packingMode === "both" && `₹${item.packingChargeFlat} + ${item.packingChargePct}%`}
+                          {packingMode === "both" && `$${item.packingChargeFlat} + ${item.packingChargePct}%`}
                         </TableCell>
                         <TableCell className="text-[10px] text-right p-2 text-accent font-medium">{priceRange(minPPP, maxPPP)}</TableCell>
                         <TableCell className="text-[10px] text-right p-2 text-yellow-600 font-medium">{priceRange(minPPP6, maxPPP6)}</TableCell>
@@ -825,7 +825,7 @@ function LicenceExpiryBadge({ expiry }: { expiry: Date }) {
   const days = daysUntilExpiry(expiry);
   if (days < 0) return <Badge variant="destructive" className="text-[9px] gap-1"><AlertTriangle className="w-2.5 h-2.5" /> Expired</Badge>;
   if (days <= 30) return <Badge className="text-[9px] gap-1 bg-yellow-100 text-yellow-700 border-yellow-300 dark:bg-yellow-950 dark:text-yellow-400 dark:border-yellow-800"><Clock className="w-2.5 h-2.5" /> {days}d left</Badge>;
-  return <Badge variant="secondary" className="text-[9px]">{expiry.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</Badge>;
+  return <Badge variant="secondary" className="text-[9px]">{expiry.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" })}</Badge>;
 }
 
 /* ── Auto-close expired kitchens ── */
@@ -1074,7 +1074,7 @@ function KitchenApprovalTab({ kitchens, setKitchens, stream }: { kitchens: Kitch
                     <div className="px-4 py-3 bg-muted/20 border-b border-border">
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                         <div><span className="text-muted-foreground block text-[10px]">Licence Number</span><span className="font-medium text-foreground">{kitchen.licenceNumber}</span></div>
-                        <div><span className="text-muted-foreground block text-[10px]">Licence Expiry</span><span className="font-medium text-foreground">{kitchen.licenceExpiry.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</span> <LicenceExpiryBadge expiry={kitchen.licenceExpiry} /></div>
+                        <div><span className="text-muted-foreground block text-[10px]">Licence Expiry</span><span className="font-medium text-foreground">{kitchen.licenceExpiry.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" })}</span> <LicenceExpiryBadge expiry={kitchen.licenceExpiry} /></div>
                         <div><span className="text-muted-foreground block text-[10px]">Stream</span><span className="font-medium text-foreground">{stream}</span></div>
                         <div><span className="text-muted-foreground block text-[10px]">Partner Profile</span><a href={`/admin/partners`} className="text-primary text-xs font-medium hover:underline flex items-center gap-1"><Eye className="w-3 h-3" /> View Profile</a></div>
                       </div>
@@ -1690,7 +1690,7 @@ function SubscriptionPlanManagement() {
                   <Badge variant="secondary" className="text-[10px] capitalize">{plan.duration}</Badge>
                   <Badge variant="secondary" className="text-[10px]">{plan.mealsPerDay} meal{plan.mealsPerDay > 1 ? "s" : ""}/day</Badge>
                 </div>
-                <p className="text-xl font-bold text-foreground">₹{plan.pricePerMonth.toLocaleString()}<span className="text-xs font-normal text-muted-foreground">/{plan.duration === "weekly" ? "week" : "month"}</span></p>
+                <p className="text-xl font-bold text-foreground">${plan.pricePerMonth.toLocaleString()}<span className="text-xs font-normal text-muted-foreground">/{plan.duration === "weekly" ? "week" : "month"}</span></p>
                 <ul className="space-y-1">
                   {plan.features.map((f, i) => (
                     <li key={i} className="text-[10px] text-muted-foreground flex items-center gap-1.5">
@@ -1803,7 +1803,7 @@ function SubscriptionPlanManagement() {
                 <Input type="number" min={1} max={4} value={newPlan.mealsPerDay} onChange={(e) => setNewPlan((p) => ({ ...p, mealsPerDay: Number(e.target.value) }))} className="h-8 text-xs" />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs font-semibold">Price (₹)</Label>
+                <Label className="text-xs font-semibold">Price ($)</Label>
                 <Input type="number" min={0} value={newPlan.pricePerMonth || ""} onChange={(e) => setNewPlan((p) => ({ ...p, pricePerMonth: Number(e.target.value) }))} placeholder="2499" className="h-8 text-xs" />
               </div>
             </div>
@@ -1845,7 +1845,7 @@ function ComboMenuManagement() {
       "Item ID", "Item Name", "Emoji", "Sub-Category", "Description",
       "Portion Size", "Portion Unit", "Veg/Non-Veg", "Category (tiffin/snacks/lunch)",
       "Photo URL", "Brand", "Video URL",
-      "MRP (₹)", "Packing ₹ (Flat)", "Packing % (Pct)",
+      "MRP ($)", "Packing $ (Flat)", "Packing % (Pct)",
       "PPP 0-6m (65%)", "PPP 6-12m (60%)", "PPP 12m+ (55%)"
     ];
     const sampleRows = currentItems.slice(0, 3).map((item) => {
@@ -1969,7 +1969,7 @@ function ComboMenuManagement() {
                   <TableHead className="text-[10px] font-semibold">Item</TableHead>
                   <TableHead className="text-[10px] font-semibold">Sub-Category</TableHead>
                   <TableHead className="text-[10px] font-semibold text-right">Portion</TableHead>
-                  <TableHead className="text-[10px] font-semibold text-right">MRP (₹)</TableHead>
+                  <TableHead className="text-[10px] font-semibold text-right">MRP ($)</TableHead>
                   <TableHead className="text-[10px] font-semibold text-right text-accent">PPP 0-6m</TableHead>
                   <TableHead className="text-[10px] font-semibold text-right text-yellow-600">PPP 6-12m</TableHead>
                   <TableHead className="text-[10px] font-semibold text-right text-destructive">PPP 12m+</TableHead>
@@ -1984,10 +1984,10 @@ function ComboMenuManagement() {
                     </TableCell>
                     <TableCell className="text-[10px] p-2">{item.subCategory}</TableCell>
                     <TableCell className="text-[10px] text-right p-2">{item.portionSize} {item.portionUnit}</TableCell>
-                    <TableCell className="text-xs font-semibold text-right p-2">₹{item.price}</TableCell>
-                    <TableCell className="text-[10px] text-right p-2 text-accent font-medium">₹{Math.round(item.price * 0.65)}</TableCell>
-                    <TableCell className="text-[10px] text-right p-2 text-yellow-600 font-medium">₹{Math.round(item.price * 0.60)}</TableCell>
-                    <TableCell className="text-[10px] text-right p-2 text-destructive font-medium">₹{Math.round(item.price * 0.55)}</TableCell>
+                    <TableCell className="text-xs font-semibold text-right p-2">${item.price}</TableCell>
+                    <TableCell className="text-[10px] text-right p-2 text-accent font-medium">${Math.round(item.price * 0.65)}</TableCell>
+                    <TableCell className="text-[10px] text-right p-2 text-yellow-600 font-medium">${Math.round(item.price * 0.60)}</TableCell>
+                    <TableCell className="text-[10px] text-right p-2 text-destructive font-medium">${Math.round(item.price * 0.55)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -2010,7 +2010,7 @@ function ComboMenuManagement() {
         {comboCategoryConfigs.map(c => (
           <div key={c.id} className="flex justify-between">
             <span className="text-muted-foreground">{c.emoji} {c.label} (pick {c.minItems}–{c.maxItems} items)</span>
-            <span className="font-semibold text-foreground">₹{c.pricePerBox}/box</span>
+            <span className="font-semibold text-foreground">${c.pricePerBox}/box</span>
           </div>
         ))}
       </div>
@@ -2026,7 +2026,7 @@ function ComboMenuManagement() {
           <CardContent className="space-y-3">
             <div className="rounded-lg border border-border bg-muted/30 p-3">
               <p className="text-[10px] text-muted-foreground mb-2">
-                Template columns: <span className="font-semibold text-foreground">Item ID, Item Name, Emoji, Sub-Category, Description, Portion Size, Portion Unit, Veg/Non-Veg, Category, Photo URL, Brand, Video URL, MRP (₹), Packing ₹ (Flat), Packing % (Pct), PPP 0-6m (65%), PPP 6-12m (60%), PPP 12m+ (55%)</span>. PPP columns auto-calculate from MRP if left blank.
+                Template columns: <span className="font-semibold text-foreground">Item ID, Item Name, Emoji, Sub-Category, Description, Portion Size, Portion Unit, Veg/Non-Veg, Category, Photo URL, Brand, Video URL, MRP ($), Packing $ (Flat), Packing % (Pct), PPP 0-6m (65%), PPP 6-12m (60%), PPP 12m+ (55%)</span>. PPP columns auto-calculate from MRP if left blank.
               </p>
               <Button variant="outline" size="sm" className="gap-1.5 text-xs" onClick={downloadTemplate}>
                 <Download className="w-3.5 h-3.5" /> Download Template
@@ -2069,7 +2069,7 @@ function ComboMenuManagement() {
                           <TableCell className="text-xs p-2">{row.emoji} {row.name}</TableCell>
                           <TableCell className="text-[10px] p-2">{row.subCategory}</TableCell>
                           <TableCell className="text-[10px] text-right p-2">{row.portionSize} {row.portionUnit}</TableCell>
-                          <TableCell className="text-xs font-semibold text-right p-2">₹{row.price}</TableCell>
+                          <TableCell className="text-xs font-semibold text-right p-2">${row.price}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

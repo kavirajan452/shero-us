@@ -159,7 +159,7 @@ const Experiences = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-xl font-bold text-foreground">₹{exp.price}</span>
+                      <span className="text-xl font-bold text-foreground">${exp.price}</span>
                       <span className="text-sm text-muted-foreground"> /person</span>
                     </div>
                     <button className="px-6 py-2.5 rounded-full bg-gradient-shero text-primary-foreground font-semibold hover:opacity-90 transition-opacity">

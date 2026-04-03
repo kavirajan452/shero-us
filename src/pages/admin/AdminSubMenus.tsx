@@ -90,7 +90,7 @@ const AdminSubMenus = () => {
             <div className="flex-1">
               <p className="text-xs font-semibold text-foreground mb-1.5">Excel Template Columns</p>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-x-4 gap-y-1">
-                {["Plan Name", "Day (Mon-Sun)", "Session (B/L/D)", "Item Name", "MRP (₹)", "PPP (60% default)", "Customer Price", "Discount %", "Portion Size", "Cuisine", "Veg/NV", "Zone"].map(col => (
+                {["Plan Name", "Day (Mon-Sun)", "Session (B/L/D)", "Item Name", "MRP ($)", "PPP (60% default)", "Customer Price", "Discount %", "Portion Size", "Cuisine", "Veg/NV", "Zone"].map(col => (
                   <span key={col} className="text-[10px] text-muted-foreground">• {col}</span>
                 ))}
               </div>

@@ -19,9 +19,9 @@ export const CEILING_LIMITS: Record<ApprovalTier, number> = {
 };
 
 export const TIER_LABELS: Record<ApprovalTier, string> = {
-  executive: "Executive (≤₹500)",
-  team_leader: "Team Leader (≤₹2,000)",
-  manager: "Manager (≤₹5,000)",
+  executive: "Executive (≤$500)",
+  team_leader: "Team Leader (≤$2,000)",
+  manager: "Manager (≤$5,000)",
   leadership: "Leadership (Unlimited)",
 };
 

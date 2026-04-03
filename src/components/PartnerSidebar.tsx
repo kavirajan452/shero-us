@@ -1,4 +1,4 @@
-import { LayoutDashboard, ClipboardList, UtensilsCrossed, LogOut, Gift, FileSpreadsheet, Package, Globe, Clock, CalendarCheck, FileBarChart, Lightbulb, MessageCircle, Heart, PartyPopper, GraduationCap, CreditCard, IndianRupee, Cookie, Sparkles, Award } from "lucide-react";
+import { LayoutDashboard, ClipboardList, UtensilsCrossed, LogOut, Gift, FileSpreadsheet, Package, Globe, Clock, CalendarCheck, FileBarChart, Lightbulb, MessageCircle, Heart, PartyPopper, GraduationCap, CreditCard, DollarSign, Cookie, Sparkles, Award } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { partnerType } from "@/data/partnerMockData";
@@ -58,7 +58,7 @@ const sheroClassesPartnerItems = [
 
 const engagementItems = [
   { title: "Training", url: "/partner/training", icon: GraduationCap },
-  { title: "How Much You Can Earn", url: "/partner/income", icon: IndianRupee },
+  { title: "How Much You Can Earn", url: "/partner/income", icon: DollarSign },
   { title: "Tips to Earn More", url: "/partner/tips", icon: Lightbulb },
   { title: "Messages from Shero", url: "/partner/messages", icon: MessageCircle },
   { title: "Partner Centre", url: "/partner/spc", icon: Heart },

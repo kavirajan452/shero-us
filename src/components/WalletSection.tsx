@@ -22,7 +22,7 @@ const getExpiryInfo = (expiresAt?: string | null, expired?: boolean) => {
   if (daysLeft <= 0) return { label: "Expired", color: "text-destructive", urgency: "expired" };
   if (daysLeft <= 3) return { label: `${daysLeft}d left`, color: "text-destructive", urgency: "critical" };
   if (daysLeft <= 7) return { label: `${daysLeft}d left`, color: "text-yellow-600", urgency: "warning" };
-  return { label: `Expires ${expiry.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`, color: "text-muted-foreground", urgency: "safe" };
+  return { label: `Expires ${expiry.toLocaleDateString("en-US", { day: "numeric", month: "short" })}`, color: "text-muted-foreground", urgency: "safe" };
 };
 
 interface WalletSectionProps {
@@ -96,7 +96,7 @@ const WalletSection = ({ variant = "customer" }: WalletSectionProps) => {
           {variant === "partner" && !pppBonusPaid && balance > 0 && (
             <div className="bg-primary/10 rounded-lg p-2.5 text-xs text-primary">
               <Sparkles className="w-3 h-3 inline mr-1" />
-              ₹500 signup bonus will be included in your first PPP payout
+              $500 signup bonus will be included in your first PPP payout
             </div>
           )}
 
@@ -142,7 +142,7 @@ const WalletSection = ({ variant = "customer" }: WalletSectionProps) => {
                     <p className="text-sm font-medium text-foreground truncate">{tx.description}</p>
                     <div className="flex items-center gap-2">
                       <p className="text-[10px] text-muted-foreground">
-                        {new Date(tx.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                        {new Date(tx.date).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}
                       </p>
                       {expiryInfo && (
                         <span className={`text-[10px] ${expiryInfo.color}`}>
@@ -168,7 +168,7 @@ const WalletSection = ({ variant = "customer" }: WalletSectionProps) => {
             <p className="text-sm text-muted-foreground">No transactions yet</p>
             <p className="text-xs text-muted-foreground mt-1">
               {variant === "customer"
-                ? "Get ₹500 when you join via a partner's referral link!"
+                ? "Get $500 when you join via a partner's referral link!"
                 : "Share your visiting card to earn referral rewards!"}
             </p>
           </CardContent>

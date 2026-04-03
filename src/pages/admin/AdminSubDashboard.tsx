@@ -77,13 +77,13 @@ const AdminSubDashboard = () => {
         <Card className="border-border">
           <CardContent className="p-3">
             <p className="text-[10px] text-muted-foreground uppercase">Active Revenue</p>
-            <p className="text-lg font-bold text-primary">₹{totalRevenue.toLocaleString()}</p>
+            <p className="text-lg font-bold text-primary">${totalRevenue.toLocaleString()}</p>
           </CardContent>
         </Card>
         <Card className="border-border">
           <CardContent className="p-3">
             <p className="text-[10px] text-muted-foreground uppercase">Avg Order Value</p>
-            <p className="text-lg font-bold text-foreground">₹{Math.round(avgOrderValue).toLocaleString()}</p>
+            <p className="text-lg font-bold text-foreground">${Math.round(avgOrderValue).toLocaleString()}</p>
           </CardContent>
         </Card>
       </div>
@@ -96,7 +96,7 @@ const AdminSubDashboard = () => {
             {[
               { emoji: "🚨", text: `${pausedCount} paused subscribers — ${pausedCount > 0 ? "review for win-back campaigns" : "all good!"}`, severity: pausedCount > 2 ? "high" : "low" },
               { emoji: "📊", text: `${cancelledCount} cancellations this period. Churn rate: ${((cancelledCount / Math.max(activeCount + trialCount + cancelledCount, 1)) * 100).toFixed(1)}%`, severity: cancelledCount > 3 ? "high" : "low" },
-              { emoji: "💰", text: `Avg subscription value: ₹${Math.round(avgOrderValue)} — ${avgOrderValue > 140 ? "healthy" : "consider upsell campaigns"}`, severity: "low" },
+              { emoji: "💰", text: `Avg subscription value: $${Math.round(avgOrderValue)} — ${avgOrderValue > 140 ? "healthy" : "consider upsell campaigns"}`, severity: "low" },
               { emoji: "📈", text: `${trialCount} trial users — prime for conversion to weekly plan`, severity: trialCount > 0 ? "medium" : "low" },
             ].map((insight, i) => (
               <p key={i} className={`text-[10px] ${insight.severity === "high" ? "text-destructive font-semibold" : insight.severity === "medium" ? "text-primary" : "text-muted-foreground"}`}>
@@ -156,7 +156,7 @@ const AdminSubDashboard = () => {
                   <TableCell className="text-xs">{c.duration}</TableCell>
                   <TableCell><Badge className={`text-[9px] ${sc.color}`}>{sc.label}</Badge></TableCell>
                   <TableCell className="text-xs text-foreground">{c.partnerName || "—"}</TableCell>
-                  <TableCell className="text-xs font-medium">₹{c.totalPaid.toLocaleString()}</TableCell>
+                  <TableCell className="text-xs font-medium">${c.totalPaid.toLocaleString()}</TableCell>
                   <TableCell>
                     <div className="flex gap-1">
                       <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => setSelectedCustomer(c)} title="View">

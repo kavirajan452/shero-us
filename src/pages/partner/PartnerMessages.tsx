@@ -1,11 +1,11 @@
-import { MessageCircle, Megaphone, PartyPopper, Info, AlertTriangle, TrendingUp, IndianRupee, Radio } from "lucide-react";
+import { MessageCircle, Megaphone, PartyPopper, Info, AlertTriangle, TrendingUp, DollarSign, Radio } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MOCK_COMMUNICATIONS, categoryConfig, channelConfig, type CommCategory } from "@/data/communicationsData";
 
 const categoryIcons: Record<CommCategory, any> = {
   performance: TrendingUp,
-  finance: IndianRupee,
+  finance: DollarSign,
   promotion: Megaphone,
   announcement: Radio,
   alert: AlertTriangle,

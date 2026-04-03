@@ -152,10 +152,10 @@ const AdminDeliveryAnalytics = () => {
                     <div className="flex-1">
                       <div className="flex justify-between mb-1">
                         <span className="font-medium text-foreground">{d.partnerName}</span>
-                        <span className="text-sm text-foreground font-bold">₹{totalCost.toLocaleString()}</span>
+                        <span className="text-sm text-foreground font-bold">${totalCost.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between text-xs text-muted-foreground">
-                        <span>₹{d.costPerDelivery}/delivery avg</span>
+                        <span>${d.costPerDelivery}/delivery avg</span>
                         <span>{d.delivered} deliveries</span>
                       </div>
                       <Progress value={(d.delivered / deliveryAnalyticsMock[0].delivered) * 100} className="h-1.5 mt-1.5" />

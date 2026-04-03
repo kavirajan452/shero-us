@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { classBookings, bookingStatusColors, type ClassBooking, type BookingStatus } from "@/data/classBookingStore";
-import { Calendar, Users, Clock, Star, Video, Radio, CheckCircle, XCircle, Award, IndianRupee, Link2, Eye } from "lucide-react";
+import { Calendar, Users, Clock, Star, Video, Radio, CheckCircle, XCircle, Award, DollarSign, Link2, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const fmt = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+const fmt = (n: number) => `$${n.toLocaleString("en-US")}`;
 
 export default function PartnerClasses() {
   const { toast } = useToast();
@@ -56,7 +56,7 @@ export default function PartnerClasses() {
         {[
           { label: "Upcoming", value: stats.upcoming, icon: Calendar, color: "text-blue-600", bg: "bg-blue-100" },
           { label: "Total Sessions", value: stats.totalSessions, icon: CheckCircle, color: "text-green-600", bg: "bg-green-100" },
-          { label: "Revenue", value: fmt(stats.revenue), icon: IndianRupee, color: "text-primary", bg: "bg-emerald-100" },
+          { label: "Revenue", value: fmt(stats.revenue), icon: DollarSign, color: "text-primary", bg: "bg-emerald-100" },
           { label: "Avg Rating", value: stats.avgRating, icon: Star, color: "text-yellow-600", bg: "bg-amber-100" },
           { label: "Students", value: stats.students, icon: Users, color: "text-accent", bg: "bg-purple-100" },
         ].map(s => (

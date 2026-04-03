@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Eye, Search, MapPin, Clock, CheckCircle2, XCircle, Truck, ChefHat,
   Phone, Plus, Minus, Ban, Send, ClipboardList, Package, AlertTriangle,
-  Calendar, CalendarIcon, IndianRupee, Building2, Navigation, Edit3, X
+  Calendar, CalendarIcon, DollarSign, Building2, Navigation, Edit3, X
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { getAdminRole } from "@/data/adminRoles";
@@ -308,7 +308,7 @@ export default function AdminOrders() {
               <>
                 <Card><CardContent className="p-4">
                   <p className="text-[11px] text-muted-foreground">Total MRP Value</p>
-                  <p className="text-lg font-bold text-foreground">₹{filtered.reduce((s, o) => s + o.total, 0).toLocaleString()}</p>
+                  <p className="text-lg font-bold text-foreground">${filtered.reduce((s, o) => s + o.total, 0).toLocaleString()}</p>
                 </CardContent></Card>
                 <Card><CardContent className="p-4">
                   <p className="text-[11px] text-muted-foreground">Total Orders</p>
@@ -318,8 +318,8 @@ export default function AdminOrders() {
             )}
             <Card><CardContent className="p-4">
               <p className="text-[11px] text-muted-foreground">Packing Charges</p>
-              <p className="text-lg font-bold text-foreground">₹{packingCharges.toLocaleString()}</p>
-              <p className="text-[9px] text-muted-foreground">₹5/item</p>
+              <p className="text-lg font-bold text-foreground">${packingCharges.toLocaleString()}</p>
+              <p className="text-[9px] text-muted-foreground">$5/item</p>
             </CardContent></Card>
             <Card><CardContent className="p-4">
               <p className="text-[11px] text-muted-foreground">Cancelled Orders</p>
@@ -327,7 +327,7 @@ export default function AdminOrders() {
             </CardContent></Card>
             <Card><CardContent className="p-4">
               <p className="text-[11px] text-muted-foreground">Cancelled Sales</p>
-              <p className="text-lg font-bold text-destructive">₹{cancelledSales.toLocaleString()}</p>
+              <p className="text-lg font-bold text-destructive">${cancelledSales.toLocaleString()}</p>
             </CardContent></Card>
           </div>
         );
@@ -451,8 +451,8 @@ export default function AdminOrders() {
                     <Badge variant="outline" className={`text-[9px] capitalize ${o.serviceType === "swiggy" ? "border-orange-500 text-orange-600 bg-orange-50 dark:bg-orange-950" : o.serviceType === "zomato" ? "border-red-500 text-red-600 bg-red-50 dark:bg-red-950" : ""}`}>{o.serviceType}</Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <p className="text-xs font-semibold text-foreground">₹{o.total.toLocaleString()}</p>
-                    {!isSSC && <p className="text-[9px] text-muted-foreground">PPP: ₹{o.pppTotal}</p>}
+                    <p className="text-xs font-semibold text-foreground">${o.total.toLocaleString()}</p>
+                    {!isSSC && <p className="text-[9px] text-muted-foreground">PPP: ${o.pppTotal}</p>}
                   </TableCell>
                   <TableCell>
                     <Badge className={`${cfg.color} text-[9px] border-0 gap-1`}>
@@ -518,21 +518,21 @@ export default function AdminOrders() {
                     {selectedOrder.items.map((item, i) => (
                       <div key={i} className="flex justify-between text-xs">
                         <span className="text-foreground">{item.qty}× {item.name}</span>
-                        <span className="text-foreground font-medium">₹{(item.qty * item.price).toLocaleString()}</span>
+                        <span className="text-foreground font-medium">${(item.qty * item.price).toLocaleString()}</span>
                       </div>
                     ))}
                     <div className="flex justify-between text-xs border-t border-border pt-1.5 font-semibold">
                       <span className="text-foreground">Total (MRP)</span>
-                      <span className="text-foreground">₹{selectedOrder.total.toLocaleString()}</span>
+                      <span className="text-foreground">${selectedOrder.total.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>Packing Charges ({selectedOrder.items.reduce((s, i) => s + i.qty, 0)} items × ₹5)</span>
-                      <span>₹{(selectedOrder.items.reduce((s, i) => s + i.qty, 0) * 5).toLocaleString()}</span>
+                      <span>Packing Charges ({selectedOrder.items.reduce((s, i) => s + i.qty, 0)} items × $5)</span>
+                      <span>${(selectedOrder.items.reduce((s, i) => s + i.qty, 0) * 5).toLocaleString()}</span>
                     </div>
                     {!isSSC && (
                       <div className="flex justify-between text-xs text-muted-foreground">
                         <span>Partner Price (PPP)</span>
-                        <span>₹{selectedOrder.pppTotal.toLocaleString()}</span>
+                        <span>${selectedOrder.pppTotal.toLocaleString()}</span>
                       </div>
                     )}
                   </div>

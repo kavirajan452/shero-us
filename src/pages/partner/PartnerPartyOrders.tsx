@@ -22,7 +22,7 @@ import {
   ChefHat,
   Package,
   AlertTriangle,
-  IndianRupee,
+  DollarSign,
 } from "lucide-react";
 import PartyPrepReminders from "@/components/partner/PartyPrepReminders";
 import PackingGuide from "@/components/partner/PackingGuide";
@@ -372,7 +372,7 @@ const PartnerPartyOrders = () => {
                           <th className="text-right py-2 px-2 text-muted-foreground font-medium">{t("party.partner.perPlate")}</th>
                           <th className="text-right py-2 px-2 text-muted-foreground font-medium">{t("party.guests")}</th>
                           <th className="text-right py-2 px-2 text-muted-foreground font-medium">{t("party.partner.totalVol")}</th>
-                          <th className="text-right py-2 px-2 text-muted-foreground font-medium font-bold">{t("party.partner.earnings")} (₹)</th>
+                          <th className="text-right py-2 px-2 text-muted-foreground font-medium font-bold">{t("party.partner.earnings")} ($)</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -398,7 +398,7 @@ const PartnerPartyOrders = () => {
                                 <td className="py-2 px-2 text-right text-foreground">{row.portionPerPlate}</td>
                                 <td className="py-2 px-2 text-right text-foreground">{row.totalPortions}</td>
                                 <td className="py-2 px-2 text-right text-primary font-semibold">{totalFormatted}</td>
-                                <td className="py-2 px-2 text-right text-foreground font-semibold">₹{itemPPP.toLocaleString()}</td>
+                                <td className="py-2 px-2 text-right text-foreground font-semibold">${itemPPP.toLocaleString()}</td>
                               </tr>
                             );
                           });
@@ -407,7 +407,7 @@ const PartnerPartyOrders = () => {
                               {rows}
                               <tr className="border-t-2 border-border bg-secondary/30">
                                 <td colSpan={6} className="py-2.5 px-2 text-right font-bold text-foreground">{t("party.partner.totalEarnings")}</td>
-                                <td className="py-2.5 px-2 text-right text-primary font-bold">₹{totalPPP.toLocaleString()}</td>
+                                <td className="py-2.5 px-2 text-right text-primary font-bold">${totalPPP.toLocaleString()}</td>
                               </tr>
                             </>
                           );

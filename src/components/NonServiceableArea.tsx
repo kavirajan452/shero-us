@@ -3,26 +3,43 @@ import { MapPin, Bell, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface NonServiceableAreaProps {
   detectedLocation?: string;
+  zipCode?: string;
 }
 
-const NonServiceableArea = ({ detectedLocation }: NonServiceableAreaProps) => {
+const NonServiceableArea = ({ detectedLocation, zipCode }: NonServiceableAreaProps) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() && !phone.trim()) {
       toast({ title: "Please enter your email or phone number", variant: "destructive" });
       return;
     }
-    // TODO: Save to leads table
-    setSubmitted(true);
-    toast({ title: "You're on the list! 🎉", description: "We'll notify you as soon as we launch in your area." });
+    setLoading(true);
+    try {
+      const { error } = await supabase.from("area_leads").insert({
+        email: email.trim() || null,
+        phone: phone.trim() || null,
+        detected_location: detectedLocation || null,
+        zip_code: zipCode || null,
+        source: "non_serviceable",
+      });
+      if (error) throw error;
+      setSubmitted(true);
+      toast({ title: "You're on the list! 🎉", description: "We'll notify you as soon as we launch in your area." });
+    } catch {
+      toast({ title: "Something went wrong", description: "Please try again later.", variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -75,8 +92,8 @@ const NonServiceableArea = ({ detectedLocation }: NonServiceableAreaProps) => {
           className="rounded-xl"
           maxLength={14}
         />
-        <Button type="submit" className="w-full rounded-xl gap-2">
-          <Bell className="w-4 h-4" /> Notify Me When Available
+        <Button type="submit" className="w-full rounded-xl gap-2" disabled={loading}>
+          <Bell className="w-4 h-4" /> {loading ? "Submitting..." : "Notify Me When Available"}
         </Button>
       </form>
     </div>

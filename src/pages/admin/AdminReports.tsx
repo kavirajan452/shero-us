@@ -10,7 +10,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
-  BarChart3, TrendingUp, IndianRupee, Users, ChefHat, ClipboardList,
+  BarChart3, TrendingUp, DollarSign, Users, ChefHat, ClipboardList,
   ArrowUpRight, ArrowDownRight, Eye, Search, MapPin, Building2,
   Layers, Target, ShieldCheck, UserCheck, Utensils, Star,
   Activity, Percent, Calendar, FileText, Edit, CheckCircle2,
@@ -111,7 +111,7 @@ const recentOrders = [
 
 // ── Team Summary ──
 const teamSummary = [
-  { role: "Country Head", name: "Arvind S.", rem: "country@shero.in", department: "Leadership", kpiLabel: "Revenue", kpiValue: "₹18.4L", status: "active" },
+  { role: "Country Head", name: "Arvind S.", rem: "country@shero.in", department: "Leadership", kpiLabel: "Revenue", kpiValue: "$18.4L", status: "active" },
   { role: "Vertical Head (SAP & OPS)", name: "Kavitha R.", rem: "sapops@shero.in", department: "Operations", kpiLabel: "Active Kitchens", kpiValue: "280", status: "active" },
   { role: "Regional Manager", name: "Deepak M.", rem: "regional@shero.in", department: "South Region", kpiLabel: "Region Orders", kpiValue: "520", status: "active" },
   { role: "Onboarding Manager", name: "Meera R.", rem: "onboarding@shero.in", department: "KOB", kpiLabel: "Approved Kitchens", kpiValue: "142", status: "active" },
@@ -119,7 +119,7 @@ const teamSummary = [
   { role: "SHF Manager", name: "Nithya P.", rem: "shf@shero.in", department: "Branded Ops", kpiLabel: "SHF Kitchens", kpiValue: "168", status: "active" },
   { role: "HCF Manager", name: "Preeti J.", rem: "hcf@shero.in", department: "Marketplace", kpiLabel: "HCF Kitchens", kpiValue: "112", status: "active" },
   { role: "SSC Manager", name: "Rekha M.", rem: "ssc-mgr@shero.in", department: "Support Center", kpiLabel: "Tickets/Day", kpiValue: "85", status: "active" },
-  { role: "PPP Manager", name: "Ganesh R.", rem: "ppp-mgr@shero.in", department: "Payments", kpiLabel: "Weekly Payout", kpiValue: "₹2.85L", status: "active" },
+  { role: "PPP Manager", name: "Ganesh R.", rem: "ppp-mgr@shero.in", department: "Payments", kpiLabel: "Weekly Payout", kpiValue: "$2.85L", status: "active" },
 ];
 
 // ── Order Status Distribution ──
@@ -153,9 +153,9 @@ const chartConfig = {
 };
 
 function fmt(amount: number): string {
-  if (amount >= 100000) return `₹${(amount / 100000).toFixed(2)}L`;
-  if (amount >= 1000) return `₹${(amount / 1000).toFixed(1)}K`;
-  return `₹${amount.toLocaleString("en-IN")}`;
+  if (amount >= 100000) return `$${(amount / 100000).toFixed(2)}L`;
+  if (amount >= 1000) return `$${(amount / 1000).toFixed(1)}K`;
+  return `$${amount.toLocaleString("en-US")}`;
 }
 
 const orderStatusColors: Record<string, string> = {
@@ -242,7 +242,7 @@ export default function AdminReports() {
           {/* KPI Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
             {[
-              { label: "Total Revenue", value: fmt(overviewKPIs.totalRevenue), change: `+${overviewKPIs.revenueGrowth}%`, icon: IndianRupee, up: true },
+              { label: "Total Revenue", value: fmt(overviewKPIs.totalRevenue), change: `+${overviewKPIs.revenueGrowth}%`, icon: DollarSign, up: true },
               { label: "Orders", value: overviewKPIs.totalOrders.toLocaleString(), change: `+${overviewKPIs.orderGrowth}%`, icon: ClipboardList, up: true },
               { label: "Active Partners", value: String(overviewKPIs.activePartners), change: `+${overviewKPIs.partnerGrowth}`, icon: ChefHat, up: true },
               { label: "Active Users", value: overviewKPIs.activeUsers.toLocaleString(), change: `+${overviewKPIs.userGrowth}`, icon: Users, up: true },
@@ -269,7 +269,7 @@ export default function AdminReports() {
                 <AreaChart data={revenueByMonth}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
                   <XAxis dataKey="month" tick={{ fontSize: 10 }} className="fill-muted-foreground" />
-                  <YAxis yAxisId="rev" tick={{ fontSize: 10 }} tickFormatter={(v) => `₹${(v / 100000).toFixed(1)}L`} className="fill-muted-foreground" />
+                  <YAxis yAxisId="rev" tick={{ fontSize: 10 }} tickFormatter={(v) => `$${(v / 100000).toFixed(1)}L`} className="fill-muted-foreground" />
                   <YAxis yAxisId="ord" orientation="right" tick={{ fontSize: 10 }} className="fill-muted-foreground" />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Area yAxisId="rev" type="monotone" dataKey="revenue" stroke="hsl(var(--chart-1))" fill="hsl(var(--chart-1))" fillOpacity={0.12} strokeWidth={2} />
@@ -288,7 +288,7 @@ export default function AdminReports() {
                   <BarChart data={stateWiseData}>
                     <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
                     <XAxis dataKey="code" tick={{ fontSize: 10 }} className="fill-muted-foreground" />
-                    <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}K`} className="fill-muted-foreground" />
+                    <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`} className="fill-muted-foreground" />
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Bar dataKey="revenue" fill="hsl(var(--chart-1))" radius={[4, 4, 0, 0]} />
                   </BarChart>
@@ -367,7 +367,7 @@ export default function AdminReports() {
               <ChartContainer config={chartConfig} className="h-[240px] w-full">
                 <BarChart data={cuisinePerformance} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
-                  <XAxis type="number" tick={{ fontSize: 10 }} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}K`} className="fill-muted-foreground" />
+                  <XAxis type="number" tick={{ fontSize: 10 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`} className="fill-muted-foreground" />
                   <YAxis dataKey="cuisine" type="category" tick={{ fontSize: 10 }} width={80} className="fill-muted-foreground" />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar dataKey="revenue" fill="hsl(var(--chart-1))" radius={[0, 4, 4, 0]} />
@@ -599,7 +599,7 @@ export default function AdminReports() {
                 <LineChart data={revenueByMonth}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
                   <XAxis dataKey="month" tick={{ fontSize: 10 }} className="fill-muted-foreground" />
-                  <YAxis yAxisId="r" tick={{ fontSize: 10 }} tickFormatter={(v) => `₹${(v / 100000).toFixed(1)}L`} className="fill-muted-foreground" />
+                  <YAxis yAxisId="r" tick={{ fontSize: 10 }} tickFormatter={(v) => `$${(v / 100000).toFixed(1)}L`} className="fill-muted-foreground" />
                   <YAxis yAxisId="o" orientation="right" tick={{ fontSize: 10 }} className="fill-muted-foreground" />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Line yAxisId="r" type="monotone" dataKey="revenue" stroke="hsl(var(--chart-1))" strokeWidth={2} dot={{ r: 3 }} />

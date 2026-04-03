@@ -120,7 +120,7 @@ const CustomerReferrals = () => {
             </h1>
             <p className="text-sm text-muted-foreground mb-4">
               Invite friends to Shero. Every verified referral gets a
-              <span className="font-bold text-primary"> Spin Wheel reward</span> (₹10 to ₹500)!
+              <span className="font-bold text-primary"> Spin Wheel reward</span> ($10 to $500)!
             </p>
 
             {/* Earning cap progress */}
@@ -204,7 +204,7 @@ const CustomerReferrals = () => {
               {[
                 { step: "1", emoji: "📱", title: "Invite a Friend", desc: "Share your code or invite directly with their phone number" },
                 { step: "2", emoji: "🔐", title: "They Verify via OTP", desc: "Friend signs up with unique phone & verifies — ensures genuine new user" },
-                { step: "3", emoji: "🎰", title: "Spin the Wheel!", desc: "Win ₹10 to ₹500 per referral — every verified friend gets you a spin!" },
+                { step: "3", emoji: "🎰", title: "Spin the Wheel!", desc: "Win $10 to $500 per referral — every verified friend gets you a spin!" },
                 { step: "4", emoji: "⏳", title: "Use Within 90 Days", desc: "Wallet credits expire 90 days after earning. Spend before they expire!" },
               ].map((item) => (
                 <div key={item.step} className="flex items-start gap-3">
@@ -238,8 +238,8 @@ const CustomerReferrals = () => {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground">{ref.friendName}</p>
                     <p className="text-[10px] text-muted-foreground">
-                      {new Date(ref.invitedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
-                      {ref.spinDone && ` · 🎰 Won ₹${ref.spinAmount || 0}`}
+                      {new Date(ref.invitedAt).toLocaleDateString("en-US", { day: "numeric", month: "short" })}
+                      {ref.spinDone && ` · 🎰 Won $${ref.spinAmount || 0}`}
                     </p>
                   </div>
                   {statusBadge(ref.status)}

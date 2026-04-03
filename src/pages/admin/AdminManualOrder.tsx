@@ -91,7 +91,7 @@ const AdminManualOrder = () => {
   const handlePaymentSuccess = () => {
     setStep("done");
     removeIncompleteOrder(`admin-${custPhone}`);
-    toast({ title: "Order Placed", description: `Order placed for ${custName} — ₹${total}` });
+    toast({ title: "Order Placed", description: `Order placed for ${custName} — $${total}` });
   };
 
   const handlePaymentFailure = (method: PaymentMethod) => {
@@ -132,7 +132,7 @@ const AdminManualOrder = () => {
     setOrderType("instant"); setCart([]); setNotes(""); setSearch(""); setStep("profile");
   };
 
-  const formatPrice = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+  const formatPrice = (n: number) => `$${n.toLocaleString("en-US")}`;
 
   return (
     <div className="space-y-6">
@@ -228,7 +228,7 @@ const AdminManualOrder = () => {
                         <div key={item.id} className="flex items-center justify-between p-3 rounded-xl border border-border hover:border-primary/30 transition-colors">
                           <div>
                             <p className="text-sm font-medium text-foreground">{item.name}</p>
-                            <p className="text-xs text-muted-foreground">{item.category} · ₹{item.price}</p>
+                            <p className="text-xs text-muted-foreground">{item.category} · ${item.price}</p>
                           </div>
                           {inCart ? (
                             <div className="flex items-center gap-1">
@@ -258,18 +258,18 @@ const AdminManualOrder = () => {
                         <div key={c.id} className="flex items-center justify-between text-sm">
                           <div className="flex-1 min-w-0">
                             <span className="text-foreground truncate block">{c.name}</span>
-                            <span className="text-muted-foreground text-xs">₹{c.price} × {c.qty}</span>
+                            <span className="text-muted-foreground text-xs">${c.price} × {c.qty}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="font-medium text-foreground">₹{c.price * c.qty}</span>
+                            <span className="font-medium text-foreground">${c.price * c.qty}</span>
                             <button onClick={() => updateCartQty(c.id, -c.qty)} className="text-destructive hover:bg-destructive/10 p-1 rounded"><Trash2 className="w-3.5 h-3.5" /></button>
                           </div>
                         </div>
                       ))}
                       <div className="border-t border-border pt-2 space-y-1 text-sm">
-                        <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>₹{subtotal}</span></div>
-                        <div className="flex justify-between"><span className="text-muted-foreground">GST (5%)</span><span>₹{tax}</span></div>
-                        <div className="flex justify-between font-bold text-base pt-1 border-t border-border"><span>Total</span><span>₹{total}</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>${subtotal}</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">GST (5%)</span><span>${tax}</span></div>
+                        <div className="flex justify-between font-bold text-base pt-1 border-t border-border"><span>Total</span><span>${total}</span></div>
                       </div>
                     </>
                   )}
@@ -316,7 +316,7 @@ const AdminManualOrder = () => {
                 <CheckCircle2 className="w-16 h-16 text-accent mx-auto" />
                 <h3 className="text-xl font-bold text-foreground">Order Confirmed!</h3>
                 <p className="text-muted-foreground">Order for <strong>{custName}</strong> ({custPhone}) has been placed successfully.</p>
-                <p className="text-lg font-bold text-foreground">Total: ₹{total}</p>
+                <p className="text-lg font-bold text-foreground">Total: ${total}</p>
                 <Button onClick={resetForm}><RotateCcw className="w-4 h-4 mr-2" /> Place Another Order</Button>
               </CardContent>
             </Card>
@@ -349,9 +349,9 @@ const AdminManualOrder = () => {
                         <div className="flex gap-3 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1"><Phone className="w-3 h-3" />{order.customerPhone}</span>
                           <span className="flex items-center gap-1"><CreditCard className="w-3 h-3" />{order.paymentMethod}</span>
-                          <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{new Date(order.savedAt).toLocaleString("en-IN", { dateStyle: "short", timeStyle: "short" })}</span>
+                          <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{new Date(order.savedAt).toLocaleString("en-US", { dateStyle: "short", timeStyle: "short" })}</span>
                         </div>
-                        <p className="text-sm font-semibold text-foreground mt-1">₹{order.totalAmount.toLocaleString("en-IN")}</p>
+                        <p className="text-sm font-semibold text-foreground mt-1">${order.totalAmount.toLocaleString("en-US")}</p>
                       </div>
                       <div className="flex gap-2 shrink-0">
                         <Button size="sm" onClick={() => resumeOrder(order)}>Resume</Button>

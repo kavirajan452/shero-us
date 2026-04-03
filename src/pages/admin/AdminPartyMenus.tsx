@@ -83,7 +83,7 @@ const AdminPartyMenus = () => {
     const headers = [
       "Item ID", "Item Name", "Meal Type", "Category", "Food Type",
       "Portion/Plate", "Unit",
-      "MRP (₹)", "PPP",
+      "MRP ($)", "PPP",
     ];
     const rows = partyMenu.map((item) => {
       const portion = getPortionSize(item.id);
@@ -209,7 +209,7 @@ const AdminPartyMenus = () => {
                       {portion && <><span className="text-[10px] text-muted-foreground">•</span><span className="text-[10px] text-primary font-medium">{portion.portionPerPlate}/plate</span></>}
                     </div>
                   </div>
-                  <span className="text-sm font-semibold text-foreground">₹{item.pricePerPlateIN}</span>
+                  <span className="text-sm font-semibold text-foreground">${item.pricePerPlateIN}</span>
                 </Card>
               );
             })}
@@ -334,7 +334,7 @@ const AdminPartyMenus = () => {
             </p>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-medium block mb-1">Box Cost (₹)</label>
+                <label className="text-xs font-medium block mb-1">Box Cost ($)</label>
                 <Input type="number" value={packingConfig.boxCostRupees} onChange={(e) => setPackingConfig(prev => ({ ...prev, boxCostRupees: parseInt(e.target.value) || 0 }))} />
               </div>
               <div>
@@ -346,7 +346,7 @@ const AdminPartyMenus = () => {
                 <Input type="number" value={packingConfig.volumePerBoxLitres} onChange={(e) => setPackingConfig(prev => ({ ...prev, volumePerBoxLitres: parseInt(e.target.value) || 5 }))} />
               </div>
               <div>
-                <label className="text-xs font-medium block mb-1">Per-Piece Cost (₹)</label>
+                <label className="text-xs font-medium block mb-1">Per-Piece Cost ($)</label>
                 <Input type="number" value={packingConfig.pieceCostRupees} onChange={(e) => setPackingConfig(prev => ({ ...prev, pieceCostRupees: parseInt(e.target.value) || 0 }))} />
               </div>
             </div>
@@ -361,29 +361,29 @@ const AdminPartyMenus = () => {
               <Package className="w-4 h-4 text-orange-500" /> 🍱 Combo Meal Box Packing
             </h3>
             <p className="text-[10px] text-muted-foreground mb-3">
-              Per-box charges for individual combo meal boxes. Total = ₹{getComboPackingCostPerBox(comboPackingConfig)}/box
+              Per-box charges for individual combo meal boxes. Total = ${getComboPackingCostPerBox(comboPackingConfig)}/box
             </p>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-medium block mb-1">Box Cost (₹/box)</label>
+                <label className="text-xs font-medium block mb-1">Box Cost ($/box)</label>
                 <Input type="number" value={comboPackingConfig.boxCostPerUnit} onChange={(e) => setComboPackingConfig(prev => ({ ...prev, boxCostPerUnit: parseInt(e.target.value) || 0 }))} />
               </div>
               <div>
-                <label className="text-xs font-medium block mb-1">Label/Sticker (₹/box)</label>
+                <label className="text-xs font-medium block mb-1">Label/Sticker ($/box)</label>
                 <Input type="number" value={comboPackingConfig.labelCostPerUnit} onChange={(e) => setComboPackingConfig(prev => ({ ...prev, labelCostPerUnit: parseInt(e.target.value) || 0 }))} />
               </div>
               <div>
-                <label className="text-xs font-medium block mb-1">Seal/Wrap (₹/box)</label>
+                <label className="text-xs font-medium block mb-1">Seal/Wrap ($/box)</label>
                 <Input type="number" value={comboPackingConfig.sealWrapCostPerUnit} onChange={(e) => setComboPackingConfig(prev => ({ ...prev, sealWrapCostPerUnit: parseInt(e.target.value) || 0 }))} />
               </div>
               <div>
-                <label className="text-xs font-medium block mb-1">Carry Bag (₹/box)</label>
+                <label className="text-xs font-medium block mb-1">Carry Bag ($/box)</label>
                 <Input type="number" value={comboPackingConfig.bagCostPerUnit} onChange={(e) => setComboPackingConfig(prev => ({ ...prev, bagCostPerUnit: parseInt(e.target.value) || 0 }))} />
               </div>
             </div>
             <div className="mt-3 p-2.5 rounded-lg bg-accent/50 border border-border">
               <p className="text-xs text-foreground font-medium">
-                Total per combo box: <span className="text-primary font-bold">₹{getComboPackingCostPerBox(comboPackingConfig)}</span>
+                Total per combo box: <span className="text-primary font-bold">${getComboPackingCostPerBox(comboPackingConfig)}</span>
               </p>
               <p className="text-[10px] text-muted-foreground mt-0.5">= Box + Label + Seal + Bag</p>
             </div>

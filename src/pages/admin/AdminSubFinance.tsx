@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, LineChart, Line } from "recharts";
 import {
-  IndianRupee, TrendingUp, ArrowUpRight, Download, PiggyBank, BarChart3, BookOpen,
+  DollarSign, TrendingUp, ArrowUpRight, Download, PiggyBank, BarChart3, BookOpen,
   FileText, AlertTriangle, CheckCircle2, XCircle, Clock, CreditCard, Users, Brain,
   Lightbulb, Receipt, Wallet, Scale, BookMarked, ShoppingCart, CalendarCheck,
 } from "lucide-react";
@@ -21,8 +21,8 @@ import {
   type Voucher, type PLLineItem, type LedgerEntry, type SubVertical,
 } from "@/data/financeEngine";
 
-const fmt = (n: number) => { if (Math.abs(n) >= 100000) return `₹${(n / 100000).toFixed(1)}L`; if (Math.abs(n) >= 1000) return `₹${(n / 1000).toFixed(1)}K`; return `₹${n}`; };
-const fmtFull = (n: number) => `₹${Math.abs(n).toLocaleString("en-IN")}`;
+const fmt = (n: number) => { if (Math.abs(n) >= 100000) return `$${(n / 1000000).toFixed(1)}M`; if (Math.abs(n) >= 1000) return `$${(n / 1000).toFixed(1)}K`; return `$${n}`; };
+const fmtFull = (n: number) => `$${Math.abs(n).toLocaleString("en-US")}`;
 const fmtSigned = (n: number) => n < 0 ? `(${fmtFull(n)})` : fmtFull(n);
 
 const today = new Date();
@@ -93,7 +93,7 @@ export default function AdminSubFinance() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
-        <KPICard label="Net Revenue" value={fmtFull(netRevenue)} icon={<IndianRupee className="w-4 h-4" />} accent="primary" />
+        <KPICard label="Net Revenue" value={fmtFull(netRevenue)} icon={<DollarSign className="w-4 h-4" />} accent="primary" />
         <KPICard label="CM 1 (Gross)" value={fmtFull(cm1)} icon={<PiggyBank className="w-4 h-4" />} accent="chart-2" />
         <KPICard label="CM 1.5 (Net)" value={fmtFull(cm15)} icon={<TrendingUp className="w-4 h-4" />} accent="chart-3" />
         <KPICard label="Sundry Debtors" value={fmtFull(totalReceivable)} icon={<CreditCard className="w-4 h-4" />} accent="action-cook" />
@@ -187,8 +187,8 @@ export default function AdminSubFinance() {
                   <TableRow>
                     <TableHead className="text-xs">Ledger Group</TableHead>
                     <TableHead className="text-xs">Account Name</TableHead>
-                    <TableHead className="text-xs text-right">Debit (₹)</TableHead>
-                    <TableHead className="text-xs text-right">Credit (₹)</TableHead>
+                    <TableHead className="text-xs text-right">Debit ($)</TableHead>
+                    <TableHead className="text-xs text-right">Credit ($)</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -224,8 +224,8 @@ export default function AdminSubFinance() {
                     <TableHead className="text-[10px]">Type</TableHead>
                     <TableHead className="text-[10px]">Party Name</TableHead>
                     <TableHead className="text-[10px]">Narration</TableHead>
-                    <TableHead className="text-[10px] text-right">Debit (₹)</TableHead>
-                    <TableHead className="text-[10px] text-right">Credit (₹)</TableHead>
+                    <TableHead className="text-[10px] text-right">Debit ($)</TableHead>
+                    <TableHead className="text-[10px] text-right">Credit ($)</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -310,9 +310,9 @@ export default function AdminSubFinance() {
                         <TableHead className="text-[10px]">Party Name</TableHead>
                         <TableHead className="text-[10px]">Ref</TableHead>
                         <TableHead className="text-[10px]">Narration</TableHead>
-                        <TableHead className="text-[10px] text-right">Gross (₹)</TableHead>
-                        <TableHead className="text-[10px] text-right">GST (₹)</TableHead>
-                        <TableHead className="text-[10px] text-right">Net (₹)</TableHead>
+                        <TableHead className="text-[10px] text-right">Gross ($)</TableHead>
+                        <TableHead className="text-[10px] text-right">GST ($)</TableHead>
+                        <TableHead className="text-[10px] text-right">Net ($)</TableHead>
                         <TableHead className="text-[10px]">Status</TableHead>
                       </TableRow>
                     </TableHeader>

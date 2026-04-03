@@ -74,48 +74,48 @@ export interface EarningsSummary {
 
 export const partnerOrders: PartnerOrder[] = [
   {
-    id: "PO-1001", customerName: "Rahul Sharma", total: 489,
-    items: [{ name: "Hyderabadi Biryani", qty: 2, price: 199 }, { name: "Raita", qty: 1, price: 49 }, { name: "Gulab Jamun", qty: 2, price: 21 }],
-    status: "new", placedAt: "2 min ago", deliveryAddress: "Flat 302, Lakshmi Towers, Banjara Hills", paymentMode: "online", orderType: "instant",
-    source: "swiggy",
+    id: "PO-1001", customerName: "David Chen", total: 48,
+    items: [{ name: "New Yorki Biryani", qty: 2, price: 18 }, { name: "Raita", qty: 1, price: 5 }, { name: "Gulab Jamun", qty: 2, price: 3.5 }],
+    status: "new", placedAt: "2 min ago", deliveryAddress: "Apt 4B, 123 Main St, Manhattan", paymentMode: "online", orderType: "instant",
+    source: "shero",
     allergens: ["Nuts", "Dairy"], cookingInstructions: "No cashew garnish, mild spice level",
   },
   {
-    id: "PO-1002", customerName: "Priya Reddy", total: 349,
-    items: [{ name: "Paneer Butter Masala", qty: 1, price: 179 }, { name: "Butter Naan (4)", qty: 1, price: 120 }, { name: "Lassi", qty: 1, price: 50 }],
-    status: "new", placedAt: "5 min ago", deliveryAddress: "Plot 45, Cyber Towers, HITEC City", paymentMode: "cod", orderType: "pickup",
+    id: "PO-1002", customerName: "Sarah Johnson", total: 35,
+    items: [{ name: "Paneer Butter Masala", qty: 1, price: 16 }, { name: "Butter Naan (4)", qty: 1, price: 12 }, { name: "Lassi", qty: 1, price: 7 }],
+    status: "new", placedAt: "5 min ago", deliveryAddress: "456 Oak Ave, Suite 200, San Francisco", paymentMode: "online", orderType: "pickup",
     source: "shero",
     note: "Less spicy please", allergens: ["Peanut"], cookingInstructions: "Less spicy, no peanut oil",
   },
   {
-    id: "PO-1003", customerName: "Ankit Gupta", total: 599,
-    items: [{ name: "Thali Combo", qty: 2, price: 249 }, { name: "Sweet Lassi", qty: 2, price: 50 }],
-    status: "accepted", placedAt: "12 min ago", deliveryAddress: "House 8-3-214, Jubilee Hills", paymentMode: "online", orderType: "instant",
-    source: "zomato",
+    id: "PO-1003", customerName: "Michael Williams", total: 56,
+    items: [{ name: "Thali Combo", qty: 2, price: 22 }, { name: "Sweet Lassi", qty: 2, price: 6 }],
+    status: "accepted", placedAt: "12 min ago", deliveryAddress: "789 Elm St, Austin, TX", paymentMode: "online", orderType: "instant",
+    source: "shero",
     acceptedAt: Date.now() - 5 * 60 * 1000,
     allergens: ["Gluten"], cookingInstructions: "No wheat-based items, extra rice",
   },
   {
-    id: "PO-1004", customerName: "Meera Joshi", total: 275,
-    items: [{ name: "Dosa Platter", qty: 1, price: 199 }, { name: "Filter Coffee", qty: 2, price: 38 }],
-    status: "preparing", placedAt: "20 min ago", deliveryAddress: "Aparna Sarovar, Nallagandla", paymentMode: "online", orderType: "instant",
+    id: "PO-1004", customerName: "Emily Davis", total: 28,
+    items: [{ name: "Dosa Platter", qty: 1, price: 18 }, { name: "Filter Coffee", qty: 2, price: 5 }],
+    status: "preparing", placedAt: "20 min ago", deliveryAddress: "1010 Maple Dr, Chicago, IL", paymentMode: "online", orderType: "instant",
     source: "shero",
     acceptedAt: Date.now() - 15 * 60 * 1000,
     cookingInstructions: "Extra crispy dosa",
   },
   {
-    id: "PO-1005", customerName: "Vikram Singh", total: 899,
-    items: [{ name: "Party Pack Biryani", qty: 1, price: 699 }, { name: "Kebab Platter", qty: 1, price: 200 }],
-    status: "ready", placedAt: "35 min ago", deliveryAddress: "My Home Hub, Madhapur", paymentMode: "cod", orderType: "instant",
-    source: "swiggy",
+    id: "PO-1005", customerName: "James Wilson", total: 85,
+    items: [{ name: "Party Pack Biryani", qty: 1, price: 65 }, { name: "Kebab Platter", qty: 1, price: 20 }],
+    status: "ready", placedAt: "35 min ago", deliveryAddress: "555 Pine Road, Seattle, WA", paymentMode: "online", orderType: "instant",
+    source: "shero",
     acceptedAt: Date.now() - 30 * 60 * 1000, readyAt: Date.now() - 2 * 60 * 1000,
     allergens: ["Sesame"], cookingInstructions: "No sesame seeds on kebabs",
   },
   {
-    id: "PO-1006", customerName: "Sneha Pillai", total: 189,
-    items: [{ name: "Idli Sambar", qty: 2, price: 79 }, { name: "Vada", qty: 1, price: 31 }],
-    status: "delivered", placedAt: "1 hr ago", deliveryAddress: "Kondapur Main Road", paymentMode: "online", orderType: "pickup",
-    source: "zomato",
+    id: "PO-1006", customerName: "Priya Patel", total: 19,
+    items: [{ name: "Idli Sambar", qty: 2, price: 8 }, { name: "Vada", qty: 1, price: 3 }],
+    status: "delivered", placedAt: "1 hr ago", deliveryAddress: "321 Birch Lane, Houston, TX", paymentMode: "online", orderType: "pickup",
+    source: "shero",
   },
 ];
 
@@ -221,42 +221,42 @@ export const partnerMenu: PartnerMenuItem[] = [
 ];
 
 export const earningsSummary: EarningsSummary = {
-  today: 2340,
-  thisWeek: 14580,
-  thisMonth: 52430,
+  today: 234,
+  thisWeek: 1458,
+  thisMonth: 5243,
   totalOrders: 287,
   avgRating: 4.7,
   completionRate: 96.5,
-  totalSales: 187500,
-  pppEarnings: 52430,
+  totalSales: 18750,
+  pppEarnings: 5243,
   pppPercentage: 27.96,
-  totalPenalties: 1275,
+  totalPenalties: 128,
   penaltyCount: 14,
-  netPayout: 51155,
+  netPayout: 5115,
   inductionDate: "2025-08-15",
 };
 
 export const weeklyEarnings = [
-  { day: "Mon", amount: 1850, potential: 3200 },
-  { day: "Tue", amount: 2340, potential: 3200 },
-  { day: "Wed", amount: 0, potential: 3200 },      // On leave
-  { day: "Thu", amount: 2780, potential: 3400 },
-  { day: "Fri", amount: 3150, potential: 5100 },    // Fri 1.5x potential
-  { day: "Sat", amount: 3890, potential: 7800 },    // Sat 2x (weekend/holiday surge)
-  { day: "Sun", amount: 2650, potential: 7000 },    // Sun 2x (weekend/holiday surge)
+  { day: "Mon", amount: 185, potential: 320 },
+  { day: "Tue", amount: 234, potential: 320 },
+  { day: "Wed", amount: 0, potential: 320 },      // On leave
+  { day: "Thu", amount: 278, potential: 340 },
+  { day: "Fri", amount: 315, potential: 510 },    // Fri 1.5x potential
+  { day: "Sat", amount: 389, potential: 780 },    // Sat 2x (weekend/holiday surge)
+  { day: "Sun", amount: 265, potential: 700 },    // Sun 2x (weekend/holiday surge)
 ];
 
 // Opportunity calculations for partner (weekends/holidays have 2x potential)
 export const opportunitySummary = {
-  actualThisWeek: 16660,
-  potentialThisWeek: 32900,     // Weekends inflated 2x
-  missedThisWeek: 16240,
-  actualThisMonth: 52430,
-  potentialThisMonth: 85000,    // Holidays & weekends boost
-  missedThisMonth: 32570,
-  actualToday: 2340,
-  potentialToday: 3200,
-  missedToday: 860,
+  actualThisWeek: 1666,
+  potentialThisWeek: 3290,     // Weekends inflated 2x
+  missedThisWeek: 1624,
+  actualThisMonth: 5243,
+  potentialThisMonth: 8500,    // Holidays & weekends boost
+  missedThisMonth: 3257,
+  actualToday: 234,
+  potentialToday: 320,
+  missedToday: 86,
 };
 
 // ── CVAT Performance System ──
@@ -328,12 +328,12 @@ export const performanceInsights: PerformanceInsight[] = [
 ];
 
 // ── Referral Reward Milestones ──
-// Milestone 1: Referred person gets "approved/listed" → ₹750
-// Milestone 2: Referred person becomes "active" (starts cooking) → ₹1,500
+// Milestone 1: Referred person gets "approved/listed" → $75
+// Milestone 2: Referred person becomes "active" (starts cooking) → $150
 
-export const REFERRAL_MILESTONE_1 = 750;  // On listed/approved
-export const REFERRAL_MILESTONE_2 = 1500; // On active
-export const REFERRAL_TOTAL_PER_PERSON = REFERRAL_MILESTONE_1 + REFERRAL_MILESTONE_2; // ₹2,250
+export const REFERRAL_MILESTONE_1 = 75;  // On listed/approved
+export const REFERRAL_MILESTONE_2 = 150; // On active
+export const REFERRAL_TOTAL_PER_PERSON = REFERRAL_MILESTONE_1 + REFERRAL_MILESTONE_2; // $225
 
 export interface ReferralTier {
   milestone: 1 | 2;
@@ -350,18 +350,18 @@ export interface Referral {
   status: "pending" | "onboarded" | "active" | "rejected" | "under_review" | "paid";
   referredDate: string;
   joinedDate?: string;
-  listedReward?: number;  // ₹750 paid when listed
-  activeReward?: number;  // ₹1,500 paid when active
+  listedReward?: number;
+  activeReward?: number;
   totalReward: number;
   enrollmentLeadId?: string;
   enrollmentStatus?: string;
 }
 
-export const referralCode = "SHERO-MEERA24";
+export const referralCode = "SHERO-EMILY24";
 
 export const referralMilestones: ReferralTier[] = [
-  { milestone: 1, reward: 750, label: "Listed", trigger: "approved", description: "Referred person applies, pays ₹999, and gets approved as a Shero partner" },
-  { milestone: 2, reward: 1500, label: "Active", trigger: "active", description: "Referred partner starts cooking and completes their first order" },
+  { milestone: 1, reward: 75, label: "Listed", trigger: "approved", description: "Referred person applies, pays $99, and gets approved as a Shero partner" },
+  { milestone: 2, reward: 150, label: "Active", trigger: "active", description: "Referred partner starts cooking and completes their first order" },
 ];
 
 // Keep old export name for backwards compatibility
@@ -369,24 +369,24 @@ export const referralTiers = referralMilestones;
 
 export const referralStats = {
   totalReferred: 9,
-  listed: 7,       // approved/onboarded
-  active: 5,       // actively cooking
+  listed: 7,
+  active: 5,
   pending: 2,
   rejected: 0,
-  listedRewardsEarned: 5250,  // 7 × ₹750
-  activeRewardsEarned: 7500,  // 5 × ₹1,500
-  totalEarned: 12750,         // 5,250 + 7,500
+  listedRewardsEarned: 525,  // 7 × $75
+  activeRewardsEarned: 750,  // 5 × $150
+  totalEarned: 1275,
   currentTier: "Champion" as string,
 };
 
 export const referralHistory: Referral[] = [
-  { id: "R001", name: "Sunita Devi", phone: "98xxx12345", status: "active", referredDate: "Jan 15, 2026", joinedDate: "Jan 22, 2026", listedReward: 750, activeReward: 1500, totalReward: 2250, enrollmentLeadId: "EL-R01", enrollmentStatus: "approved" },
-  { id: "R002", name: "Kavitha Rao", phone: "97xxx67890", status: "active", referredDate: "Jan 20, 2026", joinedDate: "Jan 28, 2026", listedReward: 750, activeReward: 1500, totalReward: 2250, enrollmentLeadId: "EL-R02", enrollmentStatus: "approved" },
-  { id: "R003", name: "Lakshmi Nair", phone: "96xxx11223", status: "active", referredDate: "Feb 01, 2026", joinedDate: "Feb 08, 2026", listedReward: 750, activeReward: 1500, totalReward: 2250, enrollmentLeadId: "EL-R03", enrollmentStatus: "approved" },
-  { id: "R004", name: "Anjali Sharma", phone: "95xxx44556", status: "active", referredDate: "Feb 05, 2026", joinedDate: "Feb 12, 2026", listedReward: 750, activeReward: 1500, totalReward: 2250, enrollmentLeadId: "EL-R04", enrollmentStatus: "approved" },
-  { id: "R005", name: "Preethi Kumari", phone: "94xxx77889", status: "active", referredDate: "Feb 10, 2026", joinedDate: "Feb 18, 2026", listedReward: 750, activeReward: 1500, totalReward: 2250, enrollmentLeadId: "EL-R05", enrollmentStatus: "approved" },
-  { id: "R006", name: "Radha Menon", phone: "93xxx00112", status: "onboarded", referredDate: "Feb 15, 2026", joinedDate: "Feb 22, 2026", listedReward: 750, totalReward: 750, enrollmentLeadId: "EL-R06", enrollmentStatus: "approved" },
-  { id: "R007", name: "Deepa Gowda", phone: "92xxx33445", status: "paid", referredDate: "Feb 20, 2026", joinedDate: "Feb 26, 2026", listedReward: 750, totalReward: 750, enrollmentLeadId: "EL-R07", enrollmentStatus: "paid" },
-  { id: "R008", name: "Fatima Begum", phone: "91xxx66778", status: "under_review", referredDate: "Feb 25, 2026", totalReward: 0, enrollmentLeadId: "EL-R08", enrollmentStatus: "video_watched" },
-  { id: "R009", name: "Swathi Reddy", phone: "90xxx99001", status: "pending", referredDate: "Feb 27, 2026", totalReward: 0, enrollmentLeadId: "EL-R09", enrollmentStatus: "new" },
+  { id: "R001", name: "Sunita Devi", phone: "917-xxx-2345", status: "active", referredDate: "Jan 15, 2026", joinedDate: "Jan 22, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R01", enrollmentStatus: "approved" },
+  { id: "R002", name: "Kavitha Rao", phone: "646-xxx-7890", status: "active", referredDate: "Jan 20, 2026", joinedDate: "Jan 28, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R02", enrollmentStatus: "approved" },
+  { id: "R003", name: "Lakshmi Nair", phone: "718-xxx-1223", status: "active", referredDate: "Feb 01, 2026", joinedDate: "Feb 08, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R03", enrollmentStatus: "approved" },
+  { id: "R004", name: "Anjali Sharma", phone: "415-xxx-4556", status: "active", referredDate: "Feb 05, 2026", joinedDate: "Feb 12, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R04", enrollmentStatus: "approved" },
+  { id: "R005", name: "Preethi Kumari", phone: "512-xxx-7889", status: "active", referredDate: "Feb 10, 2026", joinedDate: "Feb 18, 2026", listedReward: 75, activeReward: 150, totalReward: 225, enrollmentLeadId: "EL-R05", enrollmentStatus: "approved" },
+  { id: "R006", name: "Radha Menon", phone: "312-xxx-0112", status: "onboarded", referredDate: "Feb 15, 2026", joinedDate: "Feb 22, 2026", listedReward: 75, totalReward: 75, enrollmentLeadId: "EL-R06", enrollmentStatus: "approved" },
+  { id: "R007", name: "Deepa Gowda", phone: "206-xxx-3445", status: "paid", referredDate: "Feb 20, 2026", joinedDate: "Feb 26, 2026", listedReward: 75, totalReward: 75, enrollmentLeadId: "EL-R07", enrollmentStatus: "paid" },
+  { id: "R008", name: "Fatima Begum", phone: "713-xxx-6778", status: "under_review", referredDate: "Feb 25, 2026", totalReward: 0, enrollmentLeadId: "EL-R08", enrollmentStatus: "video_watched" },
+  { id: "R009", name: "Swathi Reddy", phone: "469-xxx-9001", status: "pending", referredDate: "Feb 27, 2026", totalReward: 0, enrollmentLeadId: "EL-R09", enrollmentStatus: "new" },
 ];

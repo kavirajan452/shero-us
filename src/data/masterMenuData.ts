@@ -20,7 +20,7 @@ export interface MasterMenuItem {
   majorVegetables: string[]; // key vegetables used — if partner turns off any, item is hidden
   brand: string; // brand label e.g. "SHF", "SHF Premium"
   videoUrl: string; // YouTube or video link for the menu item
-  packingChargeFlat: number; // flat packing fee in ₹
+  packingChargeFlat: number; // flat packing fee in $
   packingChargePct: number; // packing charge as % of MRP
   statePrices: StatePricing[];
 }

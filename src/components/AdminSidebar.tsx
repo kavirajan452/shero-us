@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LayoutDashboard, ChefHat, UtensilsCrossed, ClipboardList, LogOut, Shield, BarChart3, Users, IndianRupee, Headphones, Radio, Gauge, Heart, PartyPopper, UserPlus, Store, FileBarChart, BadgePercent, Briefcase, Wallet, CalendarCheck, Settings, Target, Bike, Wrench, PieChart, MapPin, MessageSquare, Bot, Phone, Star, FileEdit, TicketCheck, BookOpen, GraduationCap, Plug, CreditCard, Truck, ChevronRight, UserCog, Megaphone, Cookie, Sparkles, Package, Calendar } from "lucide-react";
+import { LayoutDashboard, ChefHat, UtensilsCrossed, ClipboardList, LogOut, Shield, BarChart3, Users, DollarSign, Headphones, Radio, Gauge, Heart, PartyPopper, UserPlus, Store, FileBarChart, BadgePercent, Briefcase, Wallet, CalendarCheck, Settings, Target, Bike, Wrench, PieChart, MapPin, MessageSquare, Bot, Phone, Star, FileEdit, TicketCheck, BookOpen, GraduationCap, Plug, CreditCard, Truck, ChevronRight, UserCog, Megaphone, Cookie, Sparkles, Package, Calendar } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import sheroLogo from "@/assets/shero-logo.png";
@@ -37,7 +37,7 @@ const commandItems = [
 const financeItems = [
   { title: "Finance Dashboard", url: "/admin/finance-dashboard", icon: PieChart },
   { title: "Invoice Settings", url: "/admin/invoice-settings", icon: FileBarChart },
-  { title: "Instant Order", url: "/admin/payments", icon: IndianRupee },
+  { title: "Instant Order", url: "/admin/payments", icon: DollarSign },
   { title: "Instant Delivery", url: "/admin/instant-finance", icon: Bike },
   { title: "Subscriptions", url: "/admin/sub-finance", icon: CalendarCheck },
   { title: "Party Orders", url: "/admin/party-finance", icon: PartyPopper },
@@ -128,7 +128,7 @@ const hrItems = [
 const snacksItems = [
   { title: "Dashboard & Orders", url: "/admin/snacks-dashboard", icon: LayoutDashboard },
   { title: "Product Catalog", url: "/admin/snacks-catalog", icon: Package },
-  { title: "Inventory & Pricing", url: "/admin/snacks-inventory", icon: IndianRupee },
+  { title: "Inventory & Pricing", url: "/admin/snacks-inventory", icon: DollarSign },
   { title: "Partner Performance", url: "/admin/snacks-partners", icon: ChefHat },
   { title: "Discounts & Promos", url: "/admin/snacks-discounts", icon: BadgePercent },
   { title: "Reports", url: "/admin/snacks-reports", icon: FileBarChart },

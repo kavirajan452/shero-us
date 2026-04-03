@@ -14,7 +14,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import {
-  IndianRupee, Upload, Download, Search, Eye, AlertTriangle, CheckCircle2,
+  DollarSign, Upload, Download, Search, Eye, AlertTriangle, CheckCircle2,
   TrendingUp, Clock, FileSpreadsheet, Calendar, CalendarIcon, Building2, MapPin, BarChart3,
   XCircle, Ban, PieChart, Wallet, Receipt, Users, ArrowUpRight, ArrowDownRight,
   ShieldCheck, Lock, Unlock, FileDown, Stamp, Gift, X,
@@ -238,7 +238,7 @@ const mockOpenWeeks: PayoutWeek[] = [
 ];
 
 function formatCurrency(amount: number): string {
-  return `₹${amount.toLocaleString("en-IN")}`;
+  return `$${amount.toLocaleString("en-US")}`;
 }
 
 /* ── Component ── */
@@ -264,13 +264,13 @@ export default function AdminPayments() {
   const activeWeek = useMemo(() => payoutWeeks.find(w => w.weekId === selectedWeek), [payoutWeeks, selectedWeek]);
 
   const handleFinanceApprove = () => {
-    setPayoutWeeks(prev => prev.map(w => w.weekId === selectedWeek ? { ...w, status: "finance_approved" as const, financeApprover: "Ganesh R.", financeApprovedAt: new Date().toLocaleString("en-IN") } : w));
+    setPayoutWeeks(prev => prev.map(w => w.weekId === selectedWeek ? { ...w, status: "finance_approved" as const, financeApprover: "Ganesh R.", financeApprovedAt: new Date().toLocaleString("en-US") } : w));
     setShowApprovalConfirm(null);
     toast({ title: "Finance Approved", description: `Week ${selectedWeek} approved by Finance Manager. Pending Ops Head approval.` });
   };
 
   const handleOpsApprove = () => {
-    setPayoutWeeks(prev => prev.map(w => w.weekId === selectedWeek ? { ...w, status: "ops_approved" as const, opsApprover: "Kavitha R.", opsApprovedAt: new Date().toLocaleString("en-IN") } : w));
+    setPayoutWeeks(prev => prev.map(w => w.weekId === selectedWeek ? { ...w, status: "ops_approved" as const, opsApprover: "Kavitha R.", opsApprovedAt: new Date().toLocaleString("en-US") } : w));
     setShowApprovalConfirm(null);
     toast({ title: "Ops Head Approved", description: `Week ${selectedWeek} fully approved. Ready for bank download.` });
   };
@@ -290,10 +290,10 @@ export default function AdminPayments() {
       "IFSC": p.ifsc,
       "UPI ID": p.upiId,
       "Total Orders": p.totalOrders,
-      "MRP Sales (₹)": p.totalMRP,
-      "PPP Payable (₹)": p.totalPPP,
-      "Penalties (₹)": p.penalties,
-      "Net Payable (₹)": p.netPayable,
+      "MRP Sales ($)": p.totalMRP,
+      "PPP Payable ($)": p.totalPPP,
+      "Penalties ($)": p.penalties,
+      "Net Payable ($)": p.netPayable,
       "PPP Ratio %": p.pppRatio,
     }));
     const ws = XLSX.utils.json_to_sheet(rows);
@@ -412,7 +412,7 @@ export default function AdminPayments() {
       <Tabs defaultValue="daily_sales">
         <TabsList className="h-11 p-1 gap-1 flex-wrap">
           <TabsTrigger value="daily_sales" className="gap-2 text-xs px-4 py-2.5">
-            <IndianRupee className="w-4 h-4 shrink-0" /> Daily Sales
+            <DollarSign className="w-4 h-4 shrink-0" /> Daily Sales
           </TabsTrigger>
           <TabsTrigger value="penalties" className="gap-2 text-xs px-4 py-2.5">
             <AlertTriangle className="w-4 h-4 shrink-0" /> Penalties
@@ -601,7 +601,7 @@ export default function AdminPayments() {
               <div><p className="text-xl font-bold text-foreground">{mockBulkUploads.length}</p><p className="text-[10px] text-muted-foreground">Total Payouts</p></div>
             </CardContent></Card>
             <Card><CardContent className="p-4 flex items-center gap-3">
-              <IndianRupee className="w-8 h-8 text-accent/70" />
+              <DollarSign className="w-8 h-8 text-accent/70" />
               <div><p className="text-xl font-bold text-foreground">{formatCurrency(mockBulkUploads.reduce((s, b) => s + b.totalAmount, 0))}</p><p className="text-[10px] text-muted-foreground">Total Disbursed</p></div>
             </CardContent></Card>
             <Card><CardContent className="p-4 flex items-center gap-3">
@@ -634,7 +634,7 @@ export default function AdminPayments() {
                     </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{bu.uploadedBy}</TableCell>
                     <TableCell className="text-[10px] text-muted-foreground">
-                      {bu.uploadedAt.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                      {bu.uploadedAt.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" })}
                     </TableCell>
                     <TableCell className="text-xs text-right text-foreground">{bu.partnerCount}</TableCell>
                     <TableCell className="text-xs text-right font-semibold text-foreground">{formatCurrency(bu.totalAmount)}</TableCell>
@@ -725,21 +725,21 @@ export default function AdminPayments() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <Card><CardContent className="p-4">
               <p className="text-[11px] text-muted-foreground">Total Referral Payouts</p>
-              <p className="text-lg font-bold text-foreground">₹47,250</p>
+              <p className="text-lg font-bold text-foreground">$47,250</p>
             </CardContent></Card>
             <Card><CardContent className="p-4">
-              <p className="text-[11px] text-muted-foreground">Listed Rewards (₹750)</p>
-              <p className="text-lg font-bold text-blue-600">₹15,750</p>
+              <p className="text-[11px] text-muted-foreground">Listed Rewards ($750)</p>
+              <p className="text-lg font-bold text-blue-600">$15,750</p>
               <p className="text-[10px] text-muted-foreground">21 partners</p>
             </CardContent></Card>
             <Card><CardContent className="p-4">
-              <p className="text-[11px] text-muted-foreground">Active Rewards (₹1,500)</p>
-              <p className="text-lg font-bold text-green-600">₹31,500</p>
+              <p className="text-[11px] text-muted-foreground">Active Rewards ($1,500)</p>
+              <p className="text-lg font-bold text-green-600">$31,500</p>
               <p className="text-[10px] text-muted-foreground">21 partners</p>
             </CardContent></Card>
             <Card><CardContent className="p-4">
               <p className="text-[11px] text-muted-foreground">Pending Payouts</p>
-              <p className="text-lg font-bold text-amber-600">₹3,750</p>
+              <p className="text-lg font-bold text-amber-600">$3,750</p>
               <p className="text-[10px] text-muted-foreground">5 listed, awaiting active</p>
             </CardContent></Card>
           </div>
@@ -780,7 +780,7 @@ export default function AdminPayments() {
                           {row.milestone}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-xs text-right font-semibold">{row.amount > 0 ? `₹${row.amount.toLocaleString()}` : "—"}</TableCell>
+                      <TableCell className="text-xs text-right font-semibold">{row.amount > 0 ? `$${row.amount.toLocaleString()}` : "—"}</TableCell>
                       <TableCell>
                         <Badge variant="outline" className={`text-[10px] capitalize ${row.status === "paid" ? "bg-green-100 text-green-700 border-green-300" : row.status === "pending" ? "bg-amber-100 text-amber-700 border-amber-300" : "bg-muted text-muted-foreground"}`}>
                           {row.status}
@@ -838,7 +838,7 @@ export default function AdminPayments() {
                 <AreaChart data={weeklyPayoutTrend}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
                   <XAxis dataKey="week" tick={{ fontSize: 10 }} className="fill-muted-foreground" />
-                  <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}K`} className="fill-muted-foreground" />
+                  <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`} className="fill-muted-foreground" />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Area type="monotone" dataKey="mrp" stackId="1" stroke="hsl(var(--chart-1))" fill="hsl(var(--chart-1))" fillOpacity={0.15} strokeWidth={2} />
                   <Area type="monotone" dataKey="netPayout" stackId="2" stroke="hsl(var(--chart-4))" fill="hsl(var(--chart-4))" fillOpacity={0.15} strokeWidth={2} />
@@ -874,7 +874,7 @@ export default function AdminPayments() {
                   <BarChart data={stateRevenueData}>
                     <CartesianGrid strokeDasharray="3 3" className="stroke-border/30" />
                     <XAxis dataKey="state" tick={{ fontSize: 10 }} className="fill-muted-foreground" />
-                    <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}K`} className="fill-muted-foreground" />
+                    <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`} className="fill-muted-foreground" />
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Bar dataKey="mrp" fill="hsl(var(--chart-1))" radius={[4, 4, 0, 0]} />
                     <Bar dataKey="ppp" fill="hsl(var(--chart-2))" radius={[4, 4, 0, 0]} />
@@ -1091,7 +1091,7 @@ export default function AdminPayments() {
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-sm font-semibold">Partner-wise Payout Breakdown</CardTitle>
                       <Badge variant="outline" className="text-[9px] gap-1">
-                        <IndianRupee className="w-3 h-3" /> Net: {formatCurrency(wTotalNet)}
+                        <DollarSign className="w-3 h-3" /> Net: {formatCurrency(wTotalNet)}
                       </Badge>
                     </div>
                   </CardHeader>
@@ -1248,7 +1248,7 @@ export default function AdminPayments() {
             </div>
             <div className="rounded-lg border border-border bg-muted/30 p-3">
               <p className="text-[10px] font-semibold text-foreground mb-1">Expected Columns:</p>
-              <p className="text-[10px] text-muted-foreground">Partner RMN, Partner Name, Payment Amount (₹), UTR/Reference, Payment Date, Payment Mode (NEFT/UPI/IMPS)</p>
+              <p className="text-[10px] text-muted-foreground">Partner RMN, Partner Name, Payment Amount ($), UTR/Reference, Payment Date, Payment Mode (NEFT/UPI/IMPS)</p>
             </div>
           </div>
           <DialogFooter>

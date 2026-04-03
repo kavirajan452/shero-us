@@ -8,12 +8,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, AreaChart, Area, PieChart as RPie, Pie, Cell, Tooltip } from "recharts";
 import {
-  IndianRupee, TrendingUp, TrendingDown, PieChart, FileText, Download, Calendar,
+  DollarSign, TrendingUp, TrendingDown, PieChart, FileText, Download, Calendar,
   ArrowUpRight, ArrowDownRight, Wallet, Receipt, BookOpen, Building2, Percent
 } from "lucide-react";
 
-const fmt = (n: number) => `₹${(n / 100000).toFixed(1)}L`;
-const fmtFull = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+const fmt = (n: number) => `$${(n / 1000000).toFixed(1)}M`;
+const fmtFull = (n: number) => `$${n.toLocaleString("en-US")}`;
 const COLORS = ["hsl(var(--primary))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))", "hsl(var(--accent))"];
 
 // ── P&L by Vertical ──
@@ -96,7 +96,7 @@ export default function AdminFinancialReports() {
       {/* KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Total Revenue", value: fmtFull(totalRevenue), icon: IndianRupee, color: "text-green-600", delta: "+12.3%" },
+          { label: "Total Revenue", value: fmtFull(totalRevenue), icon: DollarSign, color: "text-green-600", delta: "+12.3%" },
           { label: "Net Profit", value: fmtFull(totalNet), icon: TrendingUp, color: "text-primary", delta: "+18.5%" },
           { label: "Net Margin", value: `${((totalNet / totalRevenue) * 100).toFixed(1)}%`, icon: Percent, color: "text-blue-600", delta: "+2.1pp" },
           { label: "Total Orders", value: totalOrders.toLocaleString(), icon: Receipt, color: "text-accent", delta: "+15.7%" },

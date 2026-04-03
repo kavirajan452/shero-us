@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import {
-  IndianRupee, TrendingUp, Download, PiggyBank, BookOpen, FileText,
+  DollarSign, TrendingUp, Download, PiggyBank, BookOpen, FileText,
   AlertTriangle, CheckCircle2, Clock, CreditCard, Users, Brain, Lightbulb, Receipt,
   Wallet, Scale, BookMarked, ShoppingCart, CalendarCheck,
 } from "lucide-react";
@@ -20,8 +20,8 @@ import {
   voucherTypeLabels, accountMeta, ledgerGroupLabels,
 } from "@/data/financeEngine";
 
-const fmt = (n: number) => { if (Math.abs(n) >= 100000) return `₹${(n / 100000).toFixed(1)}L`; if (Math.abs(n) >= 1000) return `₹${(n / 1000).toFixed(1)}K`; return `₹${n}`; };
-const fmtFull = (n: number) => `₹${Math.abs(n).toLocaleString("en-IN")}`;
+const fmt = (n: number) => { if (Math.abs(n) >= 100000) return `$${(n / 1000000).toFixed(1)}M`; if (Math.abs(n) >= 1000) return `$${(n / 1000).toFixed(1)}K`; return `$${n}`; };
+const fmtFull = (n: number) => `$${Math.abs(n).toLocaleString("en-US")}`;
 const fmtSigned = (n: number) => n < 0 ? `(${fmtFull(n)})` : fmtFull(n);
 
 const today = new Date();
@@ -90,7 +90,7 @@ export default function AdminInstantFinance() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
-        <KPICard label="Net Revenue" value={fmtFull(netRevenue)} icon={<IndianRupee className="w-4 h-4" />} accent="primary" />
+        <KPICard label="Net Revenue" value={fmtFull(netRevenue)} icon={<DollarSign className="w-4 h-4" />} accent="primary" />
         <KPICard label="CM 1 (Gross)" value={fmtFull(cm1)} icon={<PiggyBank className="w-4 h-4" />} accent="chart-2" />
         <KPICard label="CM 1.5 (Net)" value={fmtFull(cm15)} icon={<TrendingUp className="w-4 h-4" />} accent="chart-3" />
         <KPICard label="Sundry Debtors" value={fmtFull(totalReceivable)} icon={<CreditCard className="w-4 h-4" />} accent="action-cook" />
@@ -174,7 +174,7 @@ export default function AdminInstantFinance() {
             </CardHeader>
             <CardContent className="overflow-x-auto">
               <Table>
-                <TableHeader><TableRow><TableHead className="text-xs">Ledger Group</TableHead><TableHead className="text-xs">Account Name</TableHead><TableHead className="text-xs text-right">Debit (₹)</TableHead><TableHead className="text-xs text-right">Credit (₹)</TableHead></TableRow></TableHeader>
+                <TableHeader><TableRow><TableHead className="text-xs">Ledger Group</TableHead><TableHead className="text-xs">Account Name</TableHead><TableHead className="text-xs text-right">Debit ($)</TableHead><TableHead className="text-xs text-right">Credit ($)</TableHead></TableRow></TableHeader>
                 <TableBody>
                   {trialBalance.map(row => (
                     <TableRow key={row.account}>
@@ -201,7 +201,7 @@ export default function AdminInstantFinance() {
             <CardHeader className="pb-2"><CardTitle className="text-sm font-semibold">Day Book — All Voucher Entries (Chronological)</CardTitle></CardHeader>
             <CardContent className="overflow-x-auto">
               <Table>
-                <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Voucher No.</TableHead><TableHead className="text-[10px]">Type</TableHead><TableHead className="text-[10px]">Party Name</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Debit (₹)</TableHead><TableHead className="text-[10px] text-right">Credit (₹)</TableHead></TableRow></TableHeader>
+                <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Voucher No.</TableHead><TableHead className="text-[10px]">Type</TableHead><TableHead className="text-[10px]">Party Name</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Debit ($)</TableHead><TableHead className="text-[10px] text-right">Credit ($)</TableHead></TableRow></TableHeader>
                 <TableBody>
                   {dayBook.map((e, i) => {
                     const cfg = voucherTypeLabels[e.voucherType];
@@ -268,7 +268,7 @@ export default function AdminInstantFinance() {
                   <p className="text-xs text-muted-foreground py-4 text-center">{reg.empty}</p>
                 ) : (
                   <Table>
-                    <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Invoice No.</TableHead><TableHead className="text-[10px]">Party Name</TableHead><TableHead className="text-[10px]">Ref</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Gross (₹)</TableHead><TableHead className="text-[10px] text-right">GST (₹)</TableHead><TableHead className="text-[10px] text-right">Net (₹)</TableHead><TableHead className="text-[10px]">Status</TableHead></TableRow></TableHeader>
+                    <TableHeader><TableRow><TableHead className="text-[10px]">Date</TableHead><TableHead className="text-[10px]">Invoice No.</TableHead><TableHead className="text-[10px]">Party Name</TableHead><TableHead className="text-[10px]">Ref</TableHead><TableHead className="text-[10px]">Narration</TableHead><TableHead className="text-[10px] text-right">Gross ($)</TableHead><TableHead className="text-[10px] text-right">GST ($)</TableHead><TableHead className="text-[10px] text-right">Net ($)</TableHead><TableHead className="text-[10px]">Status</TableHead></TableRow></TableHeader>
                     <TableBody>
                       {reg.data.map(v => {
                         const gst = v.entries.filter(e => e.account === "gst_output_5" || e.account === "gst_output_18" || e.account === "gst_input_credit").reduce((s, e) => s + e.credit + e.debit, 0);

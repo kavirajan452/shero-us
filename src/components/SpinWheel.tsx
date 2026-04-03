@@ -11,13 +11,13 @@ interface SpinSegment {
 }
 
 const DEFAULT_SEGMENTS: SpinSegment[] = [
-  { label: "₹10", value: 10, weight: 25 },
-  { label: "₹25", value: 25, weight: 22 },
-  { label: "₹50", value: 50, weight: 20 },
-  { label: "₹75", value: 75, weight: 15 },
-  { label: "₹100", value: 100, weight: 10 },
-  { label: "₹200", value: 200, weight: 5 },
-  { label: "₹500", value: 500, weight: 3 },
+  { label: "$1", value: 1, weight: 25 },
+  { label: "$2", value: 2, weight: 22 },
+  { label: "$5", value: 5, weight: 20 },
+  { label: "$8", value: 8, weight: 15 },
+  { label: "$10", value: 10, weight: 10 },
+  { label: "$20", value: 20, weight: 5 },
+  { label: "$50", value: 50, weight: 3 },
 ];
 
 interface SpinWheelProps {
@@ -174,7 +174,7 @@ const SpinWheel = ({ open, onClose, onReward, friendName }: SpinWheelProps) => {
         {result !== null ? (
           <div className="text-center space-y-3">
             <div className="text-3xl font-bold text-accent animate-pulse">
-              🎉 You won ₹{result}!
+              🎉 You won ${result}!
             </div>
             <p className="text-sm text-muted-foreground">
               Added to your Shero Wallet. Keep referring to win more!

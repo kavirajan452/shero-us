@@ -145,7 +145,7 @@ const ChefProfile = () => {
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="font-bold text-foreground">₹{item.price}</p>
+                  <p className="font-bold text-foreground">${item.price}</p>
                   <button className="mt-1 px-3 py-1 rounded-full bg-gradient-shero text-primary-foreground text-xs font-semibold hover:opacity-90 transition-opacity">
                     Add +
                   </button>

@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { ClipboardList, IndianRupee, Star, TrendingUp, Clock, CheckCircle2, Gift, Users, Share2, AlertTriangle, CreditCard, CalendarIcon, MessageCircle, ChefHat, Package, GraduationCap, Heart, Lightbulb, UtensilsCrossed, Globe, FileBarChart, Award, Cookie, Sparkles, PartyPopper } from "lucide-react";
+import { ClipboardList, DollarSign, Star, TrendingUp, Clock, CheckCircle2, Gift, Users, Share2, AlertTriangle, CreditCard, CalendarIcon, MessageCircle, ChefHat, Package, GraduationCap, Heart, Lightbulb, UtensilsCrossed, Globe, FileBarChart, Award, Cookie, Sparkles, PartyPopper } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
@@ -44,7 +44,7 @@ const PartnerDashboard = () => {
     {
       label: "Today's Earnings",
       value: formatPrice(earningsSummary.today),
-      icon: IndianRupee,
+      icon: DollarSign,
       accent: "border-l-emerald-500",
       opportunity: opportunitySummary.missedToday > 0 ? formatPrice(opportunitySummary.potentialToday) : null,
     },
@@ -201,7 +201,7 @@ const PartnerDashboard = () => {
             { label: "Training", icon: GraduationCap, to: "/partner/training" },
             { label: "Finance", icon: FileBarChart, to: "/partner/reports" },
             { label: "SCV", icon: Award, to: "/partner/performance-scv" },
-            { label: "Earnings", icon: IndianRupee, to: "/partner/earnings" },
+            { label: "Earnings", icon: DollarSign, to: "/partner/earnings" },
           ].map((s) => (
             <Link key={s.label} to={s.to}>
               <div className="bg-muted/50 rounded-lg p-2 flex flex-col items-center gap-1 hover:shadow-sm transition-shadow cursor-pointer border border-border hover:bg-accent/30">
@@ -308,7 +308,7 @@ const PartnerDashboard = () => {
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-base shrink-0">🪪</div>
             <div className="flex-1">
               <p className="font-semibold text-foreground text-xs">Digital Visiting Card</p>
-              <p className="text-[9px] text-muted-foreground">Share & earn ₹500 per referral</p>
+              <p className="text-[9px] text-muted-foreground">Share & earn $500 per referral</p>
             </div>
             <CreditCard className="w-4 h-4 text-primary shrink-0" />
           </CardContent>
@@ -328,7 +328,7 @@ const PartnerDashboard = () => {
               <Gift className="w-3.5 h-3.5 text-primary" />
               <h3 className="font-semibold text-foreground text-xs">Refer & Earn</h3>
             </div>
-            <Badge variant="outline" className="text-[8px] border-primary/30 text-primary">Up to ₹2,250</Badge>
+            <Badge variant="outline" className="text-[8px] border-primary/30 text-primary">Up to $2,250</Badge>
           </div>
           <div className="grid grid-cols-3 gap-1.5 mb-1.5">
             <div className="text-center">

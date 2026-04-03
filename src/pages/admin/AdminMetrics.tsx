@@ -191,7 +191,7 @@ export default function AdminMetrics() {
           <CardContent className="p-4">
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Sales Achievement</p>
             <p className="text-2xl font-bold text-foreground mt-1">{totalExpected > 0 ? Math.round(totalAchieved / totalExpected * 100) : 0}%</p>
-            <p className="text-[10px] text-muted-foreground">₹{(totalAchieved / 100000).toFixed(1)}L / ₹{(totalExpected / 100000).toFixed(1)}L</p>
+            <p className="text-[10px] text-muted-foreground">${(totalAchieved / 100000).toFixed(1)}L / ${(totalExpected / 100000).toFixed(1)}L</p>
           </CardContent>
         </Card>
         <Card>
@@ -339,8 +339,8 @@ export default function AdminMetrics() {
                     <YAxis yAxisId="right" orientation="right" domain={[0, 100]} tick={{ fontSize: 9 }} className="fill-muted-foreground" />
                     <Tooltip />
                     <Legend wrapperStyle={{ fontSize: 10 }} />
-                    <Bar yAxisId="left" dataKey="expected" fill="#B0B0B0" name="Expected (₹K)" radius={[2, 2, 0, 0]} />
-                    <Bar yAxisId="left" dataKey="achieved" fill="#16a34a" name="Achieved (₹K)" radius={[2, 2, 0, 0]} />
+                    <Bar yAxisId="left" dataKey="expected" fill="#B0B0B0" name="Expected ($K)" radius={[2, 2, 0, 0]} />
+                    <Bar yAxisId="left" dataKey="achieved" fill="#16a34a" name="Achieved ($K)" radius={[2, 2, 0, 0]} />
                     <Line yAxisId="right" type="monotone" dataKey="scvBiz" stroke="#dc2626" strokeWidth={2} name="SCV(BIZ)" dot={{ r: 4 }} label={{ fontSize: 9, position: "top" }} />
                   </ComposedChart>
                 </ResponsiveContainer>
@@ -470,7 +470,7 @@ export default function AdminMetrics() {
                                 </div>
                                 {/* Sales */}
                                 <div className="text-xs text-muted-foreground">
-                                  Expected: ₹{m.expectedSales.toLocaleString()} · Achieved: ₹{m.achievedSales.toLocaleString()} · Ratio: {(m.achievedSales / m.expectedSales * 100).toFixed(0)}%
+                                  Expected: ${m.expectedSales.toLocaleString()} · Achieved: ${m.achievedSales.toLocaleString()} · Ratio: {(m.achievedSales / m.expectedSales * 100).toFixed(0)}%
                                 </div>
                                 {/* History */}
                                 <Card>
@@ -555,7 +555,7 @@ export default function AdminMetrics() {
                   </div>
                   <div className="flex justify-between text-[10px] text-muted-foreground">
                     <span>{v.activeKitchens}/{v.totalKitchens} active</span>
-                    <span>₹{(v.totalAchievedSales / 100000).toFixed(1)}L / ₹{(v.totalExpectedSales / 100000).toFixed(1)}L</span>
+                    <span>${(v.totalAchievedSales / 100000).toFixed(1)}L / ${(v.totalExpectedSales / 100000).toFixed(1)}L</span>
                   </div>
                   <div className="flex items-center gap-1">
                     {(["A", "B", "C", "D"] as SCVGrade[]).map(g => (

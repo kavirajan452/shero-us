@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { IndianRupee, Shield, RefreshCw, CheckCircle, AlertTriangle, Clock, ArrowUpRight, FileText } from "lucide-react";
+import { DollarSign, Shield, RefreshCw, CheckCircle, AlertTriangle, Clock, ArrowUpRight, FileText } from "lucide-react";
 
 const razorpayConfig = {
   status: "active",
@@ -54,7 +54,7 @@ export default function AdminRazorpayIntegration() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card><CardContent className="pt-4">
               <p className="text-xs text-muted-foreground">Today's Collections</p>
-              <p className="text-2xl font-bold">₹1,84,250</p>
+              <p className="text-2xl font-bold">$1,84,250</p>
               <p className="text-xs text-green-600">↑ 12% vs yesterday</p>
             </CardContent></Card>
             <Card><CardContent className="pt-4">
@@ -64,12 +64,12 @@ export default function AdminRazorpayIntegration() {
             </CardContent></Card>
             <Card><CardContent className="pt-4">
               <p className="text-xs text-muted-foreground">Pending Settlements</p>
-              <p className="text-2xl font-bold">₹52,800</p>
+              <p className="text-2xl font-bold">$52,800</p>
               <p className="text-xs text-muted-foreground">Next: Tomorrow 6 AM</p>
             </CardContent></Card>
             <Card><CardContent className="pt-4">
               <p className="text-xs text-muted-foreground">Refunds Today</p>
-              <p className="text-2xl font-bold">₹2,140</p>
+              <p className="text-2xl font-bold">$2,140</p>
               <p className="text-xs text-muted-foreground">3 refunds processed</p>
             </CardContent></Card>
           </div>
@@ -105,14 +105,14 @@ export default function AdminRazorpayIntegration() {
                 {recentTransactions.map((txn) => (
                   <div key={txn.id} className="flex items-center justify-between py-2.5 border-b last:border-0">
                     <div className="flex items-center gap-3">
-                      <IndianRupee className="w-4 h-4 text-muted-foreground" />
+                      <DollarSign className="w-4 h-4 text-muted-foreground" />
                       <div>
                         <p className="text-sm font-medium">{txn.customer}</p>
                         <p className="text-xs text-muted-foreground">{txn.id} · {txn.method}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-semibold">₹{txn.amount.toLocaleString()}</p>
+                      <p className="text-sm font-semibold">${txn.amount.toLocaleString()}</p>
                       <Badge variant={txn.status === "captured" ? "default" : txn.status === "refunded" ? "secondary" : "destructive"} className="text-[10px]">
                         {txn.status}
                       </Badge>

@@ -8,7 +8,7 @@ import { snackOrders, snackOrderStatusColors, snackOrderStatusFlow, type SnackOr
 import { Package, CheckCircle, Truck, Clock, AlertCircle, ChevronRight, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const fmt = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+const fmt = (n: number) => `$${n.toLocaleString("en-US")}`;
 
 export default function PartnerSnacksOrders() {
   const { toast } = useToast();

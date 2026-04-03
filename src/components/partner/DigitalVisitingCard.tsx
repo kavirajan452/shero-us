@@ -19,7 +19,7 @@ const DigitalVisitingCard = () => {
   const [copied, setCopied] = useState(false);
 
   const referralLink = `${window.location.origin}/welcome?ref=${referralCode}`;
-  const shareText = `🍲 Join Shero — India's homefood platform!\n\nUse my referral code: ${referralCode}\nGet ₹500 in your wallet!\n\n${referralLink}`;
+  const shareText = `🍲 Join Shero — India's homefood platform!\n\nUse my referral code: ${referralCode}\nGet $500 in your wallet!\n\n${referralLink}`;
 
   const copyLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -80,7 +80,7 @@ const DigitalVisitingCard = () => {
     // QR placeholder label
     ctx.fillStyle = "#D4A574";
     ctx.font = "bold 12px sans-serif";
-    ctx.fillText("SCAN TO JOIN & GET ₹500", 300, 235);
+    ctx.fillText("SCAN TO JOIN & GET $500", 300, 235);
 
     // Referral code
     ctx.strokeStyle = "#D4A574";
@@ -118,7 +118,7 @@ const DigitalVisitingCard = () => {
             <p className="text-white/70 text-xs mt-2">{partnerInfo.cuisines.join(" • ")}</p>
 
             <div className="mt-4 pt-3 border-t border-white/10">
-              <p className="text-[10px] text-[#D4A574] font-bold tracking-wider mb-1">SCAN TO JOIN & GET ₹500</p>
+              <p className="text-[10px] text-[#D4A574] font-bold tracking-wider mb-1">SCAN TO JOIN & GET $500</p>
               {/* QR placeholder */}
               <div className="w-20 h-20 mx-auto bg-white rounded-lg flex items-center justify-center">
                 <div className="grid grid-cols-5 gap-[2px]">
@@ -141,7 +141,7 @@ const DigitalVisitingCard = () => {
           <div className="flex items-center justify-between">
             <h4 className="font-semibold text-foreground text-sm">Share Your Card</h4>
             <Badge variant="outline" className="text-[10px] border-primary/30 text-primary">
-              ₹500 per referral
+              $500 per referral
             </Badge>
           </div>
 
@@ -162,7 +162,7 @@ const DigitalVisitingCard = () => {
           </div>
 
           <p className="text-[10px] text-muted-foreground text-center">
-            Anyone who joins using your code gets ₹500 in their Shero Wallet!
+            Anyone who joins using your code gets $500 in their Shero Wallet!
           </p>
         </div>
       </CardContent>

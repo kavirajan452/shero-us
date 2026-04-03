@@ -9,9 +9,9 @@ import { Input } from "@/components/ui/input";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, PieChart as RPie, Pie, Cell, Tooltip, AreaChart, Area } from "recharts";
 import { classBookings, bookingStatusColors, type ClassBooking, type BookingStatus } from "@/data/classBookingStore";
-import { Calendar, Users, IndianRupee, Star, Award, Video, Radio, Search, Download, TrendingUp, BookOpen, GraduationCap, Eye, CheckCircle, Clock, XCircle } from "lucide-react";
+import { Calendar, Users, DollarSign, Star, Award, Video, Radio, Search, Download, TrendingUp, BookOpen, GraduationCap, Eye, CheckCircle, Clock, XCircle } from "lucide-react";
 
-const fmt = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+const fmt = (n: number) => `$${n.toLocaleString("en-US")}`;
 const COLORS = ["hsl(var(--primary))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))"];
 
 export default function AdminClassesDashboard() {
@@ -98,7 +98,7 @@ export default function AdminClassesDashboard() {
       {/* KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
         {[
-          { label: "Total Revenue", value: fmt(stats.revenue), icon: IndianRupee, color: "text-green-600" },
+          { label: "Total Revenue", value: fmt(stats.revenue), icon: DollarSign, color: "text-green-600" },
           { label: "Total Bookings", value: stats.totalBookings, icon: Calendar, color: "text-primary" },
           { label: "Upcoming", value: stats.upcoming, icon: Clock, color: "text-yellow-600" },
           { label: "Students", value: stats.uniqueStudents, icon: Users, color: "text-blue-600" },

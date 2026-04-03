@@ -21,7 +21,7 @@ import { Progress } from "@/components/ui/progress";
 import {
   Search, Plus, Eye, CheckCircle2, Clock, XCircle, MessageSquare,
   UserCog, Building2, RefreshCw, FileText, AlertTriangle, Send, Headphones,
-  Phone, Mail, MessageCircle, Star, ShieldAlert, IndianRupee, BarChart3,
+  Phone, Mail, MessageCircle, Star, ShieldAlert, DollarSign, BarChart3,
   TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, Users, ThumbsUp, ThumbsDown,
   Hash, MapPin, Gauge, ClipboardList, Activity, Zap, Shield, Brain,
   ChevronRight, Package, Utensils, Timer, CalendarCheck, Mic, MicOff,
@@ -253,13 +253,13 @@ const callLogs: CallLog[] = [
 const typeConfig: Record<TicketType, { label: string; icon: typeof UserCog; color: string }> = {
   order_edit: { label: "Order Edit", icon: ClipboardList, color: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400" },
   order_cancel: { label: "Order Cancel", icon: XCircle, color: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400" },
-  refund_request: { label: "Refund", icon: IndianRupee, color: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400" },
+  refund_request: { label: "Refund", icon: DollarSign, color: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400" },
   profile_edit: { label: "Profile Edit", icon: UserCog, color: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400" },
   kitchen_add: { label: "Kitchen Add", icon: Building2, color: "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400" },
   kitchen_remove: { label: "Kitchen Remove", icon: XCircle, color: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400" },
   license_renewal: { label: "License Renewal", icon: RefreshCw, color: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400" },
   complaint: { label: "Complaint", icon: ShieldAlert, color: "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400" },
-  payment_query: { label: "Payment Query", icon: IndianRupee, color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400" },
+  payment_query: { label: "Payment Query", icon: DollarSign, color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400" },
   other: { label: "Other", icon: FileText, color: "bg-muted text-muted-foreground" },
 };
 
@@ -526,7 +526,7 @@ export default function AdminTickets() {
                       recognitionRef.current = recognition;
                       recognition.continuous = false;
                       recognition.interimResults = false;
-                      recognition.lang = "en-IN";
+                      recognition.lang = "en-US";
                       recognition.onresult = (event: any) => {
                         const transcript: string = event.results[0][0].transcript;
                         // Extract digits for RMN, or keep as-is for Order ID
@@ -579,7 +579,7 @@ export default function AdminTickets() {
                       <Gauge className="w-3 h-3" /> Metrics/SCV
                     </Button>
                     <Button size="sm" variant={lookupView === "finance" ? "default" : "outline"} onClick={() => setLookupView("finance")} className="text-xs gap-1">
-                      <IndianRupee className="w-3 h-3" /> PPP / Finance
+                      <DollarSign className="w-3 h-3" /> PPP / Finance
                     </Button>
                   </>
                 )}
@@ -723,10 +723,10 @@ export default function AdminTickets() {
               {lookupView === "finance" && foundPartner && (
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <Card><CardContent className="p-3"><p className="text-[10px] text-muted-foreground">Total Earnings (2M)</p><p className="text-lg font-bold text-green-600">₹{foundPartner.ledger.reduce((s, e) => s + e.credit, 0).toLocaleString("en-IN")}</p></CardContent></Card>
-                    <Card><CardContent className="p-3"><p className="text-[10px] text-muted-foreground">Total Payouts</p><p className="text-lg font-bold text-foreground">₹{foundPartner.ledger.filter(e => e.type === "payout").reduce((s, e) => s + e.debit, 0).toLocaleString("en-IN")}</p></CardContent></Card>
-                    <Card><CardContent className="p-3"><p className="text-[10px] text-muted-foreground">Penalties</p><p className="text-lg font-bold text-destructive">₹{foundPartner.ledger.filter(e => e.type === "penalty").reduce((s, e) => s + e.debit, 0).toLocaleString("en-IN")}</p></CardContent></Card>
-                    <Card><CardContent className="p-3"><p className="text-[10px] text-muted-foreground">Balance</p><p className="text-lg font-bold text-foreground">₹{foundPartner.ledger[0]?.balance.toLocaleString("en-IN") ?? 0}</p></CardContent></Card>
+                    <Card><CardContent className="p-3"><p className="text-[10px] text-muted-foreground">Total Earnings (2M)</p><p className="text-lg font-bold text-green-600">${foundPartner.ledger.reduce((s, e) => s + e.credit, 0).toLocaleString("en-US")}</p></CardContent></Card>
+                    <Card><CardContent className="p-3"><p className="text-[10px] text-muted-foreground">Total Payouts</p><p className="text-lg font-bold text-foreground">${foundPartner.ledger.filter(e => e.type === "payout").reduce((s, e) => s + e.debit, 0).toLocaleString("en-US")}</p></CardContent></Card>
+                    <Card><CardContent className="p-3"><p className="text-[10px] text-muted-foreground">Penalties</p><p className="text-lg font-bold text-destructive">${foundPartner.ledger.filter(e => e.type === "penalty").reduce((s, e) => s + e.debit, 0).toLocaleString("en-US")}</p></CardContent></Card>
+                    <Card><CardContent className="p-3"><p className="text-[10px] text-muted-foreground">Balance</p><p className="text-lg font-bold text-foreground">${foundPartner.ledger[0]?.balance.toLocaleString("en-US") ?? 0}</p></CardContent></Card>
                   </div>
 
                   <Card>
@@ -745,9 +745,9 @@ export default function AdminTickets() {
                             <TableHead className="text-[10px] font-semibold">Date</TableHead>
                             <TableHead className="text-[10px] font-semibold">Week</TableHead>
                             <TableHead className="text-[10px] font-semibold">Description</TableHead>
-                            <TableHead className="text-[10px] font-semibold text-right">Debit (₹)</TableHead>
-                            <TableHead className="text-[10px] font-semibold text-right">Credit (₹)</TableHead>
-                            <TableHead className="text-[10px] font-semibold text-right">Balance (₹)</TableHead>
+                            <TableHead className="text-[10px] font-semibold text-right">Debit ($)</TableHead>
+                            <TableHead className="text-[10px] font-semibold text-right">Credit ($)</TableHead>
+                            <TableHead className="text-[10px] font-semibold text-right">Balance ($)</TableHead>
                           </TableRow></TableHeader>
                           <TableBody>
                             {foundPartner.ledger.map(entry => (
@@ -756,9 +756,9 @@ export default function AdminTickets() {
                                 <TableCell className="text-[10px] text-muted-foreground whitespace-nowrap">{entry.date}</TableCell>
                                 <TableCell><Badge variant="outline" className="text-[9px]">{entry.week}</Badge></TableCell>
                                 <TableCell className="text-xs"><span className={entry.type === "penalty" ? "text-destructive" : entry.type === "payout" ? "text-blue-600" : "text-green-600"}>{entry.description}</span></TableCell>
-                                <TableCell className="text-xs text-right">{entry.debit > 0 ? <span className="text-destructive">₹{entry.debit.toLocaleString("en-IN")}</span> : "—"}</TableCell>
-                                <TableCell className="text-xs text-right">{entry.credit > 0 ? <span className="text-green-600">₹{entry.credit.toLocaleString("en-IN")}</span> : "—"}</TableCell>
-                                <TableCell className="text-xs text-right font-semibold">₹{entry.balance.toLocaleString("en-IN")}</TableCell>
+                                <TableCell className="text-xs text-right">{entry.debit > 0 ? <span className="text-destructive">${entry.debit.toLocaleString("en-US")}</span> : "—"}</TableCell>
+                                <TableCell className="text-xs text-right">{entry.credit > 0 ? <span className="text-green-600">${entry.credit.toLocaleString("en-US")}</span> : "—"}</TableCell>
+                                <TableCell className="text-xs text-right font-semibold">${entry.balance.toLocaleString("en-US")}</TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
@@ -810,12 +810,12 @@ export default function AdminTickets() {
                                     <TableRow key={i}>
                                       <TableCell className="text-xs">{item.name}</TableCell>
                                       <TableCell className="text-xs text-center">{item.qty}</TableCell>
-                                      <TableCell className="text-xs text-right">₹{item.price * item.qty}</TableCell>
+                                      <TableCell className="text-xs text-right">${item.price * item.qty}</TableCell>
                                     </TableRow>
                                   ))}
                                   <TableRow className="bg-muted/30">
                                     <TableCell colSpan={2} className="text-xs font-semibold">Total (PPP)</TableCell>
-                                    <TableCell className="text-xs text-right font-bold">₹{order.totalPPP}</TableCell>
+                                    <TableCell className="text-xs text-right font-bold">${order.totalPPP}</TableCell>
                                   </TableRow>
                                 </TableBody>
                               </Table>

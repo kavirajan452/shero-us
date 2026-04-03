@@ -61,7 +61,7 @@ const AdminSubLifecycle = () => {
               <div>
                 <p className="text-xs font-medium text-foreground">{c.name} — {c.plan_name}</p>
                 <p className="text-[10px] text-destructive">Reason: {c.cancel_reason}</p>
-                <p className="text-[10px] text-muted-foreground">Paid: ₹{c.total_paid?.toLocaleString()}</p>
+                <p className="text-[10px] text-muted-foreground">Paid: ${c.total_paid?.toLocaleString()}</p>
               </div>
               <Button size="sm" variant="outline" className="text-[10px] h-7 gap-1" onClick={() => handleStatusChange(c.id, "active")}><RefreshCw className="w-3 h-3" /> Reactivate</Button>
             </CardContent>

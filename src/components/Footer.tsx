@@ -14,7 +14,7 @@ const Footer = () => {
               <img src={sheroLogo} alt="Shero Home Food" className="h-10 brightness-200" />
             </div>
             <p className="text-primary-foreground/60 text-sm">
-              {c["footer.tagline"] || "India's largest home food platform."}
+              {c["footer.tagline"] || "India's favorite home food, now in America."}
             </p>
           </div>
           <div>
@@ -31,12 +31,12 @@ const Footer = () => {
             <h5 className="font-semibold mb-3">Contact</h5>
             <ul className="space-y-2 text-sm text-primary-foreground/60">
               <li>
-                ✉️ <a href={`mailto:${c["footer.support_email"] || "support@shero.in"}`} className="hover:text-primary-foreground transition-colors">{c["footer.support_email"] || "support@shero.in"}</a>
+                ✉️ <a href={`mailto:${c["footer.support_email"] || "support@sherohomefood.com"}`} className="hover:text-primary-foreground transition-colors">{c["footer.support_email"] || "support@sherohomefood.com"}</a>
               </li>
               <li>
-                💬 <a href={`https://wa.me/${(c["footer.whatsapp_number"] || "+918690666666").replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground transition-colors">WhatsApp {c["footer.whatsapp_number"] || "+91 8690666666"}</a>
+                📞 <a href={`tel:${(c["footer.support_phone"] || "+1 (800) 743-7600").replace(/[^0-9+]/g, "")}`} className="hover:text-primary-foreground transition-colors">{c["footer.support_phone"] || "+1 (800) 743-7600"}</a>
               </li>
-              <li>{c["footer.locations"] || "📍 72 Cities, 14 States, India"}</li>
+              <li>{c["footer.locations"] || "📍 Now serving select US cities"}</li>
             </ul>
             <div className="flex gap-3 mt-4">
               <a href="https://www.facebook.com/SheroHomeFood/" className="text-primary-foreground/60 hover:text-primary-foreground transition-colors">Facebook</a>
@@ -45,15 +45,13 @@ const Footer = () => {
             </div>
             <div className="mt-4 pt-3 border-t border-primary-foreground/10 text-xs text-primary-foreground/40">
               <p>
-                Complaints: <a href={`mailto:${c["footer.complaints_email"] || "ceo@shero.in"}`} className="hover:text-primary-foreground transition-colors">{c["footer.complaints_email"] || "ceo@shero.in"}</a>
-                {" / "}
-                <a href={`https://wa.me/${(c["footer.complaints_whatsapp"] || "+918690222222").replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary-foreground transition-colors">WA {c["footer.complaints_whatsapp"] || "+91 8690222222"}</a>
+                Complaints: <a href={`mailto:${c["footer.complaints_email"] || "ceo@sherohomefood.com"}`} className="hover:text-primary-foreground transition-colors">{c["footer.complaints_email"] || "ceo@sherohomefood.com"}</a>
               </p>
             </div>
           </div>
         </div>
         <div className="border-t border-primary-foreground/10 pt-6 text-center text-sm text-primary-foreground/40">
-          {c["footer.copyright"] || "© 2026 Shero Home Food. All rights reserved."}
+          {c["footer.copyright"] || "© 2026 Shero Home Food Inc. All rights reserved."}
         </div>
       </div>
     </footer>

@@ -61,7 +61,7 @@ const partnerMetrics = [
   { metric: "Avg Partner Rating", value: "4.4 ⭐", delta: "+0.1", trend: "up" },
   { metric: "On-time Preparation", value: "94.8%", delta: "+1.2%", trend: "up" },
   { metric: "Partner Complaints", value: "12", delta: "-3", trend: "down" },
-  { metric: "Avg Payout/Partner/Week", value: "₹8,400", delta: "+₹420", trend: "up" },
+  { metric: "Avg Payout/Partner/Week", value: "$8,400", delta: "+$420", trend: "up" },
   { metric: "New Onboards (MTD)", value: "6", delta: "+2", trend: "up" },
   { metric: "Churn Rate (Monthly)", value: "2.1%", delta: "-0.4%", trend: "down" },
 ];
@@ -71,7 +71,7 @@ const customerMetrics = [
   { metric: "Total Registered Users", value: "5,120", delta: "+320", trend: "up" },
   { metric: "Monthly Active Users", value: "2,840", delta: "+180", trend: "up" },
   { metric: "Avg Orders/User/Month", value: "3.4", delta: "+0.2", trend: "up" },
-  { metric: "Customer LTV", value: "₹4,200", delta: "+₹340", trend: "up" },
+  { metric: "Customer LTV", value: "$4,200", delta: "+$340", trend: "up" },
   { metric: "Repeat Order Rate", value: "62.5%", delta: "+4.1%", trend: "up" },
   { metric: "Cart Abandonment", value: "18.2%", delta: "-2.1%", trend: "down" },
   { metric: "Avg Rating Given", value: "4.3 ⭐", delta: "+0.1", trend: "up" },
@@ -110,7 +110,7 @@ export default function AdminBusinessMetrics() {
         {[
           { label: "Platform Health", value: `${avgHealth}/100`, icon: Gauge, color: "text-primary" },
           { label: "Avg NPS", value: avgNPS, icon: Star, color: "text-yellow-600" },
-          { label: "Customer LTV", value: `₹${opKPIs.customerLTV.toLocaleString()}`, icon: Users, color: "text-green-600" },
+          { label: "Customer LTV", value: `$${opKPIs.customerLTV.toLocaleString()}`, icon: Users, color: "text-green-600" },
           { label: "Repeat Rate", value: `${opKPIs.repeatRate}%`, icon: TrendingUp, color: "text-blue-600" },
           { label: "Uptime", value: `${opKPIs.uptime}%`, icon: Zap, color: "text-accent" },
           { label: "Partner Retention", value: `${opKPIs.partnerRetention}%`, icon: ChefHat, color: "text-primary" },
@@ -152,7 +152,7 @@ export default function AdminBusinessMetrics() {
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div className="flex justify-between"><span className="text-muted-foreground">Revenue</span><span className="font-semibold">₹{(v.revenue / 1000).toFixed(0)}K</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Revenue</span><span className="font-semibold">${(v.revenue / 1000).toFixed(0)}K</span></div>
                       <div className="flex justify-between"><span className="text-muted-foreground">Growth</span><span className="font-semibold text-green-600">+{v.growth}%</span></div>
                       <div className="flex justify-between"><span className="text-muted-foreground">Orders</span><span className="font-semibold">{v.orders}</span></div>
                       <div className="flex justify-between"><span className="text-muted-foreground">NPS</span><span className="font-semibold">{v.nps}</span></div>

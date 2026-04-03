@@ -14,7 +14,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
-  Search, Download, FileText, IndianRupee, AlertTriangle, CheckCircle2,
+  Search, Download, FileText, DollarSign, AlertTriangle, CheckCircle2,
   Clock, XCircle, ArrowLeftRight, Shield, Eye, Book, Wallet,
   TrendingDown, TrendingUp, RotateCcw, Users, Link2,
 } from "lucide-react";
@@ -66,7 +66,7 @@ export default function AdminDebitCredit() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-            <IndianRupee className="w-5 h-5 text-primary" />
+            <DollarSign className="w-5 h-5 text-primary" />
             Debit-Credit & Voucher Console
           </h2>
           <p className="text-xs text-muted-foreground">
@@ -78,13 +78,13 @@ export default function AdminDebitCredit() {
 
       {/* Summary KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-        <SummaryCard label="Total Debits" value={`₹${summary.totalDebits.toLocaleString("en-IN")}`} icon={<TrendingDown className="w-4 h-4" />} color="text-destructive" />
-        <SummaryCard label="Total Credits" value={`₹${summary.totalCredits.toLocaleString("en-IN")}`} icon={<TrendingUp className="w-4 h-4" />} color="text-green-600 dark:text-green-400" />
-        <SummaryCard label="Support Vouchers" value={`₹${summary.totalSV.toLocaleString("en-IN")}`} icon={<Wallet className="w-4 h-4" />} color="text-primary" />
+        <SummaryCard label="Total Debits" value={`$${summary.totalDebits.toLocaleString("en-US")}`} icon={<TrendingDown className="w-4 h-4" />} color="text-destructive" />
+        <SummaryCard label="Total Credits" value={`$${summary.totalCredits.toLocaleString("en-US")}`} icon={<TrendingUp className="w-4 h-4" />} color="text-green-600 dark:text-green-400" />
+        <SummaryCard label="Support Vouchers" value={`$${summary.totalSV.toLocaleString("en-US")}`} icon={<Wallet className="w-4 h-4" />} color="text-primary" />
         <SummaryCard label="Pending Approval" value={String(summary.pendingApproval)} icon={<Clock className="w-4 h-4" />} color="text-action-cook" />
         <SummaryCard label="Reversed" value={String(summary.reversedCount)} icon={<RotateCcw className="w-4 h-4" />} color="text-amber-600 dark:text-amber-400" />
         <SummaryCard label="Orphan Debits" value={String(summary.orphanedDebits)} icon={<AlertTriangle className="w-4 h-4" />} color={summary.orphanedDebits > 0 ? "text-destructive" : "text-action-done"} />
-        <SummaryCard label="Net Impact" value={`₹${summary.netImpact.toLocaleString("en-IN")}`} icon={<ArrowLeftRight className="w-4 h-4" />} color="text-foreground" />
+        <SummaryCard label="Net Impact" value={`$${summary.netImpact.toLocaleString("en-US")}`} icon={<ArrowLeftRight className="w-4 h-4" />} color="text-foreground" />
       </div>
 
       {/* Foolproof Controls Banner */}
@@ -93,7 +93,7 @@ export default function AdminDebitCredit() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-[10px]">
           <div className="flex items-center gap-1.5 text-foreground/80"><Link2 className="w-3 h-3 text-primary shrink-0" /> <span>Every Customer Credit MUST have a linked Partner Debit — no orphans</span></div>
           <div className="flex items-center gap-1.5 text-foreground/80"><Users className="w-3 h-3 text-primary shrink-0" /> <span>Dual Approval — raiser ≠ approver. No single person can debit+credit</span></div>
-          <div className="flex items-center gap-1.5 text-foreground/80"><IndianRupee className="w-3 h-3 text-primary shrink-0" /> <span>Ceiling: Exec ≤₹500 · TL ≤₹2K · Mgr ≤₹5K · Leadership ∞</span></div>
+          <div className="flex items-center gap-1.5 text-foreground/80"><DollarSign className="w-3 h-3 text-primary shrink-0" /> <span>Ceiling: Exec ≤$500 · TL ≤$2K · Mgr ≤$5K · Leadership ∞</span></div>
           <div className="flex items-center gap-1.5 text-foreground/80"><Book className="w-3 h-3 text-primary shrink-0" /> <span>Immutable audit trail — reversals require higher authority</span></div>
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function AdminDebitCredit() {
           <TabsTrigger value="support" className="text-xs gap-1"><Wallet className="w-3 h-3" /> Support Vouchers ({supportVouchers.length})</TabsTrigger>
           <TabsTrigger value="ledger" className="text-xs gap-1"><FileText className="w-3 h-3" /> Partner/Customer Ledger</TabsTrigger>
           <TabsTrigger value="audit" className="text-xs gap-1"><Shield className="w-3 h-3" /> Audit Trail ({auditLog.length})</TabsTrigger>
-          <TabsTrigger value="analytics" className="text-xs gap-1"><IndianRupee className="w-3 h-3" /> Analytics</TabsTrigger>
+          <TabsTrigger value="analytics" className="text-xs gap-1"><DollarSign className="w-3 h-3" /> Analytics</TabsTrigger>
         </TabsList>
 
         <TabsContent value="debit_notes"><DebitNotesTab notes={debitNotes} /></TabsContent>
@@ -176,7 +176,7 @@ function DebitNotesTab({ notes }: { notes: DebitNote[] }) {
               <TableHead className="text-xs">Order</TableHead>
               <TableHead className="text-xs">Reason</TableHead>
               <TableHead className="text-xs">Severity</TableHead>
-              <TableHead className="text-xs text-right">Amount (₹)</TableHead>
+              <TableHead className="text-xs text-right">Amount ($)</TableHead>
               <TableHead className="text-xs">Status</TableHead>
               <TableHead className="text-xs">Linked CN</TableHead>
               <TableHead className="text-xs">Raised By</TableHead>
@@ -195,7 +195,7 @@ function DebitNotesTab({ notes }: { notes: DebitNote[] }) {
                   <TableCell className="text-xs font-mono">{n.orderId}</TableCell>
                   <TableCell className="text-[10px]">{DEBIT_REASONS[n.reason].label}</TableCell>
                   <TableCell><Badge className={`text-[8px] ${sevCfg.color}`}>{sevCfg.label}</Badge></TableCell>
-                  <TableCell className="text-xs text-right font-mono font-bold text-destructive">-₹{n.amount.toLocaleString("en-IN")}</TableCell>
+                  <TableCell className="text-xs text-right font-mono font-bold text-destructive">-${n.amount.toLocaleString("en-US")}</TableCell>
                   <TableCell><Badge className={`text-[8px] ${sCfg.color}`}>{sCfg.label}</Badge></TableCell>
                   <TableCell className="text-[10px] font-mono text-green-600 dark:text-green-400">{n.linkedCreditNoteId || "—"}</TableCell>
                   <TableCell className="text-[10px] text-muted-foreground">{n.raisedBy}</TableCell>
@@ -223,9 +223,9 @@ function DebitNotesTab({ notes }: { notes: DebitNote[] }) {
                 <DetailRow label="Sub-Vertical" value={selected.subVertical} />
                 <DetailRow label="Reason" value={DEBIT_REASONS[selected.reason].label} />
                 <DetailRow label="Severity" value={selected.severity} />
-                <DetailRow label="Amount" value={`₹${selected.amount}`} />
-                <DetailRow label="GST (5%)" value={`₹${selected.gstAmount}`} />
-                <DetailRow label="Net Amount" value={`₹${selected.netAmount}`} />
+                <DetailRow label="Amount" value={`$${selected.amount}`} />
+                <DetailRow label="GST (5%)" value={`$${selected.gstAmount}`} />
+                <DetailRow label="Net Amount" value={`$${selected.netAmount}`} />
                 <DetailRow label="Linked CN" value={selected.linkedCreditNoteId || "None"} />
                 <DetailRow label="Linked JRN" value={selected.linkedJournalId || "None"} />
                 <DetailRow label="Status" value={selected.status} />
@@ -296,7 +296,7 @@ function CreditNotesTab({ notes, debitNotes }: { notes: CreditNote[]; debitNotes
               <TableHead className="text-xs">Order</TableHead>
               <TableHead className="text-xs">Reason</TableHead>
               <TableHead className="text-xs">Credit Type</TableHead>
-              <TableHead className="text-xs text-right">Amount (₹)</TableHead>
+              <TableHead className="text-xs text-right">Amount ($)</TableHead>
               <TableHead className="text-xs">Status</TableHead>
               <TableHead className="text-xs">Linked DN</TableHead>
               <TableHead className="text-xs">Raised By</TableHead>
@@ -314,7 +314,7 @@ function CreditNotesTab({ notes, debitNotes }: { notes: CreditNote[]; debitNotes
                   <TableCell className="text-xs font-mono">{n.orderId}</TableCell>
                   <TableCell className="text-[10px]">{CREDIT_REASONS[n.reason].label}</TableCell>
                   <TableCell><Badge className={`text-[8px] capitalize ${creditTypeColors[n.creditType] || ""}`}>{n.creditType}</Badge></TableCell>
-                  <TableCell className="text-xs text-right font-mono font-bold text-green-600 dark:text-green-400">+₹{n.amount.toLocaleString("en-IN")}</TableCell>
+                  <TableCell className="text-xs text-right font-mono font-bold text-green-600 dark:text-green-400">+${n.amount.toLocaleString("en-US")}</TableCell>
                   <TableCell><Badge className={`text-[8px] ${sCfg.color}`}>{sCfg.label}</Badge></TableCell>
                   <TableCell className="text-[10px] font-mono text-destructive">{n.linkedDebitNoteId}</TableCell>
                   <TableCell className="text-[10px] text-muted-foreground">{n.raisedBy}</TableCell>
@@ -344,9 +344,9 @@ function JournalsTab({ entries }: { entries: JE[] }) {
               <TableHead className="text-xs">JRN ID</TableHead>
               <TableHead className="text-xs">Date</TableHead>
               <TableHead className="text-xs">Debit Account</TableHead>
-              <TableHead className="text-xs text-right">Dr (₹)</TableHead>
+              <TableHead className="text-xs text-right">Dr ($)</TableHead>
               <TableHead className="text-xs">Credit Account</TableHead>
-              <TableHead className="text-xs text-right">Cr (₹)</TableHead>
+              <TableHead className="text-xs text-right">Cr ($)</TableHead>
               <TableHead className="text-xs">Status</TableHead>
               <TableHead className="text-xs">Linked DN</TableHead>
               <TableHead className="text-xs">Linked CN</TableHead>
@@ -361,9 +361,9 @@ function JournalsTab({ entries }: { entries: JE[] }) {
                   <TableCell className="text-xs font-mono font-medium text-muted-foreground">{e.id}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{e.date}</TableCell>
                   <TableCell className="text-[10px] font-medium">{e.debitAccountLabel}</TableCell>
-                  <TableCell className="text-xs text-right font-mono font-bold text-destructive">₹{e.debitAmount.toLocaleString("en-IN")}</TableCell>
+                  <TableCell className="text-xs text-right font-mono font-bold text-destructive">${e.debitAmount.toLocaleString("en-US")}</TableCell>
                   <TableCell className="text-[10px] font-medium">{e.creditAccountLabel}</TableCell>
-                  <TableCell className="text-xs text-right font-mono font-bold text-green-600 dark:text-green-400">₹{e.creditAmount.toLocaleString("en-IN")}</TableCell>
+                  <TableCell className="text-xs text-right font-mono font-bold text-green-600 dark:text-green-400">${e.creditAmount.toLocaleString("en-US")}</TableCell>
                   <TableCell><Badge className={`text-[8px] ${sCfg.color}`}>{sCfg.label}</Badge></TableCell>
                   <TableCell className="text-[10px] font-mono text-destructive">{e.linkedDebitNoteId || "—"}</TableCell>
                   <TableCell className="text-[10px] font-mono text-green-600 dark:text-green-400">{e.linkedCreditNoteId || "—"}</TableCell>
@@ -396,7 +396,7 @@ function SupportVouchersTab({ vouchers }: { vouchers: SupportVoucher[] }) {
               <TableHead className="text-xs">Customer</TableHead>
               <TableHead className="text-xs">Order</TableHead>
               <TableHead className="text-xs">Reason</TableHead>
-              <TableHead className="text-xs text-right">Amount (₹)</TableHead>
+              <TableHead className="text-xs text-right">Amount ($)</TableHead>
               <TableHead className="text-xs">Status</TableHead>
               <TableHead className="text-xs">Raised By</TableHead>
               <TableHead className="text-xs">Approved By</TableHead>
@@ -413,7 +413,7 @@ function SupportVouchersTab({ vouchers }: { vouchers: SupportVoucher[] }) {
                   <TableCell className="text-xs font-medium">{v.customerName}</TableCell>
                   <TableCell className="text-xs font-mono">{v.orderId}</TableCell>
                   <TableCell className="text-[10px]">{SUPPORT_VOUCHER_REASONS[v.reason].label}</TableCell>
-                  <TableCell className="text-xs text-right font-mono font-bold text-primary">₹{v.amount.toLocaleString("en-IN")}</TableCell>
+                  <TableCell className="text-xs text-right font-mono font-bold text-primary">${v.amount.toLocaleString("en-US")}</TableCell>
                   <TableCell><Badge className={`text-[8px] ${sCfg.color}`}>{sCfg.label}</Badge></TableCell>
                   <TableCell className="text-[10px] text-muted-foreground">{v.raisedBy}</TableCell>
                   <TableCell className="text-[10px] text-muted-foreground">{v.approvedBy || "—"}</TableCell>
@@ -472,9 +472,9 @@ function LedgerTab({ debitNotes, creditNotes }: { debitNotes: DebitNote[]; credi
 
       {/* Ledger Summary */}
       <div className="grid grid-cols-4 gap-3">
-        <Card><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">{ledgerType === "partner" ? "PPP Earned + Credits" : "Payments"}</p><p className="text-lg font-bold text-foreground mt-1">₹{(ledgerType === "partner" ? totalCredit : totalDebit).toLocaleString("en-IN")}</p></CardContent></Card>
-        <Card className="border-destructive/20"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">{ledgerType === "partner" ? "Debits & Penalties" : "Credits & Refunds"}</p><p className="text-lg font-bold text-destructive mt-1">₹{(ledgerType === "partner" ? totalDebit : totalCredit).toLocaleString("en-IN")}</p></CardContent></Card>
-        <Card className="border-primary/20"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Net {ledgerType === "partner" ? "Payable" : "Balance"}</p><p className={`text-lg font-bold mt-1 ${netBalance >= 0 ? "text-green-600 dark:text-green-400" : "text-destructive"}`}>₹{Math.abs(netBalance).toLocaleString("en-IN")}</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">{ledgerType === "partner" ? "PPP Earned + Credits" : "Payments"}</p><p className="text-lg font-bold text-foreground mt-1">${(ledgerType === "partner" ? totalCredit : totalDebit).toLocaleString("en-US")}</p></CardContent></Card>
+        <Card className="border-destructive/20"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">{ledgerType === "partner" ? "Debits & Penalties" : "Credits & Refunds"}</p><p className="text-lg font-bold text-destructive mt-1">${(ledgerType === "partner" ? totalDebit : totalCredit).toLocaleString("en-US")}</p></CardContent></Card>
+        <Card className="border-primary/20"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Net {ledgerType === "partner" ? "Payable" : "Balance"}</p><p className={`text-lg font-bold mt-1 ${netBalance >= 0 ? "text-green-600 dark:text-green-400" : "text-destructive"}`}>${Math.abs(netBalance).toLocaleString("en-US")}</p></CardContent></Card>
         <Card><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Entries</p><p className="text-lg font-bold text-foreground mt-1">{ledger.length}</p></CardContent></Card>
       </div>
 
@@ -489,9 +489,9 @@ function LedgerTab({ debitNotes, creditNotes }: { debitNotes: DebitNote[]; credi
               <TableHead className="text-xs">Type</TableHead>
               <TableHead className="text-xs">Description</TableHead>
               <TableHead className="text-xs">Order</TableHead>
-              <TableHead className="text-xs text-right">Debit (₹)</TableHead>
-              <TableHead className="text-xs text-right">Credit (₹)</TableHead>
-              <TableHead className="text-xs text-right">Balance (₹)</TableHead>
+              <TableHead className="text-xs text-right">Debit ($)</TableHead>
+              <TableHead className="text-xs text-right">Credit ($)</TableHead>
+              <TableHead className="text-xs text-right">Balance ($)</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -502,16 +502,16 @@ function LedgerTab({ debitNotes, creditNotes }: { debitNotes: DebitNote[]; credi
                 <TableCell><Badge variant="outline" className="text-[8px]">{r.type}</Badge></TableCell>
                 <TableCell className="text-[10px]">{r.description}</TableCell>
                 <TableCell className="text-[10px] font-mono text-muted-foreground">{r.orderId}</TableCell>
-                <TableCell className="text-xs text-right font-mono">{r.debit > 0 ? <span className="text-destructive">₹{r.debit.toLocaleString("en-IN")}</span> : "—"}</TableCell>
-                <TableCell className="text-xs text-right font-mono">{r.credit > 0 ? <span className="text-green-600 dark:text-green-400">₹{r.credit.toLocaleString("en-IN")}</span> : "—"}</TableCell>
-                <TableCell className={`text-xs text-right font-mono font-bold ${r.balance >= 0 ? "text-green-600 dark:text-green-400" : "text-destructive"}`}>₹{Math.abs(r.balance).toLocaleString("en-IN")} {r.balance < 0 ? "Dr" : "Cr"}</TableCell>
+                <TableCell className="text-xs text-right font-mono">{r.debit > 0 ? <span className="text-destructive">${r.debit.toLocaleString("en-US")}</span> : "—"}</TableCell>
+                <TableCell className="text-xs text-right font-mono">{r.credit > 0 ? <span className="text-green-600 dark:text-green-400">${r.credit.toLocaleString("en-US")}</span> : "—"}</TableCell>
+                <TableCell className={`text-xs text-right font-mono font-bold ${r.balance >= 0 ? "text-green-600 dark:text-green-400" : "text-destructive"}`}>${Math.abs(r.balance).toLocaleString("en-US")} {r.balance < 0 ? "Dr" : "Cr"}</TableCell>
               </TableRow>
             ))}
             <TableRow className="bg-muted/50 font-bold">
               <TableCell colSpan={5} className="text-xs">Totals</TableCell>
-              <TableCell className="text-xs text-right font-mono text-destructive">₹{totalDebit.toLocaleString("en-IN")}</TableCell>
-              <TableCell className="text-xs text-right font-mono text-green-600 dark:text-green-400">₹{totalCredit.toLocaleString("en-IN")}</TableCell>
-              <TableCell className={`text-xs text-right font-mono ${netBalance >= 0 ? "text-green-600 dark:text-green-400" : "text-destructive"}`}>₹{Math.abs(netBalance).toLocaleString("en-IN")} {netBalance < 0 ? "Dr" : "Cr"}</TableCell>
+              <TableCell className="text-xs text-right font-mono text-destructive">${totalDebit.toLocaleString("en-US")}</TableCell>
+              <TableCell className="text-xs text-right font-mono text-green-600 dark:text-green-400">${totalCredit.toLocaleString("en-US")}</TableCell>
+              <TableCell className={`text-xs text-right font-mono ${netBalance >= 0 ? "text-green-600 dark:text-green-400" : "text-destructive"}`}>${Math.abs(netBalance).toLocaleString("en-US")} {netBalance < 0 ? "Dr" : "Cr"}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -580,7 +580,7 @@ function AuditTrailTab({ log }: { log: AuditLogEntry[] }) {
                 <TableCell className="text-xs">{l.performedBy}</TableCell>
                 <TableCell className="text-[10px] text-muted-foreground capitalize">{l.performedByRole.replace(/_/g, " ")}</TableCell>
                 <TableCell className="text-[10px]">{l.previousStatus} → {l.newStatus}</TableCell>
-                <TableCell className="text-xs text-right font-mono">₹{l.amount.toLocaleString("en-IN")}</TableCell>
+                <TableCell className="text-xs text-right font-mono">${l.amount.toLocaleString("en-US")}</TableCell>
                 <TableCell className="text-[10px] text-muted-foreground max-w-[200px] truncate">{l.notes}</TableCell>
               </TableRow>
             ))}
@@ -630,7 +630,7 @@ function AnalyticsTab({ debitNotes, creditNotes, supportVouchers }: { debitNotes
     <div className="space-y-5 mt-3">
       <div className="grid md:grid-cols-2 gap-5">
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-xs">Debits by Reason (₹)</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-xs">Debits by Reason ($)</CardTitle></CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={reasonData} layout="vertical">
@@ -661,11 +661,11 @@ function AnalyticsTab({ debitNotes, creditNotes, supportVouchers }: { debitNotes
         </Card>
 
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-xs">Severity Distribution (₹ Value)</CardTitle></CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-xs">Severity Distribution ($ Value)</CardTitle></CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
-                <Pie data={severityData} dataKey="amount" nameKey="severity" cx="50%" cy="50%" outerRadius={90} innerRadius={50} label={({ severity, amount }) => `${severity}: ₹${amount}`}>
+                <Pie data={severityData} dataKey="amount" nameKey="severity" cx="50%" cy="50%" outerRadius={90} innerRadius={50} label={({ severity, amount }) => `${severity}: $${amount}`}>
                   {severityData.map((_, i) => <Cell key={i} fill={colors[i]} />)}
                 </Pie>
                 <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8 }} />
@@ -681,7 +681,7 @@ function AnalyticsTab({ debitNotes, creditNotes, supportVouchers }: { debitNotes
               <div key={tier} className="flex items-center justify-between p-2.5 rounded-lg border border-border">
                 <span className="text-xs font-medium capitalize">{tier.replace(/_/g, " ")}</span>
                 <span className="text-xs font-bold text-primary">
-                  {CEILING_LIMITS[tier] === Infinity ? "Unlimited" : `≤ ₹${CEILING_LIMITS[tier].toLocaleString("en-IN")}`}
+                  {CEILING_LIMITS[tier] === Infinity ? "Unlimited" : `≤ $${CEILING_LIMITS[tier].toLocaleString("en-US")}`}
                 </span>
               </div>
             ))}

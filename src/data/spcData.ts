@@ -146,11 +146,11 @@ export const MOCK_GRIEVANCES: Grievance[] = [
   {
     id: "GRV006", partnerId: "P006", partnerName: "Revathi N.", category: "policy",
     subject: "Unfair penalty for order cancellation by customer",
-    description: "Customer cancelled after I started cooking. I was penalized ₹150. This is unfair as I incurred costs.",
+    description: "Customer cancelled after I started cooking. I was penalized $150. This is unfair as I incurred costs.",
     priority: "medium", status: "in_progress", assignedTo: "SPC-Anitha",
     createdAt: "2026-03-01", updatedAt: "2026-03-02", escalationLevel: 0,
     messages: [
-      { from: "partner", text: "I spent ₹200 on ingredients and the customer cancelled after 20 mins. Why am I penalized?", time: "2026-03-01 16:00" },
+      { from: "partner", text: "I spent $200 on ingredients and the customer cancelled after 20 mins. Why am I penalized?", time: "2026-03-01 16:00" },
       { from: "spc", text: "We understand your concern. Reviewing the cancellation timeline with the ops team.", time: "2026-03-01 16:30" },
     ],
   },
@@ -189,7 +189,7 @@ export const STRESS_BUSTERS: StressBusterResource[] = [
   { id: "SB007", title: "Mental Health Support", type: "helpline", category: "stress", description: "iCall — Free professional counselling for mental health. Trained psychologists.", helpline: "9152987821" },
   { id: "SB008", title: "Legal Aid Free Helpline", type: "helpline", category: "legal", description: "Free legal assistance for women. National Legal Services Authority.", helpline: "15100" },
   { id: "SB009", title: "Quick Stretch Routine", type: "activity", category: "health", description: "10-minute stretching routine designed for people who stand and cook for hours.", duration: "10 min" },
-  { id: "SB010", title: "Success Story: From ₹0 to ₹50K/month", type: "video", category: "motivation", description: "Inspiring journey of a Shero partner who built a thriving kitchen business from scratch.", duration: "12 min" },
+  { id: "SB010", title: "Success Story: From $0 to $50K/month", type: "video", category: "motivation", description: "Inspiring journey of a Shero partner who built a thriving kitchen business from scratch.", duration: "12 min" },
 ];
 
 // ── Grievance Trend Data ──

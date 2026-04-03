@@ -7,7 +7,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, LineChart, Line, PieChart, Pie, Cell, AreaChart, Area } from "recharts";
 import {
   TrendingUp, TrendingDown, BarChart3, Users, Download, Calendar,
-  ChefHat, Star, Clock, XCircle, SkipForward, IndianRupee,
+  ChefHat, Star, Clock, XCircle, SkipForward, DollarSign,
   ArrowUpRight, ArrowDownRight, Package,
 } from "lucide-react";
 
@@ -63,7 +63,7 @@ const growthTrend = [
   { month: "Mar", subscribers: 142, revenue: 542000 },
 ];
 
-const fmt = (n: number) => n >= 1000 ? `₹${(n / 1000).toFixed(0)}K` : `₹${n}`;
+const fmt = (n: number) => n >= 1000 ? `$${(n / 1000).toFixed(0)}K` : `$${n}`;
 
 const AdminSubReports = () => {
   const [period, setPeriod] = useState<ReportPeriod>("month");
@@ -93,7 +93,7 @@ const AdminSubReports = () => {
         {[
           { label: "Active Subscribers", value: kpi.activeSubscribers, icon: Users, color: "text-green-600" },
           { label: "New Signups", value: kpi.newSignups, icon: ArrowUpRight, color: "text-blue-600" },
-          { label: "Revenue", value: fmt(kpi.totalRevenue), icon: IndianRupee, color: "text-primary" },
+          { label: "Revenue", value: fmt(kpi.totalRevenue), icon: DollarSign, color: "text-primary" },
           { label: "On-Time %", value: `${kpi.onTimeRate}%`, icon: Clock, color: kpi.onTimeRate >= 90 ? "text-green-600" : "text-yellow-600" },
           { label: "Avg Rating", value: kpi.avgRating, icon: Star, color: "text-yellow-600" },
           { label: "Churn Rate", value: `${kpi.churnRate}%`, icon: ArrowDownRight, color: kpi.churnRate > 3 ? "text-destructive" : "text-green-600" },

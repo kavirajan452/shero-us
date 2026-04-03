@@ -10,9 +10,9 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, PieChart as RPie, Pie, Cell, Tooltip, LineChart, Line, AreaChart, Area } from "recharts";
 import { snackOrders, snackOrderStatusColors, type SnackOrder, type SnackOrderStatus } from "@/data/snacksOrderStore";
 import { snackProducts, snackCategories } from "@/data/snacksData";
-import { Package, ShoppingCart, IndianRupee, TrendingUp, Truck, Users, Search, Download, Star, AlertTriangle, CheckCircle, Clock, Megaphone } from "lucide-react";
+import { Package, ShoppingCart, DollarSign, TrendingUp, Truck, Users, Search, Download, Star, AlertTriangle, CheckCircle, Clock, Megaphone } from "lucide-react";
 
-const fmt = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+const fmt = (n: number) => `$${n.toLocaleString("en-US")}`;
 const COLORS = ["hsl(var(--primary))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))"];
 
 export default function AdminSnacksDashboard() {
@@ -93,7 +93,7 @@ export default function AdminSnacksDashboard() {
       {/* KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Total Revenue", value: fmt(stats.totalRevenue), icon: IndianRupee, color: "text-green-600" },
+          { label: "Total Revenue", value: fmt(stats.totalRevenue), icon: DollarSign, color: "text-green-600" },
           { label: "Total Orders", value: stats.totalOrders, icon: ShoppingCart, color: "text-primary" },
           { label: "Active Orders", value: stats.active, icon: Clock, color: "text-yellow-600" },
           { label: "Avg Order Value", value: fmt(stats.avgOrderValue), icon: TrendingUp, color: "text-blue-600" },
@@ -241,7 +241,7 @@ export default function AdminSnacksDashboard() {
                     <span className="text-[10px] text-muted-foreground">({p.reviewCount})</span>
                   </div>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs font-bold">₹{p.packSizes[0].price}</span>
+                    <span className="text-xs font-bold">${p.packSizes[0].price}</span>
                     <span className="text-[10px] text-muted-foreground capitalize">{p.category}</span>
                   </div>
                   <div className="flex gap-1 mt-1.5 flex-wrap">
