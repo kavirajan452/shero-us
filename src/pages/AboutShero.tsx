@@ -74,12 +74,12 @@ const AboutShero = () => {
       <section className="bg-card border-y border-border py-8">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-            {stats.map((s, i) => {
+            {defaultStats.map((s, i) => {
               const Icon = s.icon;
               return (
                 <div key={i} className="text-center">
                   <Icon className="w-5 h-5 mx-auto mb-1.5 text-primary" />
-                  <div className="text-xl md:text-2xl font-bold text-foreground">{s.number}</div>
+                  <div className="text-xl md:text-2xl font-bold text-foreground">{ac[`about.${s.key}`] || s.number}</div>
                   <div className="text-[11px] text-muted-foreground">{s.label}</div>
                 </div>
               );
