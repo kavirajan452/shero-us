@@ -110,7 +110,7 @@ export function generateInvoicePDF(data: InvoiceData): jsPDF {
     doc.text(item.name.substring(0, 40), m + 10, y);
     if (item.hsn) doc.text(item.hsn, pw - m - 55, y);
     doc.text(item.qty, pw - m - 35, y);
-    doc.text(`₹${item.amount.toLocaleString("en-IN")}`, pw - m - 5, y, { align: "right" });
+    doc.text(`$${item.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}`, pw - m - 5, y, { align: "right" });
     y += 5;
   });
 
