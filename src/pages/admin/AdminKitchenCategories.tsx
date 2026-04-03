@@ -755,7 +755,7 @@ const AdminKitchenCategories = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <Label className="text-xs">Latitude</Label>
-                    <Input type="number" step="any" value={kLatitude} onChange={(e) => setKLatitude(e.target.value)} placeholder="e.g., 13.0418" />
+                    <Input type="number" step="any" value={kLatitude} onChange={(e) => setKLatitude(e.target.value)} placeholder="e.g., 40.7128" />
                   </div>
                   <div>
                     <Label className="text-xs">Longitude</Label>
