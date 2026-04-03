@@ -595,6 +595,19 @@ const PartnerOrders = () => {
                             </Button>
                           </div>
                         )}
+                        {(order.status === "delivered" || order.status === "ready") && order.status === "delivered" && (
+                          <Button size="sm" variant="outline" onClick={async () => {
+                            toast({ title: "⏳ Generating Purchase Invoice..." });
+                            const success = await downloadInvoiceForOrder(order.id, "partner_purchase");
+                            if (success) {
+                              toast({ title: "📄 Purchase Invoice Downloaded" });
+                            } else {
+                              toast({ title: "ℹ️ Invoice Not Available Yet", description: "Invoice will be generated after order completion.", variant: "destructive" });
+                            }
+                          }} className="text-xs gap-1">
+                            <FileText className="w-3 h-3" /> Purchase Invoice
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>
