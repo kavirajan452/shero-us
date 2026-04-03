@@ -33,6 +33,12 @@ import ResetPassword from "./pages/ResetPassword";
 import Profile from "./pages/Profile";
 import CustomerReferrals from "./pages/CustomerReferrals";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import TermsOfService from "./pages/legal/TermsOfService";
+import Accessibility from "./pages/legal/Accessibility";
+import AllergenNotice from "./pages/legal/AllergenNotice";
+import DoNotSell from "./pages/legal/DoNotSell";
+import CookiePolicy from "./pages/legal/CookiePolicy";
 import PartnerLayout from "./layouts/PartnerLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminLogin from "./pages/AdminLogin";
@@ -169,6 +175,12 @@ const App = () => (
                     <Route path="/auth" element={<Auth />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/partner-enrollment" element={<PartnerEnrollment />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/terms-of-service" element={<TermsOfService />} />
+                    <Route path="/accessibility" element={<Accessibility />} />
+                    <Route path="/allergen-notice" element={<AllergenNotice />} />
+                    <Route path="/do-not-sell" element={<DoNotSell />} />
+                    <Route path="/cookie-policy" element={<CookiePolicy />} />
                     <Route path="/customer" element={<Profile />} />
                     <Route path="/referrals" element={<CustomerReferrals />} />
                     <Route path="/partner" element={<PartnerLayout />}>
