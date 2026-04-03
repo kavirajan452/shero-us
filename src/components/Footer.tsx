@@ -14,7 +14,7 @@ const Footer = () => {
               <img src={sheroLogo} alt="Shero Home Food" className="h-10 brightness-200" />
             </div>
             <p className="text-primary-foreground/60 text-sm">
-              {c["footer.tagline"] || "India's favorite home food, now in America."}
+              {c["footer.tagline"] || "America's favorite home food, now in your city."}
             </p>
           </div>
           <div>
