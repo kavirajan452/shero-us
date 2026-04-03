@@ -192,9 +192,11 @@ const Checkout = () => {
   const missingSlot = !isSnacksOnly && !selectedSlot;
   const missingZipCode = isSnacksOnly && zipCode.trim().length < 5;
 
+  const isNotServiceable = serviceableStatus === "not_serviceable" && hasKitchens;
+
   const canPlaceOrder = isSnacksOnly
-    ? !missingName && !missingPhone && !missingAddress && !missingZipCode && isLoggedIn
-    : !missingName && !missingPhone && !missingAddress && !missingSlot && isLoggedIn;
+    ? !missingName && !missingPhone && !missingAddress && !missingZipCode && isLoggedIn && !isNotServiceable
+    : !missingName && !missingPhone && !missingAddress && !missingSlot && isLoggedIn && !isNotServiceable;
 
   return (
     <div className="min-h-screen bg-background">
