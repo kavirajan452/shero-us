@@ -241,7 +241,7 @@ const Checkout = () => {
               return (
                 <div key={item.id} className="space-y-2 pb-3 border-b border-border last:border-0 last:pb-0">
                   <div className="flex items-start gap-3">
-                    <img src={item.image} alt={item.name} className="w-14 h-14 rounded-lg object-cover shrink-0" />
+                    <span className="text-xs font-bold text-muted-foreground mt-0.5 w-5 shrink-0">{index + 1}.</span>
                     <div className="flex-1 min-w-0">
                       <h4 className="text-sm font-medium text-foreground leading-snug">{item.name}</h4>
                       <span className="text-xs text-muted-foreground">{formatPrice(item.price)}</span>
@@ -252,7 +252,7 @@ const Checkout = () => {
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center justify-between ml-[4.25rem]">
+                  <div className="flex items-center justify-between ml-8">
                     <div className="flex items-center gap-1.5">
                       <button onClick={() => updateQuantity(item.id, quantity - 1)} className="p-1.5 rounded-lg bg-secondary hover:bg-primary/10 transition-colors">
                         <Minus className="w-3.5 h-3.5 text-foreground" />
