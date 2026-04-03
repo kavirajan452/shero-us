@@ -675,7 +675,7 @@ export function useNearbyKitchenPartners(customerLat?: number | null, customerLn
       const kitchens = kitchenRes.data || [];
       const locations = locRes.data || [];
 
-      // Compute distance for each kitchen
+      const radius = radiusKm || 7;
       return kitchens.map((k: any) => {
         let distance: number | null = null;
         if (customerLat && customerLng) {

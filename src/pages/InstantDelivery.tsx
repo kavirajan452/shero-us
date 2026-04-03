@@ -60,9 +60,7 @@ const InstantDelivery = () => {
     if (vegOnly) {
       result = result.filter((k: any) => k.is_veg);
     }
-    if (sortBy === "Rating") result = [...result].sort((a: any, b: any) => b.rating - a.rating);
-    if (sortBy === "Delivery Time") result = [...result].sort((a: any, b: any) => parseInt(a.delivery_time) - parseInt(b.delivery_time));
-    if (sortBy === "Min Order") result = [...result].sort((a: any, b: any) => a.min_order - b.min_order);
+    if (sortBy === "Distance") result = [...result].sort((a: any, b: any) => (a.distance ?? 999) - (b.distance ?? 999));
     return result;
   }, [search, selectedCategory, vegOnly, sortBy, livePartners]);
 
