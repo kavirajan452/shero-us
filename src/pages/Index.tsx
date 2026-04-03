@@ -9,7 +9,7 @@ import TrustBar from "@/components/TrustBar";
 import CategoryCards from "@/components/CategoryCards";
 import TrendingDishesCarousel from "@/components/TrendingDishesCarousel";
 import SubscriptionCTA from "@/components/SubscriptionCTA";
-import TopChefsCarousel from "@/components/TopChefsCarousel";
+
 import WhyChooseUs from "@/components/WhyChooseUs";
 import AboutSheroCTA from "@/components/AboutSheroCTA";
 import Footer from "@/components/Footer";
@@ -36,7 +36,7 @@ const Index = () => {
         <TrendingDishesCarousel />
         <AboutSheroCTA />
         <SubscriptionCTA />
-        <TopChefsCarousel />
+        
         
       </main>
       <Footer />
