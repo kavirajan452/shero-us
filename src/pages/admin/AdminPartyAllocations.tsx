@@ -1226,7 +1226,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                     <p className="text-xs text-muted-foreground">Pending / Awaiting</p>
                   </Card>
                   <Card className="p-4 text-center">
-                    <p className="text-2xl font-bold text-amber-500">
+                    <p className="text-2xl font-bold text-section-finance">
                       {respondedFeedbacks.length > 0
                         ? (respondedFeedbacks.reduce((sum, f) => sum + (f.rating || 0), 0) / respondedFeedbacks.length).toFixed(1)
                         : "—"}
