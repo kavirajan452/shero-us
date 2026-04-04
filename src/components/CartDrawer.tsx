@@ -12,7 +12,7 @@ interface CartDrawerProps {
 const CartDrawer = ({ open, onOpenChange }: CartDrawerProps) => {
   const { items, updateQuantity, removeItem, subtotal, totalItems, appliedPromo, promoDiscount } = useCart();
   const { formatPrice } = useRegion();
-  const freeShippingThreshold = 599;
+  const freeShippingThreshold = 50;
   const remaining = Math.max(0, freeShippingThreshold - subtotal);
 
   if (items.length === 0) {

@@ -112,7 +112,7 @@ const Checkout = () => {
     ? `Sales Tax (${(localTaxRate * 100).toFixed(2)}% · ${customerState})`
     : region.taxLabel;
 
-  const deliveryFee = isSnacksOnly ? (subtotal >= 599 ? 0 : 49) : configDeliveryFee;
+  const deliveryFee = isSnacksOnly ? (subtotal >= 50 ? 0 : 5) : configDeliveryFee;
   const tax = Math.round((subtotal - promoDiscount) * localTaxRate);
   const subtotalWithFees = subtotal - promoDiscount + deliveryFee + tax + tipAmount;
   const walletUsable = useWalletBalance ? getUsableAmount(subtotalWithFees) : 0;
@@ -512,7 +512,7 @@ const Checkout = () => {
             </h2>
             <div className="space-y-1.5 text-xs text-muted-foreground">
               <p>📦 Ships within 1-2 business days</p>
-              <p>🚚 {subtotal >= 599 ? "Free shipping applied! 🎉" : `Add ${formatPrice(599 - subtotal)} more for free shipping`}</p>
+              <p>🚚 {subtotal >= 50 ? "Free shipping applied! 🎉" : `Add ${formatPrice(50 - subtotal)} more for free shipping`}</p>
               <p>🇺🇸 Nationwide delivery via trusted courier partners</p>
             </div>
           </section>
