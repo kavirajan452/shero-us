@@ -457,6 +457,57 @@ const Checkout = () => {
           </section>
         )}
 
+        {/* Pickup & Delivery Instructions */}
+        {!isSnacksOnly && !isNotServiceable && (
+          <section className="bg-card border border-border rounded-2xl p-5 mb-5">
+            <h2 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+              <Package className="w-4 h-4 text-primary" /> Pickup Instructions
+            </h2>
+            <p className="text-xs text-muted-foreground mb-3">For the delivery driver at the kitchen</p>
+            <div className="flex gap-2 flex-wrap mb-2">
+              {["Use back entrance", "Ask at counter", "Ring bell at gate", "Pick from my door"].map((chip) => (
+                <button
+                  key={chip}
+                  type="button"
+                  onClick={() => setPickupChips(prev => prev.includes(chip) ? prev.filter(c => c !== chip) : [...prev, chip])}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${pickupChips.includes(chip) ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground border border-border hover:border-primary/30"}`}
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+            <input
+              value={pickupCustom}
+              onChange={(e) => setPickupCustom(e.target.value.slice(0, 200))}
+              placeholder="Other instructions (optional)"
+              className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm outline-none focus:border-primary transition-colors"
+            />
+
+            <h2 className="font-semibold text-foreground mb-3 mt-5 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-primary" /> Delivery Instructions
+            </h2>
+            <p className="text-xs text-muted-foreground mb-3">For the delivery driver at your address</p>
+            <div className="flex gap-2 flex-wrap mb-2">
+              {["Leave at door", "Hand it to me", "Do not ring bell", "Call on arrival"].map((chip) => (
+                <button
+                  key={chip}
+                  type="button"
+                  onClick={() => setDeliveryChips(prev => prev.includes(chip) ? prev.filter(c => c !== chip) : [...prev, chip])}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${deliveryChips.includes(chip) ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground border border-border hover:border-primary/30"}`}
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+            <input
+              value={deliveryCustom}
+              onChange={(e) => setDeliveryCustom(e.target.value.slice(0, 200))}
+              placeholder="Other instructions (optional)"
+              className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm outline-none focus:border-primary transition-colors"
+            />
+          </section>
+        )}
+
         {/* Tips Section */}
         {!isSnacksOnly && !isNotServiceable && (
           <section className="bg-card border border-border rounded-2xl p-5 mb-5">
