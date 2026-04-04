@@ -261,16 +261,20 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
       updates: { status: "allocated", allocated_partner_id: selectedPartner, allocated_at: new Date().toISOString() },
     });
     setLocalStatusOverrides(prev => ({ ...prev, [selectedOrder.id]: "allocated" }));
-    createAllocationLog.mutate({
-      order_id: selectedOrder.id,
-      order_display_id: selectedOrder.orderId,
-      customer_name: selectedOrder.customerName,
+    const newLog: AllocationLog = {
+      id: `log-${Date.now()}`,
+      orderId: selectedOrder.id,
+      orderDisplayId: selectedOrder.orderId,
+      customerName: selectedOrder.customerName,
       mode: allocationMode,
-      partner_id: selectedPartner,
-      partner_name: partner?.name || "",
+      partnerId: selectedPartner,
+      partnerName: partner?.name || "",
       distance: partner?.distance || 0,
+      allocatedAt: new Date().toISOString(),
       status: "sent",
-    });
+    };
+    addAllocationLog(newLog);
+    setLogs(getAllocationLogs());
     setSelectedOrder(null);
     setSelectedPartner(null);
     toast({ title: `✅ Allocated to ${partner?.name}` });
