@@ -85,8 +85,8 @@ const InstantDelivery = () => {
             <Bike className="w-6 h-6 text-primary" />
           </Link>
           <div>
-            <h1 className="text-2xl font-serif font-bold text-foreground">Instant Food Delivery</h1>
-            <p className="text-sm text-muted-foreground">Fresh homemade meals from kitchen partners near you</p>
+            <h1 className="text-2xl font-serif font-bold text-foreground">Single Meal Order</h1>
+            <p className="text-sm text-muted-foreground">Choose Menu & Time</p>
           </div>
         </div>
 

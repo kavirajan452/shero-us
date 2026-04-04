@@ -29,10 +29,10 @@ Deno.serve(async (req) => {
       warning_days: [7, 3, 1],
       auto_expire_enabled: true,
       notification_messages: {
-        "7_day_warning": "₹{amount} in your wallet expires in 7 days! Use it before {date}.",
-        "3_day_warning": "₹{amount} expiring in 3 days — order now!",
-        "1_day_warning": "Last day! ₹{amount} expires tomorrow.",
-        expired: "₹{amount} has expired from your wallet.",
+        "7_day_warning": "${amount} in your wallet expires in 7 days! Use it before {date}.",
+        "3_day_warning": "${amount} expiring in 3 days — order now!",
+        "1_day_warning": "Last day! ${amount} expires tomorrow.",
+        expired: "${amount} has expired from your wallet.",
       },
     };
 
@@ -82,8 +82,8 @@ Deno.serve(async (req) => {
         if (existing?.length) continue;
 
         const messageTemplate =
-          settings.notification_messages?.[notifType] || `₹{amount} expires in ${days} days.`;
-        const expiryDate = new Date(credit.expires_at).toLocaleDateString("en-IN", {
+          settings.notification_messages?.[notifType] || `$\{amount} expires in ${days} days.`;
+        const expiryDate = new Date(credit.expires_at).toLocaleDateString("en-US", {
           day: "numeric",
           month: "short",
           year: "numeric",
@@ -136,7 +136,7 @@ Deno.serve(async (req) => {
 
         // Send expired notification
         const messageTemplate =
-          settings.notification_messages?.expired || "₹{amount} has expired from your wallet.";
+          settings.notification_messages?.expired || "${amount} has expired from your wallet.";
         const message = messageTemplate.replace("{amount}", String(credit.remaining_amount));
 
         await supabase.from("wallet_expiry_notifications").insert({

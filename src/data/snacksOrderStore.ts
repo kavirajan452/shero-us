@@ -58,7 +58,7 @@ const customers = [
 ];
 
 const statuses: SnackOrderStatus[] = ["new", "confirmed", "preparing", "packed", "dispatched", "delivered"];
-const payments = ["UPI", "Card", "COD", "Net Banking"];
+const payments = ["Card", "ACH", "COD", "Apple Pay"];
 
 function randomPick<T>(arr: T[]): T { return arr[Math.floor(Math.random() * arr.length)]; }
 

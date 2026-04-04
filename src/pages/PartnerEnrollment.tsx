@@ -456,7 +456,7 @@ const PartnerEnrollment = () => {
                 <div className="space-y-2">
                   <p className="text-xs font-medium text-foreground text-center">Choose payment method:</p>
                   <div className="grid grid-cols-2 gap-2">
-                    {["UPI / Google Pay", "PhonePe", "Paytm", "Net Banking"].map(method => (
+                    {["Credit / Debit Card", "ACH Transfer", "Zelle", "Venmo"].map(method => (
                       <button key={method} className="p-3 rounded-lg border border-border hover:border-primary/40 hover:bg-primary/5 transition-colors text-xs font-medium text-foreground text-center">
                         {method}
                       </button>

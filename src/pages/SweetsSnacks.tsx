@@ -358,7 +358,7 @@ const SweetsSnacks = () => {
                 { emoji: "🍳", title: "Made to Order", desc: "Freshly prepared after you order" },
                 { emoji: "🚚", title: "Fast Delivery", desc: "Delivered within 24 hours" },
                 { emoji: "📞", title: "Support", desc: "Available 10 am to 7 pm" },
-                { emoji: "🔒", title: "Secure Pay", desc: "Debit, Credit & UPI" },
+                { emoji: "🔒", title: "Secure Pay", desc: "Debit, Credit & Apple Pay" },
               ].map((item) => (
                 <div key={item.title} className="bg-card border border-border rounded-xl p-3 text-center">
                   <span className="text-xl mb-1 block">{item.emoji}</span>
