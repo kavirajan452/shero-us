@@ -1,122 +1,53 @@
 
 
-## Wallet Credit Expiry System — 90-Day Validity + Notifications + Admin Dashboard
+# Pre-Publish Walkthrough Findings
 
-### What This Adds
+## Pages Checked
+- **Home (/)** — Renders correctly. Hero, categories, FAQ, footer all display properly.
+- **Footer** — All 6 legal links present and working (Privacy, Terms, Cookie, Accessibility, Allergen, Do Not Sell).
+- **Privacy Policy (/privacy-policy)** — Renders correctly, references Shero USA INC and Maryland law.
+- **Single Meal Order (/instant-delivery)** — Page loads but has issues (see below).
+- **Checkout (/checkout)** — Empty cart state works. Shows USD, US flag.
+- **Sweets & Snacks (/sweets-snacks)** — Shows 0 products (data issue). Indian product category names visible.
 
-Every wallet credit (referral, spin, PPP bonus) will expire 90 days after creation if unused. Users get notified before expiry, and admins can track/manage all expirations from a dedicated dashboard.
+## Issues Found
 
----
+### 1. "Instant Food Delivery" title on Single Meal Order page
+**File:** `src/pages/InstantDelivery.tsx` (line 88)
+The page heading still says **"Instant Food Delivery"** instead of **"Single Meal Order"**. The subtitle also says "Fresh homemade meals from kitchen partners near you" — should align with the new "Choose Menu & Time" description.
 
-### Step 1 — Database: `wallet_transactions` Table
+### 2. Indian payment methods in Partner Enrollment
+**File:** `src/pages/PartnerEnrollment.tsx` (line 459)
+Payment options still show **"UPI / Google Pay", "PhonePe", "Paytm", "Net Banking"** — these are India-only methods. Should be replaced with US methods (Credit/Debit Card, ACH, Zelle, Venmo).
 
-Create a new dedicated `wallet_transactions` table (replacing the current JSONB `transactions` column in `user_wallets`):
+### 3. Indian payment reference in Sweets & Snacks
+**File:** `src/pages/SweetsSnacks.tsx` (line 361)
+"Secure Pay" section says **"Debit, Credit & UPI"** — UPI should be removed for US.
 
-| Column | Type | Purpose |
-|---|---|---|
-| `id` | uuid | Primary key |
-| `user_id` | uuid | Owner |
-| `type` | text | referral_credit, spin_reward, purchase_debit, etc. |
-| `amount` | numeric | Credit (+) or debit (-) |
-| `description` | text | Human-readable label |
-| `expires_at` | timestamptz | `created_at + 90 days` (null for debits) |
-| `expired` | boolean | Default false, set true when expired |
-| `remaining_amount` | numeric | Tracks partial usage (starts = amount) |
-| `created_at` | timestamptz | When credit was earned |
+### 4. ₹ (Rupee) symbols in wallet expiry edge function
+**File:** `supabase/functions/process-wallet-expiry/index.ts` (lines 32-35, 85, 139)
+Notification messages use **₹{amount}** and `en-IN` locale. Should use **${amount}** and `en-US`.
 
-RLS: Users read/insert own rows. Admins read all.
+### 5. Indian snack mock data in Snacks Order Store
+**File:** `src/data/snacksOrderStore.ts` (line 61)
+Payment methods list includes **"UPI"** and **"Net Banking"**. Should be US methods.
 
-### Step 2 — Database: `wallet_expiry_notifications` Table
+### 6. Indian product categories on Sweets & Snacks page
+The category chips show Indian-specific names (Kudumulu, Inippu, Kozhukattai). These come from the snacks data files and should either be updated or the page should show US-appropriate product categories.
 
-Track all expiry-related notifications sent to users:
+### 7. "Instant Delivery" text in AdminSidebar comment
+**File:** `src/components/AdminSidebar.tsx` (line 49) — minor comment reference.
 
-| Column | Type | Purpose |
-|---|---|---|
-| `id` | uuid | Primary key |
-| `user_id` | uuid | Recipient |
-| `transaction_id` | uuid | FK to wallet_transactions |
-| `notification_type` | text | `7_day_warning`, `3_day_warning`, `1_day_warning`, `expired` |
-| `message` | text | Notification text |
-| `sent_at` | timestamptz | When sent |
-| `read_at` | timestamptz | When user read it (nullable) |
+## Recommended Fix Plan
 
-### Step 3 — `app_config` Entry for Expiry Settings
+1. **Update InstantDelivery.tsx** — Change title to "Single Meal Order" and subtitle to "Choose Menu & Time"
+2. **Update PartnerEnrollment.tsx** — Replace Indian payment methods with US ones (Card, ACH, Zelle, Venmo)
+3. **Update SweetsSnacks.tsx** — Remove "UPI" from Secure Pay description
+4. **Update wallet expiry edge function** — Replace ₹ with $, change locale to en-US
+5. **Update snacksOrderStore.ts** — Replace UPI/Net Banking with Card/ACH
+6. **Update AdminSidebar comment** — Minor cleanup
 
-Insert a new `app_config` row with key `wallet_expiry_settings`:
-```json
-{
-  "validity_days": 90,
-  "warning_days": [7, 3, 1],
-  "auto_expire_enabled": true,
-  "notification_messages": {
-    "7_day_warning": "₹{amount} in your wallet expires in 7 days! Use it before {date}.",
-    "3_day_warning": "₹{amount} expiring in 3 days — order now!",
-    "1_day_warning": "Last day! ₹{amount} expires tomorrow.",
-    "expired": "₹{amount} has expired from your wallet."
-  }
-}
-```
-
-### Step 4 — Alter `user_wallets` Table
-
-Add column `total_referral_earnings` (numeric, default 0) for the ₹2,500 cap. Add `referral_code` (text, unique). Add `order_count` (integer, default 0).
-
-### Step 5 — Edge Function: `process-wallet-expiry`
-
-A scheduled or on-demand edge function that:
-1. Queries `wallet_transactions` where `expires_at` is approaching (within warning days) and no notification sent yet → inserts into `wallet_expiry_notifications`
-2. Queries `wallet_transactions` where `expires_at < now()` and `expired = false` → marks `expired = true`, deducts `remaining_amount` from `user_wallets.balance`, inserts `expired` notification
-
-### Step 6 — Refactor WalletContext
-
-- Fetch from `wallet_transactions` table instead of JSONB column
-- `getUsableAmount`: only sum `remaining_amount` from non-expired credits; cap at 50% of order value; require `order_count >= 2`
-- `spendOnPurchase`: debit from oldest-first (FIFO) non-expired credits by updating `remaining_amount`
-- Credits: set `expires_at = now() + interval '90 days'`
-- Show expiry info per transaction in wallet UI
-
-### Step 7 — WalletSection UI Updates
-
-- Show "Expires on {date}" next to each credit transaction
-- Show expiring-soon warning banner: "₹X expiring in Y days — use it now!"
-- Color-code: green (>7 days), yellow (3-7 days), red (<3 days)
-
-### Step 8 — User Notifications
-
-- Add a notifications bell/panel (or integrate with existing notification system)
-- Show wallet expiry warnings from `wallet_expiry_notifications` table
-- Mark as read on view
-
-### Step 9 — Admin Dashboard: Wallet Expiry Management
-
-New page: `/admin/wallet-expiry` with:
-
-1. **Expiry Settings Panel** — edit validity days, warning intervals, notification message templates (reads/writes `app_config`)
-2. **Expiring Credits Overview** — table showing credits expiring in next 7/30 days with user name, amount, expiry date
-3. **Expired Credits Log** — historical log of all expired credits with totals
-4. **Notification Log** — all sent notifications with delivery status, read status
-5. **Summary Cards** — total active credits, total expiring this week, total expired this month, total notifications sent
-
-Add sidebar entry under a "Wallet & Referrals" group in AdminSidebar.
-
-### Step 10 — Route Wiring
-
-- Add `/admin/wallet-expiry` route in `App.tsx`
-- Add sidebar link in `AdminSidebar.tsx`
-
----
-
-### Files to Create/Modify
-
-| File | Action |
-|---|---|
-| Migration SQL | Create `wallet_transactions`, `wallet_expiry_notifications` tables; alter `user_wallets` |
-| `app_config` insert | Wallet expiry settings |
-| `supabase/functions/process-wallet-expiry/index.ts` | New edge function |
-| `src/contexts/WalletContext.tsx` | Full refactor — backend + FIFO expiry logic |
-| `src/components/WalletSection.tsx` | Expiry dates, warning banners |
-| `src/pages/CustomerReferrals.tsx` | Earning cap UI, expiry info |
-| `src/pages/admin/AdminWalletExpiry.tsx` | New admin page |
-| `src/components/AdminSidebar.tsx` | Add wallet expiry link |
-| `src/App.tsx` | Add route |
+### Not blocking publish but worth noting:
+- Sweets & Snacks shows 0 products — this is a data/catalog issue, not a bug
+- Many internal admin/finance data files still reference INR amounts — these are mock data and don't affect the customer-facing experience
 
