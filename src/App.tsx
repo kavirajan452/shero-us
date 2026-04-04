@@ -39,6 +39,7 @@ import Accessibility from "./pages/legal/Accessibility";
 import AllergenNotice from "./pages/legal/AllergenNotice";
 import DoNotSell from "./pages/legal/DoNotSell";
 import CookiePolicy from "./pages/legal/CookiePolicy";
+import ReturnPolicy from "./pages/legal/ReturnPolicy";
 import PartnerLayout from "./layouts/PartnerLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminLogin from "./pages/AdminLogin";
