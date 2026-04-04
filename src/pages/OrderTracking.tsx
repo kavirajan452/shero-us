@@ -14,7 +14,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { addCancellation, CANCELLATION_REASONS } from "@/data/customerCancellations";
 import { addOrderModification } from "@/data/sscOrderModifications";
 import { toast } from "sonner";
-import { toast } from "sonner";
 
 const allStatuses: TrackingStatus[] = [
   "order_placed", "order_confirmed", "preparing", "rider_assigned",
