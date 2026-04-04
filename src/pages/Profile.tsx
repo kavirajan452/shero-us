@@ -652,49 +652,95 @@ const Profile = () => {
               <XCircle className="w-5 h-5" /> Cancel Party Order
             </DialogTitle>
           </DialogHeader>
-          {cancelDialogOrder && (
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                Cancel order <span className="font-semibold text-foreground">#{cancelDialogOrder.order_id}</span> for {cancelDialogOrder.occasion}?
-              </p>
-              <Input
-                placeholder="Reason for cancellation..."
-                value={cancelReason}
-                onChange={(e) => setCancelReason(e.target.value)}
-              />
-              <div className="p-2 rounded-lg bg-secondary text-[10px] text-muted-foreground space-y-0.5">
-                <p>• Free cancellation up to 2 days before event</p>
-                <p>• Cancellation charges may apply for last-minute cancellations</p>
+          {cancelDialogOrder && (() => {
+            const eventDate = new Date(cancelDialogOrder.event_date);
+            const now = new Date();
+            const hoursUntilEvent = (eventDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+            const isFreeCancellation = hoursUntilEvent >= 72;
+            const isTooLate = hoursUntilEvent < 24;
+            const isPartialRefund = !isFreeCancellation && !isTooLate;
+
+            return (
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  Cancel order <span className="font-semibold text-foreground">#{cancelDialogOrder.order_id}</span> for {cancelDialogOrder.occasion || "event"}?
+                </p>
+                <Input
+                  placeholder="Reason for cancellation..."
+                  value={cancelReason}
+                  onChange={(e) => setCancelReason(e.target.value)}
+                />
+                <div className="p-2 rounded-lg bg-secondary text-[10px] text-muted-foreground space-y-0.5">
+                  {isFreeCancellation && (
+                    <>
+                      <p className="text-green-600 dark:text-green-400 font-semibold">✅ Free cancellation — full refund</p>
+                      <p>• Event is more than 72 hours away</p>
+                    </>
+                  )}
+                  {isPartialRefund && (
+                    <>
+                      <p className="text-amber-600 dark:text-amber-400 font-semibold">⚠️ Late cancellation — 50% refund</p>
+                      <p>• Event is less than 72 hours away</p>
+                      <p>• 50% of order total will be refunded</p>
+                    </>
+                  )}
+                  {isTooLate && (
+                    <>
+                      <p className="text-destructive font-semibold">❌ No refund — within 24 hours of event</p>
+                      <p>• Cancellation is not eligible for refund</p>
+                      <p>• Food preparation may have already started</p>
+                    </>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" className="flex-1" onClick={() => setCancelDialogOrder(null)}>Keep Order</Button>
+                  <Button
+                    variant="destructive"
+                    className="flex-1"
+                    disabled={!cancelReason.trim()}
+                    onClick={async () => {
+                      const refundType = isFreeCancellation ? "full" : isPartialRefund ? "partial" : "none";
+                      const refundAmount = isFreeCancellation
+                        ? cancelDialogOrder.total_amount
+                        : isPartialRefund
+                          ? cancelDialogOrder.total_amount * 0.5
+                          : 0;
+
+                      updatePartyOrder.mutate({
+                        id: cancelDialogOrder.id,
+                        updates: {
+                          status: "cancelled",
+                          cancelled_at: new Date().toISOString(),
+                          cancellation_reason: cancelReason,
+                          refund_status: refundType === "none" ? "not_eligible" : "pending",
+                        },
+                      });
+                      await supabase.from("cancellations").insert({
+                        order_id: cancelDialogOrder.order_id,
+                        customer_name: cancelDialogOrder.customer_name,
+                        reason: cancelReason,
+                        order_total: cancelDialogOrder.total_amount,
+                        refund_status: refundType === "none" ? "not_eligible" : "pending",
+                        reason_detail: `Refund: ${refundType} — $${refundAmount.toFixed(2)}`,
+                      });
+                      toast({
+                        title: "Order cancelled",
+                        description: refundType === "full"
+                          ? `Full refund of ${formatPrice(refundAmount)} will be processed in 3-5 business days.`
+                          : refundType === "partial"
+                            ? `50% refund of ${formatPrice(refundAmount)} will be processed in 3-5 business days.`
+                            : "No refund — cancellation within 24 hours of event.",
+                      });
+                      setCancelDialogOrder(null);
+                      setCancelReason("");
+                    }}
+                  >
+                    Confirm Cancel
+                  </Button>
+                </div>
               </div>
-              <div className="flex gap-2">
-                <Button variant="outline" className="flex-1" onClick={() => setCancelDialogOrder(null)}>Keep Order</Button>
-                <Button
-                  variant="destructive"
-                  className="flex-1"
-                  disabled={!cancelReason.trim()}
-                  onClick={async () => {
-                    // Update party order status
-                    updatePartyOrder.mutate({
-                      id: cancelDialogOrder.id,
-                      updates: { status: "cancelled" },
-                    });
-                    // Insert cancellation record
-                    await supabase.from("cancellations").insert({
-                      order_id: cancelDialogOrder.order_id,
-                      customer_name: cancelDialogOrder.customer_name,
-                      reason: cancelReason,
-                      order_total: cancelDialogOrder.total_amount,
-                    });
-                    toast({ title: "Order cancelled", description: `Party order #${cancelDialogOrder.order_id} has been cancelled.` });
-                    setCancelDialogOrder(null);
-                    setCancelReason("");
-                  }}
-                >
-                  Confirm Cancel
-                </Button>
-              </div>
-            </div>
-          )}
+            );
+          })()}
         </DialogContent>
       </Dialog>
 
