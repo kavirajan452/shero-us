@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 
 const amendments = [
-  { id: "AMD-101", partner: "Chef Lakshmi", type: "Bank Details Update", detail: "New IFSC: HDFC0001234", status: "pending", date: "Today" },
+  { id: "AMD-101", partner: "Chef Lakshmi", type: "Bank Details Update", detail: "New Routing #: 021000021", status: "pending", date: "Today" },
   { id: "AMD-099", partner: "Chef Meena", type: "Address Change", detail: "Kitchen relocated to Anna Nagar", status: "approved", date: "Yesterday" },
   { id: "AMD-097", partner: "Chef Saroja", type: "FDA Renewal", detail: "New license: 10024051000123", status: "pending", date: "Yesterday" },
   { id: "AMD-095", partner: "Chef Fathima", type: "Menu Category Change", detail: "Added Florida cuisine", status: "approved", date: "2 days ago" },
