@@ -1,7 +1,10 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { CheckCircle, Home, Navigation, Truck, CalendarClock, Clock, FileText } from "lucide-react";
+import { CheckCircle, Home, Navigation, Truck, CalendarClock, Clock, FileText, MessageCircle } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import mascotGreeting from "@/assets/shero-mascot-greeting.png";
+import { sendOrderConfirmationWhatsApp, shareViaWhatsApp, buildOrderConfirmationMessage } from "@/utils/whatsapp";
+import { useRegion } from "@/contexts/RegionContext";
+import { Button } from "@/components/ui/button";
 
 const orderId = `SH${Date.now().toString().slice(-6)}`;
 
@@ -9,6 +12,24 @@ const OrderConfirmation = () => {
   const [searchParams] = useSearchParams();
   const isPartyOrder = searchParams.get("type") === "party";
   const deliverySlot = searchParams.get("slot") || "";
+  const customerName = searchParams.get("name") || "Customer";
+  const total = searchParams.get("total") || "0";
+  const customerPhone = searchParams.get("phone") || "";
+  const eventDate = searchParams.get("eventDate") || "";
+  const guestCount = parseInt(searchParams.get("guests") || "0");
+
+  const handleShareWhatsApp = () => {
+    const message = buildOrderConfirmationMessage({
+      orderId,
+      orderType: isPartyOrder ? "party" : "instant",
+      customerName,
+      total: `$${total}`,
+      deliverySlot,
+      eventDate,
+      guestCount,
+    });
+    shareViaWhatsApp(message);
+  };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
@@ -27,6 +48,20 @@ const OrderConfirmation = () => {
             <p className="text-sm text-muted-foreground mb-4">
               Order ID: #{orderId}
             </p>
+            
+            {/* WhatsApp Confirmation */}
+            <div className="bg-[#25D366]/10 border border-[#25D366]/30 rounded-2xl p-3 mb-4">
+              <p className="text-xs text-muted-foreground mb-2">📲 Get order updates on WhatsApp</p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2 border-[#25D366] text-[#25D366] hover:bg-[#25D366]/10"
+                onClick={handleShareWhatsApp}
+              >
+                <MessageCircle className="w-4 h-4" /> Share on WhatsApp
+              </Button>
+            </div>
+
             <div className="flex flex-col gap-3">
               <Link
                 to="/"
@@ -46,7 +81,7 @@ const OrderConfirmation = () => {
             </p>
 
             {/* Scheduled Delivery Details */}
-            <div className="bg-card border border-border rounded-2xl p-4 mb-6 text-left space-y-3">
+            <div className="bg-card border border-border rounded-2xl p-4 mb-4 text-left space-y-3">
               <div className="flex items-center gap-2 mb-1">
                 <CalendarClock className="w-4 h-4 text-primary" />
                 <span className="text-sm font-semibold text-foreground">Scheduled Delivery</span>
@@ -76,6 +111,19 @@ const OrderConfirmation = () => {
                   </p>
                 </div>
               </div>
+            </div>
+
+            {/* WhatsApp Confirmation */}
+            <div className="bg-[#25D366]/10 border border-[#25D366]/30 rounded-2xl p-3 mb-4">
+              <p className="text-xs text-muted-foreground mb-2">📲 Get real-time order updates on WhatsApp</p>
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2 border-[#25D366] text-[#25D366] hover:bg-[#25D366]/10"
+                onClick={handleShareWhatsApp}
+              >
+                <MessageCircle className="w-4 h-4" /> Share on WhatsApp
+              </Button>
             </div>
 
             <div className="flex flex-col gap-3">

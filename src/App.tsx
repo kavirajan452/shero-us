@@ -11,6 +11,7 @@ import { WalletProvider } from "@/contexts/WalletContext";
 import Index from "./pages/Index";
 import Analytics from "./components/Analytics";
 import ScrollToTop from "./components/ScrollToTop";
+import WhatsAppSupport from "./components/WhatsAppSupport";
 import Welcome from "./pages/Welcome";
 import AppStoreListing from "./pages/AppStoreListing";
 import SplashScreen from "./pages/SplashScreen";
@@ -317,6 +318,7 @@ const App = () => (
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>
+                <WhatsAppSupport />
               </BrowserRouter>
             </TooltipProvider>
           </CartProvider>
