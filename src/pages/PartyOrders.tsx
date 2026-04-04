@@ -2113,7 +2113,7 @@ const PartyOrders = () => {
                   {paymentOption === "part" && (
                     <>
                       <div className="flex justify-between"><span className="text-muted-foreground">Advance (50%)</span><span className="font-bold text-primary">{formatPrice(totalCosts.total * 0.5)}</span></div>
-                      <div className="flex justify-between"><span className="text-muted-foreground">Balance (due 1 day before)</span><span className="text-foreground">{formatPrice(totalCosts.total * 0.5)}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Balance (due 2 days before)</span><span className="text-foreground">{formatPrice(totalCosts.total * 0.5)}</span></div>
                     </>
                   )}
                   <div className="flex justify-between"><span className="text-muted-foreground">Sessions</span><span className="text-foreground">{selectedSessions.map(s => sessionOptions.find(o => o.value === s)?.label).join(", ")}</span></div>
