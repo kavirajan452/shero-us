@@ -1919,19 +1919,21 @@ const PartyOrders = () => {
                 🚚 Delivery
               </h3>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-foreground font-medium">Flat Delivery Fee</span>
+                <span className="text-xs text-foreground font-medium">Delivery Fee ({deliveryDistance !== null ? `${deliveryDistance.toFixed(1)} mi` : "calculating..."})</span>
                 <span className="text-xs font-bold text-foreground">{formatPrice(DELIVERY_FEE)}</span>
               </div>
               <div className="flex items-center gap-1 mt-1">
                 <button onClick={() => setShowDeliveryInfo(!showDeliveryInfo)} className="text-primary hover:text-primary/80"><Info className="w-3 h-3" /></button>
-                <span className="text-[10px] text-muted-foreground">Why ₹500?</span>
+                <span className="text-[10px] text-muted-foreground">How is delivery fee calculated?</span>
               </div>
               {showDeliveryInfo && (
                 <div className="mt-2 p-2 rounded-lg bg-secondary/50 border border-border text-[10px] text-muted-foreground space-y-0.5">
-                  <p className="font-medium text-foreground">ℹ️ Delivery Fee Information</p>
-                  <p>• A flat ₹500 delivery fee is charged for all party orders for operational reasons.</p>
-                  <p>• Covers packaging, loading, transport, and doorstep delivery.</p>
-                  <p>• No hidden charges — what you see is what you pay.</p>
+                  <p className="font-medium text-foreground">ℹ️ Distance-Based Delivery Fee</p>
+                  <p>• 0–3 miles: $8</p>
+                  <p>• 3–5 miles: $12</p>
+                  <p>• 5–8 miles: $18</p>
+                  <p>• 8+ miles: $25 (extended range)</p>
+                  <p>• Covers packaging, loading, transport & doorstep delivery.</p>
                 </div>
               )}
             </div>
