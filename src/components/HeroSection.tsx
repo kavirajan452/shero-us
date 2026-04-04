@@ -265,7 +265,7 @@ const HeroSection = () => {
           </div>
           <div className="h-5 w-px bg-border" />
           <Search className="w-4 h-4 text-muted-foreground/40 shrink-0 ml-1" />
-          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder={c["hero.search_placeholder"] || "Search for 'Biryani'"} className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 outline-none" />
+          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder={c["hero.search_placeholder"] || "Search for 'Your Dish'"} className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 outline-none" />
           <button onClick={handleMic} className={`p-2 rounded-full shrink-0 transition-colors ${listening ? "bg-primary/10 text-primary animate-pulse" : "text-muted-foreground/50 hover:text-primary"}`} aria-label="Voice search">
             <Mic className="w-5 h-5" />
           </button>
