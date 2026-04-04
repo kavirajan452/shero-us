@@ -342,7 +342,26 @@ const PartyOrders = () => {
     return { breakdown: allBreakdown, totalBoxes, totalCost };
   }, [selectedSessions, sessionMenus]);
 
-  const DELIVERY_FEE = 500;
+  // Distance-based delivery fee (miles): 0-3 → $8, 3-5 → $12, 5-8 → $18, >8 → $25
+  const haversineMiles = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    const R = 3958.8;
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  };
+
+  const [deliveryDistance, setDeliveryDistance] = useState<number | null>(null);
+
+  const calculatePartyDeliveryFee = (distanceMiles: number | null): number => {
+    if (distanceMiles === null) return 12; // default mid-tier
+    if (distanceMiles <= 3) return 8;
+    if (distanceMiles <= 5) return 12;
+    if (distanceMiles <= 8) return 18;
+    return 25; // extended range for party orders
+  };
+
+  const DELIVERY_FEE = calculatePartyDeliveryFee(deliveryDistance);
 
   const totalCosts = useMemo(() => {
     let totalMeal = 0, totalAddOn = 0, totalItems = 0;
@@ -1503,9 +1522,9 @@ const PartyOrders = () => {
 
             <div className="bg-secondary/50 border border-border rounded-lg p-2 text-[10px] text-muted-foreground space-y-0.5">
               <p>• Minimum 50% advance payment on booking.</p>
-              <p>• Balance payment due 1 day before the event.</p>
-              <p>• Free cancellation up to 2 days before event.</p>
-              <p>• Flat ₹500 delivery fee applied.</p>
+              <p>• Balance payment due 2 days before the event.</p>
+              <p>• Free cancellation up to 3 days before event.</p>
+              <p>• Distance-based delivery fee applied.</p>
             </div>
 
             {/* Action buttons */}
@@ -1900,19 +1919,21 @@ const PartyOrders = () => {
                 🚚 Delivery
               </h3>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-foreground font-medium">Flat Delivery Fee</span>
+                <span className="text-xs text-foreground font-medium">Delivery Fee ({deliveryDistance !== null ? `${deliveryDistance.toFixed(1)} mi` : "calculating..."})</span>
                 <span className="text-xs font-bold text-foreground">{formatPrice(DELIVERY_FEE)}</span>
               </div>
               <div className="flex items-center gap-1 mt-1">
                 <button onClick={() => setShowDeliveryInfo(!showDeliveryInfo)} className="text-primary hover:text-primary/80"><Info className="w-3 h-3" /></button>
-                <span className="text-[10px] text-muted-foreground">Why ₹500?</span>
+                <span className="text-[10px] text-muted-foreground">How is delivery fee calculated?</span>
               </div>
               {showDeliveryInfo && (
                 <div className="mt-2 p-2 rounded-lg bg-secondary/50 border border-border text-[10px] text-muted-foreground space-y-0.5">
-                  <p className="font-medium text-foreground">ℹ️ Delivery Fee Information</p>
-                  <p>• A flat ₹500 delivery fee is charged for all party orders for operational reasons.</p>
-                  <p>• Covers packaging, loading, transport, and doorstep delivery.</p>
-                  <p>• No hidden charges — what you see is what you pay.</p>
+                  <p className="font-medium text-foreground">ℹ️ Distance-Based Delivery Fee</p>
+                  <p>• 0–3 miles: $8</p>
+                  <p>• 3–5 miles: $12</p>
+                  <p>• 5–8 miles: $18</p>
+                  <p>• 8+ miles: $25 (extended range)</p>
+                  <p>• Covers packaging, loading, transport & doorstep delivery.</p>
                 </div>
               )}
             </div>
@@ -2021,7 +2042,7 @@ const PartyOrders = () => {
               {paymentOption === "part" && (
                 <div className="mt-2 p-2 rounded-lg bg-accent/20 border border-accent text-[10px] text-muted-foreground space-y-0.5">
                   <p>✅ Pay {formatPrice(Math.round(totalCosts.total * 0.5))} now (50% advance)</p>
-                  <p>💰 Balance {formatPrice(Math.round(totalCosts.total * 0.5))} due 1 day before the event</p>
+                  <p>💰 Balance {formatPrice(Math.round(totalCosts.total * 0.5))} due 2 days before the event</p>
                   <p>🔔 You'll receive a reminder for balance payment</p>
                 </div>
               )}
@@ -2030,9 +2051,9 @@ const PartyOrders = () => {
             {/* Terms */}
             <div className="bg-secondary/50 border border-border rounded-lg p-2 text-[10px] text-muted-foreground space-y-0.5">
               <p>• Minimum 50% advance payment on booking.</p>
-              <p>• Balance payment due 1 day before the event.</p>
-              <p>• Free cancellation up to 2 days before event. Full refund.</p>
-              <p>• Flat ₹500 delivery fee applied on all party orders.</p>
+              <p>• Balance payment due 2 days before the event.</p>
+              <p>• Free cancellation up to 3 days before event. Full refund.</p>
+              <p>• Distance-based delivery fee applied on all party orders.</p>
             </div>
 
             {/* Action buttons */}
@@ -2080,7 +2101,7 @@ const PartyOrders = () => {
                   {paymentOption === "part" && (
                     <>
                       <div className="flex justify-between"><span className="text-muted-foreground">Advance (50%)</span><span className="font-bold text-primary">{formatPrice(comboGrandTotal * 0.5)}</span></div>
-                      <div className="flex justify-between"><span className="text-muted-foreground">Balance (due 1 day before)</span><span className="text-foreground">{formatPrice(comboGrandTotal * 0.5)}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Balance (due 2 days before)</span><span className="text-foreground">{formatPrice(comboGrandTotal * 0.5)}</span></div>
                     </>
                   )}
                   <div className="flex justify-between"><span className="text-muted-foreground">Combo Categories</span><span className="text-foreground">{comboSelections.map(s => getComboCategoryConfig(s.category).label).join(", ")}</span></div>
@@ -2092,7 +2113,7 @@ const PartyOrders = () => {
                   {paymentOption === "part" && (
                     <>
                       <div className="flex justify-between"><span className="text-muted-foreground">Advance (50%)</span><span className="font-bold text-primary">{formatPrice(totalCosts.total * 0.5)}</span></div>
-                      <div className="flex justify-between"><span className="text-muted-foreground">Balance (due 1 day before)</span><span className="text-foreground">{formatPrice(totalCosts.total * 0.5)}</span></div>
+                      <div className="flex justify-between"><span className="text-muted-foreground">Balance (due 2 days before)</span><span className="text-foreground">{formatPrice(totalCosts.total * 0.5)}</span></div>
                     </>
                   )}
                   <div className="flex justify-between"><span className="text-muted-foreground">Sessions</span><span className="text-foreground">{selectedSessions.map(s => sessionOptions.find(o => o.value === s)?.label).join(", ")}</span></div>
@@ -2104,7 +2125,7 @@ const PartyOrders = () => {
                 </>
               )}
               <p className="text-[10px] text-muted-foreground pt-1 border-t border-border mt-1">
-                {paymentOption === "part" ? "50% advance now. Balance due 1 day before event. Free cancellation 2 days before." : "Full payment on booking. Free cancellation 2 days before event."}
+                {paymentOption === "part" ? "50% advance now. Balance due 2 days before event. Free cancellation 3 days before." : "Full payment on booking. Free cancellation 3 days before event."}
               </p>
             </div>
             <PaymentSection
