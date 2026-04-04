@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CreditCard, Smartphone, Landmark, Wallet, Link2, CheckCircle2, Loader2 } from "lucide-react";
 
-export type PaymentMethod = "upi" | "card" | "netbanking" | "wallet" | "payment_link";
+export type PaymentMethod = "card" | "apple_pay" | "google_pay" | "ach" | "payment_link";
 
 interface PaymentSectionProps {
   total: number;
@@ -13,18 +13,18 @@ interface PaymentSectionProps {
 }
 
 const methods: { id: PaymentMethod; label: string; icon: typeof CreditCard; desc: string }[] = [
-  { id: "upi", label: "UPI Apps", icon: Smartphone, desc: "GPay, PhonePe, Paytm or any UPI app" },
-  { id: "card", label: "Credit / Debit Card", icon: CreditCard, desc: "Visa, Mastercard, RuPay & Amex" },
-  { id: "netbanking", label: "Net Banking", icon: Landmark, desc: "Direct payment from your bank account" },
-  { id: "wallet", label: "Wallet / Pay Later", icon: Wallet, desc: "Fast checkout using wallet or pay later" },
+  { id: "card", label: "Credit / Debit Card", icon: CreditCard, desc: "Visa, Mastercard, Amex & Discover" },
+  { id: "apple_pay", label: "Apple Pay", icon: Smartphone, desc: "Pay quickly with Apple Pay" },
+  { id: "google_pay", label: "Google Pay", icon: Smartphone, desc: "Pay quickly with Google Pay" },
+  { id: "ach", label: "Bank Transfer (ACH)", icon: Landmark, desc: "Direct payment from your bank account" },
 ];
 
 const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled, showPaymentLink }: PaymentSectionProps) => {
   const [selected, setSelected] = useState<PaymentMethod | null>(null);
-  const [upiId, setUpiId] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
+  const [cardZip, setCardZip] = useState("");
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState<"success" | null>(null);
 
@@ -53,11 +53,9 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled, showPa
     selected &&
     !processing &&
     !result &&
-    (selected === "upi"
-      ? upiId.includes("@") && upiId.length >= 5
-      : selected === "card"
-        ? cardNumber.replace(/\s/g, "").length >= 15 && !!cardExpiry && cardCvv.length >= 3
-        : selected === "netbanking" || selected === "wallet" || selected === "payment_link");
+    (selected === "card"
+      ? cardNumber.replace(/\s/g, "").length >= 15 && !!cardExpiry && cardCvv.length >= 3 && cardZip.length >= 5
+      : selected === "apple_pay" || selected === "google_pay" || selected === "ach" || selected === "payment_link");
 
   return (
     <section className="bg-card border border-border rounded-2xl p-5 mb-5">
@@ -91,18 +89,6 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled, showPa
         ))}
       </div>
 
-      {selected === "upi" && (
-        <div className="space-y-2 mb-4">
-          <input
-            value={upiId}
-            onChange={(e) => setUpiId(e.target.value.trim())}
-            placeholder="yourname@bank"
-            className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
-          />
-          <p className="text-[10px] text-muted-foreground">Use any valid UPI ID for this dummy payment flow.</p>
-        </div>
-      )}
-
       {selected === "card" && (
         <div className="space-y-2 mb-4">
           <input
@@ -127,20 +113,32 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled, showPa
               onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))}
               placeholder="CVV"
               type="password"
-              className="w-24 px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
+              className="w-20 px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
+            />
+            <input
+              value={cardZip}
+              onChange={(e) => setCardZip(e.target.value.replace(/\D/g, "").slice(0, 5))}
+              placeholder="ZIP"
+              className="w-20 px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors text-sm"
             />
           </div>
           <p className="text-[10px] text-muted-foreground">Dummy secure card flow for preview only.</p>
         </div>
       )}
 
-      {(selected === "netbanking" || selected === "wallet") && (
+      {(selected === "apple_pay" || selected === "google_pay") && (
         <div className="mb-4 p-3 rounded-xl bg-secondary/50 border border-border">
           <p className="text-xs text-muted-foreground">
-            {selected === "netbanking"
-              ? "Choose your bank on the next step in a real integration. For now, this dummy flow will complete instantly."
-              : "Wallet / pay-later selection is mocked here so the end-to-end order flow works reliably."}
+            {selected === "apple_pay"
+              ? "Apple Pay will prompt for Face ID / Touch ID in a real integration. This dummy flow completes instantly."
+              : "Google Pay will launch the GPay sheet in a real integration. This dummy flow completes instantly."}
           </p>
+        </div>
+      )}
+
+      {selected === "ach" && (
+        <div className="mb-4 p-3 rounded-xl bg-secondary/50 border border-border">
+          <p className="text-xs text-muted-foreground">Bank transfer (ACH) selection is mocked here so the end-to-end order flow works reliably.</p>
         </div>
       )}
 
