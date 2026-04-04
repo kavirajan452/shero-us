@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import sheroLogo from "@/assets/shero-logo.png";
-import RegionSwitcher from "@/components/RegionSwitcher";
+
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useRegion } from "@/contexts/RegionContext";
 import { useCart } from "@/contexts/CartContext";
