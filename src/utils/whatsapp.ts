@@ -124,7 +124,7 @@ export function buildSubscriptionReminderMessage(params: {
   mealSlot: string;
   date: string;
 }): string {
-  return `🍽️ Hi ${customerName},
+  return `🍽️ Hi ${params.customerName},
 
 Your *${params.planName}* subscription meal (${params.mealSlot}) is scheduled for *${params.date}*.
 
