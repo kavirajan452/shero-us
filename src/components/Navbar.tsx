@@ -9,7 +9,6 @@ import { useCart } from "@/contexts/CartContext";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { region } = useRegion();
   const { totalItems } = useCart();
   const { t } = useTranslation();
 
