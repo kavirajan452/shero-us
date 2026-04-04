@@ -175,8 +175,18 @@ const Checkout = () => {
 
   const { toast } = useToast();
 
+  const buildPickupInstructions = () => {
+    const parts = [...pickupChips];
+    if (pickupCustom.trim()) parts.push(pickupCustom.trim());
+    return parts.length > 0 ? parts.join(", ") : undefined;
+  };
+  const buildDeliveryInstructions = () => {
+    const parts = [...deliveryChips];
+    if (deliveryCustom.trim()) parts.push(deliveryCustom.trim());
+    return parts.length > 0 ? parts.join(", ") : undefined;
+  };
+
   const handlePaymentSuccess = (method?: PaymentMethod) => {
-    // Save order to database
     createOrder.mutate({
       order_code: `SH-INS-${Date.now().toString(36).toUpperCase()}`,
       customer_name: name,
@@ -198,6 +208,8 @@ const Checkout = () => {
       payment_method: method || "online",
       payment_status: "paid",
       status: "new",
+      pickup_instructions: buildPickupInstructions(),
+      delivery_instructions: buildDeliveryInstructions(),
     });
     if (walletUsable > 0) {
       spendOnPurchase(walletUsable, subtotalWithFees);
