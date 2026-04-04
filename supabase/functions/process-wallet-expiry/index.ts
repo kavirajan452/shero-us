@@ -82,8 +82,8 @@ Deno.serve(async (req) => {
         if (existing?.length) continue;
 
         const messageTemplate =
-          settings.notification_messages?.[notifType] || `₹{amount} expires in ${days} days.`;
-        const expiryDate = new Date(credit.expires_at).toLocaleDateString("en-IN", {
+          settings.notification_messages?.[notifType] || `$\{amount} expires in ${days} days.`;
+        const expiryDate = new Date(credit.expires_at).toLocaleDateString("en-US", {
           day: "numeric",
           month: "short",
           year: "numeric",
