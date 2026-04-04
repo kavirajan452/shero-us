@@ -1524,7 +1524,7 @@ const PartyOrders = () => {
               <p>• Minimum 50% advance payment on booking.</p>
               <p>• Balance payment due 1 day before the event.</p>
               <p>• Free cancellation up to 2 days before event.</p>
-              <p>• Flat ₹500 delivery fee applied.</p>
+              <p>• Distance-based delivery fee applied.</p>
             </div>
 
             {/* Action buttons */}
