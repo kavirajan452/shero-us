@@ -2125,7 +2125,7 @@ const PartyOrders = () => {
                 </>
               )}
               <p className="text-[10px] text-muted-foreground pt-1 border-t border-border mt-1">
-                {paymentOption === "part" ? "50% advance now. Balance due 1 day before event. Free cancellation 2 days before." : "Full payment on booking. Free cancellation 2 days before event."}
+                {paymentOption === "part" ? "50% advance now. Balance due 2 days before event. Free cancellation 3 days before." : "Full payment on booking. Free cancellation 3 days before event."}
               </p>
             </div>
             <PaymentSection
