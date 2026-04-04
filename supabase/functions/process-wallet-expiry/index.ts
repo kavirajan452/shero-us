@@ -29,10 +29,10 @@ Deno.serve(async (req) => {
       warning_days: [7, 3, 1],
       auto_expire_enabled: true,
       notification_messages: {
-        "7_day_warning": "₹{amount} in your wallet expires in 7 days! Use it before {date}.",
-        "3_day_warning": "₹{amount} expiring in 3 days — order now!",
-        "1_day_warning": "Last day! ₹{amount} expires tomorrow.",
-        expired: "₹{amount} has expired from your wallet.",
+        "7_day_warning": "${amount} in your wallet expires in 7 days! Use it before {date}.",
+        "3_day_warning": "${amount} expiring in 3 days — order now!",
+        "1_day_warning": "Last day! ${amount} expires tomorrow.",
+        expired: "${amount} has expired from your wallet.",
       },
     };
 
