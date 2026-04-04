@@ -488,8 +488,11 @@ const OrderTracking = () => {
             <button className="flex items-center gap-2 p-3 rounded-xl bg-secondary hover:bg-secondary/80 transition-colors text-sm text-foreground">
               <Phone className="w-4 h-4 text-primary" /> Call Support
             </button>
-            <button className="flex items-center gap-2 p-3 rounded-xl bg-secondary hover:bg-secondary/80 transition-colors text-sm text-foreground">
-              <MessageCircle className="w-4 h-4 text-accent" /> Chat with Us
+            <button
+              onClick={() => openWhatsAppSupport(buildSupportMessage({ orderId: order.orderId, issue: "Order tracking query" }))}
+              className="flex items-center gap-2 p-3 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 transition-colors text-sm text-foreground"
+            >
+              <MessageCircle className="w-4 h-4 text-[#25D366]" /> WhatsApp
             </button>
           </div>
           <p className="text-[10px] text-muted-foreground mt-2 text-center">
