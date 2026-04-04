@@ -48,7 +48,7 @@ const Navbar = () => {
 
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
-          <RegionSwitcher />
+          
           <Link
             to="/auth"
             className="hidden md:inline-flex px-5 py-2 rounded-full bg-gradient-shero text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity"
