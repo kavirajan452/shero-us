@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import sheroLogo from "@/assets/shero-logo.png";
-import RegionSwitcher from "@/components/RegionSwitcher";
+
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useRegion } from "@/contexts/RegionContext";
 import { useCart } from "@/contexts/CartContext";
@@ -48,7 +48,7 @@ const Navbar = () => {
 
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
-          <RegionSwitcher />
+          
           <Link
             to="/auth"
             className="hidden md:inline-flex px-5 py-2 rounded-full bg-gradient-shero text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity"
