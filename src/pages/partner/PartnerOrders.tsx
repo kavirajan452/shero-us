@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { partnerOrders as initialOrders, OrderStatus, PartnerOrder, getPrepTimeMinutes, REJECTION_FINE, MAX_FREE_REJECTIONS_PER_MONTH } from "@/data/partnerMockData";
+import { type OrderStatus, getPrepTimeMinutes, REJECTION_FINE, MAX_FREE_REJECTIONS_PER_MONTH } from "@/data/partnerMockData";
 import { subscriptionMealOrders } from "@/data/partnerSubscriptionData";
 import { serviceBookings } from "@/data/partnerSubscriptionData";
 import { useRegion } from "@/contexts/RegionContext";
@@ -18,9 +18,61 @@ import { useTranslation } from "react-i18next";
 import OrderSummaryCards from "@/components/partner/OrderSummaryCards";
 import SubscriptionOrdersTab from "@/components/partner/SubscriptionOrdersTab";
 import ServiceBookingsTab from "@/components/partner/ServiceBookingsTab";
-import { type OrderSource } from "@/data/partnerMockData";
+import { useInstantOrders, useUpdateInstantOrder } from "@/hooks/useSupabaseData";
+import { supabase } from "@/integrations/supabase/client";
 
-// ── Status config for instant orders ──
+// ── Map Supabase row to PartnerOrder-like shape ──
+interface LiveOrder {
+  id: string;
+  orderCode: string;
+  customerName: string;
+  items: { name: string; qty: number; price: number }[];
+  total: number;
+  status: OrderStatus;
+  placedAt: string;
+  deliveryAddress: string;
+  paymentMode: "online" | "cod";
+  orderType: "instant" | "pickup" | "scheduled";
+  source: "shero" | "swiggy" | "zomato";
+  acceptedAt?: number;
+  readyAt?: number;
+  note?: string;
+  allergens?: string[];
+  cookingInstructions?: string;
+  deliveryInstructions?: string;
+  pickupInstructions?: string;
+}
+
+const mapSupabaseOrder = (row: any): LiveOrder => {
+  const items = Array.isArray(row.items) ? row.items.map((i: any) => ({
+    name: i.name || i.item_name || "Item",
+    qty: i.qty || i.quantity || 1,
+    price: i.price || 0,
+  })) : [];
+
+  return {
+    id: row.order_code || row.id,
+    orderCode: row.order_code,
+    customerName: row.customer_name,
+    items,
+    total: row.total || 0,
+    status: (row.status as OrderStatus) || "new",
+    placedAt: new Date(row.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    deliveryAddress: row.customer_address || "",
+    paymentMode: row.payment_method === "cod" ? "cod" : "online",
+    orderType: row.order_type === "pickup" ? "pickup" : row.order_type === "scheduled" ? "scheduled" : "instant",
+    source: "shero",
+    acceptedAt: row.accepted_at ? new Date(row.accepted_at).getTime() : undefined,
+    readyAt: row.ready_at ? new Date(row.ready_at).getTime() : undefined,
+    note: row.note || undefined,
+    allergens: row.allergens?.length ? row.allergens : undefined,
+    cookingInstructions: row.cooking_instructions || undefined,
+    deliveryInstructions: row.delivery_instructions || undefined,
+    pickupInstructions: row.pickup_instructions || undefined,
+  };
+};
+
+// ── Status config ──
 const statusConfig: Record<OrderStatus, { label: string; color: string; icon: React.ElementType }> = {
   new: { label: "New", color: "bg-destructive text-destructive-foreground", icon: Clock },
   accepted: { label: "Accepted", color: "bg-primary text-primary-foreground", icon: CheckCircle2 },
@@ -33,37 +85,20 @@ const statusConfig: Record<OrderStatus, { label: string; color: string; icon: Re
 
 // ── TTS ──
 const langToVoiceLocale: Record<string, string> = {
-  en: "en-IN", "en-IN": "en-IN", hi: "hi-IN", ta: "ta-IN", te: "te-IN",
+  en: "en-US", "en-IN": "en-IN", hi: "hi-IN", ta: "ta-IN", te: "te-IN",
   kn: "kn-IN", ml: "ml-IN", bn: "bn-IN", mr: "mr-IN",
   gu: "gu-IN", es: "es-ES", fr: "fr-FR", ar: "ar-SA", zh: "zh-CN",
 };
 
-const buildOrderSpeech = (order: PartnerOrder, lang: string, formatPrice: (n: number) => string): string => {
+const buildOrderSpeech = (order: LiveOrder, lang: string, formatPrice: (n: number) => string): string => {
   const itemList = order.items.map((i) => `${i.name}, quantity ${i.qty}, ${formatPrice(i.price * i.qty)}`).join(". ");
   const allergens = order.allergens?.length ? order.allergens.join(", ") : "";
   const instructions = order.cookingInstructions || "";
   const note = order.note || "";
-  const templates: Record<string, (id: string, total: string, items: string, a: string, i: string, n: string) => string> = {
-    en: (id, total, items, a, i, n) => `Order ${id}, total ${total}. Items: ${items}.${a ? ` Allergy warning: ${a}.` : ""}${n ? ` Note: ${n}.` : ""}${i ? ` Cooking instructions: ${i}.` : ""}`,
-    hi: (id, total, items, a, i, n) => `ऑर्डर ${id}, कुल ${total}. आइटम: ${items}.${a ? ` एलर्जी चेतावनी: ${a}.` : ""}${n ? ` नोट: ${n}.` : ""}${i ? ` खाना पकाने के निर्देश: ${i}.` : ""}`,
-    ta: (id, total, items, a, i, n) => `ஆர்டர் ${id}, மொத்தம் ${total}. பொருட்கள்: ${items}.${a ? ` ஒவ்வாமை எச்சரிக்கை: ${a}.` : ""}${n ? ` குறிப்பு: ${n}.` : ""}${i ? ` சமையல் அறிவுறுத்தல்கள்: ${i}.` : ""}`,
-    te: (id, total, items, a, i, n) => `ఆర్డర్ ${id}, మొత్తం ${total}. అంశాలు: ${items}.${a ? ` అలర్జీ హెచ్చరిక: ${a}.` : ""}${n ? ` గమనిక: ${n}.` : ""}${i ? ` వంట సూచనలు: ${i}.` : ""}`,
-    kn: (id, total, items, a, i, n) => `ಆರ್ಡರ್ ${id}, ಒಟ್ಟು ${total}. ವಸ್ತುಗಳು: ${items}.${a ? ` ಅಲರ್ಜಿ ಎಚ್ಚರಿಕೆ: ${a}.` : ""}${n ? ` ಟಿಪ್ಪಣಿ: ${n}.` : ""}${i ? ` ಅಡುಗೆ ಸೂಚನೆಗಳು: ${i}.` : ""}`,
-    ml: (id, total, items, a, i, n) => `ഓർഡർ ${id}, ആകെ ${total}. ഇനങ്ങൾ: ${items}.${a ? ` അലർജി മുന്നറിയിപ്പ്: ${a}.` : ""}${n ? ` കുറിപ്പ്: ${n}.` : ""}${i ? ` പാചക നിർദ്ദേശങ്ങൾ: ${i}.` : ""}`,
-    bn: (id, total, items, a, i, n) => `অর্ডার ${id}, মোট ${total}. আইটেম: ${items}.${a ? ` অ্যালার্জি সতর্কতা: ${a}.` : ""}${n ? ` নোট: ${n}.` : ""}${i ? ` রান্নার নির্দেশনা: ${i}.` : ""}`,
-    mr: (id, total, items, a, i, n) => `ऑर्डर ${id}, एकूण ${total}. आयटम: ${items}.${a ? ` ॲलर्जी इशारा: ${a}.` : ""}${n ? ` टीप: ${n}.` : ""}${i ? ` स्वयंपाक सूचना: ${i}.` : ""}`,
-    gu: (id, total, items, a, i, n) => `ઓર્ડર ${id}, કુલ ${total}. આઇટમ્સ: ${items}.${a ? ` એલર્જી ચેતવણી: ${a}.` : ""}${n ? ` નોંધ: ${n}.` : ""}${i ? ` રસોઈ સૂચનાઓ: ${i}.` : ""}`,
-    es: (id, total, items, a, i, n) => `Pedido ${id}, total ${total}. Artículos: ${items}.${a ? ` Alerta de alergia: ${a}.` : ""}${n ? ` Nota: ${n}.` : ""}${i ? ` Instrucciones: ${i}.` : ""}`,
-    fr: (id, total, items, a, i, n) => `Commande ${id}, total ${total}. Articles: ${items}.${a ? ` Alerte allergie: ${a}.` : ""}${n ? ` Note: ${n}.` : ""}${i ? ` Instructions: ${i}.` : ""}`,
-    ar: (id, total, items, a, i, n) => `طلب ${id}, المجموع ${total}. العناصر: ${items}.${a ? ` تحذير حساسية: ${a}.` : ""}${n ? ` ملاحظة: ${n}.` : ""}${i ? ` تعليمات الطبخ: ${i}.` : ""}`,
-    zh: (id, total, items, a, i, n) => `订单 ${id}, 总计 ${total}. 项目: ${items}.${a ? ` 过敏警告: ${a}.` : ""}${n ? ` 备注: ${n}.` : ""}${i ? ` 烹饪说明: ${i}.` : ""}`,
-  };
-  const baseLang = lang.split("-")[0];
-  const template = templates[lang] || templates[baseLang] || templates.en;
-  return template(order.id, formatPrice(order.total), itemList, allergens, instructions, note);
+  return `Order ${order.id}, total ${formatPrice(order.total)}. Items: ${itemList}.${allergens ? ` Allergy warning: ${allergens}.` : ""}${note ? ` Note: ${note}.` : ""}${instructions ? ` Cooking instructions: ${instructions}.` : ""}`;
 };
 
-// ── Instant order sub-tabs ──
+// ── Instant sub-tabs ──
 const instantTabs: { label: string; filter: OrderStatus[] }[] = [
   { label: "Pending", filter: ["new"] },
   { label: "Preparing", filter: ["accepted", "preparing"] },
@@ -72,24 +107,19 @@ const instantTabs: { label: string; filter: OrderStatus[] }[] = [
   { label: "All", filter: [] },
 ];
 
-// Alternative suggestions map — keyword-based
+// ── Alternative suggestions ──
 const ALTERNATIVE_SUGGESTIONS: Record<string, string[]> = {
-  "biryani": ["Pulao", "Fried Rice", "Jeera Rice", "Veg Biryani"],
-  "chicken": ["Paneer Butter Masala", "Egg Curry", "Fish Curry", "Mushroom Masala"],
-  "mutton": ["Chicken Curry", "Egg Masala", "Paneer Tikka", "Soya Chunks Curry"],
-  "fish": ["Chicken Fry", "Egg Bhurji", "Prawn Masala", "Paneer Fry"],
-  "dosa": ["Uttapam", "Idli", "Pongal", "Upma"],
-  "idli": ["Dosa", "Pongal", "Upma", "Rava Idli"],
-  "rice": ["Chapati", "Parotta", "Naan", "Poori"],
-  "chapati": ["Rice", "Parotta", "Naan", "Phulka"],
-  "sambar": ["Rasam", "Dal Fry", "Kootu", "Poriyal"],
-  "paneer": ["Tofu Masala", "Mushroom Curry", "Soya Chunks", "Gobi Masala"],
-  "egg": ["Paneer Bhurji", "Mushroom Pepper Fry", "Aloo Masala", "Tofu Scramble"],
-  "naan": ["Chapati", "Parotta", "Kulcha", "Tandoori Roti"],
-  "curry": ["Dry Fry", "Gravy", "Masala", "Stir Fry"],
-  "dal": ["Sambar", "Rasam", "Kootu", "Poriyal"],
-  "sweet": ["Payasam", "Gulab Jamun", "Kesari", "Halwa"],
-  "juice": ["Buttermilk", "Lassi", "Lemon Soda", "Tender Coconut"],
+  biryani: ["Pulao", "Fried Rice", "Jeera Rice", "Veg Biryani"],
+  chicken: ["Paneer Butter Masala", "Egg Curry", "Fish Curry", "Mushroom Masala"],
+  mutton: ["Chicken Curry", "Egg Masala", "Paneer Tikka", "Soya Chunks Curry"],
+  fish: ["Chicken Fry", "Egg Bhurji", "Prawn Masala", "Paneer Fry"],
+  dosa: ["Uttapam", "Idli", "Pongal", "Upma"],
+  idli: ["Dosa", "Pongal", "Upma", "Rava Idli"],
+  rice: ["Chapati", "Parotta", "Naan", "Poori"],
+  paneer: ["Tofu Masala", "Mushroom Curry", "Soya Chunks", "Gobi Masala"],
+  egg: ["Paneer Bhurji", "Mushroom Pepper Fry", "Aloo Masala", "Tofu Scramble"],
+  curry: ["Dry Fry", "Gravy", "Masala", "Stir Fry"],
+  sweet: ["Payasam", "Gulab Jamun", "Kesari", "Halwa"],
 };
 
 const getAlternativesForItem = (itemName: string): string[] => {
@@ -97,7 +127,6 @@ const getAlternativesForItem = (itemName: string): string[] => {
   for (const [keyword, alts] of Object.entries(ALTERNATIVE_SUGGESTIONS)) {
     if (lower.includes(keyword)) return alts;
   }
-  // Generic fallback
   return ["Chef's Special", "Today's Special", "Ask customer"];
 };
 
@@ -117,7 +146,7 @@ const formatCountdown = (remainingMs: number) => {
   return `${mins}m ${secs.toString().padStart(2, "0")}s`;
 };
 
-// ── Top-level order type tabs ──
+// ── Order type tabs ──
 type OrderTypeTab = "instant" | "subscription" | "services" | "party";
 const orderTypeTabs: { key: OrderTypeTab; label: string; emoji: string }[] = [
   { key: "instant", label: "Instant Orders", emoji: "⚡" },
@@ -126,19 +155,12 @@ const orderTypeTabs: { key: OrderTypeTab; label: string; emoji: string }[] = [
   { key: "party", label: "Party Orders", emoji: "🎉" },
 ];
 
-const SOURCE_CONFIG: Record<OrderSource, { label: string; color: string }> = {
-  shero: { label: "Shero", color: "bg-primary/10 text-primary border-primary/20" },
-  swiggy: { label: "Swiggy", color: "bg-orange-50 text-orange-600 border-orange-100" },
-  zomato: { label: "Zomato", color: "bg-red-50 text-red-600 border-red-100" },
-};
-
 const PartnerOrders = () => {
   const [activeTypeTab, setActiveTypeTab] = useState<OrderTypeTab>("instant");
   const [activeSubTab, setActiveSubTab] = useState(0);
-  const [orders, setOrders] = useState<PartnerOrder[]>(initialOrders);
   const [rejectionsThisMonth, setRejectionsThisMonth] = useState(1);
-  const [rejectDialogOrder, setRejectDialogOrder] = useState<PartnerOrder | null>(null);
-  const [bulkRejectDialog, setBulkRejectDialog] = useState<PartnerOrder | null>(null);
+  const [rejectDialogOrder, setRejectDialogOrder] = useState<LiveOrder | null>(null);
+  const [bulkRejectDialog, setBulkRejectDialog] = useState<LiveOrder | null>(null);
   const [rejectReason, setRejectReason] = useState("");
   const [rejectCustomReason, setRejectCustomReason] = useState("");
   const [unavailableItems, setUnavailableItems] = useState<Set<number>>(new Set());
@@ -150,7 +172,16 @@ const PartnerOrders = () => {
   const [fiveMinNotified, setFiveMinNotified] = useState<Set<string>>(new Set());
   const now = useCountdown();
 
-  // ── 5-minute remaining notification for preparing orders ──
+  // ── Supabase data ──
+  const { data: supabaseOrders = [], isLoading } = useInstantOrders();
+  const updateOrder = useUpdateInstantOrder();
+
+  const orders: LiveOrder[] = useMemo(
+    () => supabaseOrders.map(mapSupabaseOrder),
+    [supabaseOrders]
+  );
+
+  // ── 5-minute remaining notification ──
   useEffect(() => {
     orders.forEach((order) => {
       if (
@@ -163,7 +194,6 @@ const PartnerOrders = () => {
         const prepMinutes = getPrepTimeMinutes(totalItems);
         const elapsed = now - order.acceptedAt;
         const remainingMs = (prepMinutes * 60 * 1000) - elapsed;
-        // Trigger when remaining is ≤ 5 minutes and > 0 (not overdue)
         if (remainingMs <= 5 * 60 * 1000 && remainingMs > 0) {
           setFiveMinNotified((prev) => new Set(prev).add(order.id));
           const remainMins = Math.ceil(remainingMs / 60000);
@@ -172,12 +202,6 @@ const PartnerOrders = () => {
             description: `Only ${remainMins} minute(s) remaining to complete preparation. Mark as ready soon!`,
             variant: "destructive",
           });
-          // Play alert sound
-          try {
-            const audio = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACA");
-            audio.volume = 0.5;
-            audio.play().catch(() => {});
-          } catch {}
         }
       }
     });
@@ -188,9 +212,7 @@ const PartnerOrders = () => {
   const [notifiedCancellations, setNotifiedCancellations] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    const unsubscribe = subscribeCancellations(() => {
-      setCancellations(getUnacknowledgedCancellations());
-    });
+    const unsubscribe = subscribeCancellations(() => setCancellations(getUnacknowledgedCancellations()));
     return unsubscribe;
   }, []);
 
@@ -203,23 +225,16 @@ const PartnerOrders = () => {
           description: `Reason: ${c.reason}${c.reasonDetail ? ` — ${c.reasonDetail}` : ""}. Stop preparation if started.`,
           variant: "destructive",
         });
-        try {
-          const audio = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACA");
-          audio.volume = 0.7;
-          audio.play().catch(() => {});
-        } catch {}
       }
     });
   }, [cancellations, notifiedCancellations, toast]);
 
-  // ── Customer delay complaint notifications ──
+  // ── Delay complaints ──
   const [delayComplaints, setDelayComplaints] = useState<DelayComplaint[]>(() => getUnacknowledgedDelayComplaints());
   const [notifiedDelays, setNotifiedDelays] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    const unsubscribe = subscribeDelayComplaints(() => {
-      setDelayComplaints(getUnacknowledgedDelayComplaints());
-    });
+    const unsubscribe = subscribeDelayComplaints(() => setDelayComplaints(getUnacknowledgedDelayComplaints()));
     return unsubscribe;
   }, []);
 
@@ -232,16 +247,11 @@ const PartnerOrders = () => {
           description: `Customer "${d.customerName}" reported a delay for ${d.kitchenName}. Please expedite preparation!`,
           variant: "destructive",
         });
-        try {
-          const audio = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACA");
-          audio.volume = 0.7;
-          audio.play().catch(() => {});
-        } catch {}
       }
     });
   }, [delayComplaints, notifiedDelays, toast]);
 
-  const speakOrder = useCallback((order: PartnerOrder) => {
+  const speakOrder = useCallback((order: LiveOrder) => {
     if (!("speechSynthesis" in window)) return;
     if (speakingOrderId === order.id) {
       window.speechSynthesis.cancel();
@@ -251,12 +261,18 @@ const PartnerOrders = () => {
     window.speechSynthesis.cancel();
     const text = buildOrderSpeech(order, i18n.language, formatPrice);
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = langToVoiceLocale[i18n.language] || "en-IN";
+    utterance.lang = langToVoiceLocale[i18n.language] || "en-US";
     utterance.rate = 0.9;
     utterance.onend = () => setSpeakingOrderId(null);
     setSpeakingOrderId(order.id);
     window.speechSynthesis.speak(utterance);
   }, [i18n.language, formatPrice, speakingOrderId]);
+
+  // ── Find the Supabase row ID for a given order code ──
+  const getRowId = useCallback((orderCode: string) => {
+    const row = supabaseOrders.find((r: any) => r.order_code === orderCode || r.id === orderCode);
+    return row?.id;
+  }, [supabaseOrders]);
 
   // ── Summary data ──
   const today = new Date().toISOString().split("T")[0];
@@ -273,38 +289,73 @@ const PartnerOrders = () => {
       total: serviceBookings.filter((b) => b.date === today).length,
       upcoming: serviceBookings.filter((b) => b.date === today && b.status === "upcoming").length,
     },
-    party: { total: 2, pending: 1 },
+    party: { total: 0, pending: 0 },
   };
 
   const filtered = activeSubTab === instantTabs.length - 1
     ? orders
     : orders.filter((o) => instantTabs[activeSubTab].filter.includes(o.status));
 
-  const getTotalItems = (order: PartnerOrder) => order.items.reduce((s, i) => s + i.qty, 0);
+  const getTotalItems = (order: LiveOrder) => order.items.reduce((s, i) => s + i.qty, 0);
 
-  const handleAccept = useCallback((order: PartnerOrder) => {
+  // ── ACTIONS → Supabase mutations ──
+  const handleAccept = useCallback((order: LiveOrder) => {
     const totalItems = getTotalItems(order);
     const prepTime = getPrepTimeMinutes(totalItems);
     if (prepTime === -1) { setBulkRejectDialog(order); return; }
-    setOrders((prev) =>
-      prev.map((o) => o.id === order.id ? { ...o, status: "accepted" as OrderStatus, acceptedAt: Date.now() } : o)
+    const rowId = getRowId(order.id);
+    if (!rowId) return;
+    updateOrder.mutate(
+      { id: rowId, updates: { status: "accepted", accepted_at: new Date().toISOString() } },
+      {
+        onSuccess: () => toast({ title: `Order ${order.id} Accepted`, description: `${totalItems} items · ${prepTime} min prep time started` }),
+      }
     );
-    toast({ title: `Order ${order.id} Accepted`, description: `${totalItems} items · ${prepTime} min prep time started` });
-  }, [toast]);
+  }, [toast, getRowId, updateOrder]);
 
-  const handleStartCooking = (id: string) => {
-    setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status: "preparing" as OrderStatus } : o)));
-    toast({ title: `Order ${id}`, description: "Cooking started 🍳" });
+  const handleStartCooking = (orderCode: string) => {
+    const rowId = getRowId(orderCode);
+    if (!rowId) return;
+    updateOrder.mutate(
+      { id: rowId, updates: { status: "preparing" } },
+      { onSuccess: () => toast({ title: `Order ${orderCode}`, description: "Cooking started 🍳" }) }
+    );
   };
 
-  const handleFoodReady = (order: PartnerOrder) => {
-    setOrders((prev) => prev.map((o) => (o.id === order.id ? { ...o, status: "ready" as OrderStatus, readyAt: Date.now() } : o)));
-    toast({ title: `Order ${order.id} Ready`, description: order.orderType === "instant" ? "🚚 Delivery partner notified" : "📱 Customer notified for pickup" });
+  const handleFoodReady = async (order: LiveOrder) => {
+    const rowId = getRowId(order.id);
+    if (!rowId) return;
+
+    // Update order status
+    updateOrder.mutate(
+      { id: rowId, updates: { status: "ready", ready_at: new Date().toISOString() } },
+      {
+        onSuccess: async () => {
+          // Create delivery tracking record — trigger for delivery partner
+          await supabase.from("delivery_tracking").insert({
+            order_id: order.id,
+            delivery_partner: "pending_assignment",
+            status: "food_ready",
+            notes: order.deliveryInstructions || null,
+          });
+          toast({
+            title: `Order ${order.id} Ready`,
+            description: order.orderType === "instant"
+              ? "🚚 Delivery partner will be notified for pickup"
+              : "📱 Customer notified for pickup",
+          });
+        },
+      }
+    );
   };
 
-  const handleMarkDelivered = (id: string) => {
-    setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status: "delivered" as OrderStatus } : o)));
-    toast({ title: `Order ${id}`, description: "✅ Order delivered" });
+  const handleMarkDelivered = (orderCode: string) => {
+    const rowId = getRowId(orderCode);
+    if (!rowId) return;
+    updateOrder.mutate(
+      { id: rowId, updates: { status: "delivered", delivered_at: new Date().toISOString() } },
+      { onSuccess: () => toast({ title: `Order ${orderCode}`, description: "✅ Order delivered" }) }
+    );
   };
 
   const handleRejectConfirm = () => {
@@ -313,22 +364,22 @@ const PartnerOrders = () => {
     if (!reason && unavailableItems.size === 0) return;
     const newCount = rejectionsThisMonth + 1;
     const fined = newCount > MAX_FREE_REJECTIONS_PER_MONTH;
-    const fineAmt = REJECTION_FINE[region.currency] || REJECTION_FINE.INR;
+    const fineAmt = REJECTION_FINE[region.currency] || REJECTION_FINE.USD;
     const unavailableNames = Array.from(unavailableItems).map((i) => rejectDialogOrder.items[i]?.name).filter(Boolean);
     const altsSummary = Object.entries(selectedAlternatives)
       .map(([idx, alt]) => `${rejectDialogOrder.items[Number(idx)]?.name} → ${alt}`)
       .filter(Boolean);
 
-    // Push stock alerts to SSC Management
+    // Push stock alerts
     if (unavailableNames.length > 0) {
       Array.from(unavailableItems).forEach((idx) => {
         const item = rejectDialogOrder.items[idx];
         if (item) {
           addStockAlert({
             orderId: rejectDialogOrder.id,
-            partnerName: "Maria T.",
+            partnerName: "Partner",
             partnerId: "P001",
-            kitchenName: "Sujatha's Chettinad Kitchen",
+            kitchenName: "Kitchen",
             itemName: item.name,
             suggestedAlternative: selectedAlternatives[idx] || undefined,
             reason: rejectReason === "ingredient_shortage" ? "ingredient_shortage" : "items_unavailable",
@@ -336,7 +387,19 @@ const PartnerOrders = () => {
         }
       });
     }
-    setOrders((prev) => prev.map((o) => (o.id === rejectDialogOrder.id ? { ...o, status: "rejected" as OrderStatus } : o)));
+
+    const rowId = getRowId(rejectDialogOrder.id);
+    if (rowId) {
+      updateOrder.mutate({
+        id: rowId,
+        updates: {
+          status: "rejected",
+          rejected_at: new Date().toISOString(),
+          rejection_reason: reason,
+        },
+      });
+    }
+
     setRejectionsThisMonth(newCount);
     setRejectDialogOrder(null);
     setRejectReason("");
@@ -354,13 +417,27 @@ const PartnerOrders = () => {
 
   const handleBulkRejectConfirm = () => {
     if (!bulkRejectDialog) return;
-    setOrders((prev) => prev.map((o) => (o.id === bulkRejectDialog.id ? { ...o, status: "rejected" as OrderStatus } : o)));
+    const rowId = getRowId(bulkRejectDialog.id);
+    if (rowId) {
+      updateOrder.mutate({
+        id: rowId,
+        updates: { status: "rejected", rejected_at: new Date().toISOString(), rejection_reason: "Too many items (>15) — party order advised" },
+      });
+    }
     setBulkRejectDialog(null);
     toast({ title: `Order ${bulkRejectDialog.id} Auto-Rejected`, description: "15+ items — Advised to use Party Order", variant: "destructive" });
   };
 
-  const fineAmt = REJECTION_FINE[region.currency] || REJECTION_FINE.INR;
+  const fineAmt = REJECTION_FINE[region.currency] || REJECTION_FINE.USD;
   const willBeFined = rejectionsThisMonth >= MAX_FREE_REJECTIONS_PER_MONTH;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-5">
@@ -384,12 +461,7 @@ const PartnerOrders = () => {
                   <p className="text-xs text-muted-foreground mt-0.5">Reason: {c.reason}{c.reasonDetail ? ` — ${c.reasonDetail}` : ""}</p>
                   <p className="text-[10px] text-muted-foreground">{c.items.map((i) => `${i.qty}× ${i.name}`).join(", ")} · {c.cancelledAt}</p>
                 </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="text-xs shrink-0"
-                  onClick={() => acknowledgeCancellation(c.id)}
-                >
+                <Button size="sm" variant="outline" className="text-xs shrink-0" onClick={() => acknowledgeCancellation(c.id)}>
                   Acknowledge
                 </Button>
               </CardContent>
@@ -398,7 +470,7 @@ const PartnerOrders = () => {
         </div>
       )}
 
-      {/* Customer Delay Complaint Alerts */}
+      {/* Delay Complaint Alerts */}
       {delayComplaints.length > 0 && (
         <div className="space-y-2">
           {delayComplaints.map((d) => (
@@ -410,12 +482,7 @@ const PartnerOrders = () => {
                   <p className="text-xs text-muted-foreground mt-0.5">Customer "{d.customerName}" says order is delayed. Kitchen: {d.kitchenName}</p>
                   <p className="text-[10px] text-muted-foreground">{d.reportedAt}</p>
                 </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="text-xs shrink-0"
-                  onClick={() => acknowledgeDelayComplaint(d.id)}
-                >
+                <Button size="sm" variant="outline" className="text-xs shrink-0" onClick={() => acknowledgeDelayComplaint(d.id)}>
                   Acknowledge
                 </Button>
               </CardContent>
@@ -447,7 +514,6 @@ const PartnerOrders = () => {
       {/* ── Instant Orders Tab ── */}
       {activeTypeTab === "instant" && (
         <div className="space-y-3">
-          {/* Sub-tabs */}
           <div className="flex gap-2 overflow-x-auto pb-1">
             {instantTabs.map((tab, i) => {
               const count = i === instantTabs.length - 1
@@ -501,11 +567,6 @@ const PartnerOrders = () => {
                         <Badge variant="outline" className="text-[10px] capitalize">
                           {order.orderType === "instant" ? "🚚 Delivery" : "🏪 Pickup"}
                         </Badge>
-                        {order.source && (
-                          <Badge variant="outline" className={`text-[10px] font-semibold ${SOURCE_CONFIG[order.source].color}`}>
-                            {SOURCE_CONFIG[order.source].label}
-                          </Badge>
-                        )}
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {order.placedAt} · {totalItems} item{totalItems !== 1 ? "s" : ""}
@@ -546,6 +607,12 @@ const PartnerOrders = () => {
                       {order.cookingInstructions && (
                         <p className="text-xs text-accent-foreground mt-0.5 font-medium">🍳 {order.cookingInstructions}</p>
                       )}
+                      {order.pickupInstructions && (
+                        <p className="text-xs text-muted-foreground mt-0.5">📦 Pickup: {order.pickupInstructions}</p>
+                      )}
+                      {order.deliveryInstructions && (
+                        <p className="text-xs text-muted-foreground mt-0.5">🚚 Delivery: {order.deliveryInstructions}</p>
+                      )}
                     </div>
 
                     <div className="text-right shrink-0">
@@ -563,7 +630,7 @@ const PartnerOrders = () => {
                       <div className="flex flex-col gap-1.5 mt-3">
                         {order.status === "new" && (
                           <>
-                            <Button size="sm" onClick={() => handleAccept(order)} className="text-xs gap-1">
+                            <Button size="sm" onClick={() => handleAccept(order)} className="text-xs gap-1" disabled={updateOrder.isPending}>
                               <CheckCircle2 className="w-3 h-3" /> Accept
                             </Button>
                             <Button size="sm" variant="outline" onClick={() => setRejectDialogOrder(order)}
@@ -573,29 +640,29 @@ const PartnerOrders = () => {
                           </>
                         )}
                         {order.status === "accepted" && (
-                          <Button size="sm" onClick={() => handleStartCooking(order.id)} className="text-xs gap-1">
+                          <Button size="sm" onClick={() => handleStartCooking(order.id)} className="text-xs gap-1" disabled={updateOrder.isPending}>
                             <ChefHat className="w-3 h-3" /> Start Cooking
                           </Button>
                         )}
                         {order.status === "preparing" && (
-                          <Button size="sm" onClick={() => handleFoodReady(order)} className="text-xs gap-1">
+                          <Button size="sm" onClick={() => handleFoodReady(order)} className="text-xs gap-1" disabled={updateOrder.isPending}>
                             <UtensilsCrossed className="w-3 h-3" /> Food Ready
                           </Button>
                         )}
                         {order.status === "ready" && order.orderType === "pickup" && (
-                          <Button size="sm" onClick={() => handleMarkDelivered(order.id)} className="text-xs gap-1">
+                          <Button size="sm" onClick={() => handleMarkDelivered(order.id)} className="text-xs gap-1" disabled={updateOrder.isPending}>
                             <CheckCircle2 className="w-3 h-3" /> Handed Over
                           </Button>
                         )}
                         {order.status === "ready" && order.orderType === "instant" && (
                           <div className="space-y-1">
                             <Badge className="bg-primary/10 text-primary text-[10px]">🚚 Awaiting Pickup</Badge>
-                            <Button size="sm" variant="outline" onClick={() => handleMarkDelivered(order.id)} className="text-xs gap-1">
+                            <Button size="sm" variant="outline" onClick={() => handleMarkDelivered(order.id)} className="text-xs gap-1" disabled={updateOrder.isPending}>
                               <Truck className="w-3 h-3" /> Mark Delivered
                             </Button>
                           </div>
                         )}
-                        {(order.status === "delivered" || order.status === "ready") && order.status === "delivered" && (
+                        {order.status === "delivered" && (
                           <Button size="sm" variant="outline" onClick={async () => {
                             toast({ title: "⏳ Generating Purchase Invoice..." });
                             const success = await downloadInvoiceForOrder(order.id, "partner_purchase");
@@ -618,13 +685,13 @@ const PartnerOrders = () => {
         </div>
       )}
 
-      {/* ── Subscription Tab ── */}
+      {/* Subscription Tab */}
       {activeTypeTab === "subscription" && <SubscriptionOrdersTab />}
 
-      {/* ── Services Tab ── */}
+      {/* Services Tab */}
       {activeTypeTab === "services" && <ServiceBookingsTab />}
 
-      {/* ── Party Orders Tab ── */}
+      {/* Party Tab */}
       {activeTypeTab === "party" && (
         <div className="text-center py-12">
           <p className="text-muted-foreground text-sm">Party orders are managed in the dedicated</p>
@@ -633,8 +700,6 @@ const PartnerOrders = () => {
           </a>
         </div>
       )}
-
-      {/* SAP tab removed — all channel orders now under Instant Orders */}
 
       {/* Reject Dialog */}
       <Dialog open={!!rejectDialogOrder} onOpenChange={(open) => { if (!open) { setRejectDialogOrder(null); setRejectReason(""); setRejectCustomReason(""); setUnavailableItems(new Set()); setSelectedAlternatives({}); } }}>
@@ -654,7 +719,6 @@ const PartnerOrders = () => {
             </DialogDescription>
           </DialogHeader>
 
-          {/* Reason Selection */}
           <div className="space-y-3">
             <label className="text-sm font-medium text-foreground">Reason for rejection</label>
             <div className="grid grid-cols-1 gap-2">
@@ -689,7 +753,6 @@ const PartnerOrders = () => {
               />
             )}
 
-            {/* Item-level unavailability + alternatives */}
             {rejectDialogOrder && (rejectReason === "items_unavailable" || rejectReason === "ingredient_shortage") && (
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground">Select unavailable items & suggest alternatives</label>
@@ -723,7 +786,6 @@ const PartnerOrders = () => {
                           <span className="text-muted-foreground">{isSelected ? "❌ Unavailable" : "Tap to mark"}</span>
                         </button>
 
-                        {/* Alternative suggestions */}
                         {isSelected && (
                           <div className="ml-3 space-y-1.5">
                             <p className="text-[11px] font-medium text-muted-foreground">🔄 Suggest alternative to customer:</p>
