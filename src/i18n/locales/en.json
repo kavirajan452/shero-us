@@ -113,8 +113,8 @@
   "serviceCategories": {
     "title": "What Would You Like to Order Today?",
     "subtitle": "Choose from our range of home food & services",
-    "instantDelivery": "Instant Delivery",
-    "instantDeliveryDesc": "Fresh meals, delivered fast",
+    "instantDelivery": "Single Meal Order",
+    "instantDeliveryDesc": "Made against your order & Truly homemade",
     "subscriptions": "Subscriptions",
     "subscriptionsDesc": "Daily & weekly plans",
     "partyOrders": "Party Orders",
