@@ -299,12 +299,12 @@ const PartnerPartyOrders = () => {
 
                 {/* Cooking Instructions — prominent callout */}
                 {selectedOrder.cookingInstructions && (
-                  <Card className="p-0 overflow-hidden border-[3px] border-red-500 dark:border-red-400 shadow-lg shadow-red-100 dark:shadow-red-950/30">
-                    <div className="bg-red-50 dark:bg-red-950/50 px-4 py-3 border-b-2 border-red-400 dark:border-red-500 flex items-center gap-2">
+                  <Card className="p-0 overflow-hidden border-[3px] border-destructive shadow-lg shadow-destructive/10">
+                    <div className="bg-destructive/10 px-4 py-3 border-b-2 border-destructive/40 flex items-center gap-2">
                       <span className="text-xl">🚨</span>
-                      <h4 className="text-base font-extrabold text-red-700 dark:text-red-300 uppercase tracking-widest">{t("party.partner.customerCookingInstructions")}</h4>
+                      <h4 className="text-base font-extrabold text-destructive uppercase tracking-widest">{t("party.partner.customerCookingInstructions")}</h4>
                     </div>
-                    <div className="px-5 py-4 bg-red-100 dark:bg-red-950/40">
+                    <div className="px-5 py-4 bg-destructive/5">
                       <p className="text-base font-bold text-foreground leading-relaxed whitespace-pre-wrap">{selectedOrder.cookingInstructions}</p>
                     </div>
                   </Card>
