@@ -12,7 +12,7 @@ import { Save, Plus, Trash2, BadgePercent, Tag } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const verticalOptions = [
-  { value: "instant_delivery", label: "Instant Delivery" },
+  { value: "instant_delivery", label: "Single Meal Order" },
   { value: "subscriptions", label: "Subscriptions" },
   { value: "party_orders", label: "Party Orders" },
   { value: "sweets_snacks", label: "Sweets & Snacks" },

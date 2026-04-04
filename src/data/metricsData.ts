@@ -3,7 +3,7 @@
 // SCV(Sales)   = Expected vs Achieved sales volume ratio
 // SCV(BIZ)     = Combined health score = 0.6 * SCV(Metrics) + 0.4 * SCV(Sales)
 
-export type Vertical = "SHF" | "HCF" | "Subscriptions" | "Party Orders" | "Instant Delivery" | "Sweets & Snacks";
+export type Vertical = "SHF" | "HCF" | "Subscriptions" | "Party Orders" | "Single Meal Order" | "Sweets & Snacks";
 export type MetricKey = "attendance" | "brand_rating" | "delivery_discipline" | "customer_acceptance" | "repeat_rate";
 export type SCVGrade = "A" | "B" | "C" | "D";
 
@@ -121,7 +121,7 @@ function calcSCVBiz(scvMetrics: number, scvSales: number): number {
 // ─── Mock Data Generator ───
 const REGIONS = ["New York North", "New York South", "New York Central", "Los Angeles East", "Los Angeles West", "Chicago"];
 const CUISINES = ["South Indian", "North Indian", "Multi-Cuisine", "Chinese", "Biryani", "Chettinad", "Florida"];
-const VERTICALS: Vertical[] = ["SHF", "HCF", "Subscriptions", "Party Orders", "Instant Delivery", "Sweets & Snacks"];
+const VERTICALS: Vertical[] = ["SHF", "HCF", "Subscriptions", "Party Orders", "Single Meal Order", "Sweets & Snacks"];
 const MONTHS = ["Oct 2025", "Nov 2025", "Dec 2025", "Jan 2026", "Feb 2026", "Mar 2026"];
 
 const partnerNames = [

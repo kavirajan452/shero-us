@@ -38,7 +38,7 @@ const financeItems = [
   { title: "Finance Dashboard", url: "/admin/finance-dashboard", icon: PieChart },
   { title: "Invoice Settings", url: "/admin/invoice-settings", icon: FileBarChart },
   { title: "Instant Order", url: "/admin/payments", icon: DollarSign },
-  { title: "Instant Delivery", url: "/admin/instant-finance", icon: Bike },
+  { title: "Single Meal Order", url: "/admin/instant-finance", icon: Bike },
   { title: "Subscriptions", url: "/admin/sub-finance", icon: CalendarCheck },
   { title: "Party Orders", url: "/admin/party-finance", icon: PartyPopper },
   // Sweets & Snacks, Cookery Classes, Shero Classes — disabled for now
@@ -176,7 +176,7 @@ const walletItems = [
 const sections: NavSection[] = [
   { label: "Command", icon: Shield, items: commandItems, color: "section-command" },
   { label: "Finance Books", icon: Wallet, items: financeItems, color: "section-finance" },
-  { label: "Instant Delivery", icon: Bike, items: instantItems, color: "section-instant" },
+  { label: "Single Meal Order", icon: Bike, items: instantItems, color: "section-instant" },
   { label: "Party Orders", icon: PartyPopper, items: partyItems, color: "section-party" },
   { label: "Subscriptions", icon: CalendarCheck, items: subscriptionItems, color: "section-subscription" },
   // Sweets & Snacks, Cookery Classes, Shero Classes — disabled for now

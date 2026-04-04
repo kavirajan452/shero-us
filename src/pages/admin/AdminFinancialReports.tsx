@@ -18,7 +18,7 @@ const COLORS = ["hsl(var(--primary))", "hsl(var(--chart-2))", "hsl(var(--chart-3
 
 // ── P&L by Vertical ──
 const verticalPnL = [
-  { vertical: "Instant Delivery", revenue: 842500, cogs: 505500, grossProfit: 337000, opex: 168500, netProfit: 168500, cm1Pct: 40.0, orders: 1280 },
+  { vertical: "Single Meal Order", revenue: 842500, cogs: 505500, grossProfit: 337000, opex: 168500, netProfit: 168500, cm1Pct: 40.0, orders: 1280 },
   { vertical: "Subscriptions", revenue: 425000, cogs: 238000, grossProfit: 187000, opex: 85000, netProfit: 102000, cm1Pct: 44.0, orders: 320 },
   { vertical: "Party Orders", revenue: 318000, cogs: 190800, grossProfit: 127200, opex: 47700, netProfit: 79500, cm1Pct: 40.0, orders: 85 },
   { vertical: "Sweets & Snacks", revenue: 156000, cogs: 93600, grossProfit: 62400, opex: 23400, netProfit: 39000, cm1Pct: 40.0, orders: 210 },

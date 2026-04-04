@@ -11,7 +11,7 @@ export type SubVertical = "subscription" | "party" | "instant" | "services" | "s
 export const subVerticalLabels: Record<SubVertical, string> = {
   subscription: "Subscriptions",
   party: "Party Orders (SAP/SPO)",
-  instant: "Instant Delivery",
+  instant: "Single Meal Order",
   services: "Home Services",
   snacks: "Sweets & Snacks",
   cookery: "Cookery Classes",
@@ -1277,7 +1277,7 @@ export function generateConsolidatedPL(): PLLineItem[] {
   const allPLs: { label: string; pl: PLLineItem[] }[] = [
     { label: "Subscriptions", pl: generateSubscriptionPL() },
     { label: "Party Orders", pl: generatePartyPL() },
-    { label: "Instant Delivery", pl: generateInstantPL() },
+    { label: "Single Meal Order", pl: generateInstantPL() },
     { label: "Home Services", pl: generateServicesPL() },
     { label: "Sweets & Snacks", pl: generateSnacksPL() },
     { label: "Cookery Classes", pl: generateCookeryPL() },

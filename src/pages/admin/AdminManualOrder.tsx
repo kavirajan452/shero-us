@@ -30,7 +30,7 @@ const mockMenuItems = [
 ];
 
 const orderTypes = [
-  { value: "instant", label: "Instant Delivery" },
+  { value: "instant", label: "Single Meal Order" },
   { value: "subscription", label: "Subscription" },
   { value: "party", label: "Party Order" },
   { value: "service", label: "Service Booking" },

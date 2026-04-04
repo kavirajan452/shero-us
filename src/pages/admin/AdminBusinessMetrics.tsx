@@ -17,7 +17,7 @@ const COLORS = ["hsl(var(--primary))", "hsl(var(--chart-2))", "hsl(var(--chart-3
 
 // ── Vertical Health Scores ──
 const verticalHealth = [
-  { vertical: "Instant Delivery", icon: Bike, score: 87, revenue: 842500, growth: 12.3, orders: 1280, nps: 72, fulfillment: 96.8, avgDelivery: "38m", churn: 3.2, color: COLORS[0] },
+  { vertical: "Single Meal Order", icon: Bike, score: 87, revenue: 842500, growth: 12.3, orders: 1280, nps: 72, fulfillment: 96.8, avgDelivery: "38m", churn: 3.2, color: COLORS[0] },
   { vertical: "Subscriptions", icon: Calendar, score: 82, revenue: 425000, growth: 18.5, orders: 320, nps: 78, fulfillment: 94.2, avgDelivery: "On-time", churn: 5.1, color: COLORS[1] },
   { vertical: "Party Orders", icon: PartyPopper, score: 79, revenue: 318000, growth: 8.7, orders: 85, nps: 81, fulfillment: 98.8, avgDelivery: "Scheduled", churn: 1.2, color: COLORS[2] },
   { vertical: "Sweets & Snacks", icon: Cookie, score: 74, revenue: 156000, growth: 22.4, orders: 210, nps: 68, fulfillment: 92.5, avgDelivery: "2.5d", churn: 4.8, color: COLORS[3] },
