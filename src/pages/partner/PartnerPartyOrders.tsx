@@ -223,8 +223,8 @@ const PartnerPartyOrders = () => {
                   </div>
 
                   {order.cookingInstructions && (
-                    <div className="mt-2 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-600">
-                      <p className="text-[10px] font-bold text-amber-800 dark:text-amber-300 mb-0.5">⚠️ COOKING INSTRUCTIONS</p>
+                    <div className="mt-2 p-2 rounded-lg bg-action-cook/10 border border-action-cook/30">
+                      <p className="text-[10px] font-bold text-action-cook mb-0.5">⚠️ COOKING INSTRUCTIONS</p>
                       <p className="text-[11px] text-foreground leading-snug line-clamp-2">{order.cookingInstructions}</p>
                     </div>
                   )}
@@ -299,12 +299,12 @@ const PartnerPartyOrders = () => {
 
                 {/* Cooking Instructions — prominent callout */}
                 {selectedOrder.cookingInstructions && (
-                  <Card className="p-0 overflow-hidden border-[3px] border-red-500 dark:border-red-400 shadow-lg shadow-red-100 dark:shadow-red-950/30">
-                    <div className="bg-red-50 dark:bg-red-950/50 px-4 py-3 border-b-2 border-red-400 dark:border-red-500 flex items-center gap-2">
+                  <Card className="p-0 overflow-hidden border-[3px] border-destructive shadow-lg shadow-destructive/10">
+                    <div className="bg-destructive/10 px-4 py-3 border-b-2 border-destructive/40 flex items-center gap-2">
                       <span className="text-xl">🚨</span>
-                      <h4 className="text-base font-extrabold text-red-700 dark:text-red-300 uppercase tracking-widest">{t("party.partner.customerCookingInstructions")}</h4>
+                      <h4 className="text-base font-extrabold text-destructive uppercase tracking-widest">{t("party.partner.customerCookingInstructions")}</h4>
                     </div>
-                    <div className="px-5 py-4 bg-red-100 dark:bg-red-950/40">
+                    <div className="px-5 py-4 bg-destructive/5">
                       <p className="text-base font-bold text-foreground leading-relaxed whitespace-pre-wrap">{selectedOrder.cookingInstructions}</p>
                     </div>
                   </Card>
@@ -355,7 +355,7 @@ const PartnerPartyOrders = () => {
                             </div>
                             {/* Dispatch */}
                             <div className="p-3 rounded-lg bg-background border border-border shadow-sm">
-                              <Package className="w-5 h-5 text-amber-600 mx-auto mb-1" />
+                              <Package className="w-5 h-5 text-action-dispatch mx-auto mb-1" />
                               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">Dispatch</p>
                               <p className="text-lg font-extrabold text-foreground mt-0.5">{fmt(dispatchTime)}</p>
                               <p className="text-[10px] text-muted-foreground">{travelMins} min travel</p>

@@ -1973,10 +1973,10 @@ const PartyOrders = () => {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center justify-between p-2 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-300">
+                <div className="flex items-center justify-between p-2 rounded-lg bg-action-done/10 border border-action-done/30">
                   <div>
-                    <p className="text-xs font-semibold text-green-800 dark:text-green-300">✅ Coupon "{couponCode}" applied</p>
-                    <p className="text-[10px] text-green-600 dark:text-green-400">-${discountAmount} discount</p>
+                    <p className="text-xs font-semibold text-action-done">✅ Coupon "{couponCode}" applied</p>
+                    <p className="text-[10px] text-action-done/80">-${discountAmount} discount</p>
                   </div>
                   <button
                     onClick={() => { setCouponApplied(false); setCouponCode(""); setDiscountAmount(0); }}
@@ -2016,7 +2016,7 @@ const PartyOrders = () => {
                 )}
                 <div className="flex justify-between"><span className="text-muted-foreground">🚚 Delivery</span><span className="text-foreground">{formatPrice(totalCosts.deliveryFee)}</span></div>
                 {totalCosts.discount > 0 && (
-                  <div className="flex justify-between text-green-600 dark:text-green-400"><span>🏷️ Discount</span><span>-{formatPrice(totalCosts.discount)}</span></div>
+                  <div className="flex justify-between text-action-done"><span>🏷️ Discount</span><span>-{formatPrice(totalCosts.discount)}</span></div>
                 )}
                 <div className="flex justify-between"><span className="text-muted-foreground">{region.taxLabel}</span><span className="text-foreground">{formatPrice(Math.round(totalCosts.tax))}</span></div>
                 <div className="border-t border-border pt-1.5 flex justify-between font-bold text-sm">

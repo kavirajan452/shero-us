@@ -748,7 +748,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-xs font-medium text-foreground flex items-center gap-1"><Star className="w-3 h-3 text-amber-500" />{p.rating}</p>
+                            <p className="text-xs font-medium text-foreground flex items-center gap-1"><Star className="w-3 h-3 text-section-finance" />{p.rating}</p>
                             <p className="text-xs text-muted-foreground">{p.distance.toFixed(1)} km</p>
                             <p className="text-[10px] text-muted-foreground">Cap: {p.capacity} plates</p>
                           </div>
@@ -1198,7 +1198,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                             <tr key={agent.id} className="border-t border-border">
                               <td className="p-2 font-medium text-foreground">{agent.name}</td>
                               <td className="p-2 text-muted-foreground">{agent.vehicle}</td>
-                              <td className="p-2"><span className="flex items-center gap-0.5"><Star className="w-3 h-3 text-amber-500" /> {agent.rating}</span></td>
+                              <td className="p-2"><span className="flex items-center gap-0.5"><Star className="w-3 h-3 text-section-finance" /> {agent.rating}</span></td>
                               <td className="p-2 text-muted-foreground">{agentDeliveries.length}</td>
                               <td className="p-2"><Badge variant={agent.isAvailable ? "default" : "outline"} className="text-[9px]">{agent.isAvailable ? "Available" : "Busy"}</Badge></td>
                             </tr>
@@ -1226,7 +1226,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                     <p className="text-xs text-muted-foreground">Pending / Awaiting</p>
                   </Card>
                   <Card className="p-4 text-center">
-                    <p className="text-2xl font-bold text-amber-500">
+                    <p className="text-2xl font-bold text-section-finance">
                       {respondedFeedbacks.length > 0
                         ? (respondedFeedbacks.reduce((sum, f) => sum + (f.rating || 0), 0) / respondedFeedbacks.length).toFixed(1)
                         : "—"}
@@ -1243,9 +1243,9 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                     const pct = respondedFeedbacks.length > 0 ? (count / respondedFeedbacks.length) * 100 : 0;
                     return (
                       <div key={r} className="flex items-center gap-2 mb-1.5">
-                        <span className="text-xs w-12 text-muted-foreground flex items-center gap-0.5">{r} <Star className="w-3 h-3 text-amber-500 fill-amber-500" /></span>
+                        <span className="text-xs w-12 text-muted-foreground flex items-center gap-0.5">{r} <Star className="w-3 h-3 text-section-finance fill-section-finance" /></span>
                         <div className="flex-1 h-3 bg-secondary rounded-full overflow-hidden">
-                          <div className="h-full bg-amber-500 rounded-full" style={{ width: `${pct}%` }} />
+                          <div className="h-full bg-section-finance rounded-full" style={{ width: `${pct}%` }} />
                         </div>
                         <span className="text-xs text-muted-foreground w-8 text-right">{count}</span>
                       </div>
@@ -1280,7 +1280,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                             <tr key={partner} className="border-t border-border">
                               <td className="p-2 font-medium text-foreground">{partner}</td>
                               <td className="p-2 text-muted-foreground">{pFeedbacks.length}</td>
-                              <td className="p-2"><span className="flex items-center gap-0.5"><Star className="w-3 h-3 text-amber-500" /> {avgRating}</span></td>
+                              <td className="p-2"><span className="flex items-center gap-0.5"><Star className="w-3 h-3 text-section-finance" /> {avgRating}</span></td>
                               <td className="p-2 text-muted-foreground">{responseRate}%</td>
                             </tr>
                           );
@@ -1358,7 +1358,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                               </div>
                             </div>
                             <div className="text-right">
-                              <p className="text-[10px] flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-amber-500" /> {agent.rating}</p>
+                              <p className="text-[10px] flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-section-finance" /> {agent.rating}</p>
                               <a href={`tel:${agent.phone}`} className="text-[10px] text-primary flex items-center gap-0.5"><Phone className="w-2.5 h-2.5" /> Call</a>
                             </div>
                           </div>
