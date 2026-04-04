@@ -1358,7 +1358,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                               </div>
                             </div>
                             <div className="text-right">
-                              <p className="text-[10px] flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-amber-500" /> {agent.rating}</p>
+                              <p className="text-[10px] flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-section-finance" /> {agent.rating}</p>
                               <a href={`tel:${agent.phone}`} className="text-[10px] text-primary flex items-center gap-0.5"><Phone className="w-2.5 h-2.5" /> Call</a>
                             </div>
                           </div>
