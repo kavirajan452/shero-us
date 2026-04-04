@@ -355,7 +355,7 @@ const PartnerPartyOrders = () => {
                             </div>
                             {/* Dispatch */}
                             <div className="p-3 rounded-lg bg-background border border-border shadow-sm">
-                              <Package className="w-5 h-5 text-amber-600 mx-auto mb-1" />
+                              <Package className="w-5 h-5 text-action-dispatch mx-auto mb-1" />
                               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">Dispatch</p>
                               <p className="text-lg font-extrabold text-foreground mt-0.5">{fmt(dispatchTime)}</p>
                               <p className="text-[10px] text-muted-foreground">{travelMins} min travel</p>
