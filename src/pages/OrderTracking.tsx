@@ -398,38 +398,6 @@ const OrderTracking = () => {
           )}
         </section>
 
-        {/* Order Delayed Report — visible after preset prep time expires */}
-        {canReportDelay && !delayReported && (
-          <section className="bg-destructive/5 border border-destructive/20 rounded-2xl p-4 mb-5">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center">
-                <AlertTriangle className="w-5 h-5 text-destructive" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-foreground">Order taking longer than expected?</p>
-                <p className="text-[10px] text-muted-foreground">
-                  Preparation time ({prepTimeMinutes} min) has been exceeded. Report the delay and we'll follow up immediately.
-                </p>
-              </div>
-            </div>
-            <Button
-              className="w-full mt-3 gap-2"
-              variant="destructive"
-              onClick={handleReportDelay}
-            >
-              <AlertTriangle className="w-4 h-4" /> Report Order Delayed
-            </Button>
-          </section>
-        )}
-
-        {delayReported && (
-          <section className="bg-accent/10 border border-accent/20 rounded-2xl p-4 mb-5 text-center">
-            <CheckCircle2 className="w-6 h-6 text-accent mx-auto mb-1" />
-            <p className="text-sm font-semibold text-foreground">Delay Reported</p>
-            <p className="text-[10px] text-muted-foreground">The kitchen and our support team have been notified.</p>
-          </section>
-        )}
-
         {/* Cancel Order */}
         {!isCancelled && order.currentStatus !== "delivered" && order.currentStatus !== "picked_up" && (
           <section className="mb-5">
