@@ -70,6 +70,12 @@ const Checkout = () => {
   const [floorBlock, setFloorBlock] = useState("");
   const [addressExtra, setAddressExtra] = useState("");
   const [zipCode, setZipCode] = useState("");
+
+  // Delivery & Pickup Instructions
+  const [pickupChips, setPickupChips] = useState<string[]>([]);
+  const [pickupCustom, setPickupCustom] = useState("");
+  const [deliveryChips, setDeliveryChips] = useState<string[]>([]);
+  const [deliveryCustom, setDeliveryCustom] = useState("");
   const [city, setCity] = useState("");
   const [customerState, setCustomerState] = useState("");
   const [attempted, setAttempted] = useState(false);
