@@ -342,7 +342,7 @@ const PartyOrders = () => {
     return { breakdown: allBreakdown, totalBoxes, totalCost };
   }, [selectedSessions, sessionMenus]);
 
-  // Distance-based delivery fee (miles): 0-3 → $8, 3-5 → $12, 5-8 → $18, >8 → not serviceable
+  // Distance-based delivery fee (miles): 0-3 → $8, 3-5 → $12, 5-8 → $18, >8 → $25
   const haversineMiles = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
     const R = 3958.8;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -351,7 +351,6 @@ const PartyOrders = () => {
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   };
 
-  const [customerCoords, setCustomerCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [deliveryDistance, setDeliveryDistance] = useState<number | null>(null);
 
   const calculatePartyDeliveryFee = (distanceMiles: number | null): number => {
