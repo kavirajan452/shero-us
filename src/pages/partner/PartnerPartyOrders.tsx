@@ -372,7 +372,7 @@ const PartnerPartyOrders = () => {
                           <th className="text-right py-2 px-2 text-muted-foreground font-medium">{t("party.partner.perPlate")}</th>
                           <th className="text-right py-2 px-2 text-muted-foreground font-medium">{t("party.guests")}</th>
                           <th className="text-right py-2 px-2 text-muted-foreground font-medium">{t("party.partner.totalVol")}</th>
-                          <th className="text-right py-2 px-2 text-muted-foreground font-medium font-bold">{t("party.partner.earnings")} ($)</th>
+                          <th className="text-right py-2 px-2 text-muted-foreground font-medium font-bold">{t("party.partner.earnings")}</th>
                         </tr>
                       </thead>
                       <tbody>
