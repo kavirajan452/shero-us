@@ -42,6 +42,19 @@ const OrderTracking = () => {
 
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - modWindowStart) / 1000);
+      const remaining = Math.max(0, 5 * 60 - elapsed);
+      setModSecondsLeft(remaining);
+      if (remaining <= 0) clearInterval(interval);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [modWindowStart]);
+
+  const modMinutes = Math.floor(modSecondsLeft / 60);
+  const modSecs = modSecondsLeft % 60;
+
+  const handleSubmitModification = () => {
     if (!modDesc.trim()) return;
     addOrderModification({
       orderId: order.orderId,
