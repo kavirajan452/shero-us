@@ -519,7 +519,7 @@ export type SectionFilter = "command" | "finance" | "instant" | "party" | "subsc
 const sectionLabels: Record<string, string> = {
   command: "Command",
   finance: "Finance Books",
-  instant: "Instant Delivery",
+  instant: "Single Meal Order",
   party: "Party Orders",
   subscription: "Subscriptions",
   support: "Support Centre",

@@ -16,7 +16,7 @@ const Navbar = () => {
 
   const navLinks = [
     { to: "/", label: t("nav.home") },
-    { to: "/instant-delivery", label: t("nav.instantDelivery", "Instant Delivery") },
+    { to: "/instant-delivery", label: t("nav.instantDelivery", "Single Meal Order") },
     { to: "/subscriptions", label: t("nav.subscriptions") },
     { to: "/party-orders", label: t("nav.partyOrders") },
     { to: "/food-products", label: t("nav.foodProducts") },

@@ -113,8 +113,8 @@
   "serviceCategories": {
     "title": "ماذا يمكننا أن نفعل لك؟",
     "subtitle": "اختر من مجموعة الطعام المنزلي والخدمات",
-    "instantDelivery": "توصيل فوري",
-    "instantDeliveryDesc": "وجبات منزلية طازجة، توصيل سريع",
+    "instantDelivery": "طلب وجبة فردية",
+    "instantDeliveryDesc": "تُحضّر حسب طلبك & طعام منزلي حقيقي",
     "subscriptions": "الاشتراكات",
     "subscriptionsDesc": "خطط وجبات يومية وأسبوعية وشهرية",
     "partyOrders": "طلبات الحفلات",

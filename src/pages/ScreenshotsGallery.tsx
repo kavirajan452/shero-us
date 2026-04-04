@@ -11,7 +11,7 @@ const allPages = [
   { name: "Auth / Login", path: "/auth" },
   { name: "Profile", path: "/customer" },
   { name: "Subscriptions", path: "/subscriptions" },
-  { name: "Instant Delivery", path: "/instant-delivery" },
+  { name: "Single Meal Order", path: "/instant-delivery" },
   { name: "Kitchen Detail", path: "/instant-delivery/kitchen/1" },
   { name: "Item Detail", path: "/instant-delivery/item/1" },
   { name: "Party Orders", path: "/party-orders" },

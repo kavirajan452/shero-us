@@ -113,8 +113,8 @@
   "serviceCategories": {
     "title": "¿Qué Podemos Hacer por Ti?",
     "subtitle": "Elige de nuestra gama de comida casera y servicios",
-    "instantDelivery": "Entrega Instantánea",
-    "instantDeliveryDesc": "Comida casera fresca, entrega rápida",
+    "instantDelivery": "Pedido de Comida Individual",
+    "instantDeliveryDesc": "Hecho a su pedido & Verdaderamente casero",
     "subscriptions": "Suscripciones",
     "subscriptionsDesc": "Planes de comida diarios, semanales y mensuales",
     "partyOrders": "Pedidos para Fiestas",

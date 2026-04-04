@@ -334,7 +334,7 @@ export default function AdminPayments() {
   
   const verticals = [
     { key: "all", label: "All Verticals" },
-    { key: "instant", label: "Instant Delivery" },
+    { key: "instant", label: "Single Meal Order" },
     { key: "subscription", label: "Subscriptions" },
     { key: "party", label: "Party Orders" },
     { key: "services", label: "Home Services" },
@@ -342,7 +342,7 @@ export default function AdminPayments() {
 
   // Sub-vertical sales/PPP/expense summary
   const verticalSummary = [
-    { key: "instant", label: "Instant Delivery", sales: 485000, ppp: 315250, delivery: 48500, gateway: 9700, overhead: 38800, cm1: 169750, cm15: 130950 },
+    { key: "instant", label: "Single Meal Order", sales: 485000, ppp: 315250, delivery: 48500, gateway: 9700, overhead: 38800, cm1: 169750, cm15: 130950 },
     { key: "subscription", label: "Subscriptions", sales: 672000, ppp: 436800, delivery: 33600, gateway: 13440, overhead: 53760, cm1: 235200, cm15: 181440 },
     { key: "party", label: "Party Orders", sales: 520000, ppp: 338000, delivery: 26000, gateway: 10400, overhead: 41600, cm1: 182000, cm15: 140400 },
     { key: "services", label: "Home Services", sales: 96000, ppp: 62400, delivery: 4800, gateway: 1920, overhead: 7680, cm1: 33600, cm15: 25920 },

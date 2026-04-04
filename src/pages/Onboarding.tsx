@@ -19,7 +19,7 @@ const slides = [
     icon: Truck,
     mascot: mascotWelcome,
     title: "Delivered in 45 mins",
-    subtitle: "Order instant delivery or subscribe for daily tiffins. Breakfast, lunch & dinner covered.",
+    subtitle: "Order single meal order or subscribe for daily tiffins. Breakfast, lunch & dinner covered.",
     gradient: "from-accent/15 to-primary/10",
   },
   {

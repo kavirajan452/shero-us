@@ -41,7 +41,7 @@ const fmtFull = (n: number) => `$${Math.abs(n).toLocaleString("en-US")}`;
 const pct = (n: number, d: number) => d === 0 ? "0%" : `${(n / d * 100).toFixed(1)}%`;
 
 const COLORS = ["hsl(var(--primary))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))"];
-const SV_LABELS: Record<SubVertical, string> = { instant: "Instant Delivery", subscription: "Subscriptions", party: "Party Orders", services: "Home Services", snacks: "Sweets & Snacks", cookery: "Cookery Classes", shero_classes: "Shero Classes" };
+const SV_LABELS: Record<SubVertical, string> = { instant: "Single Meal Order", subscription: "Subscriptions", party: "Party Orders", services: "Home Services", snacks: "Sweets & Snacks", cookery: "Cookery Classes", shero_classes: "Shero Classes" };
 const SV_KEYS: SubVertical[] = ["instant", "subscription", "party", "services", "snacks", "cookery", "shero_classes"];
 
 const months = ["Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar"];
