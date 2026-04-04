@@ -58,6 +58,7 @@ const Footer = () => {
           <Link to="/cookie-policy" className="hover:text-primary-foreground transition-colors">Cookie Policy</Link>
           <Link to="/accessibility" className="hover:text-primary-foreground transition-colors">Accessibility</Link>
           <Link to="/allergen-notice" className="hover:text-primary-foreground transition-colors">Allergen Notice</Link>
+          <Link to="/return-policy" className="hover:text-primary-foreground transition-colors">Return Policy</Link>
           <Link to="/do-not-sell" className="hover:text-primary-foreground transition-colors">Do Not Sell My Info</Link>
         </div>
 

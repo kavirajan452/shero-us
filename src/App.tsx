@@ -39,6 +39,7 @@ import Accessibility from "./pages/legal/Accessibility";
 import AllergenNotice from "./pages/legal/AllergenNotice";
 import DoNotSell from "./pages/legal/DoNotSell";
 import CookiePolicy from "./pages/legal/CookiePolicy";
+import ReturnPolicy from "./pages/legal/ReturnPolicy";
 import PartnerLayout from "./layouts/PartnerLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminLogin from "./pages/AdminLogin";
@@ -181,6 +182,7 @@ const App = () => (
                     <Route path="/allergen-notice" element={<AllergenNotice />} />
                     <Route path="/do-not-sell" element={<DoNotSell />} />
                     <Route path="/cookie-policy" element={<CookiePolicy />} />
+                    <Route path="/return-policy" element={<ReturnPolicy />} />
                     <Route path="/customer" element={<Profile />} />
                     <Route path="/referrals" element={<CustomerReferrals />} />
                     <Route path="/partner" element={<PartnerLayout />}>
