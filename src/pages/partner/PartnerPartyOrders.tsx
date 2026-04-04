@@ -398,7 +398,7 @@ const PartnerPartyOrders = () => {
                                 <td className="py-2 px-2 text-right text-foreground">{row.portionPerPlate}</td>
                                 <td className="py-2 px-2 text-right text-foreground">{row.totalPortions}</td>
                                 <td className="py-2 px-2 text-right text-primary font-semibold">{totalFormatted}</td>
-                                <td className="py-2 px-2 text-right text-foreground font-semibold">${itemPPP.toLocaleString()}</td>
+                                <td className="py-2 px-2 text-right text-foreground font-semibold">{formatPrice(itemPPP)}</td>
                               </tr>
                             );
                           });
