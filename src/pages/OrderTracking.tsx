@@ -13,8 +13,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { addCancellation, CANCELLATION_REASONS } from "@/data/customerCancellations";
 import { addOrderModification } from "@/data/sscOrderModifications";
-import { addDelayComplaint } from "@/data/delayComplaints";
-import { getPrepTimeMinutes } from "@/data/partnerMockData";
 import { toast } from "sonner";
 
 const allStatuses: TrackingStatus[] = [
@@ -41,14 +39,6 @@ const OrderTracking = () => {
   const [modDesc, setModDesc] = useState("");
   const modWindowOpen = modSecondsLeft > 0 && !isCancelled && ["order_placed", "order_confirmed", "preparing"].includes(order.currentStatus);
 
-  // Delay complaint — available after prep time expires
-  const totalItemCount = order.items.reduce((sum, i) => sum + i.qty, 0);
-  const prepTimeMinutes = getPrepTimeMinutes(totalItemCount);
-  const orderPlacedTime = new Date(order.events[0]?.timestamp || order.orderDate).getTime();
-  const [prepElapsedSecs, setPrepElapsedSecs] = useState(0);
-  const prepTimeExpired = prepTimeMinutes > 0 && prepElapsedSecs >= prepTimeMinutes * 60;
-  const canReportDelay = prepTimeExpired && !isCancelled && ["preparing", "rider_assigned", "rider_at_kitchen"].includes(order.currentStatus);
-  const [delayReported, setDelayReported] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -59,30 +49,6 @@ const OrderTracking = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, [modWindowStart]);
-
-  // Track prep time elapsed
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - orderPlacedTime) / 1000);
-      setPrepElapsedSecs(elapsed);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [orderPlacedTime]);
-
-  const handleReportDelay = () => {
-    addDelayComplaint({
-      orderId: order.orderId,
-      customerName: "Customer",
-      customerPhone: "+1 98765 00000",
-      kitchenName: order.kitchenName,
-      partnerName: "Kitchen Partner",
-    });
-    setDelayReported(true);
-    toast.success("Delay reported!", {
-      description: "The kitchen partner and our support team have been notified. We're on it!",
-      duration: 5000,
-    });
-  };
 
   const modMinutes = Math.floor(modSecondsLeft / 60);
   const modSecs = modSecondsLeft % 60;
@@ -431,38 +397,6 @@ const OrderTracking = () => {
             </div>
           )}
         </section>
-
-        {/* Order Delayed Report — visible after preset prep time expires */}
-        {canReportDelay && !delayReported && (
-          <section className="bg-destructive/5 border border-destructive/20 rounded-2xl p-4 mb-5">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center">
-                <AlertTriangle className="w-5 h-5 text-destructive" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-foreground">Order taking longer than expected?</p>
-                <p className="text-[10px] text-muted-foreground">
-                  Preparation time ({prepTimeMinutes} min) has been exceeded. Report the delay and we'll follow up immediately.
-                </p>
-              </div>
-            </div>
-            <Button
-              className="w-full mt-3 gap-2"
-              variant="destructive"
-              onClick={handleReportDelay}
-            >
-              <AlertTriangle className="w-4 h-4" /> Report Order Delayed
-            </Button>
-          </section>
-        )}
-
-        {delayReported && (
-          <section className="bg-accent/10 border border-accent/20 rounded-2xl p-4 mb-5 text-center">
-            <CheckCircle2 className="w-6 h-6 text-accent mx-auto mb-1" />
-            <p className="text-sm font-semibold text-foreground">Delay Reported</p>
-            <p className="text-[10px] text-muted-foreground">The kitchen and our support team have been notified.</p>
-          </section>
-        )}
 
         {/* Cancel Order */}
         {!isCancelled && order.currentStatus !== "delivered" && order.currentStatus !== "picked_up" && (
