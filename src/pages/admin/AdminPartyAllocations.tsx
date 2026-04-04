@@ -1280,7 +1280,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                             <tr key={partner} className="border-t border-border">
                               <td className="p-2 font-medium text-foreground">{partner}</td>
                               <td className="p-2 text-muted-foreground">{pFeedbacks.length}</td>
-                              <td className="p-2"><span className="flex items-center gap-0.5"><Star className="w-3 h-3 text-amber-500" /> {avgRating}</span></td>
+                              <td className="p-2"><span className="flex items-center gap-0.5"><Star className="w-3 h-3 text-section-finance" /> {avgRating}</span></td>
                               <td className="p-2 text-muted-foreground">{responseRate}%</td>
                             </tr>
                           );
