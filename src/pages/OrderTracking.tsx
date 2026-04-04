@@ -330,10 +330,13 @@ const OrderTracking = () => {
                 </p>
               </div>
               <div className="flex gap-2">
-                <button className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center hover:bg-accent/20 transition-colors">
+                <a href={`tel:${order.rider.phone}`} className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center hover:bg-accent/20 transition-colors">
                   <Phone className="w-4 h-4 text-accent" />
-                </button>
-                <button className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors">
+                </a>
+                <button
+                  onClick={() => openWhatsAppSupport(buildSupportMessage({ orderId: order.orderId, issue: "Rider communication query" }))}
+                  className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors"
+                >
                   <MessageCircle className="w-4 h-4 text-primary" />
                 </button>
               </div>
@@ -485,9 +488,9 @@ const OrderTracking = () => {
         <section className="bg-card border border-border rounded-2xl p-4">
           <h2 className="font-semibold text-foreground mb-3 text-sm">Need Help?</h2>
           <div className="grid grid-cols-2 gap-2">
-            <button className="flex items-center gap-2 p-3 rounded-xl bg-secondary hover:bg-secondary/80 transition-colors text-sm text-foreground">
+            <a href={`tel:${order.deliveryPartner.supportPhone}`} className="flex items-center gap-2 p-3 rounded-xl bg-secondary hover:bg-secondary/80 transition-colors text-sm text-foreground">
               <Phone className="w-4 h-4 text-primary" /> Call Support
-            </button>
+            </a>
             <button
               onClick={() => openWhatsAppSupport(buildSupportMessage({ orderId: order.orderId, issue: "Order tracking query" }))}
               className="flex items-center gap-2 p-3 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 transition-colors text-sm text-foreground"

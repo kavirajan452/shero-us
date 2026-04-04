@@ -1,16 +1,14 @@
-import { Search, ShoppingBag, User, MapPin, Menu, X } from "lucide-react";
+import { ShoppingBag, User, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import sheroLogo from "@/assets/shero-logo.png";
 
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { useRegion } from "@/contexts/RegionContext";
 import { useCart } from "@/contexts/CartContext";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { region } = useRegion();
   const { totalItems } = useCart();
   const { t } = useTranslation();
 
@@ -39,11 +37,6 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-        </div>
-
-        <div className="hidden md:flex items-center gap-1 text-sm text-muted-foreground">
-          <MapPin className="w-4 h-4 text-primary" />
-          <span>{region.cities}</span>
         </div>
 
         <div className="flex items-center gap-2">
