@@ -748,7 +748,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-xs font-medium text-foreground flex items-center gap-1"><Star className="w-3 h-3 text-amber-500" />{p.rating}</p>
+                            <p className="text-xs font-medium text-foreground flex items-center gap-1"><Star className="w-3 h-3 text-section-finance" />{p.rating}</p>
                             <p className="text-xs text-muted-foreground">{p.distance.toFixed(1)} km</p>
                             <p className="text-[10px] text-muted-foreground">Cap: {p.capacity} plates</p>
                           </div>
