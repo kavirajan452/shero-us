@@ -2042,7 +2042,7 @@ const PartyOrders = () => {
               {paymentOption === "part" && (
                 <div className="mt-2 p-2 rounded-lg bg-accent/20 border border-accent text-[10px] text-muted-foreground space-y-0.5">
                   <p>✅ Pay {formatPrice(Math.round(totalCosts.total * 0.5))} now (50% advance)</p>
-                  <p>💰 Balance {formatPrice(Math.round(totalCosts.total * 0.5))} due 1 day before the event</p>
+                  <p>💰 Balance {formatPrice(Math.round(totalCosts.total * 0.5))} due 2 days before the event</p>
                   <p>🔔 You'll receive a reminder for balance payment</p>
                 </div>
               )}
