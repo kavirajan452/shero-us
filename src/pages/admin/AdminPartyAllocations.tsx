@@ -1198,7 +1198,7 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
                             <tr key={agent.id} className="border-t border-border">
                               <td className="p-2 font-medium text-foreground">{agent.name}</td>
                               <td className="p-2 text-muted-foreground">{agent.vehicle}</td>
-                              <td className="p-2"><span className="flex items-center gap-0.5"><Star className="w-3 h-3 text-amber-500" /> {agent.rating}</span></td>
+                              <td className="p-2"><span className="flex items-center gap-0.5"><Star className="w-3 h-3 text-section-finance" /> {agent.rating}</span></td>
                               <td className="p-2 text-muted-foreground">{agentDeliveries.length}</td>
                               <td className="p-2"><Badge variant={agent.isAvailable ? "default" : "outline"} className="text-[9px]">{agent.isAvailable ? "Available" : "Busy"}</Badge></td>
                             </tr>
