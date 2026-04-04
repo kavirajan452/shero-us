@@ -407,7 +407,7 @@ const PartnerPartyOrders = () => {
                               {rows}
                               <tr className="border-t-2 border-border bg-secondary/30">
                                 <td colSpan={6} className="py-2.5 px-2 text-right font-bold text-foreground">{t("party.partner.totalEarnings")}</td>
-                                <td className="py-2.5 px-2 text-right text-primary font-bold">${totalPPP.toLocaleString()}</td>
+                                <td className="py-2.5 px-2 text-right text-primary font-bold">{formatPrice(totalPPP)}</td>
                               </tr>
                             </>
                           );
