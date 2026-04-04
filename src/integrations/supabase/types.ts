@@ -1595,8 +1595,12 @@ export type Database = {
       }
       party_orders: {
         Row: {
+          advance_paid: number
           allocated_at: string | null
           allocated_partner_id: string | null
+          balance_due: number
+          cancellation_reason: string | null
+          cancelled_at: string | null
           cooking_instructions: string | null
           created_at: string
           customer_address: string | null
@@ -1605,6 +1609,8 @@ export type Database = {
           customer_lng: number | null
           customer_name: string
           customer_phone: string
+          delivery_distance_miles: number | null
+          delivery_fee: number
           event_date: string
           event_time: string | null
           food_type: string
@@ -1613,6 +1619,9 @@ export type Database = {
           meals: string[] | null
           occasion: string | null
           order_id: string
+          payment_method: string | null
+          payment_status: string
+          refund_status: string | null
           selected_items: string[] | null
           service_type: string
           status: string
@@ -1620,8 +1629,12 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          advance_paid?: number
           allocated_at?: string | null
           allocated_partner_id?: string | null
+          balance_due?: number
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
           cooking_instructions?: string | null
           created_at?: string
           customer_address?: string | null
@@ -1630,6 +1643,8 @@ export type Database = {
           customer_lng?: number | null
           customer_name: string
           customer_phone: string
+          delivery_distance_miles?: number | null
+          delivery_fee?: number
           event_date: string
           event_time?: string | null
           food_type: string
@@ -1638,6 +1653,9 @@ export type Database = {
           meals?: string[] | null
           occasion?: string | null
           order_id: string
+          payment_method?: string | null
+          payment_status?: string
+          refund_status?: string | null
           selected_items?: string[] | null
           service_type?: string
           status?: string
@@ -1645,8 +1663,12 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          advance_paid?: number
           allocated_at?: string | null
           allocated_partner_id?: string | null
+          balance_due?: number
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
           cooking_instructions?: string | null
           created_at?: string
           customer_address?: string | null
@@ -1655,6 +1677,8 @@ export type Database = {
           customer_lng?: number | null
           customer_name?: string
           customer_phone?: string
+          delivery_distance_miles?: number | null
+          delivery_fee?: number
           event_date?: string
           event_time?: string | null
           food_type?: string
@@ -1663,6 +1687,9 @@ export type Database = {
           meals?: string[] | null
           occasion?: string | null
           order_id?: string
+          payment_method?: string | null
+          payment_status?: string
+          refund_status?: string | null
           selected_items?: string[] | null
           service_type?: string
           status?: string
