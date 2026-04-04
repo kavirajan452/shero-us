@@ -1,37 +1,31 @@
 
 
-# Add Delivery & Pickup Instructions to Checkout
+# Add Return & Refund Policy Page
 
-## Overview
-Add two instruction sections to the checkout page so customers can specify how the delivery partner should pick up food from the kitchen and deliver it to their door. These get stored with the order for future delivery partner API integration.
+## What We're Building
+A dedicated **Return & Refund Policy** legal page (`/return-policy`) that clearly states food items cannot be returned due to safety and hygiene regulations, along with the refund scenarios that do apply (quality issues, missing items, cancellations). This is standard for US food businesses.
 
-## Database Change
-Add two columns to `instant_orders`:
-```sql
-ALTER TABLE instant_orders ADD COLUMN delivery_instructions text;
-ALTER TABLE instant_orders ADD COLUMN pickup_instructions text;
-```
+## Changes
 
-## UI Changes — `src/pages/Checkout.tsx`
+### 1. New Page — `src/pages/legal/ReturnPolicy.tsx`
+- Same layout as existing legal pages (back button, heading, last-updated date, prose sections)
+- Sections covering:
+  1. **No Physical Returns** — food cannot be returned due to FDA food safety and hygiene standards
+  2. **Quality Guarantee** — if food arrives damaged, incorrect, or with quality issues, customer can report within 1 hour for credit/refund
+  3. **Missing or Incorrect Items** — report within 1 hour, refund or re-delivery at Shero's discretion
+  4. **Cancellation Refunds** — reference existing policy (before prep = full refund; party orders = 72h cutoff)
+  5. **Refund Processing** — 5–10 business days to original payment method; wallet credits instant
+  6. **Non-Refundable Scenarios** — consumed food, late complaints (>1hr), change of mind after delivery
+  7. **Contact** — support@shero.us for disputes
 
-Add a new section after the Delivery slot picker (after line ~451), before Tips:
+### 2. Route — `src/App.tsx`
+- Import `ReturnPolicy` and add `<Route path="/return-policy" …/>`
 
-**Pickup Instructions** (for driver at the kitchen):
-- Preset chips: "Use back entrance", "Ask at counter", "Ring bell at gate", "Pick from my door"
-- Optional custom text input (max 200 chars)
+### 3. Footer Link — `src/components/Footer.tsx`
+- Add "Return Policy" link in the legal links row alongside Privacy Policy, Terms, etc.
 
-**Delivery Instructions** (for driver at customer's address):
-- Preset chips: "Leave at door", "Hand it to me", "Do not ring bell", "Call on arrival"
-- Optional custom text input (max 200 chars)
-
-## State & Data Flow
-- Two new state variables: `deliveryInstructions`, `pickupInstructions`
-- Chip toggle appends/removes preset text (comma-separated)
-- Custom text field appends to the string
-- Both values passed into `createOrder.mutate()` and `saveIncomplete.mutate()` in `handlePaymentSuccess` / `handlePaymentFailure`
-
-## Files to Change
-1. **Database migration** — add `delivery_instructions` and `pickup_instructions` columns
-2. **`src/pages/Checkout.tsx`** — add instruction UI + state + pass to order mutations
-3. **`src/hooks/useSupabaseData.ts`** — verify `useCreateInstantOrder` accepts the new fields (insert type auto-generated from schema)
+### Technical Notes
+- Follows exact same component pattern as `TermsOfService.tsx`
+- No database changes needed
+- No new dependencies
 
