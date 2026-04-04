@@ -342,7 +342,27 @@ const PartyOrders = () => {
     return { breakdown: allBreakdown, totalBoxes, totalCost };
   }, [selectedSessions, sessionMenus]);
 
-  const DELIVERY_FEE = 500;
+  // Distance-based delivery fee (miles): 0-3 → $8, 3-5 → $12, 5-8 → $18, >8 → not serviceable
+  const haversineMiles = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    const R = 3958.8;
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  };
+
+  const [customerCoords, setCustomerCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [deliveryDistance, setDeliveryDistance] = useState<number | null>(null);
+
+  const calculatePartyDeliveryFee = (distanceMiles: number | null): number => {
+    if (distanceMiles === null) return 12; // default mid-tier
+    if (distanceMiles <= 3) return 8;
+    if (distanceMiles <= 5) return 12;
+    if (distanceMiles <= 8) return 18;
+    return 25; // extended range for party orders
+  };
+
+  const DELIVERY_FEE = calculatePartyDeliveryFee(deliveryDistance);
 
   const totalCosts = useMemo(() => {
     let totalMeal = 0, totalAddOn = 0, totalItems = 0;
