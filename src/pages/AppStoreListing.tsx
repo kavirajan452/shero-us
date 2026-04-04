@@ -104,7 +104,7 @@ const AppStoreListing = () => {
         <h2 className="text-sm font-bold text-foreground mb-2">What's New</h2>
         <p className="text-xs text-muted-foreground">Version 3.2.1 • Mar 2026</p>
         <ul className="text-sm text-muted-foreground mt-2 space-y-1">
-          <li>• Instant delivery in 45 mins</li>
+          <li>• Single Meal Order in 45 mins</li>
           <li>• Shero Classes — yoga, cooking & more</li>
           <li>• Party order tracking</li>
         </ul>

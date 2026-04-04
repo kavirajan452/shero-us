@@ -56,7 +56,7 @@ export const appTrainingConfigs: Record<string, InteractiveTrainingConfig> = {
           question: "How many order types does the Shero platform support?",
           options: ["2 — Instant & Subscription", "3 — Instant, Subscription & Party", "4 — Including Services", "1 — Only Instant"],
           correctIndex: 1,
-          explanation: "Shero supports Instant delivery, Subscription meals, and Party/bulk orders.",
+          explanation: "Shero supports Single Meal Order, Subscription meals, and Party/bulk orders.",
         },
       },
       {

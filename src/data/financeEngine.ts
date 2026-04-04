@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════
 // SHERO Finance Engine — US GAAP-Standard Double-Entry Bookkeeping
-// Covers: Subscriptions, Party Orders, Instant Delivery, Services
+// Covers: Subscriptions, Party Orders, Single Meal Order, Services
 // Books: Day Book, Cash Book, Bank Book, Sales Register, Purchase Register,
 //        Journal Register, Trial Balance, P&L Statement, Ledger
 // ═══════════════════════════════════════════════════════════════════════
@@ -122,7 +122,7 @@ export type LedgerAccount =
 export const accountMeta: Record<LedgerAccount, { label: string; group: LedgerGroup; nature: "Dr" | "Cr" }> = {
   // INCOME — Direct
   sales_meal_subscription:    { label: "Sales A/c — Meal Subscriptions",    group: "income_direct", nature: "Cr" },
-  sales_meal_instant:         { label: "Sales A/c — Instant Delivery",      group: "income_direct", nature: "Cr" },
+  sales_meal_instant:         { label: "Sales A/c — Single Meal Order",      group: "income_direct", nature: "Cr" },
   sales_meal_party:           { label: "Sales A/c — Party Orders",          group: "income_direct", nature: "Cr" },
   sales_service_booking:      { label: "Sales A/c — Service Bookings",      group: "income_direct", nature: "Cr" },
   sales_delivery_fee:         { label: "Sales A/c — Delivery Fees",         group: "income_direct", nature: "Cr" },
@@ -575,7 +575,7 @@ export function generateInstantVouchers(): Voucher[] {
 
   const i1 = vid("SLS");
   v.push({ id: i1, type: "sales", date: "2026-03-15", trigger: "instant_order_placed", referenceId: "INS-7801", partyName: "Diana R.", amount: 380, status: "posted", subVertical: "instant",
-    narration: "Chicken Bowl + Side Salad — instant delivery",
+    narration: "Chicken Bowl + Side Salad — single meal order",
     entries: [
       entry(i1, "sales", "instant_order_placed", "accounts_receivable", 380, 0, "Order receivable", "INS-7801", "instant", "2026-03-15"),
       entry(i1, "sales", "instant_order_placed", "sales_meal_instant", 0, 310, "Food MRP (excl tax + delivery)", "INS-7801", "instant", "2026-03-15"),
@@ -946,7 +946,7 @@ export function generatePartyPL(): PLLineItem[] {
 export function generateInstantPL(): PLLineItem[] {
   return [
     { label: "REVENUE", amount: 0, type: "header" },
-    { label: "Sales — Instant Delivery (Food)", amount: 385000, type: "revenue", indent: 1 },
+    { label: "Sales — Single Meal Order (Food)", amount: 385000, type: "revenue", indent: 1 },
     { label: "Sales — Delivery Fees", amount: 52500, type: "revenue", indent: 1 },
     { label: "Sales — Packaging Charges", amount: 28200, type: "revenue", indent: 1 },
     { label: "Sales — Surge Pricing", amount: 18500, type: "revenue", indent: 1 },
@@ -1186,7 +1186,7 @@ export const financialGaps: FinancialGap[] = [
   { id: "FG-004", category: "reconciliation", severity: "high", title: "Overdue Sundry Debtors > 7 Days", description: "$32,325 receivable overdue from 3 customers across sub-verticals.", impact: "Cash collection delay, working capital stress", suggestion: "Auto-SMS/email reminder > 3 days overdue; escalate > 7 days to Team Leader", subVertical: "all" },
   { id: "FG-005", category: "expense_untracked", severity: "high", title: "Party Advances Not Parked as Liability", description: "Advances received (50%) recognized as revenue immediately instead of Advance from Customer.", impact: "Revenue recognized before service delivery", suggestion: "Receipt → Cr Advance from Customer; On delivery → Journal to clear advance vs receivable", subVertical: "party" },
   { id: "FG-006", category: "compliance", severity: "high", title: "TDS Not Deducted on All Partner Payouts", description: "Withholding 1% under Sec 194C mandatory on all PPP payouts > $30,000/year. Only 40% partners have Withholding deducted.", impact: "Non-compliance penalty risk", suggestion: "Auto-deduct TDS on all Payment vouchers; maintain Withholding Tax Payable ledger", subVertical: "all" },
-  { id: "FG-007", category: "revenue_leakage", severity: "medium", title: "Instant Delivery Surge Not Tracked Separately", description: "Surge charges mixed with food revenue. Cannot analyze surge contribution.", impact: "Revenue analysis incomplete", suggestion: "Separate Sales — Surge Pricing ledger; auto-post on surge orders", subVertical: "instant" },
+  { id: "FG-007", category: "revenue_leakage", severity: "medium", title: "Single Meal Order Surge Not Tracked Separately", description: "Surge charges mixed with food revenue. Cannot analyze surge contribution.", impact: "Revenue analysis incomplete", suggestion: "Separate Sales — Surge Pricing ledger; auto-post on surge orders", subVertical: "instant" },
   { id: "FG-008", category: "expense_untracked", severity: "medium", title: "Delivery Return Costs Untracked", description: "Failed deliveries incur return costs not recorded. Estimated $3,200/month.", impact: "Hidden expense", suggestion: "Track delivery failures; Journal return costs to Delivery Return account", subVertical: "all" },
   { id: "FG-009", category: "reconciliation", severity: "medium", title: "Partner Settlement Mismatch > 7 Days", description: "2 partners show outstanding payables > 7 days past agreed settlement date.", impact: "Partner relationship risk", suggestion: "Weekly auto-reconciliation; flag overdue settlements", subVertical: "all" },
   { id: "FG-010", category: "tax_gap", severity: "high", title: "Services Tax vs Food Tax Mixed", description: "Service bookings tax not separated from food tax. Risk of under-reporting.", impact: "Mixed tax rates = wrong state filing", suggestion: "Maintain separate Sales Tax ledgers by category", subVertical: "services" },

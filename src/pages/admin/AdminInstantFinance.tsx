@@ -72,7 +72,7 @@ export default function AdminInstantFinance() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Instant Delivery Finance</h1>
+          <h1 className="text-2xl font-bold text-foreground">Single Meal Order Finance</h1>
           <p className="text-sm text-muted-foreground mt-1">Tally-Standard Books — P&L, Trial Balance, Registers, Vouchers & Ledger</p>
         </div>
         <div className="flex items-center gap-2">
@@ -129,7 +129,7 @@ export default function AdminInstantFinance() {
         <TabsContent value="pl" className="space-y-4 mt-4">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-semibold">Profit & Loss A/c — Instant Delivery Sub-Vertical</CardTitle>
+              <CardTitle className="text-sm font-semibold">Profit & Loss A/c — Single Meal Order Sub-Vertical</CardTitle>
               <p className="text-[10px] text-muted-foreground">Surge pricing as revenue; cancelled orders fully reversed; CM1→CM1.5</p>
             </CardHeader>
             <CardContent>
