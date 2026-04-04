@@ -117,8 +117,18 @@ const PartnerPartyOrders = () => {
   };
 
   const handleFoodReady = (order: any) => {
+    // Payment verification gate — block if not fully paid
+    const paymentStatus = order.payment_status || "pending";
+    if (paymentStatus !== "paid" && paymentStatus !== "advance_paid") {
+      toast({
+        title: "⚠️ Payment Not Verified",
+        description: "Cannot mark food ready — payment has not been received. Contact admin.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setOrderStates((prev) => ({ ...prev, [order.id]: "preparing" }));
-    // Update DB status
     updateOrder.mutate({ id: order.id, updates: { status: "preparing" } });
     markFoodReady(
       order.id,
@@ -134,7 +144,6 @@ const PartnerPartyOrders = () => {
       order.eventDate,
       order.eventTime
     );
-    // Generate invoice on food ready
     createInvoice({
       orderId: order.orderId,
       orderType: order.serviceType === "combo-meal-box" ? "party_combo" : "party_bulk",
@@ -143,7 +152,7 @@ const PartnerPartyOrders = () => {
       items: order.selectedItems.map((item: string) => ({ name: item, qty: `${order.guestCount} pax`, amount: 0 })),
       subtotal: order.totalAmount * 0.85,
       taxAmount: order.totalAmount * 0.05,
-      deliveryFee: 500,
+      deliveryFee: order.delivery_fee || 12,
       packingCharges: 0,
       platformFee: 0,
       discount: 0,
