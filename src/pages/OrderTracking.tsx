@@ -40,53 +40,8 @@ const OrderTracking = () => {
   const [modDesc, setModDesc] = useState("");
   const modWindowOpen = modSecondsLeft > 0 && !isCancelled && ["order_placed", "order_confirmed", "preparing"].includes(order.currentStatus);
 
-  // Delay complaint — available after prep time expires
-  const totalItemCount = order.items.reduce((sum, i) => sum + i.qty, 0);
-  const prepTimeMinutes = getPrepTimeMinutes(totalItemCount);
-  const orderPlacedTime = new Date(order.events[0]?.timestamp || order.orderDate).getTime();
-  const [prepElapsedSecs, setPrepElapsedSecs] = useState(0);
-  const prepTimeExpired = prepTimeMinutes > 0 && prepElapsedSecs >= prepTimeMinutes * 60;
-  const canReportDelay = prepTimeExpired && !isCancelled && ["preparing", "rider_assigned", "rider_at_kitchen"].includes(order.currentStatus);
-  const [delayReported, setDelayReported] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - modWindowStart) / 1000);
-      const remaining = Math.max(0, 5 * 60 - elapsed);
-      setModSecondsLeft(remaining);
-      if (remaining <= 0) clearInterval(interval);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [modWindowStart]);
-
-  // Track prep time elapsed
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - orderPlacedTime) / 1000);
-      setPrepElapsedSecs(elapsed);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [orderPlacedTime]);
-
-  const handleReportDelay = () => {
-    addDelayComplaint({
-      orderId: order.orderId,
-      customerName: "Customer",
-      customerPhone: "+1 98765 00000",
-      kitchenName: order.kitchenName,
-      partnerName: "Kitchen Partner",
-    });
-    setDelayReported(true);
-    toast.success("Delay reported!", {
-      description: "The kitchen partner and our support team have been notified. We're on it!",
-      duration: 5000,
-    });
-  };
-
-  const modMinutes = Math.floor(modSecondsLeft / 60);
-  const modSecs = modSecondsLeft % 60;
-
-  const handleSubmitModification = () => {
     if (!modDesc.trim()) return;
     addOrderModification({
       orderId: order.orderId,
