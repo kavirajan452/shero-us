@@ -136,7 +136,7 @@ Deno.serve(async (req) => {
 
         // Send expired notification
         const messageTemplate =
-          settings.notification_messages?.expired || "₹{amount} has expired from your wallet.";
+          settings.notification_messages?.expired || "${amount} has expired from your wallet.";
         const message = messageTemplate.replace("{amount}", String(credit.remaining_amount));
 
         await supabase.from("wallet_expiry_notifications").insert({

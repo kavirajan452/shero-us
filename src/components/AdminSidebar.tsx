@@ -46,7 +46,7 @@ const financeItems = [
   { title: "Broadcast", url: "/admin/finance-comms", icon: Megaphone },
 ];
 
-// 3. INSTANT DELIVERY — Ops Managers, TLs, Executives
+// 3. SINGLE MEAL ORDER — Ops Managers, TLs, Executives
 const instantItems = [
   { title: "Dashboard", url: "/admin/delivery-analytics", icon: LayoutDashboard },
   { title: "Order Management", url: "/admin/orders", icon: ClipboardList },
