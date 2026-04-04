@@ -70,6 +70,12 @@ const Checkout = () => {
   const [floorBlock, setFloorBlock] = useState("");
   const [addressExtra, setAddressExtra] = useState("");
   const [zipCode, setZipCode] = useState("");
+
+  // Delivery & Pickup Instructions
+  const [pickupChips, setPickupChips] = useState<string[]>([]);
+  const [pickupCustom, setPickupCustom] = useState("");
+  const [deliveryChips, setDeliveryChips] = useState<string[]>([]);
+  const [deliveryCustom, setDeliveryCustom] = useState("");
   const [city, setCity] = useState("");
   const [customerState, setCustomerState] = useState("");
   const [attempted, setAttempted] = useState(false);
@@ -169,8 +175,18 @@ const Checkout = () => {
 
   const { toast } = useToast();
 
+  const buildPickupInstructions = () => {
+    const parts = [...pickupChips];
+    if (pickupCustom.trim()) parts.push(pickupCustom.trim());
+    return parts.length > 0 ? parts.join(", ") : undefined;
+  };
+  const buildDeliveryInstructions = () => {
+    const parts = [...deliveryChips];
+    if (deliveryCustom.trim()) parts.push(deliveryCustom.trim());
+    return parts.length > 0 ? parts.join(", ") : undefined;
+  };
+
   const handlePaymentSuccess = (method?: PaymentMethod) => {
-    // Save order to database
     createOrder.mutate({
       order_code: `SH-INS-${Date.now().toString(36).toUpperCase()}`,
       customer_name: name,
@@ -192,6 +208,8 @@ const Checkout = () => {
       payment_method: method || "online",
       payment_status: "paid",
       status: "new",
+      pickup_instructions: buildPickupInstructions(),
+      delivery_instructions: buildDeliveryInstructions(),
     });
     if (walletUsable > 0) {
       spendOnPurchase(walletUsable, subtotalWithFees);
@@ -448,6 +466,57 @@ const Checkout = () => {
               )}
               {attempted && missingSlot && <p className="text-[11px] text-destructive">Please select a delivery slot</p>}
             </div>
+          </section>
+        )}
+
+        {/* Pickup & Delivery Instructions */}
+        {!isSnacksOnly && !isNotServiceable && (
+          <section className="bg-card border border-border rounded-2xl p-5 mb-5">
+            <h2 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+              <Package className="w-4 h-4 text-primary" /> Pickup Instructions
+            </h2>
+            <p className="text-xs text-muted-foreground mb-3">For the delivery driver at the kitchen</p>
+            <div className="flex gap-2 flex-wrap mb-2">
+              {["Use back entrance", "Ask at counter", "Ring bell at gate", "Pick from my door"].map((chip) => (
+                <button
+                  key={chip}
+                  type="button"
+                  onClick={() => setPickupChips(prev => prev.includes(chip) ? prev.filter(c => c !== chip) : [...prev, chip])}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${pickupChips.includes(chip) ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground border border-border hover:border-primary/30"}`}
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+            <input
+              value={pickupCustom}
+              onChange={(e) => setPickupCustom(e.target.value.slice(0, 200))}
+              placeholder="Other instructions (optional)"
+              className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm outline-none focus:border-primary transition-colors"
+            />
+
+            <h2 className="font-semibold text-foreground mb-3 mt-5 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-primary" /> Delivery Instructions
+            </h2>
+            <p className="text-xs text-muted-foreground mb-3">For the delivery driver at your address</p>
+            <div className="flex gap-2 flex-wrap mb-2">
+              {["Leave at door", "Hand it to me", "Do not ring bell", "Call on arrival"].map((chip) => (
+                <button
+                  key={chip}
+                  type="button"
+                  onClick={() => setDeliveryChips(prev => prev.includes(chip) ? prev.filter(c => c !== chip) : [...prev, chip])}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${deliveryChips.includes(chip) ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground border border-border hover:border-primary/30"}`}
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+            <input
+              value={deliveryCustom}
+              onChange={(e) => setDeliveryCustom(e.target.value.slice(0, 200))}
+              placeholder="Other instructions (optional)"
+              className="w-full px-4 py-2.5 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground text-sm outline-none focus:border-primary transition-colors"
+            />
           </section>
         )}
 

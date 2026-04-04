@@ -870,6 +870,7 @@ export type Database = {
           customer_phone: string
           delivered_at: string | null
           delivery_fee: number
+          delivery_instructions: string | null
           delivery_slot: string | null
           delivery_type: string
           discount: number
@@ -884,6 +885,7 @@ export type Database = {
           payment_method: string | null
           payment_status: string
           picked_up_at: string | null
+          pickup_instructions: string | null
           platform_fee: number
           ready_at: string | null
           rejected_at: string | null
@@ -906,6 +908,7 @@ export type Database = {
           customer_phone: string
           delivered_at?: string | null
           delivery_fee?: number
+          delivery_instructions?: string | null
           delivery_slot?: string | null
           delivery_type?: string
           discount?: number
@@ -920,6 +923,7 @@ export type Database = {
           payment_method?: string | null
           payment_status?: string
           picked_up_at?: string | null
+          pickup_instructions?: string | null
           platform_fee?: number
           ready_at?: string | null
           rejected_at?: string | null
@@ -942,6 +946,7 @@ export type Database = {
           customer_phone?: string
           delivered_at?: string | null
           delivery_fee?: number
+          delivery_instructions?: string | null
           delivery_slot?: string | null
           delivery_type?: string
           discount?: number
@@ -956,6 +961,7 @@ export type Database = {
           payment_method?: string | null
           payment_status?: string
           picked_up_at?: string | null
+          pickup_instructions?: string | null
           platform_fee?: number
           ready_at?: string | null
           rejected_at?: string | null
