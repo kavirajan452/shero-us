@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Phone, MessageCircle, Shield, Clock, MapPin, Star, ChevronDown, ChevronUp, Package, Navigation, XCircle, Edit3, Send, Timer, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Phone, MessageCircle, Shield, Clock, MapPin, Star, ChevronDown, ChevronUp, Package, Navigation, XCircle, AlertTriangle, Edit3, Send, Timer, CheckCircle2 } from "lucide-react";
 import { openWhatsAppSupport, buildSupportMessage } from "@/utils/whatsapp";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
