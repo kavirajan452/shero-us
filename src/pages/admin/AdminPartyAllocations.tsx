@@ -173,50 +173,22 @@ const AdminPartyAllocations = ({ embedded = false }: { embedded?: boolean }) => 
   const [allocationMode, setAllocationMode] = useState<AllocationMode>("manual");
   const [autoProcessing, setAutoProcessing] = useState(false);
   const autoTriggeredRef = useRef<string | null>(null);
-  const { data: dbEscalations = [] } = useAllocationEscalations();
-  const escalations = dbEscalations.map((e: any) => ({
-    ...e, orderId: e.order_id, orderDisplayId: e.order_display_id, customerName: e.customer_name,
-    guestCount: e.guest_count, eventDate: e.event_date, rejectedBy: e.rejected_by || [],
-    rejectionReasons: e.rejection_reasons || {}, escalatedAt: e.escalated_at, resolvedBy: e.resolved_by,
-    resolvedAt: e.resolved_at, refundAmount: e.refund_amount, refundType: e.refund_type,
-  }));
-  const { data: dbLogs = [] } = useAllocationLogs();
-  const logs = dbLogs.map((l: any) => ({
-    ...l, orderId: l.order_id, orderDisplayId: l.order_display_id, customerName: l.customer_name,
-    partnerId: l.partner_id, partnerName: l.partner_name, allocatedAt: l.allocated_at,
-    rejectionReason: l.rejection_reason, autoAttempt: l.auto_attempt,
-  }));
-  const createAllocationLog = useCreateAllocationLog();
-  const createEscalation = useCreateEscalation();
-  const resolveEscalationMut = useResolveEscalation();
-  const [resolveDialog, setResolveDialog] = useState<any | null>(null);
+  const [escalations, setEscalations] = useState<AllocationEscalation[]>(getEscalations());
+  const [logs, setLogs] = useState<AllocationLog[]>(getAllocationLogs());
+  const [resolveDialog, setResolveDialog] = useState<AllocationEscalation | null>(null);
   const [resolveAction, setResolveAction] = useState<"reallocate" | "cancel">("reallocate");
   const [resolveNotes, setResolveNotes] = useState("");
   const [refundType, setRefundType] = useState<"full" | "partial">("full");
   const [refundAmount, setRefundAmount] = useState(0);
   const [reportsSubTab, setReportsSubTab] = useState("overview");
-
-  // Delivery tracking from DB
-  const { data: dbDeliveryRecords = [] } = useDeliveryTracking();
-  const deliveryRecords = dbDeliveryRecords;
-  const updateDeliveryTracking = useUpdateDeliveryTracking();
-  const createDeliveryTracking = useCreateDeliveryTracking();
+  const [deliveryRecords, setDeliveryRecords] = useState<DeliveryRecord[]>(getDeliveryRecords());
+  const [deliveryLogsList, setDeliveryLogsList] = useState<DeliveryLogType[]>(getDeliveryLogs());
   const [deliverySubTab, setDeliverySubTab] = useState("food_ready");
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
-  // Static agent list for now — will be dynamic when delivery API integrated
-  const agents = [
-    { id: "agent-1", name: "Alex Johnson", phone: "+1-555-0101", vehicleType: "Car", available: true },
-    { id: "agent-2", name: "Maria Garcia", phone: "+1-555-0102", vehicleType: "Van", available: true },
-    { id: "agent-3", name: "David Wilson", phone: "+1-555-0103", vehicleType: "Truck", available: false },
-  ];
-
-  // Customer feedback from DB
-  const { data: dbFeedbacks = [] } = useCustomerFeedback();
-  const feedbacks = dbFeedbacks;
-  const updateFeedback = useUpdateFeedback();
-  const createFeedbackRequest = useCreateFeedbackRequest();
+  const agents = getAvailableAgents();
+  const [feedbacks, setFeedbacks] = useState<CustomerFeedback[]>(getFeedbackRecords());
   const [feedbackSubTab, setFeedbackSubTab] = useState("pending_send");
-  const [feedbackResponseDialog, setFeedbackResponseDialog] = useState<any | null>(null);
+  const [feedbackResponseDialog, setFeedbackResponseDialog] = useState<CustomerFeedback | null>(null);
   const [feedbackRating, setFeedbackRating] = useState(5);
   const [feedbackComment, setFeedbackComment] = useState("");
 
