@@ -2016,7 +2016,7 @@ const PartyOrders = () => {
                 )}
                 <div className="flex justify-between"><span className="text-muted-foreground">🚚 Delivery</span><span className="text-foreground">{formatPrice(totalCosts.deliveryFee)}</span></div>
                 {totalCosts.discount > 0 && (
-                  <div className="flex justify-between text-green-600 dark:text-green-400"><span>🏷️ Discount</span><span>-{formatPrice(totalCosts.discount)}</span></div>
+                  <div className="flex justify-between text-action-done"><span>🏷️ Discount</span><span>-{formatPrice(totalCosts.discount)}</span></div>
                 )}
                 <div className="flex justify-between"><span className="text-muted-foreground">{region.taxLabel}</span><span className="text-foreground">{formatPrice(Math.round(totalCosts.tax))}</span></div>
                 <div className="border-t border-border pt-1.5 flex justify-between font-bold text-sm">
