@@ -477,7 +477,66 @@ export function useDeliveryTracking(orderId?: string) {
   });
 }
 
-// ═══ MENU ITEMS (catalog) ═══
+export function useUpdateDeliveryTracking() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, updates }: { id: string; updates: any }) => {
+      const { data, error } = await supabase.from("delivery_tracking").update(updates).eq("id", id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["delivery_tracking"] }),
+  });
+}
+
+export function useCreateDeliveryTracking() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (record: any) => {
+      const { data, error } = await supabase.from("delivery_tracking").insert(record).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["delivery_tracking"] }),
+  });
+}
+
+export function useCreateAllocationLog() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (log: any) => {
+      const { data, error } = await supabase.from("allocation_logs").insert(log).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["allocation_logs"] }),
+  });
+}
+
+export function useCreateEscalation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (escalation: any) => {
+      const { data, error } = await supabase.from("allocation_escalations").insert(escalation).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["allocation_escalations"] }),
+  });
+}
+
+export function useCreateFeedbackRequest() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (feedback: any) => {
+      const { data, error } = await supabase.from("customer_feedback").insert(feedback).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["customer_feedback"] }),
+  });
+}
+
 export function useMenuItems(cuisine?: string) {
   return useQuery({
     queryKey: ["menu_items", cuisine],
