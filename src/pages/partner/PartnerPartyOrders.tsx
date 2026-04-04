@@ -223,8 +223,8 @@ const PartnerPartyOrders = () => {
                   </div>
 
                   {order.cookingInstructions && (
-                    <div className="mt-2 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-600">
-                      <p className="text-[10px] font-bold text-amber-800 dark:text-amber-300 mb-0.5">⚠️ COOKING INSTRUCTIONS</p>
+                    <div className="mt-2 p-2 rounded-lg bg-action-cook/10 border border-action-cook/30">
+                      <p className="text-[10px] font-bold text-action-cook mb-0.5">⚠️ COOKING INSTRUCTIONS</p>
                       <p className="text-[11px] text-foreground leading-snug line-clamp-2">{order.cookingInstructions}</p>
                     </div>
                   )}
