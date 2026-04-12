@@ -68,7 +68,7 @@ The `app/` directory contains thin wrapper files — each one simply re-exports 
 
 ## Quick Start (web)
 
-**Requirements:** Node.js ≥ 18, npm ≥ 9
+**Requirements:** Node.js ≥ 18, npm ≥ 9, [Supabase CLI](https://supabase.com/docs/guides/cli)
 
 ```bash
 # 1. Clone the repo
@@ -82,10 +82,66 @@ npm install
 cp .env.local.example .env.local
 # → fill in NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 
-# 4. Start the development server
+# 4. Push all database migrations to your Supabase project
+#    (required on first run — this creates all tables)
+npx supabase link --project-ref YOUR_PROJECT_REF
+npx supabase db push
+
+# 5. Start the development server
 npm run dev
 # → opens at http://localhost:3000
 ```
+
+---
+
+## Supabase Setup (Database Tables)
+
+> **Important:** If you see `404` errors in the browser console for Supabase REST API calls (e.g. `screen_content`, `promotions`, `kitchen_partners`, `instant_menu_items`, etc.), it means the database migrations have not been applied to your Supabase project yet.
+
+### Step-by-step
+
+1. **Install the Supabase CLI** (if not already):
+   ```bash
+   npm install -g supabase
+   ```
+
+2. **Log in:**
+   ```bash
+   npx supabase login
+   ```
+
+3. **Link your project** (find your `project-ref` in the Supabase Dashboard URL — it's the part before `.supabase.co`):
+   ```bash
+   npx supabase link --project-ref xdprzxmtudsmwsnwabec
+   ```
+
+4. **Push all migrations:**
+   ```bash
+   npx supabase db push
+   ```
+   This runs all SQL files under `supabase/migrations/` in order and creates every required table.
+
+5. **Seed initial data** (optional — adds demo kitchen partners, menu items, promotions, etc.):
+   ```bash
+   npx supabase db seed
+   ```
+
+### Tables created by migrations
+
+| Table | Description |
+|---|---|
+| `profiles`, `user_roles` | Auth & RBAC |
+| `party_orders`, `subscription_leads`, `party_leads` | Orders |
+| `kitchen_partners`, `kitchen_partner_locations` | Instant delivery kitchens |
+| `instant_menu_items`, `kitchen_categories` | Kitchen menus |
+| `screen_content` | CMS — per-screen text/image content |
+| `promotions` | Banner/offer cards shown on home screen |
+| `app_config` | Key-value runtime configuration |
+| `snack_products`, `snack_orders` | Sweets & Snacks vertical |
+| `subscription_plans`, `subscription_customers` | Subscriptions |
+| `cookery_classes`, `shero_classes`, `service_items` | Classes & Services |
+| `invoices`, `ledger_entries`, `wallet_transactions` | Finance |
+| `customer_referrals`, `area_leads` | Growth |
 
 ---
 
@@ -271,6 +327,46 @@ The project was migrated from **Vite 5 + React Router 6** to **Next.js 15 App Ro
 | Layouts | `<Outlet />` from React Router → `{children}` prop in Next.js layouts |
 | react-router-dom | All imports aliased to `src/lib/router-compat.tsx` — no changes needed in existing files |
 | Context providers | Extracted from `App.tsx` into `src/components/Providers.tsx` |
+| Image imports | webpack override in `next.config.mjs` makes `import foo from './foo.jpg'` return a URL string (not a `StaticImageData` object), preserving Vite-compatible `<img src={foo}>` usage |
 | next version | **15.5.15** — patches RSC deserialization DoS CVEs present in 14.x |
 
 The original `vite.config.ts`, `index.html`, and `src/App.tsx` are kept in the repository for reference but are **not used** by the running application.
+
+---
+
+## Troubleshooting
+
+### Images not loading (blank / alt-text only)
+
+**Symptom:** Category card images, the logo, or mascot images show only alt-text.
+
+**Cause:** Next.js 13+ wraps static image imports in a `StaticImageData` object `{ src, width, height }`. When passed directly to an `<img>` element's `src` attribute, the browser receives `[object Object]` as the URL and cannot load the image.
+
+**Fix (already applied):** `next.config.mjs` overrides the `next-image-loader` webpack rule with `asset/resource` so all image imports return plain URL strings — exactly as Vite does. No changes are needed in any component.
+
+---
+
+### Supabase REST API 404 errors
+
+**Symptom:** Browser console shows errors like:
+```
+xdprzxmtudsmwsnwabec.supabase.co/rest/v1/screen_content … 404
+xdprzxmtudsmwsnwabec.supabase.co/rest/v1/kitchen_partners … 404
+```
+
+**Cause:** The database migrations have not been applied to the Supabase project. Supabase returns 404 (not 403) when a table doesn't exist.
+
+**Fix:** Run the migrations (see [Supabase Setup](#supabase-setup-database-tables) above):
+```bash
+npx supabase link --project-ref YOUR_PROJECT_REF
+npx supabase db push
+```
+
+---
+
+### `[object Object]` 500 error
+
+**Symptom:** Browser console shows `[object%20Object]:1 Failed to load resource: 500`.
+
+**Cause:** Same as the image issue above — an image `StaticImageData` object was passed as a URL. Fixed by the `next.config.mjs` webpack override.
+
