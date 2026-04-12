@@ -1,12 +1,13 @@
+'use client';
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import { getAdminRole, getRoleConfig, hasAccess, type AdminRole } from "@/data/adminRoles";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 
-const AdminLayout = () => {
+const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isChecking, setIsChecking] = useState(true);
@@ -92,7 +93,7 @@ const AdminLayout = () => {
             )}
           </header>
           <main className="flex-1 p-4 md:p-6 overflow-auto">
-            <Outlet />
+            {children}
           </main>
         </div>
       </div>

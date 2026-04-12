@@ -77,7 +77,7 @@ export function PartnerSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="px-3 py-4">
             <Link to="/partner" className="flex items-center gap-2">
-              <img src={sheroLogo} alt="Shero" className="h-7" />
+              <img src={typeof sheroLogo === 'string' ? sheroLogo : (sheroLogo as any).src} alt="Shero" className="h-7" />
               {!collapsed && <span className="text-xs font-semibold text-muted-foreground">Partner</span>}
             </Link>
           </SidebarGroupLabel>
