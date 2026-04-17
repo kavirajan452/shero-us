@@ -82,7 +82,7 @@ const Auth = () => {
     }
     setIsSubmitting(true);
     const devEmail = phoneToEmail(loginPhone);
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data: signInData, error } = await supabase.auth.signInWithPassword({
       email: devEmail,
       password: DEV_OTP,
     });
@@ -90,6 +90,20 @@ const Auth = () => {
     if (error) {
       toast({ title: "Invalid OTP", description: error.message, variant: "destructive" });
       return;
+    }
+    // Ensure profile and role exist for this user
+    const userId = signInData?.user?.id;
+    if (userId) {
+      const digits = loginPhone.replace(/\D/g, "").slice(-10);
+      await supabase
+        .from("profiles")
+        .upsert({ user_id: userId, phone: digits }, { onConflict: "user_id" });
+      const roleToAssign = isPartner ? "partner" : "customer";
+      const { data: existingRoles } = await supabase
+        .from("user_roles").select("id").eq("user_id", userId).eq("role", roleToAssign);
+      if (!existingRoles?.length) {
+        await supabase.from("user_roles").insert({ user_id: userId, role: roleToAssign });
+      }
     }
     toast({ title: "Logged in!", description: "Welcome back!" });
     navigate(isPartner ? "/partner" : "/");
@@ -101,7 +115,7 @@ const Auth = () => {
     if (!password || password.length < 6) { toast({ title: "Password must be at least 6 characters", variant: "destructive" }); return; }
 
     setIsSubmitting(true);
-    const { error } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -113,6 +127,22 @@ const Auth = () => {
     if (error) {
       toast({ title: "Signup failed", description: error.message, variant: "destructive" });
       return;
+    }
+    // Create profile and assign role for the new user
+    const userId = signUpData?.user?.id;
+    if (userId) {
+      await supabase
+        .from("profiles")
+        .upsert(
+          { user_id: userId, full_name: fullName, email, phone: phone || null },
+          { onConflict: "user_id" }
+        );
+      const roleToAssign = isPartner ? "partner" : "customer";
+      const { data: existingRoles } = await supabase
+        .from("user_roles").select("id").eq("user_id", userId).eq("role", roleToAssign);
+      if (!existingRoles?.length) {
+        await supabase.from("user_roles").insert({ user_id: userId, role: roleToAssign });
+      }
     }
     toast({ title: "Account created!", description: "Check your email to confirm your account." });
     navigate("/");

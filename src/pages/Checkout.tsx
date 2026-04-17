@@ -25,7 +25,7 @@ const Checkout = () => {
   const { items, updateQuantity, removeItem, subtotal, clearCart, totalItems, appliedPromo, promoDiscount, applyPromoCode, removePromoCode, promoLoading } = useCart();
   const [promoInput, setPromoInput] = useState("");
   const { formatPrice, calcTax, region } = useRegion();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user, profile } = useAuth();
   const { balance, getUsableAmount, spendOnPurchase } = useWallet();
   const navigate = useNavigate();
   const createOrder = useCreateInstantOrder();
@@ -88,6 +88,12 @@ const Checkout = () => {
       setServiceableStatus(result.serviceable ? "serviceable" : "not_serviceable");
     });
   }, [hasKitchens]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Pre-fill name and phone from the logged-in user's profile
+  useEffect(() => {
+    if (profile?.full_name && !name) setName(profile.full_name);
+    if (profile?.phone && !phone) setPhone(profile.phone);
+  }, [profile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Also check when ZIP code is entered
   useEffect(() => {
@@ -189,6 +195,7 @@ const Checkout = () => {
   const handlePaymentSuccess = (method?: PaymentMethod) => {
     createOrder.mutate({
       order_code: `SH-INS-${Date.now().toString(36).toUpperCase()}`,
+      customer_id: user?.id ?? null,
       customer_name: name,
       customer_phone: phone,
       customer_address: address,
