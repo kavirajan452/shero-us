@@ -22,14 +22,21 @@ const nextConfig = {
       rules.forEach((rule, i) => {
         if (rule.oneOf) {
           replaceImageLoader(rule.oneOf);
-        } else if (rule.use) {
-          const uses = Array.isArray(rule.use) ? rule.use : [rule.use];
-          const hasNextImageLoader = uses.some(
-            (u) =>
-              (typeof u === 'string' && u.includes('next-image-loader')) ||
-              (u?.loader && String(u.loader).includes('next-image-loader')),
+        } else {
+          // Collect all loader strings for this rule (handles both `use` array and direct `loader`)
+          const loaderEntries = [];
+          if (rule.loader) loaderEntries.push(rule.loader);
+          if (rule.use) {
+            const uses = Array.isArray(rule.use) ? rule.use : [rule.use];
+            uses.forEach((u) => {
+              if (typeof u === 'string') loaderEntries.push(u);
+              else if (u?.loader) loaderEntries.push(u.loader);
+            });
+          }
+          const hasImageLoader = loaderEntries.some((l) =>
+            String(l).includes('image-loader'),
           );
-          if (hasNextImageLoader) {
+          if (hasImageLoader) {
             rules[i] = {
               test: rule.test,
               issuer: rule.issuer,
