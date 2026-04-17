@@ -122,6 +122,21 @@ const Auth = () => {
     navigate("/");
   };
 
+  const upsertProfileAndRole = async (userId: string) => {
+    const roleToAssign = isPartner ? "partner" : "customer";
+    await supabase
+      .from("profiles")
+      .upsert(
+        { user_id: userId, full_name: fullName, email, phone: phone || null },
+        { onConflict: "user_id" }
+      );
+    const { data: existingRoles } = await supabase
+      .from("user_roles").select("id").eq("user_id", userId).eq("role", roleToAssign);
+    if (!existingRoles?.length) {
+      await supabase.from("user_roles").insert({ user_id: userId, role: roleToAssign });
+    }
+  };
+
   const handleSignup = async () => {
     if (!fullName.trim()) { toast({ title: "Name required", variant: "destructive" }); return; }
     if (!email.trim()) { toast({ title: "Email required", variant: "destructive" }); return; }
@@ -136,29 +151,56 @@ const Auth = () => {
         emailRedirectTo: window.location.origin,
       },
     });
+
+    // ── "User already registered" ─────────────────────────────────────────
+    // The account exists in auth.users but may be missing profile/role rows.
+    // Try signing in with the provided password to recover the account.
+    const isAlreadyRegistered =
+      error?.message?.toLowerCase().includes("already registered") ||
+      error?.message?.toLowerCase().includes("already been registered") ||
+      error?.status === 422;
+
+    if (isAlreadyRegistered) {
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      setIsSubmitting(false);
+      if (signInError) {
+        // Wrong password or unconfirmed email — direct to login tab
+        toast({
+          title: "Account already exists",
+          description: "Please use the Log In tab. If you forgot your password, use the reset link.",
+          variant: "destructive",
+        });
+        setIsLogin(true);
+        return;
+      }
+      // Signed in — ensure profile and role rows exist
+      const userId = signInData?.user?.id;
+      if (userId) await upsertProfileAndRole(userId);
+      toast({ title: "Welcome back!", description: "You've been signed in successfully." });
+      navigate("/");
+      return;
+    }
+    // ─────────────────────────────────────────────────────────────────────
+
     setIsSubmitting(false);
     if (error) {
       toast({ title: "Signup failed", description: error.message, variant: "destructive" });
       return;
     }
-    // Create profile and assign role for the new user
+
+    // New user — upsert profile and role
     const userId = signUpData?.user?.id;
-    if (userId) {
-      await supabase
-        .from("profiles")
-        .upsert(
-          { user_id: userId, full_name: fullName, email, phone: phone || null },
-          { onConflict: "user_id" }
-        );
-      const roleToAssign = isPartner ? "partner" : "customer";
-      const { data: existingRoles } = await supabase
-        .from("user_roles").select("id").eq("user_id", userId).eq("role", roleToAssign);
-      if (!existingRoles?.length) {
-        await supabase.from("user_roles").insert({ user_id: userId, role: roleToAssign });
-      }
+    if (userId) await upsertProfileAndRole(userId);
+
+    if (signUpData?.session) {
+      // Email confirmation disabled — user is immediately logged in
+      toast({ title: "Account created!", description: "Welcome to Shero!" });
+      navigate("/");
+    } else {
+      // Email confirmation required
+      toast({ title: "Account created!", description: "Please check your email to confirm your account, then log in." });
+      setIsLogin(true);
     }
-    toast({ title: "Account created!", description: "Check your email to confirm your account." });
-    navigate("/");
   };
 
   // ─── SIGNUP FLOW ───
