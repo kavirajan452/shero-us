@@ -1,4 +1,5 @@
-import { Outlet } from "react-router-dom";
+'use client';
+import type { ReactNode } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { PartnerSidebar } from "@/components/PartnerSidebar";
 import PartnerNotifications from "@/components/PartnerNotifications";
@@ -8,7 +9,7 @@ import PartnerProfilePopover from "@/components/partner/PartnerProfilePopover";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { PartnerThemeProvider, usePartnerTheme } from "@/contexts/ThemeContext";
 
-const PartnerLayoutInner = () => {
+const PartnerLayoutInner = ({ children }: { children?: ReactNode }) => {
   const { theme } = usePartnerTheme();
   const themeClass = theme === "classic" ? "" : `theme-${theme}`;
 
@@ -28,7 +29,7 @@ const PartnerLayoutInner = () => {
             </div>
           </header>
           <main className="flex-1 p-4 md:p-6 overflow-auto">
-            <Outlet />
+            {children}
           </main>
         </div>
       </div>
@@ -36,10 +37,10 @@ const PartnerLayoutInner = () => {
   );
 };
 
-const PartnerLayout = () => {
+const PartnerLayout = ({ children }: { children?: ReactNode }) => {
   return (
     <PartnerThemeProvider>
-      <PartnerLayoutInner />
+      <PartnerLayoutInner>{children}</PartnerLayoutInner>
     </PartnerThemeProvider>
   );
 };

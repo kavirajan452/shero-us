@@ -56,7 +56,7 @@ i18n
       zh: { translation: zh },
     },
     fallbackLng: "en-IN",
-    lng: localStorage.getItem("shero-lang") || "en-IN",
+    lng: (typeof window !== "undefined" ? localStorage.getItem("shero-lang") : null) || "en-IN",
     interpolation: { escapeValue: false },
     detection: {
       order: ["localStorage", "navigator"],

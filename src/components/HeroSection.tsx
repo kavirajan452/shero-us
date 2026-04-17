@@ -22,7 +22,7 @@ const HeroSection = () => {
   const recognitionRef = useRef<any>(null);
 
   // Hide language switcher if user has previously selected a language
-  const [langSet, setLangSet] = useState(() => !!localStorage.getItem("i18nextLng"));
+  const [langSet, setLangSet] = useState(() => typeof window !== "undefined" && !!localStorage.getItem("i18nextLng"));
 
   useEffect(() => {
     const check = () => setLangSet(!!localStorage.getItem("i18nextLng"));
