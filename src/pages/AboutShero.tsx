@@ -192,7 +192,7 @@ const AboutShero = () => {
             <Link to="/instant-delivery" className="px-8 py-3 rounded-2xl bg-gradient-shero text-primary-foreground font-semibold shadow-shero hover:opacity-90 transition-opacity">
               Order Now
             </Link>
-            <Link to="/auth?role=partner" className="px-8 py-3 rounded-2xl border-2 border-primary text-primary font-semibold hover:bg-primary/5 transition-colors">
+            <Link to="/register?role=partner" className="px-8 py-3 rounded-2xl border-2 border-primary text-primary font-semibold hover:bg-primary/5 transition-colors">
               Become a Shero
             </Link>
           </div>

@@ -38,13 +38,13 @@ const DesktopNav = () => {
           </Link>
         ) : (
           <>
-            <Link to="/auth">
+            <Link to="/login">
               <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground">
                 <LogIn className="w-3.5 h-3.5" />
                 Log In
               </Button>
             </Link>
-            <Link to="/auth">
+            <Link to="/register">
               <Button size="sm" className="bg-primary hover:bg-primary/90">
                 Sign Up
               </Button>

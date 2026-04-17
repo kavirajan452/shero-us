@@ -83,7 +83,7 @@ export default function ResetPassword() {
             <img src={sheroLogo} alt="Shero" className="h-10 mx-auto" />
             <h2 className="text-xl font-bold text-foreground">Invalid Reset Link</h2>
             <p className="text-sm text-muted-foreground">This link is invalid or has expired. Please request a new password reset.</p>
-            <Button variant="outline" onClick={() => navigate("/auth?login=true")} className="w-full">Back to Login</Button>
+            <Button variant="outline" onClick={() => navigate("/login")} className="w-full">Back to Login</Button>
           </div>
         </div>
       </div>

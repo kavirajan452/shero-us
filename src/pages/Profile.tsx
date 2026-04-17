@@ -183,8 +183,8 @@ const Profile = () => {
             <p className="text-4xl">🔒</p>
             <h2 className="text-xl font-serif font-bold text-foreground">Log in to view your profile</h2>
             <p className="text-sm text-muted-foreground">Sign in to see your orders, wallet, and more.</p>
-            <Button onClick={() => navigate("/auth?role=customer&login=true")} className="w-full">Log In</Button>
-            <Button variant="outline" onClick={() => navigate("/auth?role=customer")} className="w-full">Create Account</Button>
+            <Button onClick={() => navigate("/login?role=customer")} className="w-full">Log In</Button>
+            <Button variant="outline" onClick={() => navigate("/register?role=customer")} className="w-full">Create Account</Button>
           </CardContent>
         </Card>
       </div>

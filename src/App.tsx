@@ -174,7 +174,9 @@ const App = () => (
                     <Route path="/checkout" element={<Checkout />} />
                     <Route path="/order-confirmation" element={<OrderConfirmation />} />
                     <Route path="/order-tracking" element={<OrderTracking />} />
-                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/login" element={<Auth />} />
+                    <Route path="/register" element={<Auth />} />
+                    <Route path="/auth" element={<Navigate to="/login" replace />} />
                     <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/partner-enrollment" element={<PartnerEnrollment />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />

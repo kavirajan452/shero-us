@@ -46,8 +46,7 @@ const Navbar = () => {
           
           {!isLoggedIn && (
             <Link
-              to="/auth"
-              className="hidden md:inline-flex px-5 py-2 rounded-full bg-gradient-shero text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity"
+              to="/login"
             >
               {t("nav.orderNow")}
             </Link>
@@ -93,7 +92,7 @@ const Navbar = () => {
             ))}
             {!isLoggedIn && (
               <Link
-                to="/auth"
+                to="/login"
                 onClick={() => setMobileOpen(false)}
                 className="py-2 text-sm font-medium text-primary"
               >

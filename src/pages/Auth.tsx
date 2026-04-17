@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowLeft, Phone, ArrowRight, User, Mail, Lock, ShieldCheck } from "lucide-react";
-import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import { Link, useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import sheroLogo from "@/assets/shero-logo.png";
 import sheroWelcome from "@/assets/shero-mascot-welcome.png";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,15 +14,22 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 const DEV_LOGIN_PASSWORD = "123456";
 
 type LoginStep = "phone" | "otp";
+type SignupStep = "details" | "otp";
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const role = searchParams.get("role") || "customer";
-  const loginParam = searchParams.get("login") === "true";
 
-  const [isLogin, setIsLogin] = useState(loginParam);
+  // /login path → login mode, /register path → signup mode
+  const isLoginPath = location.pathname === "/login";
+  const isRegisterPath = location.pathname === "/register";
+  const loginParam = searchParams.get("login") === "true";
+  const defaultIsLogin = isLoginPath || (loginParam && !isRegisterPath);
+
+  const [isLogin, setIsLogin] = useState(defaultIsLogin);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Login (Phone + OTP) state
@@ -36,6 +43,10 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  // Signup OTP verification step
+  const [signupStep, setSignupStep] = useState<SignupStep>("details");
+  const [signupOtp, setSignupOtp] = useState("");
+  const [signupOtpPreview, setSignupOtpPreview] = useState("");
 
   const isPartner = role === "partner";
 
@@ -137,10 +148,53 @@ const Auth = () => {
     }
   };
 
-  const handleSignup = async () => {
+  const handleSignupSendOtp = async () => {
     if (!fullName.trim()) { toast({ title: "Name required", variant: "destructive" }); return; }
     if (!email.trim()) { toast({ title: "Email required", variant: "destructive" }); return; }
     if (!password || password.length < 6) { toast({ title: "Password must be at least 6 characters", variant: "destructive" }); return; }
+    const digits = phone.replace(/\D/g, "");
+    if (digits.length < 10) { toast({ title: "Enter a valid 10-digit phone number", variant: "destructive" }); return; }
+
+    setIsSubmitting(true);
+    const response = await fetch("/functions/v1/send-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: digits }),
+    });
+    const result = await response.json();
+    setIsSubmitting(false);
+    if (!response.ok || !result?.success) {
+      toast({ title: "Error", description: result?.error || "Failed to send OTP", variant: "destructive" });
+      return;
+    }
+    setSignupOtpPreview(result.otp || "");
+    setSignupStep("otp");
+    toast({ title: "OTP Sent!", description: result.otp ? `Dev OTP: ${result.otp}` : `OTP sent to ${phone}` });
+  };
+
+  const handleSignupVerifyOtp = async () => {
+    if (signupOtp.length < 6) {
+      toast({ title: "Enter 6-digit OTP", variant: "destructive" });
+      return;
+    }
+    const digits = phone.replace(/\D/g, "");
+    setIsSubmitting(true);
+    const verifyResponse = await fetch("/functions/v1/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: digits, code: signupOtp }),
+    });
+    const verifyResult = await verifyResponse.json();
+    if (!verifyResponse.ok || !verifyResult?.success) {
+      setIsSubmitting(false);
+      toast({ title: "Invalid OTP", description: verifyResult?.error || "Verification failed", variant: "destructive" });
+      return;
+    }
+    // OTP verified — proceed to create account
+    await handleSignup();
+  };
+
+  const handleSignup = async () => {
 
     setIsSubmitting(true);
     const { data: signUpData, error } = await supabase.auth.signUp({
@@ -230,37 +284,90 @@ const Auth = () => {
               </p>
             </div>
             <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-xs font-medium">Full Name *</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input id="fullName" placeholder="Enter your full name" value={fullName} onChange={e => setFullName(e.target.value)} className="pl-10 h-12 rounded-xl" />
+              {signupStep === "details" ? (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="fullName" className="text-xs font-medium">Full Name *</Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input id="fullName" placeholder="Enter your full name" value={fullName} onChange={e => setFullName(e.target.value)} className="pl-10 h-12 rounded-xl" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-xs font-medium">Phone Number *</Label>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input id="phone" type="tel" placeholder="+1 XXXXX XXXXX" value={phone} onChange={e => setPhone(e.target.value)} className="pl-10 h-12 rounded-xl" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-xs font-medium">Email Address *</Label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input id="email" type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} className="pl-10 h-12 rounded-xl" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-xs font-medium">Password *</Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground z-10" />
+                      <PasswordInput id="password" placeholder="Min 6 characters" value={password} onChange={e => setPassword(e.target.value)} className="pl-10 h-12 rounded-xl" />
+                    </div>
+                  </div>
+                  <Button onClick={handleSignupSendOtp} disabled={isSubmitting} className="w-full h-12 rounded-xl bg-gradient-shero hover:opacity-90 text-lg font-semibold gap-2">
+                    {isSubmitting ? "Sending OTP..." : "Continue"} <ArrowRight className="w-5 h-5" />
+                  </Button>
+                </>
+              ) : (
+                <div className="space-y-5">
+                  <div className="text-center">
+                    <p className="text-sm text-muted-foreground">
+                      OTP sent to <span className="font-semibold text-foreground">{phone}</span>
+                    </p>
+                    <button
+                      onClick={() => { setSignupStep("details"); setSignupOtp(""); }}
+                      className="text-xs text-primary hover:underline mt-1"
+                    >
+                      Change number
+                    </button>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-medium">Enter 6-digit OTP</Label>
+                    <div className="flex justify-center">
+                      <InputOTP maxLength={6} value={signupOtp} onChange={setSignupOtp}>
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
+                          <InputOTPSlot index={2} />
+                          <InputOTPSlot index={3} />
+                          <InputOTPSlot index={4} />
+                          <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                      </InputOTP>
+                    </div>
+                    {signupOtpPreview && (
+                      <p className="text-xs text-center text-muted-foreground mt-2">
+                        <ShieldCheck className="inline w-3 h-3 mr-1" />
+                        Dev OTP: <span className="font-mono font-semibold">{signupOtpPreview}</span>
+                      </p>
+                    )}
+                  </div>
+                  <Button
+                    onClick={handleSignupVerifyOtp}
+                    disabled={isSubmitting || signupOtp.length < 6}
+                    className="w-full h-12 rounded-xl bg-gradient-shero hover:opacity-90 text-lg font-semibold gap-2"
+                  >
+                    {isSubmitting ? "Creating Account..." : "Verify & Create Account"} <ShieldCheck className="w-5 h-5" />
+                  </Button>
+                  <button
+                    onClick={handleSignupSendOtp}
+                    disabled={isSubmitting}
+                    className="w-full text-center text-sm text-primary hover:underline"
+                  >
+                    Resend OTP
+                  </button>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="text-xs font-medium">Phone Number</Label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input id="phone" type="tel" placeholder="+1 XXXXX XXXXX" value={phone} onChange={e => setPhone(e.target.value)} className="pl-10 h-12 rounded-xl" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-xs font-medium">Email Address *</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input id="email" type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} className="pl-10 h-12 rounded-xl" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-xs font-medium">Password *</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground z-10" />
-                  <PasswordInput id="password" placeholder="Min 6 characters" value={password} onChange={e => setPassword(e.target.value)} className="pl-10 h-12 rounded-xl" />
-                </div>
-              </div>
-              <Button onClick={handleSignup} disabled={isSubmitting} className="w-full h-12 rounded-xl bg-gradient-shero hover:opacity-90 text-lg font-semibold gap-2">
-                {isSubmitting ? "Creating..." : "Create Account"} <ArrowRight className="w-5 h-5" />
-              </Button>
+              )}
             </div>
             <div className="flex items-center gap-3 my-6">
               <div className="flex-1 h-px bg-border" />
@@ -282,7 +389,7 @@ const Auth = () => {
               <button onClick={() => setIsLogin(true)} className="text-primary font-semibold hover:underline">Log In</button>
             </div>
             <div className="mt-3 text-center">
-              <Link to={`/auth?role=${isPartner ? "customer" : "partner"}`} className="text-xs text-muted-foreground hover:text-primary transition-colors">
+              <Link to={`/register?role=${isPartner ? "customer" : "partner"}`} className="text-xs text-muted-foreground hover:text-primary transition-colors">
                 {isPartner ? "🍽️ Switch to Customer" : "👩‍🍳 Switch to Partner / Service Provider"}
               </Link>
             </div>
@@ -412,7 +519,7 @@ const Auth = () => {
           </div>
 
           <div className="mt-3 text-center">
-            <Link to={`/auth?role=${isPartner ? "customer" : "partner"}${isLogin ? "&login=true" : ""}`} className="text-xs text-muted-foreground hover:text-primary transition-colors">
+            <Link to={`/login?role=${isPartner ? "customer" : "partner"}`} className="text-xs text-muted-foreground hover:text-primary transition-colors">
               {isPartner ? "🍽️ Switch to Customer" : "👩‍🍳 Switch to Partner / Service Provider"}
             </Link>
           </div>

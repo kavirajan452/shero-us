@@ -38,7 +38,7 @@ const Welcome = () => {
   ];
 
   const selectedRole = selectedIndex !== null ? roles[selectedIndex] : null;
-  const getStartedLink = selectedRole?.id === "partner" ? "/auth?role=partner" : "/auth?role=customer";
+  const getStartedLink = selectedRole?.id === "partner" ? "/register?role=partner" : "/register?role=customer";
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary flex flex-col items-center justify-center px-6 text-center relative overflow-hidden">
@@ -117,7 +117,7 @@ const Welcome = () => {
         </Link>
 
         <Link
-          to={`/auth?role=${selectedRole?.id || "customer"}&login=true`}
+          to={`/login?role=${selectedRole?.id || "customer"}`}
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           I already have an account
