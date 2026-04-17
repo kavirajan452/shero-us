@@ -11,8 +11,17 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  webpack(config) {
+  webpack(config, { dev }) {
     config.resolve.alias['react-router-dom'] = path.resolve(__dirname, './src/lib/router-compat.tsx');
+
+    // In development, switch from eval-source-map to cheap-module-source-map so
+    // webpack emits real JS instead of wrapping every module in eval().  eval()
+    // strings with supplementary Unicode characters (emoji, Indic scripts) can
+    // produce a "SyntaxError: Invalid or unexpected token" in the browser on
+    // Windows where the terminal/process code-page may mangle multi-byte UTF-8.
+    if (dev) {
+      config.devtool = 'cheap-module-source-map';
+    }
 
     // Make static image imports return plain URL strings instead of Next.js
     // StaticImageData objects. This preserves the Vite-style import behavior
