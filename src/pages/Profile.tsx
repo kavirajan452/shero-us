@@ -22,29 +22,8 @@ import BottomNav from "@/components/BottomNav";
 import CustomerSettings from "@/components/CustomerSettings";
 import { useAuth } from "@/contexts/AuthContext";
 
-const orderHistory = [
-  { id: "SH4821", dish: "Chicken Biryani × 2, Raita × 2", chef: "Fathima Akka", price: 598, date: "28 Feb 2026", status: "Preparing", emoji: "🍗", invoiceAvailable: false },
-  { id: "SH4798", dish: "Masala Dosa × 3", chef: "Kamala Paatti", price: 240, date: "27 Feb 2026", status: "Out for Delivery", emoji: "🥞", invoiceAvailable: false },
-  { id: "SH4775", dish: "Sambar Rice × 2, Filter Coffee × 2", chef: "Lakshmi Amma", price: 260, date: "26 Feb 2026", status: "Delivered", emoji: "🍛", invoiceAvailable: true },
-  { id: "SH4760", dish: "Veg Thali × 1", chef: "Saroja Amma", price: 120, date: "25 Feb 2026", status: "Delivered", emoji: "🥘", invoiceAvailable: true },
-  { id: "SH4738", dish: "Gulab Jamun Box × 2", chef: "Meena Akka", price: 200, date: "24 Feb 2026", status: "Delivered", emoji: "🍮", invoiceAvailable: true },
-  { id: "SH4720", dish: "Butter Chicken × 1, Naan × 4", chef: "Fathima Akka", price: 420, date: "22 Feb 2026", status: "Delivered", emoji: "🍗", invoiceAvailable: true },
-  { id: "SH4705", dish: "Idli Sambar × 4", chef: "Kamala Paatti", price: 316, date: "20 Feb 2026", status: "Cancelled", emoji: "🫕", invoiceAvailable: false },
-  { id: "SH4690", dish: "Fish Curry Rice × 2", chef: "Raheema Akka", price: 380, date: "18 Feb 2026", status: "Delivered", emoji: "🐟", invoiceAvailable: true },
-];
-
-const favoriteChefs = [
-  { name: "Kamala Paatti", emoji: "👵", rating: 4.9, specialty: "Dosa & Idli" },
-  { name: "Fathima Akka", emoji: "👩‍🍳", rating: 4.8, specialty: "Biryani Specials" },
-];
-
-const activePlan = {
-  name: "Full Meals Plan",
-  chef: "Lakshmi Amma",
-  mealsLeft: 18,
-  totalMeals: 30,
-  renewDate: "Mar 15, 2026",
-};
+// Static fallback data removed — all order history is now fetched from DB (liveOrders).
+// favoriteChefs and activePlan are derived dynamically below.
 
 const faqs = [
   { q: "How do I cancel an order?", a: "You can cancel within 5 minutes of placing. Go to Order Tracking → Cancel. After prep starts, cancellation charges may apply." },
@@ -70,13 +49,22 @@ const Profile = () => {
   const { data: partyDrafts = [] } = useMyPartyDrafts(authUser?.id, profile?.phone || undefined);
   const updatePartyOrder = useUpdatePartyOrder();
 
-  // Fetch real instant orders from DB
+  // Fetch real instant orders from DB (no static fallback)
   const [liveOrders, setLiveOrders] = useState<any[]>([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
   useEffect(() => {
     if (!authUser?.id) return;
-    supabase.from("instant_orders").select("*").eq("customer_id", authUser.id).order("created_at", { ascending: false }).limit(20).then(({ data }) => {
-      if (data) setLiveOrders(data);
-    });
+    setOrdersLoading(true);
+    supabase
+      .from("instant_orders")
+      .select("*")
+      .eq("customer_id", authUser.id)
+      .order("created_at", { ascending: false })
+      .limit(50)
+      .then(({ data }) => {
+        if (data) setLiveOrders(data);
+        setOrdersLoading(false);
+      });
   }, [authUser?.id]);
   const [chatMessages, setChatMessages] = useState<{ from: "bot" | "user"; text: string }[]>([
     { from: "bot", text: `Hi${profile?.full_name ? ` ${profile.full_name.split(" ")[0]}` : ""}! 👋 I'm Shero Bot. How can I help you today?\n\nQuick options:\n• Order issue\n• Refund status\n• Wallet help\n• Subscription query\n• Something else` },
@@ -97,37 +85,39 @@ const Profile = () => {
 
   const downloadInvoice = async (orderId: string) => {
     toast({ title: "⏳ Generating Invoice..." });
-    // Try DB first
+    // Try DB-backed invoice first
     const success = await downloadInvoiceForOrder(orderId);
     if (success) {
       toast({ title: "📄 Invoice Downloaded" });
       return;
     }
-    // Fallback: generate from mock data
-    const order = orderHistory.find(o => o.id === orderId);
-    if (order && order.invoiceAvailable) {
-      const subtotal = order.price;
-      const taxAmount = Math.round(subtotal * 0.05);
+    // Fallback: build invoice from the live order data we already have
+    const order = liveOrders.find(o => o.id === orderId || o.order_code === orderId);
+    if (order && order.status === "delivered") {
+      const subtotal = Number(order.subtotal || order.total || 0);
+      const taxAmount = Number(order.tax || Math.round(subtotal * 0.05));
       const invoiceData: InvoiceData = {
         invoiceNumber: generateInvoiceNumber("SHERO-US"),
         generatedAt: new Date().toISOString(),
         invoiceType: "customer_sale",
-        customerName: userName,
-        customerPhone: userPhone,
+        customerName: order.customer_name || userName,
+        customerPhone: order.customer_phone || userPhone,
         customerEmail: userEmail,
-        items: [{ name: order.dish, qty: "1", amount: subtotal }],
+        items: Array.isArray(order.items)
+          ? order.items.map((i: any) => ({ name: i.name || "Item", qty: String(i.qty || 1), amount: Number(i.price || 0) * Number(i.qty || 1) }))
+          : [{ name: "Order", qty: "1", amount: subtotal }],
         subtotal,
         taxAmount,
         taxRate: "8.25",
         federalTax: 0,
         stateTax: Math.round(subtotal * 0.06),
         localTax: Math.round(subtotal * 0.0225),
-        deliveryFee: 0,
+        deliveryFee: Number(order.delivery_fee || 0),
         packingCharges: 0,
-        platformFee: 0,
-        discount: 0,
+        platformFee: Number(order.platform_fee || 0),
+        discount: Number(order.discount || 0),
         tips: 0,
-        total: subtotal + taxAmount,
+        total: Number(order.total || subtotal + taxAmount),
         orderType: "instant",
         orderId: order.id,
         companySnapshot: { companyName: "Shero USA INC", companyType: "Delaware C-Corporation" },
@@ -162,7 +152,20 @@ const Profile = () => {
     }, 800);
   };
 
-  const totalSpent = orderHistory.filter((o) => o.status === "Delivered").reduce((s, o) => s + o.price, 0);
+  const totalSpent = liveOrders.filter((o) => o.status === "delivered").reduce((s: number, o: any) => s + Number(o.total || 0), 0);
+
+  // Derive a simple "kitchen" frequency list as a proxy for favourite chefs
+  const kitchenFreq: Record<string, number> = {};
+  liveOrders.forEach((o: any) => {
+    if (o.kitchen_name) kitchenFreq[o.kitchen_name] = (kitchenFreq[o.kitchen_name] || 0) + 1;
+  });
+  const topKitchens = Object.entries(kitchenFreq)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([name]) => ({ name, emoji: "👩‍🍳" }));
+
+  // Active subscription plan derived from liveOrders (first active subscription type if present)
+  const activePlan = null; // Will be wired to subscription_customers in a future phase
 
   if (isLoading) {
     return (
@@ -237,38 +240,32 @@ const Profile = () => {
                 <div className="lg:col-span-1 space-y-6">
                   <div>
                     <h3 className="text-lg font-serif font-bold text-foreground mb-4">Active Plan</h3>
-                    <div className="p-5 rounded-2xl bg-gradient-shero text-primary-foreground">
-                      <h4 className="font-bold text-lg mb-1">{activePlan.name}</h4>
-                      <p className="text-primary-foreground/80 text-sm mb-3">with {activePlan.chef}</p>
-                      <div className="mb-2">
-                        <div className="flex justify-between text-sm mb-1">
-                          <span>Meals used</span>
-                          <span>{activePlan.totalMeals - activePlan.mealsLeft}/{activePlan.totalMeals}</span>
-                        </div>
-                        <div className="w-full h-2 rounded-full bg-primary-foreground/20">
-                          <div className="h-2 rounded-full bg-primary-foreground" style={{ width: `${((activePlan.totalMeals - activePlan.mealsLeft) / activePlan.totalMeals) * 100}%` }} />
-                        </div>
+                    {activePlan ? (
+                      <div className="p-5 rounded-2xl bg-gradient-shero text-primary-foreground">
+                        <h4 className="font-bold text-lg mb-1">{(activePlan as any).name}</h4>
+                        <p className="text-primary-foreground/80 text-sm mb-3">with {(activePlan as any).chef}</p>
                       </div>
-                      <p className="text-xs text-primary-foreground/70 mt-2">Renews {activePlan.renewDate}</p>
-                    </div>
+                    ) : (
+                      <div className="p-5 rounded-2xl bg-gradient-shero text-primary-foreground text-center">
+                        <p className="font-semibold text-sm mb-2">No active subscription</p>
+                        <Link to="/subscriptions" className="text-xs underline text-primary-foreground/80">Browse plans →</Link>
+                      </div>
+                    )}
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-serif font-bold text-foreground mb-4">Favorite Chefs</h3>
+                    <h3 className="text-lg font-serif font-bold text-foreground mb-4">Ordered From</h3>
                     <div className="space-y-3">
-                      {favoriteChefs.map((chef) => (
-                        <div key={chef.name} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border">
-                          <span className="text-2xl">{chef.emoji}</span>
+                      {topKitchens.length > 0 ? topKitchens.map((k) => (
+                        <div key={k.name} className="flex items-center gap-3 p-3 rounded-xl bg-card border border-border">
+                          <span className="text-2xl">{k.emoji}</span>
                           <div className="flex-1">
-                            <p className="font-semibold text-sm text-foreground">{chef.name}</p>
-                            <p className="text-xs text-muted-foreground">{chef.specialty}</p>
-                          </div>
-                          <div className="flex items-center gap-1 text-sm">
-                            <Star className="w-3 h-3 fill-warm text-warm" />
-                            <span className="text-muted-foreground">{chef.rating}</span>
+                            <p className="font-semibold text-sm text-foreground">{k.name}</p>
                           </div>
                         </div>
-                      ))}
+                      )) : (
+                        <p className="text-sm text-muted-foreground">Place your first order to see kitchens here.</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -280,7 +277,7 @@ const Profile = () => {
                     <Card className="border-border">
                       <CardContent className="pt-4 pb-3 text-center">
                         <Package className="w-5 h-5 mx-auto text-primary mb-1" />
-                        <p className="text-lg font-bold text-foreground">{orderHistory.filter((o) => o.status === "Delivered").length}</p>
+                        <p className="text-lg font-bold text-foreground">{liveOrders.filter((o) => o.status === "delivered").length}</p>
                         <p className="text-[10px] text-muted-foreground">Orders</p>
                       </CardContent>
                     </Card>
@@ -294,15 +291,15 @@ const Profile = () => {
                     <Card className="border-border">
                       <CardContent className="pt-4 pb-3 text-center">
                         <Heart className="w-5 h-5 mx-auto text-destructive mb-1" />
-                        <p className="text-lg font-bold text-foreground">{favoriteChefs.length}</p>
-                        <p className="text-[10px] text-muted-foreground">Fav Chefs</p>
+                        <p className="text-lg font-bold text-foreground">{topKitchens.length}</p>
+                        <p className="text-[10px] text-muted-foreground">Kitchens</p>
                       </CardContent>
                     </Card>
                     <Card className="border-border">
                       <CardContent className="pt-4 pb-3 text-center">
                         <Clock className="w-5 h-5 mx-auto text-primary mb-1" />
-                        <p className="text-lg font-bold text-foreground">{activePlan.mealsLeft}</p>
-                        <p className="text-[10px] text-muted-foreground">Meals Left</p>
+                        <p className="text-lg font-bold text-foreground">{liveOrders.filter((o) => ["new","accepted","preparing","ready"].includes(o.status)).length}</p>
+                        <p className="text-[10px] text-muted-foreground">Active</p>
                       </CardContent>
                     </Card>
                   </div>
@@ -310,27 +307,43 @@ const Profile = () => {
                   {/* Recent 3 Orders */}
                   <div>
                     <h3 className="text-lg font-serif font-bold text-foreground mb-4">Recent Orders</h3>
-                    <div className="space-y-3">
-                      {orderHistory.slice(0, 3).map((order) => (
-                        <div key={order.id} className="flex items-center gap-4 p-4 rounded-2xl bg-card border border-border hover:border-primary/40 transition-colors">
-                          <span className="text-3xl">{order.emoji}</span>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-foreground text-sm">#{order.id}</h4>
-                            <p className="text-xs text-muted-foreground truncate">{order.dish}</p>
-                            <p className="text-xs text-muted-foreground">by {order.chef} · {order.date}</p>
-                          </div>
-                          <div className="text-right shrink-0">
-                            <p className="font-bold text-foreground">{formatPrice(order.price)}</p>
-                            <Badge 
-                              variant={order.status === "Delivered" ? "default" : order.status === "Cancelled" ? "destructive" : "secondary"} 
-                              className="text-[10px] mt-0.5"
-                            >
-                              {order.status}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                    {ordersLoading ? (
+                      <p className="text-sm text-muted-foreground animate-pulse">Loading orders…</p>
+                    ) : liveOrders.length === 0 ? (
+                      <div className="text-center py-8 bg-card border border-border rounded-2xl">
+                        <p className="text-3xl mb-2">🍽️</p>
+                        <p className="text-sm text-muted-foreground">No orders yet — place your first order!</p>
+                        <Link to="/instant-delivery" className="mt-3 inline-block text-sm text-primary hover:underline">Order now →</Link>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {liveOrders.slice(0, 3).map((order: any) => {
+                          const itemNames = Array.isArray(order.items)
+                            ? order.items.map((i: any) => `${i.name}${i.qty > 1 ? ` ×${i.qty}` : ""}`).join(", ")
+                            : "Items";
+                          const statusLabel = order.status.charAt(0).toUpperCase() + order.status.slice(1).replace("_", " ");
+                          return (
+                            <div key={order.id} className="flex items-center gap-4 p-4 rounded-2xl bg-card border border-border hover:border-primary/40 transition-colors">
+                              <span className="text-3xl">🍛</span>
+                              <div className="flex-1 min-w-0">
+                                <h4 className="font-semibold text-foreground text-sm">#{order.order_code || order.id.slice(0,8)}</h4>
+                                <p className="text-xs text-muted-foreground truncate">{itemNames}</p>
+                                <p className="text-xs text-muted-foreground">{order.kitchen_name || "Kitchen"} · {new Date(order.created_at).toLocaleDateString()}</p>
+                              </div>
+                              <div className="text-right shrink-0">
+                                <p className="font-bold text-foreground">{formatPrice(Number(order.total))}</p>
+                                <Badge
+                                  variant={order.status === "delivered" ? "default" : order.status === "cancelled" ? "destructive" : "secondary"}
+                                  className="text-[10px] mt-0.5"
+                                >
+                                  {statusLabel}
+                                </Badge>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
 
                   {/* Referral CTA */}
@@ -347,7 +360,7 @@ const Profile = () => {
             <TabsContent value="orders" className="space-y-4">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-lg font-serif font-bold text-foreground">All Orders</h3>
-                <Badge variant="outline" className="text-xs">{orderHistory.length + partyOrders.length + partyDrafts.length} total</Badge>
+                <Badge variant="outline" className="text-xs">{liveOrders.length + partyOrders.length + partyDrafts.length} total</Badge>
               </div>
 
               {/* Saved Drafts */}
@@ -509,52 +522,67 @@ const Profile = () => {
                 </div>
               )}
 
-              {/* Mock/Sample Orders */}
-              <div className="space-y-3">
-                {(partyOrders.length > 0 || partyDrafts.length > 0 || liveOrders.length > 0) && (
+              {/* Live Instant Orders */}
+              {liveOrders.length > 0 && (
+                <div className="space-y-3">
                   <h4 className="text-sm font-semibold text-muted-foreground flex items-center gap-2">
-                    <Package className="w-4 h-4" /> Sample Orders ({orderHistory.length})
+                    <Package className="w-4 h-4" /> Instant Orders ({liveOrders.length})
                   </h4>
-                )}
-                {orderHistory.map((order) => (
-                  <Card key={order.id} className="border-border">
-                    <CardContent className="py-4 px-5">
-                      <div className="flex items-center gap-4">
-                        <span className="text-3xl">{order.emoji}</span>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-0.5">
-                            <h4 className="font-semibold text-foreground text-sm">#{order.id}</h4>
-                            <Badge 
-                              variant={order.status === "Delivered" ? "default" : order.status === "Cancelled" ? "destructive" : "secondary"} 
-                              className="text-[10px]"
-                            >
-                              {order.status}
-                            </Badge>
+                  {liveOrders.map((order: any) => {
+                    const itemNames = Array.isArray(order.items)
+                      ? order.items.map((i: any) => `${i.name}${i.qty > 1 ? ` ×${i.qty}` : ""}`).join(", ")
+                      : "Items";
+                    const statusLabel = order.status.charAt(0).toUpperCase() + order.status.slice(1).replace("_", " ");
+                    const invoiceReady = order.status === "delivered";
+                    return (
+                      <Card key={order.id} className="border-border">
+                        <CardContent className="py-4 px-5">
+                          <div className="flex items-center gap-4">
+                            <span className="text-3xl">🍛</span>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-0.5">
+                                <h4 className="font-semibold text-foreground text-sm">#{order.order_code || order.id.slice(0, 8)}</h4>
+                                <Badge
+                                  variant={order.status === "delivered" ? "default" : order.status === "cancelled" ? "destructive" : "secondary"}
+                                  className="text-[10px]"
+                                >
+                                  {statusLabel}
+                                </Badge>
+                              </div>
+                              <p className="text-xs text-muted-foreground truncate">{itemNames}</p>
+                              <p className="text-xs text-muted-foreground">{order.kitchen_name || "Kitchen"} · {new Date(order.created_at).toLocaleDateString()}</p>
+                            </div>
+                            <div className="text-right shrink-0 space-y-1">
+                              <p className="font-bold text-foreground">{formatPrice(Number(order.total))}</p>
+                              {invoiceReady ? (
+                                <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1 text-primary" onClick={() => downloadInvoice(order.id)}>
+                                  <Download className="w-3 h-3" /> Invoice
+                                </Button>
+                              ) : order.status !== "cancelled" ? (
+                                <p className="text-[10px] text-muted-foreground italic">Invoice after delivery</p>
+                              ) : null}
+                            </div>
                           </div>
-                          <p className="text-xs text-muted-foreground truncate">{order.dish}</p>
-                          <p className="text-xs text-muted-foreground">by {order.chef} · {order.date}</p>
-                        </div>
-                        <div className="text-right shrink-0 space-y-1">
-                          <p className="font-bold text-foreground">{formatPrice(order.price)}</p>
-                          {order.invoiceAvailable ? (
-                            <Button variant="ghost" size="sm" className="h-7 px-2 text-xs gap-1 text-primary" onClick={() => downloadInvoice(order.id)}>
-                              <Download className="w-3 h-3" /> Invoice
-                            </Button>
-                          ) : order.status !== "Cancelled" ? (
-                            <p className="text-[10px] text-muted-foreground italic">Invoice after delivery</p>
-                          ) : null}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              )}
+
+              {liveOrders.length === 0 && partyOrders.length === 0 && partyDrafts.length === 0 && (
+                <div className="text-center py-12 bg-card border border-dashed border-border rounded-2xl">
+                  <p className="text-3xl mb-2">🍽️</p>
+                  <p className="text-sm text-muted-foreground">No orders yet. Place your first order!</p>
+                  <Link to="/instant-delivery" className="mt-3 inline-block text-sm text-primary hover:underline">Browse kitchens →</Link>
+                </div>
+              )}
 
               <div className="p-5 rounded-2xl bg-secondary/50 border border-border text-center">
                 <p className="text-muted-foreground text-sm">
-                  You've ordered <span className="font-bold text-foreground">{orderHistory.filter((o) => o.status === "Delivered").length + liveOrders.filter((o) => o.status === "delivered").length} meals</span> totaling <span className="font-bold text-foreground">{formatPrice(totalSpent + liveOrders.reduce((s, o) => s + Number(o.total || 0), 0))}</span>
+                  You've ordered <span className="font-bold text-foreground">{liveOrders.filter((o) => o.status === "delivered").length} meals</span> totaling <span className="font-bold text-foreground">{formatPrice(totalSpent)}</span>
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">That's approximately {formatPrice(Math.round((totalSpent + liveOrders.reduce((s, o) => s + Number(o.total || 0), 0)) * 0.4))} saved vs restaurant meals 🎉</p>
+                <p className="text-xs text-muted-foreground mt-1">That's approximately {formatPrice(Math.round(totalSpent * 0.4))} saved vs restaurant meals 🎉</p>
               </div>
             </TabsContent>
 

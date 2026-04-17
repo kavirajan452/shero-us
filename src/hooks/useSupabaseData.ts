@@ -968,3 +968,58 @@ export function usePartyComboConfigs() {
     },
   });
 }
+
+// ═══ ADMIN DASHBOARD STATS ═══
+export function useAdminDashboardStats() {
+  useRealtimeSubscription("instant_orders", ["admin_dashboard_stats"]);
+  useRealtimeSubscription("kitchen_partners", ["admin_dashboard_stats"]);
+  return useQuery({
+    queryKey: ["admin_dashboard_stats"],
+    queryFn: async () => {
+      const [ordersRes, kitchensRes, usersRes, menuItemsRes] = await Promise.all([
+        supabase.from("instant_orders").select("id, status, total", { count: "exact" }),
+        supabase.from("kitchen_partners").select("id, is_active", { count: "exact" }).eq("is_active", true),
+        supabase.from("profiles").select("user_id", { count: "exact" }),
+        supabase.from("instant_menu_items").select("id, category", { count: "exact" }).eq("is_active", true),
+      ]);
+      const totalOrders = ordersRes.count ?? (ordersRes.data?.length ?? 0);
+      const activeKitchens = kitchensRes.count ?? (kitchensRes.data?.length ?? 0);
+      const registeredUsers = usersRes.count ?? (usersRes.data?.length ?? 0);
+      const cuisineSet = new Set((menuItemsRes.data || []).map((r: any) => r.category));
+
+      // Revenue from delivered orders
+      const revenue = (ordersRes.data || [])
+        .filter((o: any) => o.status === "delivered")
+        .reduce((s: number, o: any) => s + Number(o.total || 0), 0);
+
+      return {
+        totalOrders,
+        activeKitchens,
+        registeredUsers,
+        cuisines: cuisineSet.size,
+        revenue,
+      };
+    },
+    staleTime: 30 * 1000, // refresh every 30s
+  });
+}
+
+// Pending partner onboarding requests (from party_orders with status = 'draft' used as proxy,
+// or instant_orders with status = 'new' as pending PPP approvals stand-in until
+// a dedicated partner_applications table is available)
+export function usePendingInstantOrders(limit = 5) {
+  useRealtimeSubscription("instant_orders", ["pending_instant_orders"]);
+  return useQuery({
+    queryKey: ["pending_instant_orders", limit],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("instant_orders")
+        .select("id, order_code, customer_name, kitchen_name, total, created_at, status")
+        .eq("status", "new")
+        .order("created_at", { ascending: false })
+        .limit(limit);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
