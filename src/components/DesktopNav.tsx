@@ -6,10 +6,10 @@ import { User, LogIn } from "lucide-react";
 const navLinks = [
   { label: "Home", to: "/" },
   { label: "Explore Menu", to: "/instant-delivery" },
-  { label: "Subscriptions", to: "/subscriptions" },
-  { label: "Party Orders", to: "/party-orders" },
-  { label: "Sweets & Snacks", to: "/sweets-snacks" },
-  { label: "Become a Partner", to: "/partner-enrollment" },
+  // Phase 2+: { label: "Subscriptions", to: "/subscriptions" },
+  // Phase 2+: { label: "Party Orders", to: "/party-orders" },
+  // Phase 2+: { label: "Sweets & Snacks", to: "/sweets-snacks" },
+  // Phase 2+: { label: "Become a Partner", to: "/partner-enrollment" },
 ];
 
 const DesktopNav = () => {
