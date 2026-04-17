@@ -192,41 +192,75 @@ const Checkout = () => {
     return parts.length > 0 ? parts.join(", ") : undefined;
   };
 
-  const handlePaymentSuccess = (method?: PaymentMethod) => {
-    createOrder.mutate({
-      order_code: `SH-INS-${Date.now().toString(36).toUpperCase()}`,
-      customer_id: user?.id ?? null,
-      customer_name: name,
-      customer_phone: phone,
-      customer_address: address,
-      items: items.map(({ item, quantity, selectedAddOns }) => ({
-        name: item.name, qty: quantity, price: item.price, addOns: selectedAddOns.map(a => a.name),
-      })),
-      subtotal,
-      discount: promoDiscount,
-      delivery_fee: deliveryFee,
-      platform_fee: 0,
-      tax,
-      wallet_used: walletUsable,
-      total,
-      note: appliedPromo ? `Promo: ${appliedPromo.code}` : undefined,
-      delivery_type: deliveryType,
-      delivery_slot: selectedSlot,
-      payment_method: method || "online",
-      payment_status: "paid",
-      status: "new",
-      pickup_instructions: buildPickupInstructions(),
-      delivery_instructions: buildDeliveryInstructions(),
-    });
-    if (walletUsable > 0) {
-      spendOnPurchase(walletUsable, subtotalWithFees);
+  const handlePaymentSuccess = async (method?: PaymentMethod) => {
+    try {
+      const createdOrder = await createOrder.mutateAsync({
+        order_code: `SH-INS-${Date.now().toString(36).toUpperCase()}`,
+        customer_id: user?.id ?? null,
+        customer_name: name,
+        customer_phone: phone,
+        customer_address: address,
+        items: items.map(({ item, quantity, selectedAddOns }) => ({
+          name: item.name, qty: quantity, price: item.price, addOns: selectedAddOns.map(a => a.name),
+        })),
+        subtotal,
+        discount: promoDiscount,
+        delivery_fee: deliveryFee,
+        platform_fee: 0,
+        tax,
+        wallet_used: walletUsable,
+        total,
+        total_amount: total,
+        note: appliedPromo ? `Promo: ${appliedPromo.code}` : undefined,
+        delivery_type: deliveryType,
+        delivery_slot: selectedSlot,
+        payment_method: method || "online",
+        payment_status: "pending",
+        status: "payment_pending",
+        pickup_instructions: buildPickupInstructions(),
+        delivery_instructions: buildDeliveryInstructions(),
+      } as any);
+
+      const paymentRes = await fetch("/functions/v1/create-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: createdOrder.id, amount: total }),
+      });
+      const paymentData = await paymentRes.json();
+      if (!paymentRes.ok || !paymentData?.success) {
+        await (supabase as any)
+          .from("instant_orders")
+          .update({ status: "payment_failed", payment_status: "failed" })
+          .eq("id", createdOrder.id);
+        toast({ title: "Payment failed", description: paymentData?.error || "Unable to process payment", variant: "destructive" });
+        return;
+      }
+
+      await (supabase as any)
+        .from("instant_orders")
+        .update({
+          status: "accepted",
+          payment_status: "paid",
+          payment_intent_id: paymentData.paymentIntentId ?? null,
+        })
+        .eq("id", createdOrder.id);
+
+      if (walletUsable > 0) {
+        spendOnPurchase(walletUsable, subtotalWithFees);
+      }
+      clearCart();
+
+      const slotDay = deliveryDays.find(d => d.index === selectedDay);
+      const slotTime = sessionSlots.find(s => s.value === selectedSlot);
+      const slotLabel = slotDay && slotTime ? `${slotDay.label}, ${slotDay.date} · ${selectedSession} · ${slotTime.label}` : "";
+      navigate(`/order-confirmation?orderId=${createdOrder.id}&slot=${encodeURIComponent(slotLabel)}`);
+    } catch (error) {
+      toast({
+        title: "Order failed",
+        description: error instanceof Error ? error.message : "Unable to place order",
+        variant: "destructive",
+      });
     }
-    clearCart();
-    // Pass slot info to confirmation page
-    const slotDay = deliveryDays.find(d => d.index === selectedDay);
-    const slotTime = sessionSlots.find(s => s.value === selectedSlot);
-    const slotLabel = slotDay && slotTime ? `${slotDay.label}, ${slotDay.date} · ${selectedSession} · ${slotTime.label}` : "";
-    navigate(`/order-confirmation?slot=${encodeURIComponent(slotLabel)}`);
   };
 
   const handlePaymentFailure = (method: PaymentMethod) => {

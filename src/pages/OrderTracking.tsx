@@ -4,7 +4,7 @@ import { ArrowLeft, Phone, MessageCircle, Shield, Clock, MapPin, Star, ChevronDo
 import { openWhatsAppSupport, buildSupportMessage } from "@/utils/whatsapp";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
-import { mockTrackedOrder, statusMeta, type TrackingStatus, type TrackedOrder } from "@/data/deliveryTrackingData";
+import { deliveryPartners, statusMeta, type TrackingStatus, type TrackedOrder } from "@/data/deliveryTrackingData";
 import { useRegion } from "@/contexts/RegionContext";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -14,16 +14,91 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { addCancellation, CANCELLATION_REASONS } from "@/data/customerCancellations";
 import { addOrderModification } from "@/data/sscOrderModifications";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const allStatuses: TrackingStatus[] = [
   "order_placed", "order_confirmed", "preparing", "rider_assigned",
   "rider_at_kitchen", "picked_up", "in_transit", "near_destination", "delivered",
 ];
 
+const statusToTracking: Record<string, TrackingStatus> = {
+  payment_pending: "order_placed",
+  new: "order_placed",
+  accepted: "order_confirmed",
+  preparing: "preparing",
+  rider_assigned: "rider_assigned",
+  rider_at_kitchen: "rider_at_kitchen",
+  picked_up: "picked_up",
+  in_transit: "in_transit",
+  near_destination: "near_destination",
+  delivered: "delivered",
+  cancelled: "cancelled",
+};
+
+type InstantOrderItem = { name?: string; qty?: number; quantity?: number; price?: number };
+type InstantOrderRow = {
+  id: string;
+  status?: string | null;
+  created_at?: string | null;
+  customer_name?: string | null;
+  customer_address?: string | null;
+  kitchen_name?: string | null;
+  delivered_at?: string | null;
+  items?: InstantOrderItem[] | null;
+  subtotal?: number | null;
+  delivery_fee?: number | null;
+  total?: number | null;
+  total_amount?: number | null;
+};
+
+const buildEvents = (currentStatus: TrackingStatus) => {
+  const now = Date.now();
+  const cappedStatus = currentStatus === "cancelled" ? "order_placed" : currentStatus;
+  const idx = Math.max(0, allStatuses.indexOf(cappedStatus));
+  return allStatuses.slice(0, idx + 1).map((status, i) => ({
+    status,
+    label: statusMeta[status].label,
+    description: statusMeta[status].label,
+    timestamp: new Date(now - (idx - i) * 5 * 60 * 1000).toISOString(),
+    icon: i === idx ? "📍" : "✅",
+  }));
+};
+
+const mapOrderToTracked = (row: InstantOrderRow): TrackedOrder => {
+  const mappedStatus = statusToTracking[row.status || ""] || "order_placed";
+  const items: InstantOrderItem[] = Array.isArray(row.items) ? row.items : [];
+  return {
+    orderId: row.id,
+    orderDate: row.created_at || new Date().toISOString(),
+    customerName: row.customer_name || "Customer",
+    deliveryAddress: row.customer_address || "Address unavailable",
+    kitchenName: row.kitchen_name || "Shero Kitchen",
+    kitchenLat: 0,
+    kitchenLng: 0,
+    deliveryLat: 0,
+    deliveryLng: 0,
+    deliveryPartner: deliveryPartners[0],
+    rider: null,
+    currentStatus: mappedStatus,
+    events: buildEvents(mappedStatus),
+    estimatedDeliveryTime: row.delivered_at || new Date(Date.now() + 20 * 60 * 1000).toISOString(),
+    items: items.map((item) => ({
+      name: item.name || "Item",
+      qty: Number(item.qty ?? item.quantity ?? 1),
+      price: Number(item.price ?? 0),
+    })),
+    subtotal: Number(row.subtotal ?? 0),
+    deliveryFee: Number(row.delivery_fee ?? 0),
+    total: Number(row.total ?? row.total_amount ?? 0),
+    otp: "----",
+  };
+};
+
 const OrderTracking = () => {
   const { formatPrice } = useRegion();
   const [searchParams] = useSearchParams();
-  const [order, setOrder] = useState<TrackedOrder>(mockTrackedOrder);
+  const [order, setOrder] = useState<TrackedOrder | null>(null);
+  const [orderLoaded, setOrderLoaded] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [liveEta, setLiveEta] = useState(12);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
@@ -37,7 +112,56 @@ const OrderTracking = () => {
   const [showModifyDialog, setShowModifyDialog] = useState(false);
   const [modType, setModType] = useState("other");
   const [modDesc, setModDesc] = useState("");
-  const modWindowOpen = modSecondsLeft > 0 && !isCancelled && ["order_placed", "order_confirmed", "preparing"].includes(order.currentStatus);
+  const modWindowOpen = modSecondsLeft > 0 && !isCancelled && !!order && ["order_placed", "order_confirmed", "preparing"].includes(order.currentStatus);
+  const orderIdParam = searchParams.get("orderId") || searchParams.get("id");
+
+  useEffect(() => {
+    if (!orderIdParam) {
+      setOrderLoaded(true);
+      return;
+    }
+
+    const loadOrder = async () => {
+      const { data, error } = await supabase
+        .from("instant_orders")
+        .select("*")
+        .eq("id", orderIdParam)
+        .maybeSingle();
+
+      if (!error && data) {
+        setOrder(mapOrderToTracked(data));
+      } else {
+        const fallback = await supabase
+          .from("instant_orders")
+          .select("*")
+          .eq("order_code", orderIdParam)
+          .maybeSingle();
+        if (fallback.data) {
+          setOrder(mapOrderToTracked(fallback.data));
+        }
+      }
+      setOrderLoaded(true);
+    };
+
+    loadOrder();
+
+    const channel = supabase
+      .channel(`order-tracking-${orderIdParam}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "instant_orders", filter: `id=eq.${orderIdParam}` },
+        (payload) => {
+          if (payload.new) {
+            setOrder(mapOrderToTracked(payload.new as InstantOrderRow));
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [orderIdParam]);
 
 
   useEffect(() => {
@@ -54,6 +178,7 @@ const OrderTracking = () => {
   const modSecs = modSecondsLeft % 60;
 
   const handleSubmitModification = () => {
+    if (!order) return;
     if (!modDesc.trim()) return;
     addOrderModification({
       orderId: order.orderId,
@@ -74,6 +199,7 @@ const OrderTracking = () => {
   };
 
   const handleCancelOrder = () => {
+    if (!order) return;
     if (!cancelReason) {
       toast.error("Please select a reason for cancellation");
       return;
@@ -105,29 +231,29 @@ const OrderTracking = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Simulate status advancement for demo
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (order.currentStatus === "in_transit") {
-        setOrder((prev) => ({
-          ...prev,
-          currentStatus: "near_destination" as TrackingStatus,
-          events: [
-            ...prev.events,
-            {
-              status: "near_destination" as TrackingStatus,
-              label: "Almost There!",
-              description: "Rider is near your location",
-              timestamp: new Date().toISOString(),
-              icon: "📍",
-            },
-          ],
-        }));
-        setLiveEta(3);
-      }
-    }, 30000);
-    return () => clearTimeout(timer);
-  }, [order.currentStatus]);
+  if (!orderLoaded) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="pt-20 pb-28 container mx-auto px-4 max-w-2xl">
+          <p className="text-sm text-muted-foreground">Loading order...</p>
+        </main>
+        <BottomNav />
+      </div>
+    );
+  }
+
+  if (!order) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="pt-20 pb-28 container mx-auto px-4 max-w-2xl">
+          <p className="text-sm text-muted-foreground">Order not found.</p>
+        </main>
+        <BottomNav />
+      </div>
+    );
+  }
 
   const currentMeta = statusMeta[order.currentStatus];
   const currentIdx = allStatuses.indexOf(order.currentStatus);

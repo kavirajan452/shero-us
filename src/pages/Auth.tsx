@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 
-const DEV_OTP = "123456";
+const DEV_LOGIN_PASSWORD = "123456";
 
 type LoginStep = "phone" | "otp";
 
@@ -29,6 +29,7 @@ const Auth = () => {
   const [loginStep, setLoginStep] = useState<LoginStep>("phone");
   const [loginPhone, setLoginPhone] = useState("");
   const [otp, setOtp] = useState("");
+  const [otpPreview, setOtpPreview] = useState("");
 
   // Signup state
   const [fullName, setFullName] = useState("");
@@ -56,23 +57,21 @@ const Auth = () => {
       return;
     }
     setIsSubmitting(true);
-    const devEmail = phoneToEmail(loginPhone);
-    const { error } = await supabase.auth.signUp({
-      email: devEmail,
-      password: DEV_OTP,
-      options: {
-        data: { phone: digits, full_name: "" },
-        emailRedirectTo: window.location.origin,
-      },
+    const response = await fetch("/functions/v1/send-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: digits }),
     });
-    if (error && !error.message.toLowerCase().includes("already")) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+    const result = await response.json();
+    if (!response.ok || !result?.success) {
+      toast({ title: "Error", description: result?.error || "Failed to send OTP", variant: "destructive" });
       setIsSubmitting(false);
       return;
     }
+    setOtpPreview(result.otp || "");
     setIsSubmitting(false);
     setLoginStep("otp");
-    toast({ title: "OTP Sent!", description: `Dev OTP: ${DEV_OTP}` });
+    toast({ title: "OTP Sent!", description: result.otp ? `Dev OTP: ${result.otp}` : "OTP sent successfully" });
   };
 
   const handleVerifyOtp = async () => {
@@ -81,14 +80,28 @@ const Auth = () => {
       return;
     }
     setIsSubmitting(true);
+    const digits = loginPhone.replace(/\D/g, "");
+    const verifyResponse = await fetch("/functions/v1/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: digits, code: otp }),
+    });
+    const verifyResult = await verifyResponse.json();
+    if (!verifyResponse.ok || !verifyResult?.success) {
+      setIsSubmitting(false);
+      toast({ title: "Invalid OTP", description: verifyResult?.error || "Verification failed", variant: "destructive" });
+      return;
+    }
+
     const devEmail = phoneToEmail(loginPhone);
     const { data: signInData, error } = await supabase.auth.signInWithPassword({
       email: devEmail,
-      password: DEV_OTP,
+      password: DEV_LOGIN_PASSWORD,
     });
+
     setIsSubmitting(false);
     if (error) {
-      toast({ title: "Invalid OTP", description: error.message, variant: "destructive" });
+      toast({ title: "Login failed", description: error.message, variant: "destructive" });
       return;
     }
     // Ensure profile and role exist for this user
@@ -106,7 +119,7 @@ const Auth = () => {
       }
     }
     toast({ title: "Logged in!", description: "Welcome back!" });
-    navigate(isPartner ? "/partner" : "/");
+    navigate("/");
   };
 
   const handleSignup = async () => {
@@ -310,10 +323,12 @@ const Auth = () => {
                     </InputOTPGroup>
                   </InputOTP>
                 </div>
-                <p className="text-xs text-center text-muted-foreground mt-2">
-                  <ShieldCheck className="inline w-3 h-3 mr-1" />
-                  Dev OTP: <span className="font-mono font-semibold">123456</span>
-                </p>
+                {otpPreview && (
+                  <p className="text-xs text-center text-muted-foreground mt-2">
+                    <ShieldCheck className="inline w-3 h-3 mr-1" />
+                    Dev OTP: <span className="font-mono font-semibold">{otpPreview}</span>
+                  </p>
+                )}
               </div>
               <Button
                 onClick={handleVerifyOtp}

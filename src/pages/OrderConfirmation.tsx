@@ -6,10 +6,9 @@ import { sendOrderConfirmationWhatsApp, shareViaWhatsApp, buildOrderConfirmation
 import { useRegion } from "@/contexts/RegionContext";
 import { Button } from "@/components/ui/button";
 
-const orderId = `SH${Date.now().toString().slice(-6)}`;
-
 const OrderConfirmation = () => {
   const [searchParams] = useSearchParams();
+  const orderId = searchParams.get("orderId") || `SH${Date.now().toString().slice(-6)}`;
   const isPartyOrder = searchParams.get("type") === "party";
   const deliverySlot = searchParams.get("slot") || "";
   const customerName = searchParams.get("name") || "Customer";
@@ -128,7 +127,7 @@ const OrderConfirmation = () => {
 
             <div className="flex flex-col gap-3">
               <Link
-                to={`/order-tracking?id=${orderId}`}
+                to={`/order-tracking?orderId=${orderId}`}
                 className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-2xl bg-gradient-shero text-primary-foreground font-semibold hover:opacity-90 transition-opacity shadow-shero"
               >
                 <Navigation className="w-5 h-5" /> Track Your Order
