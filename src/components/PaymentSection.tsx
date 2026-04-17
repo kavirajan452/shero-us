@@ -14,15 +14,21 @@ interface PaymentSectionProps {
 
 const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled }: PaymentSectionProps) => {
   const [processing, setProcessing] = useState(false);
-  const [result, setResult] = useState<"success" | null>(null);
+  const [result, setResult] = useState<"success" | "error" | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handlePay = async () => {
     setProcessing(true);
     setResult(null);
+    setErrorMessage("");
 
     try {
       await onPaymentSuccess();
       setResult("success");
+    } catch (err: any) {
+      const msg = err?.message ?? err?.error_description ?? "Unable to place order. Please try again.";
+      setErrorMessage(msg);
+      setResult("error");
     } finally {
       setProcessing(false);
     }
@@ -45,7 +51,13 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled }: Paym
         </div>
       )}
 
-      {!result && (
+      {result === "error" && (
+        <div className="flex items-center gap-2 p-3 rounded-xl bg-destructive/10 border border-destructive/30 mb-4">
+          <span className="text-sm font-medium text-destructive">{errorMessage}</span>
+        </div>
+      )}
+
+      {result !== "success" && (
         <button
           onClick={handlePay}
           disabled={processing || disabled}
