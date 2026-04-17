@@ -8,6 +8,11 @@ const corsHeaders = {
 const DEV_LOGIN_PASSWORD = "123456";
 
 const phoneToEmail = (phone: string) => `${phone.slice(-10)}@shero.dev`;
+const hashOtp = async (otp: string) => {
+  const bytes = new TextEncoder().encode(otp);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
+};
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -58,7 +63,8 @@ Deno.serve(async (req) => {
     }
 
     const isExpired = new Date(latestOtp.expires_at).getTime() < Date.now();
-    const isMatch = latestOtp.otp_code === code;
+    const hashedCode = await hashOtp(code);
+    const isMatch = latestOtp.otp_code === hashedCode;
     if (!isMatch || isExpired) {
       await supabase
         .from("otp_attempts")
@@ -74,25 +80,24 @@ Deno.serve(async (req) => {
     await supabase.from("otp_attempts").update({ used: true }).eq("id", latestOtp.id);
 
     const email = phoneToEmail(digits);
-    let userId: string | null = null;
+    const { data: existingProfile, error: profileError } = await supabase
+      .from("profiles")
+      .select("user_id")
+      .eq("email", email)
+      .maybeSingle();
+    if (profileError) throw profileError;
 
-    const { data: createdUser, error: createUserError } = await supabase.auth.admin.createUser({
-      email,
-      password: DEV_LOGIN_PASSWORD,
-      email_confirm: true,
-      user_metadata: { phone: digits },
-    });
-
-    if (createUserError && !createUserError.message.toLowerCase().includes("already")) {
-      throw createUserError;
-    }
-
-    userId = createdUser?.user?.id ?? null;
+    let userId: string | null = existingProfile?.user_id ?? null;
 
     if (!userId) {
-      const { data: usersData, error: usersError } = await supabase.auth.admin.listUsers({ page: 1, perPage: 1000 });
-      if (usersError) throw usersError;
-      userId = usersData.users.find((u) => u.email === email)?.id ?? null;
+      const { data: createdUser, error: createUserError } = await supabase.auth.admin.createUser({
+        email,
+        password: DEV_LOGIN_PASSWORD,
+        email_confirm: true,
+        user_metadata: { phone: digits },
+      });
+      if (createUserError) throw createUserError;
+      userId = createdUser.user?.id ?? null;
     }
 
     if (!userId) {

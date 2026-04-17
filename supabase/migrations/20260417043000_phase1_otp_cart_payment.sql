@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS public.otp_attempts (
 
 CREATE INDEX IF NOT EXISTS idx_otp_phone ON public.otp_attempts(phone);
 
+ALTER TABLE public.otp_attempts ENABLE ROW LEVEL SECURITY;
+
 CREATE TABLE IF NOT EXISTS public.cart_items (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -41,5 +43,5 @@ ALTER TABLE public.instant_orders
   ADD COLUMN IF NOT EXISTS payment_intent_id text;
 
 UPDATE public.instant_orders
-SET total_amount = total
+SET total_amount = COALESCE(total, 0)
 WHERE total_amount IS NULL;

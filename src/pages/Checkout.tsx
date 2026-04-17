@@ -221,18 +221,19 @@ const Checkout = () => {
         delivery_instructions: buildDeliveryInstructions(),
       } as any);
 
-      const paymentRes = await fetch("/functions/v1/create-payment-intent", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId: createdOrder.id, amount: total }),
+      const { data: paymentData, error: paymentError } = await supabase.functions.invoke("create-payment-intent", {
+        body: { orderId: createdOrder.id, amount: total },
       });
-      const paymentData = await paymentRes.json();
-      if (!paymentRes.ok || !paymentData?.success) {
+      if (paymentError || !paymentData?.success) {
         await (supabase as any)
           .from("instant_orders")
           .update({ status: "payment_failed", payment_status: "failed" })
           .eq("id", createdOrder.id);
-        toast({ title: "Payment failed", description: paymentData?.error || "Unable to process payment", variant: "destructive" });
+        toast({
+          title: "Payment failed",
+          description: paymentError?.message || paymentData?.error || "Unable to process payment",
+          variant: "destructive",
+        });
         return;
       }
 

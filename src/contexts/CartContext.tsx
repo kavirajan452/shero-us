@@ -73,19 +73,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     syncTimeoutRef.current = window.setTimeout(async () => {
-      const rows = items.map((cartItem) => ({
-        user_id: user.id,
-        item_id: cartItem.item.id,
-        quantity: cartItem.quantity,
-        selected_add_ons: cartItem.selectedAddOns,
-      }));
+      try {
+        const rows = items.map((cartItem) => ({
+          user_id: user.id,
+          item_id: cartItem.item.id,
+          quantity: cartItem.quantity,
+          selected_add_ons: cartItem.selectedAddOns,
+        }));
 
-      if (!rows.length) {
-        await (supabase as any).from("cart_items").delete().eq("user_id", user.id);
-        return;
+        if (!rows.length) {
+          await (supabase as any).from("cart_items").delete().eq("user_id", user.id);
+          return;
+        }
+
+        await (supabase as any).from("cart_items").upsert(rows, { onConflict: "user_id,item_id" });
+      } catch (error) {
+        console.error("Failed to sync cart_items", error);
+        toast({ title: "Cart sync failed", description: "Unable to sync cart right now.", variant: "destructive" });
       }
-
-      await (supabase as any).from("cart_items").upsert(rows, { onConflict: "user_id,item_id" });
     }, 500);
 
     return () => {
