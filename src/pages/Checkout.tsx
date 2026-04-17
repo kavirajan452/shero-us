@@ -214,14 +214,14 @@ const Checkout = () => {
       delivery_slot: selectedSlot,
       payment_method: method || "online",
       payment_status: "paid",
-      status: "accepted",
+      status: "new",
       pickup_instructions: buildPickupInstructions(),
       delivery_instructions: buildDeliveryInstructions(),
     } as any);
 
     // In test/dev mode the create-payment-intent edge function may not be deployed.
     // We attempt to call it, but if it fails we still treat the order as placed
-    // (the order was already written to the DB with status "accepted").
+    // (the order was already written to the DB with status "new" awaiting admin acceptance).
     try {
       const { data: paymentData, error: paymentError } = await supabase.functions.invoke("create-payment-intent", {
         body: { orderId: createdOrder.id, amount: total },
