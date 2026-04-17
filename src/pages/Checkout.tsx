@@ -209,7 +209,6 @@ const Checkout = () => {
       tax,
       wallet_used: walletUsable,
       total,
-      total_amount: total,
       note: appliedPromo ? `Promo: ${appliedPromo.code}` : undefined,
       delivery_type: deliveryType,
       delivery_slot: selectedSlot,
