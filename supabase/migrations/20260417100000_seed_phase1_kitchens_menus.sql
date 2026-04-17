@@ -662,36 +662,64 @@ ON CONFLICT (id) DO UPDATE SET
   add_ons          = EXCLUDED.add_ons,
   is_active        = EXCLUDED.is_active;
 
--- ── 4. Kitchen Categories (for filter chips on InstantDelivery page) ─
--- Ensure kitchen_categories table exists
-CREATE TABLE IF NOT EXISTS public.kitchen_categories (
-  id   uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  name text NOT NULL UNIQUE,
-  created_at timestamptz NOT NULL DEFAULT now()
-);
-
-ALTER TABLE public.kitchen_categories ENABLE ROW LEVEL SECURITY;
-
-DROP POLICY IF EXISTS "Anyone can read kitchen categories" ON public.kitchen_categories;
-CREATE POLICY "Anyone can read kitchen categories"
-  ON public.kitchen_categories FOR SELECT TO public USING (true);
-
-DROP POLICY IF EXISTS "Admins can manage kitchen categories" ON public.kitchen_categories;
-CREATE POLICY "Admins can manage kitchen categories"
-  ON public.kitchen_categories FOR ALL TO authenticated
-  USING (is_admin(auth.uid())) WITH CHECK (is_admin(auth.uid()));
-
-INSERT INTO public.kitchen_categories (name) VALUES
-  ('South Indian'),
-  ('North Indian'),
-  ('Andhra'),
-  ('Kerala'),
-  ('Mughlai'),
-  ('Chinese'),
-  ('Biryani'),
-  ('Breakfast'),
-  ('Healthy')
-ON CONFLICT (name) DO NOTHING;
+-- ── 4. Kitchen Categories (per-kitchen rows for filter chips) ──────
+-- The kitchen_categories table already exists with schema:
+--   (id, kitchen_id, name, icon, display_order, is_active, ...)
+-- UNIQUE constraint is (kitchen_id, name) — we insert per-kitchen categories.
+INSERT INTO public.kitchen_categories (kitchen_id, name, display_order, is_active) VALUES
+  -- SKID-NYC-001 Veg
+  ('SKID-NYC-001','Rice',       1, true),
+  ('SKID-NYC-001','Dosa',       2, true),
+  ('SKID-NYC-001','Curries',    3, true),
+  ('SKID-NYC-001','Sambar',     4, true),
+  ('SKID-NYC-001','Kara Kuzhambu', 5, true),
+  ('SKID-NYC-001','Poriyal',    6, true),
+  -- SKID-NYC-002 NonVeg
+  ('SKID-NYC-002','Biryani',    1, true),
+  ('SKID-NYC-002','Curries',    2, true),
+  ('SKID-NYC-002','Rice',       3, true),
+  -- SKID-SF-003 Padma's
+  ('SKID-SF-003','Rice',        1, true),
+  ('SKID-SF-003','Dosa',        2, true),
+  ('SKID-SF-003','Curry',       3, true),
+  ('SKID-SF-003','Chutney',     4, true),
+  -- SKID-AUS-004 Austin Veg
+  ('SKID-AUS-004','Chinese',    1, true),
+  ('SKID-AUS-004','Idli',       2, true),
+  ('SKID-AUS-004','Rice',       3, true),
+  ('SKID-AUS-004','Dal',        4, true),
+  ('SKID-AUS-004','Sabzi',      5, true),
+  -- SKID-AUS-005 Austin NonVeg
+  ('SKID-AUS-005','Curries',    1, true),
+  ('SKID-AUS-005','Fry',        2, true),
+  ('SKID-AUS-005','Biryani',    3, true),
+  -- SKID-CHI-006 Anitha's
+  ('SKID-CHI-006','Curries',    1, true),
+  ('SKID-CHI-006','Fry',        2, true),
+  ('SKID-CHI-006','Dal',        3, true),
+  ('SKID-CHI-006','Biryani',    4, true),
+  ('SKID-CHI-006','Breakfast',  5, true),
+  -- SKID-HOU-007 Houston Veg
+  ('SKID-HOU-007','Paratha',    1, true),
+  ('SKID-HOU-007','North Indian', 2, true),
+  ('SKID-HOU-007','Curries',    3, true),
+  ('SKID-HOU-007','Sabzi',      4, true),
+  -- SKID-SEA-008 Radha's Kitchen
+  ('SKID-SEA-008','Curries',    1, true),
+  ('SKID-SEA-008','Kerala',     2, true),
+  ('SKID-SEA-008','Curry',      3, true),
+  ('SKID-SEA-008','Poriyal',    4, true),
+  -- SKID-DAL-009 Dallas Veg
+  ('SKID-DAL-009','North Indian', 1, true),
+  ('SKID-DAL-009','Curries',    2, true),
+  ('SKID-DAL-009','Sabzi',      3, true),
+  ('SKID-DAL-009','Bread',      4, true),
+  -- SKID-NJ-010 Fatima's
+  ('SKID-NJ-010','Biryani',     1, true),
+  ('SKID-NJ-010','Curry',       2, true),
+  ('SKID-NJ-010','Kebab',       3, true),
+  ('SKID-NJ-010','Dal',         4, true)
+ON CONFLICT (kitchen_id, name) DO NOTHING;
 
 -- ── 5. App Config ────────────────────────────────────────────────
 INSERT INTO public.app_config (key, value) VALUES
