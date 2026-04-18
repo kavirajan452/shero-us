@@ -247,8 +247,9 @@ export function AdminSidebar() {
 
         {/* Dynamic Sections */}
         {sections.map((section) => {
+  // Only show items when the user has an assigned role and that role has access
           const visibleItems = section.items.filter(
-            (item) => !role || hasAccess(role, item.url)
+            (item) => role && hasAccess(role, item.url)
           );
           if (visibleItems.length === 0) return null;
           const SectionIcon = section.icon;

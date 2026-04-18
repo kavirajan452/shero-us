@@ -214,8 +214,8 @@ const App = () => (
                       <Route path="cookery-classes" element={<ComingSoon title="Cookery Classes" description="This vertical is currently disabled." section="Partner" />} />
                       <Route path="shero-classes" element={<ComingSoon title="Shero Classes" description="This vertical is currently disabled." section="Partner" />} />
                     </Route>
-                    <Route path="/admin/login" element={<AdminLogin />} />
                     <Route path="/admin" element={<AdminLayout />}>
+                      <Route path="login" element={<AdminLogin />} />
                       <Route index element={<AdminDashboard />} />
                       <Route path="partners" element={<AdminPartners />} />
                       <Route path="master-comms" element={<AdminMasterComms />} />

@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/AdminSidebar";
-import { getAdminRole, getRoleConfig, hasAccess, type AdminRole } from "@/data/adminRoles";
+import { getAdminRole, getRoleConfig, hasAccess } from "@/data/adminRoles";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isChecking, setIsChecking] = useState(true);
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  const isLoginPage = location.pathname === "/admin/login";
 
   // Still read from localStorage for sidebar compatibility during migration
   const role = getAdminRole();
@@ -21,19 +23,31 @@ const AdminLayout = () => {
   }, []);
 
   useEffect(() => {
+    // No auth check needed on the login page itself
+    if (isLoginPage) return;
+
+    // Already verified this session — just do a fast local access check
+    if (isAuthed) {
+      const currentRole = getAdminRole();
+      if (currentRole && !hasAccess(currentRole, location.pathname)) {
+        navigate("/admin");
+      }
+      return;
+    }
+
     const checkAdmin = async () => {
       const isDummyAdmin = localStorage.getItem("shero-admin") === "true" && localStorage.getItem("shero-admin-role");
 
       if (isDummyAdmin) {
-        setIsChecking(false);
+        setIsAuthed(true);
         return;
       }
 
       const { data: { session } } = await supabase.auth.getSession();
 
       if (!session) {
+        // Keep isAuthed=false — no sidebar will render; navigate without side-effects
         navigate("/admin/login");
-        setIsChecking(false);
         return;
       }
 
@@ -41,7 +55,6 @@ const AdminLayout = () => {
 
       if (!isAdmin) {
         navigate("/admin/login");
-        setIsChecking(false);
         return;
       }
 
@@ -63,13 +76,19 @@ const AdminLayout = () => {
         navigate("/admin");
       }
 
-      setIsChecking(false);
+      setIsAuthed(true);
     };
 
     checkAdmin();
-  }, [navigate, location.pathname]);
+  }, [isLoginPage, isAuthed, navigate, location.pathname]);
 
-  if (isChecking) {
+  // Login page: render the form without any sidebar or auth requirement
+  if (isLoginPage) {
+    return <Outlet />;
+  }
+
+  // Protected pages: show loading until session is verified
+  if (!isAuthed) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="animate-pulse text-muted-foreground text-sm">Loading...</div>
