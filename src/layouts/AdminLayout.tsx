@@ -25,16 +25,15 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
       const { data: { session } } = await supabase.auth.getSession();
 
       if (!session) {
-        navigate("/admin/login");
-        setIsChecking(false);
+        // Not authenticated — keep isChecking=true so no layout flash occurs before unmount
+        navigate("/admin/login", { replace: true });
         return;
       }
 
       const { data: isAdmin } = await supabase.rpc("is_admin", { _user_id: session.user.id });
 
       if (!isAdmin) {
-        navigate("/admin/login");
-        setIsChecking(false);
+        navigate("/admin/login", { replace: true });
         return;
       }
 
@@ -45,23 +44,28 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
         .eq("is_active", true)
         .maybeSingle();
 
-      if (account?.role) {
-        localStorage.setItem("shero-admin", "true");
-        localStorage.setItem("shero-admin-role", account.role);
-        localStorage.setItem("shero-admin-name", account.display_name);
-        localStorage.setItem("shero-admin-rem", account.username);
+      if (!account?.role) {
+        // Authenticated but no active admin_accounts row — sign out and redirect
+        await supabase.auth.signOut();
+        navigate("/admin/login", { replace: true });
+        return;
       }
+
+      localStorage.setItem("shero-admin", "true");
+      localStorage.setItem("shero-admin-role", account.role);
+      localStorage.setItem("shero-admin-name", account.display_name);
+      localStorage.setItem("shero-admin-rem", account.username);
 
       const currentRole = getAdminRole();
       setRoleConfig(currentRole ? getRoleConfig(currentRole) : undefined);
       if (currentRole && !hasAccess(currentRole, location.pathname)) {
-        navigate("/admin/login");
+        navigate("/admin", { replace: true });
         setIsChecking(false);
         return;
       }
 
       if (!isPhase1AdminRoute(location.pathname)) {
-        navigate("/admin");
+        navigate("/admin", { replace: true });
         setIsChecking(false);
         return;
       }

@@ -6,6 +6,7 @@ import sheroLogo from "@/assets/shero-logo.png";
 import { getAdminRole, getRoleConfig, hasAccess } from "@/data/adminRoles";
 import { isPhase1AdminRoute } from "@/data/adminPhase1";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Sidebar,
   SidebarContent,
@@ -213,11 +214,12 @@ export function AdminSidebar() {
   const currentPath = location.pathname;
   const logoSrc = typeof sheroLogo === "string" ? sheroLogo : sheroLogo.src;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem("shero-admin");
     localStorage.removeItem("shero-admin-role");
     localStorage.removeItem("shero-admin-rem");
     localStorage.removeItem("shero-admin-name");
+    await supabase.auth.signOut();
   };
 
   return (
@@ -247,10 +249,10 @@ export function AdminSidebar() {
           )}
         </SidebarGroup>
 
-        {/* Dynamic Sections */}
-        {sections.map((section) => {
+        {/* Dynamic Sections — only render when authenticated (role is set) */}
+        {role && sections.map((section) => {
           const visibleItems = section.items.filter(
-            (item) => isPhase1AdminRoute(item.url) && (!role || hasAccess(role, item.url))
+            (item) => isPhase1AdminRoute(item.url) && hasAccess(role, item.url)
           );
           if (visibleItems.length === 0) return null;
           const SectionIcon = section.icon;
