@@ -21,11 +21,14 @@ const HeroSection = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
 
-  // Hide language switcher if user has previously selected a language
-  const [langSet, setLangSet] = useState(() => typeof window !== "undefined" && !!localStorage.getItem("i18nextLng"));
+  // Hide language switcher if user has previously selected a language.
+  // Initialize to false so server and client agree during hydration;
+  // useEffect updates the value after mount when localStorage is available.
+  const [langSet, setLangSet] = useState(false);
 
   useEffect(() => {
     const check = () => setLangSet(!!localStorage.getItem("i18nextLng"));
+    check();
     window.addEventListener("storage", check);
     // Also poll briefly after mount in case it was just set
     const t = setTimeout(check, 500);
