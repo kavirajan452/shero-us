@@ -11,8 +11,6 @@ const AdminLayout = () => {
   const location = useLocation();
   const [isAuthed, setIsAuthed] = useState(false);
 
-  const isLoginPage = location.pathname === "/admin/login";
-
   // Still read from localStorage for sidebar compatibility during migration
   const role = getAdminRole();
   const roleConfig = role ? getRoleConfig(role) : null;
@@ -23,9 +21,6 @@ const AdminLayout = () => {
   }, []);
 
   useEffect(() => {
-    // No auth check needed on the login page itself
-    if (isLoginPage) return;
-
     // Already verified this session — just do a fast local access check
     if (isAuthed) {
       const currentRole = getAdminRole();
@@ -46,7 +41,6 @@ const AdminLayout = () => {
       const { data: { session } } = await supabase.auth.getSession();
 
       if (!session) {
-        // Keep isAuthed=false — no sidebar will render; navigate without side-effects
         navigate("/admin/login");
         return;
       }
@@ -80,14 +74,8 @@ const AdminLayout = () => {
     };
 
     checkAdmin();
-  }, [isLoginPage, isAuthed, navigate, location.pathname]);
+  }, [isAuthed, navigate, location.pathname]);
 
-  // Login page: render the form without any sidebar or auth requirement
-  if (isLoginPage) {
-    return <Outlet />;
-  }
-
-  // Protected pages: show loading until session is verified
   if (!isAuthed) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
