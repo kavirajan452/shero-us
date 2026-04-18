@@ -211,6 +211,7 @@ export function AdminSidebar() {
   const roleConfig = role ? getRoleConfig(role) : null;
   const location = useLocation();
   const currentPath = location.pathname;
+  const logoSrc = typeof sheroLogo === "string" ? sheroLogo : sheroLogo.src;
 
   const handleLogout = () => {
     localStorage.removeItem("shero-admin");
@@ -226,7 +227,7 @@ export function AdminSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="px-3 py-4">
             <Link to="/admin" className="flex items-center gap-2">
-              <img src={typeof sheroLogo === 'string' ? sheroLogo : (sheroLogo as any).src} alt="Shero" className="h-7" />
+              <img src={logoSrc} alt="Shero" className="h-7" />
               {!collapsed && (
                 <span className="flex items-center gap-1 text-xs font-semibold text-muted-foreground">
                   <Shield className="w-3 h-3" /> Admin
