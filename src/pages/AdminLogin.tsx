@@ -83,6 +83,7 @@ export default function AdminLogin() {
       .eq("is_active", true)
       .maybeSingle();
 
+    // Backward-compatibility fallback while existing admins are migrated to admin_accounts.
     const { data: roles } = account
       ? { data: [{ role: account.role }] }
       : await supabase
@@ -93,11 +94,13 @@ export default function AdminLogin() {
     const adminRole = roles?.find(r => r.role !== "customer" && r.role !== "partner");
 
     if (adminRole) {
+      const adminIdentifier = account?.username || loginId;
+      const adminDisplayName = account?.display_name || adminIdentifier;
       localStorage.setItem("shero-admin", "true");
       localStorage.setItem("shero-admin-role", adminRole.role);
-      localStorage.setItem("shero-admin-rem", data.user.email || emailForAuth);
-      localStorage.setItem("shero-admin-name", account?.display_name || data.user.user_metadata?.full_name || data.user.email || emailForAuth);
-      toast({ title: `✅ Logged in as ${account?.display_name || data.user.email}` });
+      localStorage.setItem("shero-admin-rem", adminIdentifier);
+      localStorage.setItem("shero-admin-name", adminDisplayName);
+      toast({ title: `✅ Logged in as ${adminDisplayName}` });
     } else {
       setError("You do not have admin access. Contact your administrator.");
       await supabase.auth.signOut();
@@ -204,7 +207,14 @@ export default function AdminLogin() {
           <div>
             <div className="flex items-center justify-between">
               <label className="text-sm font-medium text-foreground">Password</label>
-              <button type="button" onClick={() => { setShowForgot(true); setForgotEmail(""); }} className="text-xs text-primary hover:underline">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowForgot(true);
+                  setForgotEmail(username.includes("@") ? username : "");
+                }}
+                className="text-xs text-primary hover:underline"
+              >
                 Forgot Password?
               </button>
             </div>

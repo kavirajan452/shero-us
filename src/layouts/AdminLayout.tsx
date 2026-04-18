@@ -51,18 +51,20 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
         localStorage.setItem("shero-admin", "true");
         localStorage.setItem("shero-admin-role", account.role);
         localStorage.setItem("shero-admin-name", account.display_name);
-        localStorage.setItem("shero-admin-rem", session.user.email || account.username);
+        localStorage.setItem("shero-admin-rem", account.username);
+      }
+
+      const currentRole = getAdminRole();
+      if (currentRole && !hasAccess(currentRole, location.pathname)) {
+        navigate("/admin/login");
+        setIsChecking(false);
+        return;
       }
 
       if (!isPhase1AdminRoute(location.pathname)) {
         navigate("/admin");
         setIsChecking(false);
         return;
-      }
-
-      const currentRole = getAdminRole();
-      if (currentRole && !hasAccess(currentRole, location.pathname)) {
-        navigate("/admin");
       }
 
       setIsChecking(false);

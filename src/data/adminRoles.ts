@@ -113,10 +113,20 @@ export const SECTIONS = {
   SAP_ONBOARDING: "/admin/sap-onboarding",
   ORDERS: "/admin/orders",
   MANUAL_ORDER: "/admin/manual-order",
+  ORDER_MODIFICATIONS: "/admin/order-modifications",
+  CUSTOMER_FEEDBACK: "/admin/customer-feedback",
   DELIVERY_ANALYTICS: "/admin/delivery-analytics",
+  DELIVERY_MGMT: "/admin/delivery-mgmt",
   MENUS: "/admin/menus",
   KITCHEN_CATEGORIES: "/admin/kitchen-categories",
   PPP: "/admin/payments",
+  INVOICE_SETTINGS: "/admin/invoice-settings",
+  PROMOTIONS: "/admin/promotions",
+  DEBIT_CREDIT: "/admin/debit-credit",
+  WALLET_REFERRALS: "/admin/wallet-referrals",
+  INSTANT_FINANCE: "/admin/instant-finance",
+  LOCATION_SUPPORT: "/admin/location-support",
+  LIVE_SUPPORT: "/admin/live-support",
   TEAM: "/admin/team",
   SSC: "/admin/tickets",
   COMMUNICATIONS: "/admin/communications",
@@ -568,7 +578,6 @@ export function getRoleConfig(role: AdminRole): AdminRoleConfig | undefined {
 export function hasAccess(role: AdminRole, section: string): boolean {
   const config = getRoleConfig(role);
   if (!config) return false;
-  if (!Object.values(SECTIONS).includes(section as (typeof SECTIONS)[keyof typeof SECTIONS])) return true;
   // Broadcast pages (-comms) are accessible if the role has access to ANY section in the same group
   if (section.endsWith("-comms")) return true;
   if (section === SECTIONS.KITCHEN_CATEGORIES) {

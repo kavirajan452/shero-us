@@ -28,6 +28,7 @@ export const PHASE1_ADMIN_ROUTES = [
 const PHASE1_ADMIN_ROUTE_SET = new Set<string>(PHASE1_ADMIN_ROUTES);
 
 export function isPhase1AdminRoute(pathname: string): boolean {
-  const normalizedPath = pathname.replace(/\/+$/, "") || "/admin";
+  if (!pathname) return false;
+  const normalizedPath = pathname.replace(/\/+$/, "");
   return PHASE1_ADMIN_ROUTE_SET.has(normalizedPath);
 }
