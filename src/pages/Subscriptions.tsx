@@ -1029,8 +1029,20 @@ const Subscriptions = () => {
           </div>
         )}
       </div>
-      <div className="flex gap-2 justify-center">
-        <Button onClick={() => navigate("/")} variant="outline" className="rounded-lg text-xs h-8 px-3">Home</Button>
+      <div className="flex flex-col gap-2 mt-2 max-w-xs mx-auto w-full">
+        <Button
+          onClick={() => { setStep("landing"); navigate("/subscriptions"); }}
+          className="w-full rounded-xl h-11 text-sm font-semibold bg-gradient-shero text-primary-foreground hover:opacity-90"
+        >
+          Go to My Plan
+        </Button>
+        <Button
+          onClick={() => { setStep("landing"); navigate("/customer"); }}
+          variant="outline"
+          className="w-full rounded-xl h-11 text-sm font-semibold"
+        >
+          Go to Dashboard
+        </Button>
       </div>
     </div>
   );
