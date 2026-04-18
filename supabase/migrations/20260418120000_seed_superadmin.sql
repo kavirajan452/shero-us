@@ -1,3 +1,6 @@
+-- Ensure pgcrypto is available (needed for crypt / gen_salt)
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
+
 -- Seed the initial superadmin login account.
 --
 -- Two scenarios are handled:
@@ -32,7 +35,7 @@ BEGIN
 
     -- Reset password
     UPDATE auth.users
-       SET encrypted_password = crypt('admin@123', gen_salt('bf')),
+       SET encrypted_password = extensions.crypt('admin@123', extensions.gen_salt('bf')),
            updated_at = now()
      WHERE id = v_existing_id;
 
@@ -79,7 +82,7 @@ BEGIN
     'authenticated',
     'authenticated',
     v_email,
-    crypt('admin@123', gen_salt('bf')),
+    extensions.crypt('admin@123', extensions.gen_salt('bf')),
     now(),   -- email already confirmed
     now(),
     now(),
