@@ -9,8 +9,11 @@ import { useEffect } from "react";
 function useRealtimeSubscription(table: string, queryKeys: string[]) {
   const queryClient = useQueryClient();
   useEffect(() => {
+    // Use a unique channel name each time to avoid reusing an already-subscribed
+    // channel (which throws "cannot add postgres_changes callbacks after subscribe()").
+    const channelName = `realtime-${table}-${Math.random().toString(36).slice(2)}`;
     const channel = supabase
-      .channel(`realtime-${table}`)
+      .channel(channelName)
       .on("postgres_changes", { event: "*", schema: "public", table }, () => {
         queryKeys.forEach((key) => queryClient.invalidateQueries({ queryKey: [key] }));
       })
