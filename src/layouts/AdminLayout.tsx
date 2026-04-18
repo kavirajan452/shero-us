@@ -21,6 +21,13 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
+    // Safety net: if AdminLayout ever renders on the login page itself, bail out
+    // immediately so we don't get stuck in an infinite loading loop.
+    if (location.pathname === '/admin/login') {
+      setIsChecking(false);
+      return;
+    }
+
     const checkAdmin = async () => {
       const { data: { session } } = await supabase.auth.getSession();
 
