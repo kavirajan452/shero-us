@@ -1,4 +1,4 @@
-import { Home, Search, ShoppingBag, User, Gift, MessageCircle } from "lucide-react";
+import { Home, Search, ShoppingBag, User, MessageCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -13,7 +13,7 @@ const BottomNav = ({ onChatOpen }: BottomNavProps) => {
   const items = [
     { to: "/", icon: Home, label: t("nav.home") },
     { to: "/instant-delivery", icon: Search, label: t("nav.explore") },
-    { to: "/referrals", icon: Gift, label: "Refer" },
+    // Phase 2+: { to: "/referrals", icon: Gift, label: "Refer" },
     { to: "/order-tracking", icon: ShoppingBag, label: t("nav.orders") },
     { to: "/customer", icon: User, label: t("nav.profile") },
   ];

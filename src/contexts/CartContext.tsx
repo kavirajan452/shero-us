@@ -1,8 +1,9 @@
 'use client';
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
 import type { MenuItem, AddOn } from "@/types/menu";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 export interface CartItem {
   item: MenuItem;
@@ -42,6 +43,62 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [appliedPromo, setAppliedPromo] = useState<AppliedPromo | null>(null);
   const [promoLoading, setPromoLoading] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const syncTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const stored = localStorage.getItem("shero_cart");
+    if (!stored) return;
+    try {
+      const parsed = JSON.parse(stored) as CartItem[];
+      if (Array.isArray(parsed)) {
+        setItems(parsed);
+      }
+    } catch {
+      localStorage.removeItem("shero_cart");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    localStorage.setItem("shero_cart", JSON.stringify(items));
+  }, [items]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    if (syncTimeoutRef.current) {
+      window.clearTimeout(syncTimeoutRef.current);
+    }
+
+    syncTimeoutRef.current = window.setTimeout(async () => {
+      try {
+        const rows = items.map((cartItem) => ({
+          user_id: user.id,
+          item_id: cartItem.item.id,
+          quantity: cartItem.quantity,
+          selected_add_ons: cartItem.selectedAddOns,
+        }));
+
+        if (!rows.length) {
+          await (supabase as any).from("cart_items").delete().eq("user_id", user.id);
+          return;
+        }
+
+        await (supabase as any).from("cart_items").upsert(rows, { onConflict: "user_id,item_id" });
+      } catch (error) {
+        console.error("Failed to sync cart_items", error);
+        toast({ title: "Cart sync failed", description: "Unable to sync cart right now.", variant: "destructive" });
+      }
+    }, 500);
+
+    return () => {
+      if (syncTimeoutRef.current) {
+        window.clearTimeout(syncTimeoutRef.current);
+      }
+    };
+  }, [items, user?.id]);
 
   const addItem = useCallback((item: MenuItem, addOns?: AddOn[]) => {
     setItems((prev) => {

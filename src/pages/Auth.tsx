@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowLeft, Phone, ArrowRight, User, Mail, Lock, ShieldCheck } from "lucide-react";
-import { Link, useSearchParams, useNavigate } from "react-router-dom";
+import { Link, useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import sheroLogo from "@/assets/shero-logo.png";
 import sheroWelcome from "@/assets/shero-mascot-welcome.png";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,30 +11,42 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 
-const DEV_OTP = "123456";
+const DEV_LOGIN_PASSWORD = import.meta.env.VITE_DEV_LOGIN_PASSWORD || "123456";
 
 type LoginStep = "phone" | "otp";
+type SignupStep = "details" | "otp";
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const role = searchParams.get("role") || "customer";
-  const loginParam = searchParams.get("login") === "true";
 
-  const [isLogin, setIsLogin] = useState(loginParam);
+  // /login path → login mode, /register path → signup mode
+  const isLoginPath = location.pathname === "/login";
+  const isRegisterPath = location.pathname === "/register";
+  const loginParam = searchParams.get("login") === "true";
+  const defaultIsLogin = isLoginPath || (loginParam && !isRegisterPath);
+
+  const [isLogin, setIsLogin] = useState(defaultIsLogin);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Login (Phone + OTP) state
   const [loginStep, setLoginStep] = useState<LoginStep>("phone");
   const [loginPhone, setLoginPhone] = useState("");
   const [otp, setOtp] = useState("");
+  const [otpPreview, setOtpPreview] = useState("");
 
   // Signup state
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  // Signup OTP verification step
+  const [signupStep, setSignupStep] = useState<SignupStep>("details");
+  const [signupOtp, setSignupOtp] = useState("");
+  const [signupOtpPreview, setSignupOtpPreview] = useState("");
 
   const isPartner = role === "partner";
 
@@ -56,23 +68,21 @@ const Auth = () => {
       return;
     }
     setIsSubmitting(true);
-    const devEmail = phoneToEmail(loginPhone);
-    const { error } = await supabase.auth.signUp({
-      email: devEmail,
-      password: DEV_OTP,
-      options: {
-        data: { phone: digits, full_name: "" },
-        emailRedirectTo: window.location.origin,
-      },
+    const response = await fetch("/functions/v1/send-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: digits }),
     });
-    if (error && !error.message.toLowerCase().includes("already")) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+    const result = await response.json();
+    if (!response.ok || !result?.success) {
+      toast({ title: "Error", description: result?.error || "Failed to send OTP", variant: "destructive" });
       setIsSubmitting(false);
       return;
     }
+    setOtpPreview(result.otp || "");
     setIsSubmitting(false);
     setLoginStep("otp");
-    toast({ title: "OTP Sent!", description: `Dev OTP: ${DEV_OTP}` });
+    toast({ title: "OTP Sent!", description: result.otp ? `Dev OTP: ${result.otp}` : "OTP sent successfully" });
   };
 
   const handleVerifyOtp = async () => {
@@ -81,14 +91,28 @@ const Auth = () => {
       return;
     }
     setIsSubmitting(true);
+    const digits = loginPhone.replace(/\D/g, "");
+    const verifyResponse = await fetch("/functions/v1/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: digits, code: otp }),
+    });
+    const verifyResult = await verifyResponse.json();
+    if (!verifyResponse.ok || !verifyResult?.success) {
+      setIsSubmitting(false);
+      toast({ title: "Invalid OTP", description: verifyResult?.error || "Verification failed", variant: "destructive" });
+      return;
+    }
+
     const devEmail = phoneToEmail(loginPhone);
     const { data: signInData, error } = await supabase.auth.signInWithPassword({
       email: devEmail,
-      password: DEV_OTP,
+      password: DEV_LOGIN_PASSWORD,
     });
+
     setIsSubmitting(false);
     if (error) {
-      toast({ title: "Invalid OTP", description: error.message, variant: "destructive" });
+      toast({ title: "Login failed", description: error.message, variant: "destructive" });
       return;
     }
     // Ensure profile and role exist for this user
@@ -106,13 +130,71 @@ const Auth = () => {
       }
     }
     toast({ title: "Logged in!", description: "Welcome back!" });
-    navigate(isPartner ? "/partner" : "/");
+    navigate("/");
   };
 
-  const handleSignup = async () => {
+  const upsertProfileAndRole = async (userId: string) => {
+    const roleToAssign = isPartner ? "partner" : "customer";
+    await supabase
+      .from("profiles")
+      .upsert(
+        { user_id: userId, full_name: fullName, email, phone: phone || null },
+        { onConflict: "user_id" }
+      );
+    const { data: existingRoles } = await supabase
+      .from("user_roles").select("id").eq("user_id", userId).eq("role", roleToAssign);
+    if (!existingRoles?.length) {
+      await supabase.from("user_roles").insert({ user_id: userId, role: roleToAssign });
+    }
+  };
+
+  const handleSignupSendOtp = async () => {
     if (!fullName.trim()) { toast({ title: "Name required", variant: "destructive" }); return; }
     if (!email.trim()) { toast({ title: "Email required", variant: "destructive" }); return; }
     if (!password || password.length < 6) { toast({ title: "Password must be at least 6 characters", variant: "destructive" }); return; }
+    const digits = phone.replace(/\D/g, "");
+    if (digits.length < 10) { toast({ title: "Enter a valid 10-digit phone number", variant: "destructive" }); return; }
+
+    setIsSubmitting(true);
+    const response = await fetch("/functions/v1/send-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: digits }),
+    });
+    const result = await response.json();
+    setIsSubmitting(false);
+    if (!response.ok || !result?.success) {
+      toast({ title: "Error", description: result?.error || "Failed to send OTP", variant: "destructive" });
+      return;
+    }
+    setSignupOtpPreview(result.otp || "");
+    setSignupStep("otp");
+    toast({ title: "OTP Sent!", description: result.otp ? `Dev OTP: ${result.otp}` : `OTP sent to ${phone}` });
+  };
+
+  const handleSignupVerifyOtp = async () => {
+    if (signupOtp.length < 6) {
+      toast({ title: "Enter 6-digit OTP", variant: "destructive" });
+      return;
+    }
+    const digits = phone.replace(/\D/g, "");
+    setIsSubmitting(true);
+    const verifyResponse = await fetch("/functions/v1/verify-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: digits, code: signupOtp }),
+    });
+    const verifyResult = await verifyResponse.json();
+    if (!verifyResponse.ok || !verifyResult?.success) {
+      setIsSubmitting(false);
+      toast({ title: "Invalid OTP", description: verifyResult?.error || "Verification failed", variant: "destructive" });
+      return;
+    }
+    // OTP verified — proceed to create account
+    await handleSignup();
+  };
+
+  const handleSignup = async () => {
 
     setIsSubmitting(true);
     const { data: signUpData, error } = await supabase.auth.signUp({
@@ -123,29 +205,56 @@ const Auth = () => {
         emailRedirectTo: window.location.origin,
       },
     });
+
+    // ── "User already registered" ─────────────────────────────────────────
+    // The account exists in auth.users but may be missing profile/role rows.
+    // Try signing in with the provided password to recover the account.
+    const isAlreadyRegistered =
+      error?.message?.toLowerCase().includes("already registered") ||
+      error?.message?.toLowerCase().includes("already been registered") ||
+      error?.status === 422;
+
+    if (isAlreadyRegistered) {
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      setIsSubmitting(false);
+      if (signInError) {
+        // Wrong password or unconfirmed email — direct to login tab
+        toast({
+          title: "Account already exists",
+          description: "Please use the Log In tab. If you forgot your password, use the reset link.",
+          variant: "destructive",
+        });
+        setIsLogin(true);
+        return;
+      }
+      // Signed in — ensure profile and role rows exist
+      const userId = signInData?.user?.id;
+      if (userId) await upsertProfileAndRole(userId);
+      toast({ title: "Welcome back!", description: "You've been signed in successfully." });
+      navigate("/");
+      return;
+    }
+    // ─────────────────────────────────────────────────────────────────────
+
     setIsSubmitting(false);
     if (error) {
       toast({ title: "Signup failed", description: error.message, variant: "destructive" });
       return;
     }
-    // Create profile and assign role for the new user
+
+    // New user — upsert profile and role
     const userId = signUpData?.user?.id;
-    if (userId) {
-      await supabase
-        .from("profiles")
-        .upsert(
-          { user_id: userId, full_name: fullName, email, phone: phone || null },
-          { onConflict: "user_id" }
-        );
-      const roleToAssign = isPartner ? "partner" : "customer";
-      const { data: existingRoles } = await supabase
-        .from("user_roles").select("id").eq("user_id", userId).eq("role", roleToAssign);
-      if (!existingRoles?.length) {
-        await supabase.from("user_roles").insert({ user_id: userId, role: roleToAssign });
-      }
+    if (userId) await upsertProfileAndRole(userId);
+
+    if (signUpData?.session) {
+      // Email confirmation disabled — user is immediately logged in
+      toast({ title: "Account created!", description: "Welcome to Shero!" });
+      navigate("/");
+    } else {
+      // Email confirmation required
+      toast({ title: "Account created!", description: "Please check your email to confirm your account, then log in." });
+      setIsLogin(true);
     }
-    toast({ title: "Account created!", description: "Check your email to confirm your account." });
-    navigate("/");
   };
 
   // ─── SIGNUP FLOW ───
@@ -175,37 +284,90 @@ const Auth = () => {
               </p>
             </div>
             <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-xs font-medium">Full Name *</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input id="fullName" placeholder="Enter your full name" value={fullName} onChange={e => setFullName(e.target.value)} className="pl-10 h-12 rounded-xl" />
+              {signupStep === "details" ? (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="fullName" className="text-xs font-medium">Full Name *</Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input id="fullName" placeholder="Enter your full name" value={fullName} onChange={e => setFullName(e.target.value)} className="pl-10 h-12 rounded-xl" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-xs font-medium">Phone Number *</Label>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input id="phone" type="tel" placeholder="+1 XXXXX XXXXX" value={phone} onChange={e => setPhone(e.target.value)} className="pl-10 h-12 rounded-xl" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-xs font-medium">Email Address *</Label>
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input id="email" type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} className="pl-10 h-12 rounded-xl" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password" className="text-xs font-medium">Password *</Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground z-10" />
+                      <PasswordInput id="password" placeholder="Min 6 characters" value={password} onChange={e => setPassword(e.target.value)} className="pl-10 h-12 rounded-xl" />
+                    </div>
+                  </div>
+                  <Button onClick={handleSignupSendOtp} disabled={isSubmitting} className="w-full h-12 rounded-xl bg-gradient-shero hover:opacity-90 text-lg font-semibold gap-2">
+                    {isSubmitting ? "Sending OTP..." : "Continue"} <ArrowRight className="w-5 h-5" />
+                  </Button>
+                </>
+              ) : (
+                <div className="space-y-5">
+                  <div className="text-center">
+                    <p className="text-sm text-muted-foreground">
+                      OTP sent to <span className="font-semibold text-foreground">{phone}</span>
+                    </p>
+                    <button
+                      onClick={() => { setSignupStep("details"); setSignupOtp(""); }}
+                      className="text-xs text-primary hover:underline mt-1"
+                    >
+                      Change number
+                    </button>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-medium">Enter 6-digit OTP</Label>
+                    <div className="flex justify-center">
+                      <InputOTP maxLength={6} value={signupOtp} onChange={setSignupOtp}>
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
+                          <InputOTPSlot index={2} />
+                          <InputOTPSlot index={3} />
+                          <InputOTPSlot index={4} />
+                          <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                      </InputOTP>
+                    </div>
+                    {signupOtpPreview && (
+                      <p className="text-xs text-center text-muted-foreground mt-2">
+                        <ShieldCheck className="inline w-3 h-3 mr-1" />
+                        Dev OTP: <span className="font-mono font-semibold">{signupOtpPreview}</span>
+                      </p>
+                    )}
+                  </div>
+                  <Button
+                    onClick={handleSignupVerifyOtp}
+                    disabled={isSubmitting || signupOtp.length < 6}
+                    className="w-full h-12 rounded-xl bg-gradient-shero hover:opacity-90 text-lg font-semibold gap-2"
+                  >
+                    {isSubmitting ? "Creating Account..." : "Verify & Create Account"} <ShieldCheck className="w-5 h-5" />
+                  </Button>
+                  <button
+                    onClick={handleSignupSendOtp}
+                    disabled={isSubmitting}
+                    className="w-full text-center text-sm text-primary hover:underline"
+                  >
+                    Resend OTP
+                  </button>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="text-xs font-medium">Phone Number</Label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input id="phone" type="tel" placeholder="+1 XXXXX XXXXX" value={phone} onChange={e => setPhone(e.target.value)} className="pl-10 h-12 rounded-xl" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-xs font-medium">Email Address *</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input id="email" type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} className="pl-10 h-12 rounded-xl" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-xs font-medium">Password *</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground z-10" />
-                  <PasswordInput id="password" placeholder="Min 6 characters" value={password} onChange={e => setPassword(e.target.value)} className="pl-10 h-12 rounded-xl" />
-                </div>
-              </div>
-              <Button onClick={handleSignup} disabled={isSubmitting} className="w-full h-12 rounded-xl bg-gradient-shero hover:opacity-90 text-lg font-semibold gap-2">
-                {isSubmitting ? "Creating..." : "Create Account"} <ArrowRight className="w-5 h-5" />
-              </Button>
+              )}
             </div>
             <div className="flex items-center gap-3 my-6">
               <div className="flex-1 h-px bg-border" />
@@ -227,7 +389,7 @@ const Auth = () => {
               <button onClick={() => setIsLogin(true)} className="text-primary font-semibold hover:underline">Log In</button>
             </div>
             <div className="mt-3 text-center">
-              <Link to={`/auth?role=${isPartner ? "customer" : "partner"}`} className="text-xs text-muted-foreground hover:text-primary transition-colors">
+              <Link to={`/register?role=${isPartner ? "customer" : "partner"}`} className="text-xs text-muted-foreground hover:text-primary transition-colors">
                 {isPartner ? "🍽️ Switch to Customer" : "👩‍🍳 Switch to Partner / Service Provider"}
               </Link>
             </div>
@@ -310,10 +472,12 @@ const Auth = () => {
                     </InputOTPGroup>
                   </InputOTP>
                 </div>
-                <p className="text-xs text-center text-muted-foreground mt-2">
-                  <ShieldCheck className="inline w-3 h-3 mr-1" />
-                  Dev OTP: <span className="font-mono font-semibold">123456</span>
-                </p>
+                {otpPreview && (
+                  <p className="text-xs text-center text-muted-foreground mt-2">
+                    <ShieldCheck className="inline w-3 h-3 mr-1" />
+                    Dev OTP: <span className="font-mono font-semibold">{otpPreview}</span>
+                  </p>
+                )}
               </div>
               <Button
                 onClick={handleVerifyOtp}
@@ -355,7 +519,7 @@ const Auth = () => {
           </div>
 
           <div className="mt-3 text-center">
-            <Link to={`/auth?role=${isPartner ? "customer" : "partner"}${isLogin ? "&login=true" : ""}`} className="text-xs text-muted-foreground hover:text-primary transition-colors">
+            <Link to={`/login?role=${isPartner ? "customer" : "partner"}`} className="text-xs text-muted-foreground hover:text-primary transition-colors">
               {isPartner ? "🍽️ Switch to Customer" : "👩‍🍳 Switch to Partner / Service Provider"}
             </Link>
           </div>

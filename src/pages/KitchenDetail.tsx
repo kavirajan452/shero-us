@@ -4,7 +4,7 @@ import { ArrowLeft, MapPin, Plus, Minus, Leaf } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
-import { useKitchenPartner, useInstantMenuItems } from "@/hooks/useSupabaseData";
+import { useKitchenPartner, useInstantMenuItems, useKitchenCategoriesForKitchen } from "@/hooks/useSupabaseData";
 import type { MenuItem, AddOn } from "@/types/menu";
 import { useCart } from "@/contexts/CartContext";
 import { useRegion } from "@/contexts/RegionContext";
@@ -39,12 +39,24 @@ const KitchenDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { data: kitchen, isLoading: loadingKitchen } = useKitchenPartner(id);
   const { data: rawItems, isLoading: loadingItems } = useInstantMenuItems(id);
+  const { data: dbCategories } = useKitchenCategoriesForKitchen(id);
   const items = useMemo(() => (rawItems || []).filter((m: any) => m.is_toggled_on).map(dbToMenuItem), [rawItems]);
   const { items: cartItems, addItem, updateQuantity } = useCart();
   const { formatPrice } = useRegion();
   const cartTotal = cartItems.reduce((s, ci) => s + ci.quantity, 0);
   const [addOnItem, setAddOnItem] = useState<MenuItem | null>(null);
-  const categories = useMemo(() => [...new Set(items.map((i) => i.category))], [items]);
+  // Use DB-ordered categories when available; fall back to order derived from menu items
+  const categories = useMemo(() => {
+    if (dbCategories && dbCategories.length > 0) {
+      const dbNames = dbCategories.map((c: any) => c.name);
+      const itemCats = [...new Set(items.map((i) => i.category))];
+      // Show DB categories that have items, then any extra item categories not in DB list
+      const ordered = dbNames.filter((n: string) => itemCats.includes(n));
+      const extras = itemCats.filter((n) => !dbNames.includes(n));
+      return [...ordered, ...extras];
+    }
+    return [...new Set(items.map((i) => i.category))];
+  }, [dbCategories, items]);
 
   if (loadingKitchen || loadingItems) {
     return (

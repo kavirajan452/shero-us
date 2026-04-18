@@ -192,8 +192,8 @@ const Checkout = () => {
     return parts.length > 0 ? parts.join(", ") : undefined;
   };
 
-  const handlePaymentSuccess = (method?: PaymentMethod) => {
-    createOrder.mutate({
+  const handlePaymentSuccess = async (method?: PaymentMethod) => {
+    const createdOrder = await createOrder.mutateAsync({
       order_code: `SH-INS-${Date.now().toString(36).toUpperCase()}`,
       customer_id: user?.id ?? null,
       customer_name: name,
@@ -217,16 +217,34 @@ const Checkout = () => {
       status: "new",
       pickup_instructions: buildPickupInstructions(),
       delivery_instructions: buildDeliveryInstructions(),
-    });
+    } as any);
+
+    // In test/dev mode the create-payment-intent edge function may not be deployed.
+    // We attempt to call it, but if it fails we still treat the order as placed
+    // (the order was already written to the DB with status "new" awaiting admin acceptance).
+    try {
+      const { data: paymentData, error: paymentError } = await supabase.functions.invoke("create-payment-intent", {
+        body: { orderId: createdOrder.id, amount: total },
+      });
+      if (!paymentError && paymentData?.paymentIntentId) {
+        await (supabase as any)
+          .from("instant_orders")
+          .update({ payment_intent_id: paymentData.paymentIntentId })
+          .eq("id", createdOrder.id);
+      }
+    } catch {
+      // edge function unavailable in dev — order is still placed
+    }
+
     if (walletUsable > 0) {
       spendOnPurchase(walletUsable, subtotalWithFees);
     }
     clearCart();
-    // Pass slot info to confirmation page
+
     const slotDay = deliveryDays.find(d => d.index === selectedDay);
     const slotTime = sessionSlots.find(s => s.value === selectedSlot);
     const slotLabel = slotDay && slotTime ? `${slotDay.label}, ${slotDay.date} · ${selectedSession} · ${slotTime.label}` : "";
-    navigate(`/order-confirmation?slot=${encodeURIComponent(slotLabel)}`);
+    navigate(`/order-confirmation?orderId=${createdOrder.id}&slot=${encodeURIComponent(slotLabel)}`);
   };
 
   const handlePaymentFailure = (method: PaymentMethod) => {

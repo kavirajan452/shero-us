@@ -6,18 +6,20 @@ import sheroLogo from "@/assets/shero-logo.png";
 
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { totalItems } = useCart();
   const { t } = useTranslation();
+  const { isLoggedIn } = useAuth();
 
   const navLinks = [
     { to: "/", label: t("nav.home") },
     { to: "/instant-delivery", label: t("nav.instantDelivery", "Single Meal Order") },
-    { to: "/subscriptions", label: t("nav.subscriptions") },
-    { to: "/party-orders", label: t("nav.partyOrders") },
-    { to: "/food-products", label: t("nav.foodProducts") },
+    // Phase 2+: { to: "/subscriptions", label: t("nav.subscriptions") },
+    // Phase 2+: { to: "/party-orders", label: t("nav.partyOrders") },
+    // Phase 2+: { to: "/food-products", label: t("nav.foodProducts") },
   ];
 
   return (
@@ -42,12 +44,13 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
           
-          <Link
-            to="/auth"
-            className="hidden md:inline-flex px-5 py-2 rounded-full bg-gradient-shero text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity"
-          >
-            {t("nav.orderNow")}
-          </Link>
+          {!isLoggedIn && (
+            <Link
+              to="/login"
+            >
+              {t("nav.orderNow")}
+            </Link>
+          )}
           <Link
             to="/customer"
             className="hidden md:flex p-2 rounded-full hover:bg-secondary transition-colors"
@@ -87,13 +90,15 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <Link
-              to="/auth"
-              onClick={() => setMobileOpen(false)}
-              className="py-2 text-sm font-medium text-primary"
-            >
-              {t("nav.loginSignUp")}
-            </Link>
+            {!isLoggedIn && (
+              <Link
+                to="/login"
+                onClick={() => setMobileOpen(false)}
+                className="py-2 text-sm font-medium text-primary"
+              >
+                {t("nav.loginSignUp")}
+              </Link>
+            )}
           </div>
         </div>
       )}
@@ -102,3 +107,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
