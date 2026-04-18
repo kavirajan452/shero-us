@@ -131,6 +131,13 @@ Already implemented in prior migrations + hooks:
 - Realtime subscriptions keep stats and pending list auto-updated.
 - `formatDistanceToNow` (date-fns) shows human-readable "X minutes ago".
 
+### ✅ 3.5 Admin Phase 1 Access Control
+
+- Admin login now uses username + password with DB-backed username lookup (`admin_accounts`) and Supabase password auth.
+- Dummy/test-only admin credentials were removed from the login flow.
+- Admin routes are now restricted to the Phase 1 scope and non-phase-1 routes redirect to `/admin`.
+- Sidebar now hides non-phase-1 menu entries.
+
 ---
 
 ## 4. What Is Not Yet Done

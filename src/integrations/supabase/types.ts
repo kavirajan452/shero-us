@@ -122,6 +122,39 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_accounts: {
+        Row: {
+          auth_user_id: string
+          created_at: string
+          display_name: string
+          id: string
+          is_active: boolean
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          auth_user_id: string
+          created_at?: string
+          display_name: string
+          id?: string
+          is_active?: boolean
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          auth_user_id?: string
+          created_at?: string
+          display_name?: string
+          id?: string
+          is_active?: boolean
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
       app_config: {
         Row: {
           key: string
@@ -2783,6 +2816,15 @@ export type Database = {
     }
     Functions: {
       generate_referral_code: { Args: never; Returns: string }
+      get_admin_login_identity: {
+        Args: { _username: string }
+        Returns: {
+          display_name: string
+          email: string
+          role: Database["public"]["Enums"]["app_role"]
+          username: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

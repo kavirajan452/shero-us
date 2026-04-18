@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import sheroLogo from "@/assets/shero-logo.png";
 import { getAdminRole, getRoleConfig, hasAccess } from "@/data/adminRoles";
+import { isPhase1AdminRoute } from "@/data/adminPhase1";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   Sidebar,
@@ -248,7 +249,7 @@ export function AdminSidebar() {
         {/* Dynamic Sections */}
         {sections.map((section) => {
           const visibleItems = section.items.filter(
-            (item) => !role || hasAccess(role, item.url)
+            (item) => isPhase1AdminRoute(item.url) && (!role || hasAccess(role, item.url))
           );
           if (visibleItems.length === 0) return null;
           const SectionIcon = section.icon;

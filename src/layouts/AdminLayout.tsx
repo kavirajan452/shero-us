@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import { getAdminRole, getRoleConfig, hasAccess, type AdminRole } from "@/data/adminRoles";
+import { isPhase1AdminRoute } from "@/data/adminPhase1";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -23,13 +24,6 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
 
   useEffect(() => {
     const checkAdmin = async () => {
-      const isDummyAdmin = localStorage.getItem("shero-admin") === "true" && localStorage.getItem("shero-admin-role");
-
-      if (isDummyAdmin) {
-        setIsChecking(false);
-        return;
-      }
-
       const { data: { session } } = await supabase.auth.getSession();
 
       if (!session) {
@@ -46,17 +40,24 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
         return;
       }
 
-      if (!localStorage.getItem("shero-admin-role")) {
-        const { data: roles } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", session.user.id);
+      const { data: account } = await supabase
+        .from("admin_accounts")
+        .select("role, display_name, username")
+        .eq("auth_user_id", session.user.id)
+        .eq("is_active", true)
+        .maybeSingle();
 
-        const adminRole = roles?.find(r => r.role !== "customer" && r.role !== "partner");
-        if (adminRole) {
-          localStorage.setItem("shero-admin", "true");
-          localStorage.setItem("shero-admin-role", adminRole.role);
-        }
+      if (account?.role) {
+        localStorage.setItem("shero-admin", "true");
+        localStorage.setItem("shero-admin-role", account.role);
+        localStorage.setItem("shero-admin-name", account.display_name);
+        localStorage.setItem("shero-admin-rem", session.user.email || account.username);
+      }
+
+      if (!isPhase1AdminRoute(location.pathname)) {
+        navigate("/admin");
+        setIsChecking(false);
+        return;
       }
 
       const currentRole = getAdminRole();

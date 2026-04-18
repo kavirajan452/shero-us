@@ -568,6 +568,7 @@ export function getRoleConfig(role: AdminRole): AdminRoleConfig | undefined {
 export function hasAccess(role: AdminRole, section: string): boolean {
   const config = getRoleConfig(role);
   if (!config) return false;
+  if (!Object.values(SECTIONS).includes(section as (typeof SECTIONS)[keyof typeof SECTIONS])) return true;
   // Broadcast pages (-comms) are accessible if the role has access to ANY section in the same group
   if (section.endsWith("-comms")) return true;
   if (section === SECTIONS.KITCHEN_CATEGORIES) {

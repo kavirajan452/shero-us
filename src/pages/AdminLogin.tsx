@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,54 +20,43 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Dummy credentials for testing (bypass real auth)
-  const DUMMY_CREDS = {
-    admin: { email: "admin@shero.in", password: "admin123", role: "super_admin", name: "Admin User" },
-    super_admin: { email: "superadmin@shero.in", password: "super123", role: "super_admin", name: "Super Admin" },
-    ceo: { email: "ceo@shero.in", password: "ceo123", role: "super_admin", name: "CEO" },
-  } as const;
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
 
-    // Check dummy credentials first (testing mode)
-    const dummyMatch = Object.values(DUMMY_CREDS).find(
-      (c) => c.email === email.trim().toLowerCase() && c.password === password
-    );
-
-    if (dummyMatch) {
-      localStorage.setItem("shero-admin", "true");
-      localStorage.setItem("shero-admin-role", dummyMatch.role);
-      localStorage.setItem("shero-admin-rem", dummyMatch.email);
-      localStorage.setItem("shero-admin-name", dummyMatch.name);
-
-      // Also grant admin role in DB for the current Supabase session user (so RLS works)
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        await supabase
-          .from("user_roles")
-          .upsert(
-            { user_id: session.user.id, role: dummyMatch.role },
-            { onConflict: "user_id,role" }
-          );
-      }
-
-      toast({ title: `✅ Logged in as ${dummyMatch.name} (${dummyMatch.role})` });
+    const loginId = username.trim().toLowerCase();
+    if (!loginId || !password.trim()) {
+      setError("Username and password are required.");
       setIsSubmitting(false);
-      navigate("/admin");
       return;
     }
 
-    // Fallback to real Supabase auth
+    let emailForAuth = loginId;
+
+    if (!loginId.includes("@")) {
+      const { data: identityRows, error: identityError } = await supabase.rpc("get_admin_login_identity", {
+        _username: loginId,
+      });
+
+      const identity = Array.isArray(identityRows) ? identityRows[0] : null;
+
+      if (identityError || !identity?.email) {
+        setError("Invalid username or password.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      emailForAuth = identity.email;
+    }
+
     const { data, error: authError } = await supabase.auth.signInWithPassword({
-      email,
+      email: emailForAuth,
       password,
     });
 
     if (authError) {
-      setError(authError.message);
+      setError("Invalid username or password.");
       setIsSubmitting(false);
       return;
     }
@@ -87,18 +76,33 @@ export default function AdminLogin() {
       return;
     }
 
-    const { data: roles } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", data.user.id);
+    const { data: account } = await supabase
+      .from("admin_accounts")
+      .select("role, display_name, username")
+      .eq("auth_user_id", data.user.id)
+      .eq("is_active", true)
+      .maybeSingle();
+
+    const { data: roles } = account
+      ? { data: [{ role: account.role }] }
+      : await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", data.user.id);
 
     const adminRole = roles?.find(r => r.role !== "customer" && r.role !== "partner");
 
     if (adminRole) {
       localStorage.setItem("shero-admin", "true");
       localStorage.setItem("shero-admin-role", adminRole.role);
-      localStorage.setItem("shero-admin-rem", email);
-      localStorage.setItem("shero-admin-name", data.user.user_metadata?.full_name || email);
+      localStorage.setItem("shero-admin-rem", data.user.email || emailForAuth);
+      localStorage.setItem("shero-admin-name", account?.display_name || data.user.user_metadata?.full_name || data.user.email || emailForAuth);
+      toast({ title: `✅ Logged in as ${account?.display_name || data.user.email}` });
+    } else {
+      setError("You do not have admin access. Contact your administrator.");
+      await supabase.auth.signOut();
+      setIsSubmitting(false);
+      return;
     }
 
     setIsSubmitting(false);
@@ -188,19 +192,19 @@ export default function AdminLogin() {
 
         <form onSubmit={handleLogin} className="space-y-4 bg-card rounded-xl border border-border p-6">
           <div>
-            <label className="text-sm font-medium text-foreground">Email</label>
+            <label className="text-sm font-medium text-foreground">Username</label>
             <Input
-              type="email"
-              value={email}
-              onChange={(e) => { setEmail(e.target.value); setError(""); }}
-              placeholder="admin@shero.in"
+              type="text"
+              value={username}
+              onChange={(e) => { setUsername(e.target.value); setError(""); }}
+              placeholder="superadmin"
               className="mt-1.5"
             />
           </div>
           <div>
             <div className="flex items-center justify-between">
               <label className="text-sm font-medium text-foreground">Password</label>
-              <button type="button" onClick={() => { setShowForgot(true); setForgotEmail(email); }} className="text-xs text-primary hover:underline">
+              <button type="button" onClick={() => { setShowForgot(true); setForgotEmail(""); }} className="text-xs text-primary hover:underline">
                 Forgot Password?
               </button>
             </div>
