@@ -12,10 +12,8 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isChecking, setIsChecking] = useState(true);
-
-  // Still read from localStorage for sidebar compatibility during migration
-  const role = getAdminRole();
-  const roleConfig = role ? getRoleConfig(role) : null;
+  // Defer localStorage reads to client-side only (avoids SSR "localStorage is not defined")
+  const [roleConfig, setRoleConfig] = useState<ReturnType<typeof getRoleConfig>>(undefined);
 
   // Force sidebar cookie open on mount
   useEffect(() => {
@@ -55,6 +53,7 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
       }
 
       const currentRole = getAdminRole();
+      setRoleConfig(currentRole ? getRoleConfig(currentRole) : undefined);
       if (currentRole && !hasAccess(currentRole, location.pathname)) {
         navigate("/admin/login");
         setIsChecking(false);
