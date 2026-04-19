@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/AdminSidebar";
-import { getAdminRole, getRoleConfig, hasAccess } from "@/data/adminRoles";
+import { getAdminRole, getRoleConfig, hasAccess, ADMIN_ROLES, type AdminRole } from "@/data/adminRoles";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -57,7 +57,8 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
         return;
       }
 
-      const adminRole = roles?.find((r) => r.role === "super_admin");
+      const validRoleKeys = new Set(ADMIN_ROLES.map((r) => r.key));
+      const adminRole = roles?.find((r) => validRoleKeys.has(r.role as AdminRole));
       if (!adminRole) {
         await supabase.auth.signOut();
         localStorage.removeItem("shero-admin");
@@ -70,7 +71,7 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
 
       localStorage.setItem("shero-admin", "true");
       localStorage.setItem("shero-admin-role", adminRole.role);
-      localStorage.setItem("shero-admin-name", session.user.user_metadata?.full_name || "Super Admin");
+      localStorage.setItem("shero-admin-name", session.user.user_metadata?.full_name || "Admin");
 
       const currentRole = getAdminRole();
       if (currentRole && !hasAccess(currentRole, location.pathname)) {
