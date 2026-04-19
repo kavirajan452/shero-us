@@ -9,8 +9,12 @@ import { useEffect } from "react";
 function useRealtimeSubscription(table: string, queryKeys: string[]) {
   const queryClient = useQueryClient();
   useEffect(() => {
+    // Use a unique channel name per effect invocation to avoid "cannot add
+    // callbacks after subscribe()" errors when React StrictMode or Fast Refresh
+    // remounts the component before the previous channel's cleanup completes.
+    const channelName = `realtime-${table}-${Math.random().toString(36).slice(2)}`;
     const channel = supabase
-      .channel(`realtime-${table}`)
+      .channel(channelName)
       .on("postgres_changes", { event: "*", schema: "public", table }, () => {
         queryKeys.forEach((key) => queryClient.invalidateQueries({ queryKey: [key] }));
       })
