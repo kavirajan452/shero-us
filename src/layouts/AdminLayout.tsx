@@ -28,7 +28,6 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
       if (!session) {
         localStorage.removeItem("shero-admin");
         localStorage.removeItem("shero-admin-role");
-        localStorage.removeItem("shero-admin-rem");
         localStorage.removeItem("shero-admin-name");
         navigate("/admin/login");
         setIsChecking(false);
@@ -44,7 +43,6 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
         await supabase.auth.signOut();
         localStorage.removeItem("shero-admin");
         localStorage.removeItem("shero-admin-role");
-        localStorage.removeItem("shero-admin-rem");
         localStorage.removeItem("shero-admin-name");
         navigate("/admin/login");
         setIsChecking(false);
@@ -56,7 +54,6 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
         await supabase.auth.signOut();
         localStorage.removeItem("shero-admin");
         localStorage.removeItem("shero-admin-role");
-        localStorage.removeItem("shero-admin-rem");
         localStorage.removeItem("shero-admin-name");
         navigate("/admin/login");
         setIsChecking(false);
@@ -65,8 +62,7 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
 
       localStorage.setItem("shero-admin", "true");
       localStorage.setItem("shero-admin-role", adminRole.role);
-      localStorage.setItem("shero-admin-rem", session.user.email || "");
-      localStorage.setItem("shero-admin-name", String(session.user.user_metadata?.full_name || session.user.email || "Super Admin"));
+      localStorage.setItem("shero-admin-name", session.user.user_metadata?.full_name || "Super Admin");
 
       const currentRole = getAdminRole();
       if (currentRole && !hasAccess(currentRole, location.pathname)) {

@@ -211,13 +211,12 @@ export function AdminSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
-  const logoSrc = typeof sheroLogo === "string" ? sheroLogo : sheroLogo.src;
+  const logoSrc = typeof sheroLogo === "string" ? sheroLogo : (sheroLogo as { src: string }).src;
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     localStorage.removeItem("shero-admin");
     localStorage.removeItem("shero-admin-role");
-    localStorage.removeItem("shero-admin-rem");
     localStorage.removeItem("shero-admin-name");
     navigate("/admin/login", { replace: true });
   };

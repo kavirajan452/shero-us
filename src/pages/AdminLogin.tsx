@@ -71,8 +71,7 @@ export default function AdminLogin() {
 
     localStorage.setItem("shero-admin", "true");
     localStorage.setItem("shero-admin-role", adminRole.role);
-    localStorage.setItem("shero-admin-rem", normalizedEmail);
-    localStorage.setItem("shero-admin-name", profile?.full_name || data.user.user_metadata?.full_name || normalizedEmail);
+    localStorage.setItem("shero-admin-name", profile?.full_name || data.user.user_metadata?.full_name || "Super Admin");
 
     toast({ title: "✅ Logged in as Super Admin" });
     setIsSubmitting(false);

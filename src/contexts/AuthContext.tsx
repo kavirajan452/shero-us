@@ -121,7 +121,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem("shero-role");
     localStorage.removeItem("shero-admin");
     localStorage.removeItem("shero-admin-role");
-    localStorage.removeItem("shero-admin-rem");
     localStorage.removeItem("shero-admin-name");
   }, []);
 
