@@ -140,6 +140,13 @@ Deno.serve(async (req) => {
 
     let userId: string | null = profileEmailUserId ?? profilePhoneUserId;
 
+    // Proactively check auth.users before attempting to create, so returning
+    // users whose profile record is missing never hit a duplicate-registration
+    // error.
+    if (!userId) {
+      userId = await findAuthUserIdByEmail(supabase, email);
+    }
+
     if (!userId) {
       const { data: createdUser, error: createUserError } = await supabase.auth.admin.createUser({
         email,
@@ -148,7 +155,7 @@ Deno.serve(async (req) => {
         user_metadata: { phone: digits },
       });
       if (createUserError) {
-        // User already exists in auth.users but not in profiles — look them up
+        // Race-condition guard: another request may have just created the user.
         if (isDuplicateRegistrationError(createUserError)) {
           userId = await findAuthUserIdByEmail(supabase, email);
           if (!userId) throw new Error("User exists in auth but could not be retrieved");
