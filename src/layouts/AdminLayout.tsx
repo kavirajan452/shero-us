@@ -12,10 +12,7 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
   const location = useLocation();
   const [isChecking, setIsChecking] = useState(true);
 
-  // On the login page, render children directly — no sidebar, no auth-guard.
-  if (location.pathname === "/admin/login") {
-    return <>{children}</>;
-  }
+  const isLoginPage = location.pathname === "/admin/login";
 
   // Still read from localStorage for sidebar compatibility during migration
   const role = getAdminRole();
@@ -23,10 +20,16 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
 
   // Force sidebar cookie open on mount
   useEffect(() => {
+    if (isLoginPage) return;
     document.cookie = "sidebar:state=true; path=/; max-age=604800";
-  }, []);
+  }, [isLoginPage]);
 
   useEffect(() => {
+    if (isLoginPage) {
+      setIsChecking(false);
+      return;
+    }
+
     const checkAdmin = async () => {
       const { data: { session } } = await supabase.auth.getSession();
 
@@ -78,7 +81,12 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
     };
 
     checkAdmin();
-  }, [navigate, location.pathname]);
+  }, [isLoginPage, navigate, location.pathname]);
+
+  // On the login page, render children directly — no sidebar, no auth-guard.
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
   if (isChecking) {
     return (
