@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { LayoutDashboard, ChefHat, UtensilsCrossed, ClipboardList, LogOut, Shield, BarChart3, Users, DollarSign, Headphones, Radio, Gauge, Heart, PartyPopper, UserPlus, Store, FileBarChart, BadgePercent, Briefcase, Wallet, CalendarCheck, Settings, Target, Bike, Wrench, PieChart, MapPin, MessageSquare, Bot, Phone, Star, FileEdit, TicketCheck, BookOpen, GraduationCap, Plug, CreditCard, Truck, ChevronRight, UserCog, Megaphone, Cookie, Sparkles, Package, Calendar } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import sheroLogo from "@/assets/shero-logo.png";
 import { getAdminRole, getRoleConfig, hasAccess } from "@/data/adminRoles";
+import { supabase } from "@/integrations/supabase/client";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   Sidebar,
@@ -209,13 +209,17 @@ export function AdminSidebar() {
   const role = getAdminRole();
   const roleConfig = role ? getRoleConfig(role) : null;
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPath = location.pathname;
+  const logoSrc = typeof sheroLogo === "string" ? sheroLogo : sheroLogo.src;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     localStorage.removeItem("shero-admin");
     localStorage.removeItem("shero-admin-role");
     localStorage.removeItem("shero-admin-rem");
     localStorage.removeItem("shero-admin-name");
+    navigate("/admin/login", { replace: true });
   };
 
   return (
@@ -225,7 +229,7 @@ export function AdminSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="px-3 py-4">
             <Link to="/admin" className="flex items-center gap-2">
-              <img src={typeof sheroLogo === 'string' ? sheroLogo : (sheroLogo as any).src} alt="Shero" className="h-7" />
+              <img src={logoSrc} alt="Shero" className="h-7" />
               {!collapsed && (
                 <span className="flex items-center gap-1 text-xs font-semibold text-muted-foreground">
                   <Shield className="w-3 h-3" /> Admin
@@ -311,11 +315,9 @@ export function AdminSidebar() {
       <SidebarFooter className="p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link to="/admin/login" onClick={handleLogout} className="text-muted-foreground hover:text-foreground">
-                <LogOut className="mr-2 h-4 w-4" />
-                {!collapsed && <span>Logout</span>}
-              </Link>
+            <SidebarMenuButton onClick={handleLogout} className="text-muted-foreground hover:text-foreground">
+              <LogOut className="mr-2 h-4 w-4" />
+              {!collapsed && <span>Logout</span>}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

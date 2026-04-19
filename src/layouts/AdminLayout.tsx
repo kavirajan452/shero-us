@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/AdminSidebar";
-import { getAdminRole, getRoleConfig, hasAccess, type AdminRole } from "@/data/adminRoles";
+import { getAdminRole, getRoleConfig, hasAccess } from "@/data/adminRoles";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -23,41 +23,50 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
 
   useEffect(() => {
     const checkAdmin = async () => {
-      const isDummyAdmin = localStorage.getItem("shero-admin") === "true" && localStorage.getItem("shero-admin-role");
-
-      if (isDummyAdmin) {
-        setIsChecking(false);
-        return;
-      }
-
       const { data: { session } } = await supabase.auth.getSession();
 
       if (!session) {
+        localStorage.removeItem("shero-admin");
+        localStorage.removeItem("shero-admin-role");
+        localStorage.removeItem("shero-admin-rem");
+        localStorage.removeItem("shero-admin-name");
         navigate("/admin/login");
         setIsChecking(false);
         return;
       }
 
-      const { data: isAdmin } = await supabase.rpc("is_admin", { _user_id: session.user.id });
+      const { data: roles, error: roleError } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", session.user.id);
 
-      if (!isAdmin) {
+      if (roleError) {
+        await supabase.auth.signOut();
+        localStorage.removeItem("shero-admin");
+        localStorage.removeItem("shero-admin-role");
+        localStorage.removeItem("shero-admin-rem");
+        localStorage.removeItem("shero-admin-name");
         navigate("/admin/login");
         setIsChecking(false);
         return;
       }
 
-      if (!localStorage.getItem("shero-admin-role")) {
-        const { data: roles } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", session.user.id);
-
-        const adminRole = roles?.find(r => r.role !== "customer" && r.role !== "partner");
-        if (adminRole) {
-          localStorage.setItem("shero-admin", "true");
-          localStorage.setItem("shero-admin-role", adminRole.role);
-        }
+      const adminRole = roles?.find((r) => r.role === "super_admin");
+      if (!adminRole) {
+        await supabase.auth.signOut();
+        localStorage.removeItem("shero-admin");
+        localStorage.removeItem("shero-admin-role");
+        localStorage.removeItem("shero-admin-rem");
+        localStorage.removeItem("shero-admin-name");
+        navigate("/admin/login");
+        setIsChecking(false);
+        return;
       }
+
+      localStorage.setItem("shero-admin", "true");
+      localStorage.setItem("shero-admin-role", adminRole.role);
+      localStorage.setItem("shero-admin-rem", session.user.email || "");
+      localStorage.setItem("shero-admin-name", String(session.user.user_metadata?.full_name || session.user.email || "Super Admin"));
 
       const currentRole = getAdminRole();
       if (currentRole && !hasAccess(currentRole, location.pathname)) {

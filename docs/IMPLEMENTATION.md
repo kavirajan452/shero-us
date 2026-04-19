@@ -4,6 +4,15 @@
 
 ## 🔄 Update Log (2026-04-19)
 
+- Phase 2 Task 4: replaced admin dummy-login bypass with database-backed role verification.
+- Admin portal (`/admin/*`) now allows access only for authenticated users with `super_admin` role.
+- Added partner dashboard guard: `/partner/*` now requires authenticated `partner` role.
+- Updated admin logout to sign out Supabase session (not only local storage cleanup).
+- Extended Supabase seeding function `setup-admin` to seed both:
+  - `superadmin@shero.in` → `super_admin`
+  - `kitchenpartner@shero.in` → `partner`
+- Added migration `20260419091500_phase2_task4_login_seed_profiles_roles.sql` to upsert profiles + role links for seeded login users.
+
 - Added env-driven mode switch for OTP and payments (`APP_MODE` / `NEXT_PUBLIC_APP_MODE`).
 - Updated OTP send flow to support:
   - **Dev/Test mode:** generate OTP, store hash in DB, return OTP for UI preview.
@@ -37,6 +46,28 @@
 6. Payment mode:
    - Dev mode: place order and verify simulated response + row in `payment_attempts` with `mode='dev'`
    - Production mode: verify Stripe payment intent is created and logged in `payment_attempts`
+
+## ✅ Verification Guide (Phase 2 Task 4 — Admin + Kitchen Partner Logins)
+
+1. Apply latest migrations:
+   - `npx supabase db push`
+2. Seed login users (auth + profile + role):
+   - Deploy and invoke Edge Function: `supabase/functions/setup-admin`
+   - Expected seeded users:
+     - `superadmin@shero.in` (`super_admin`)
+     - `kitchenpartner@shero.in` (`partner`)
+3. Validate admin access control:
+   - Login at `/admin/login` with `superadmin@shero.in`
+   - Confirm `/admin` and admin menus load
+   - Logout from sidebar and confirm session is invalidated
+   - Login with non-admin/non-super-admin account and confirm access is denied
+4. Validate partner access control:
+   - Login via `/login?role=partner` (OTP flow)
+   - Confirm `/partner` pages load only for `partner` role
+   - Logout or switch to a non-partner account and confirm `/partner/*` redirects to partner login
+5. DB checks (Supabase SQL editor):
+   - `select user_id, role from public.user_roles where role in ('super_admin','partner');`
+   - `select user_id, email, phone from public.profiles where email in ('superadmin@shero.in','kitchenpartner@shero.in');`
 
 ---
 
