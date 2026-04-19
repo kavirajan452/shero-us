@@ -9,6 +9,28 @@ const DEV_LOGIN_PASSWORD = "123456";
 
 const phoneToEmail = (phone: string) => `${phone.slice(-10)}@shero.dev`;
 const allowedOtpRoles = new Set(["customer", "partner"]);
+const isDuplicateRegistrationError = (message: string) => {
+  const normalized = message.toLowerCase();
+  return normalized.includes("already been registered") || normalized.includes("already registered");
+};
+const findAuthUserIdByEmail = async (supabase: ReturnType<typeof createClient>, email: string) => {
+  const targetEmail = email.toLowerCase();
+  const perPage = 200;
+  const maxPages = 100;
+
+  for (let page = 1; page <= maxPages; page += 1) {
+    const { data: listData, error: listError } = await supabase.auth.admin.listUsers({ page, perPage });
+    if (listError) throw listError;
+
+    const users = listData?.users ?? [];
+    const existingAuthUser = users.find((u) => (u.email ?? "").toLowerCase() === targetEmail);
+    if (existingAuthUser?.id) return existingAuthUser.id;
+
+    if (users.length < perPage) break;
+  }
+
+  return null;
+};
 const hashOtp = async (otp: string) => {
   const bytes = new TextEncoder().encode(otp);
   const digest = await crypto.subtle.digest("SHA-256", bytes);
@@ -87,14 +109,26 @@ Deno.serve(async (req) => {
     await supabase.from("otp_attempts").update({ used: true }).eq("id", latestOtp.id);
 
     const email = phoneToEmail(digits);
-    const { data: existingProfile, error: profileError } = await supabase
+    const { data: profileByEmailRows, error: profileByEmailError } = await supabase
       .from("profiles")
       .select("user_id")
       .eq("email", email)
-      .maybeSingle();
-    if (profileError) throw profileError;
+      .not("user_id", "is", null)
+      .limit(1);
+    if (profileByEmailError) throw profileByEmailError;
 
-    let userId: string | null = existingProfile?.user_id ?? null;
+    const { data: profileByPhoneRows, error: profileByPhoneError } = await supabase
+      .from("profiles")
+      .select("user_id")
+      .eq("phone", digits)
+      .not("user_id", "is", null)
+      .limit(1);
+    if (profileByPhoneError) throw profileByPhoneError;
+
+    let userId: string | null = profileByEmailRows?.[0]?.user_id ?? profileByPhoneRows?.[0]?.user_id ?? null;
+    if (!userId) {
+      userId = await findAuthUserIdByEmail(supabase, email);
+    }
 
     if (!userId) {
       const { data: createdUser, error: createUserError } = await supabase.auth.admin.createUser({
@@ -105,13 +139,8 @@ Deno.serve(async (req) => {
       });
       if (createUserError) {
         // User already exists in auth.users but not in profiles — look them up
-        if (
-          createUserError.message.toLowerCase().includes("already been registered") ||
-          createUserError.message.toLowerCase().includes("already registered")
-        ) {
-          const { data: listData } = await supabase.auth.admin.listUsers({ perPage: 1000 });
-          const existingAuthUser = listData?.users?.find((u) => u.email === email);
-          userId = existingAuthUser?.id ?? null;
+        if (isDuplicateRegistrationError(createUserError.message ?? "")) {
+          userId = await findAuthUserIdByEmail(supabase, email);
           if (!userId) throw new Error("User exists in auth but could not be retrieved");
         } else {
           throw createUserError;
