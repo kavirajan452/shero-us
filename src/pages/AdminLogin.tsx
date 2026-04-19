@@ -39,7 +39,7 @@ export default function AdminLogin() {
     if (!loginId.includes("@")) {
       console.log("[AdminLogin] Resolving username → email via get_admin_login_identity RPC…");
       const { data: identityRows, error: identityError } = await supabase.rpc("get_admin_login_identity", {
-        _username: loginId,
+        username: loginId,
       });
 
       console.log("[AdminLogin] get_admin_login_identity result:", { identityRows, identityError });
