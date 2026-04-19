@@ -12,6 +12,11 @@ const AdminLayout = ({ children }: { children?: React.ReactNode }) => {
   const location = useLocation();
   const [isChecking, setIsChecking] = useState(true);
 
+  // On the login page, render children directly — no sidebar, no auth-guard.
+  if (location.pathname === "/admin/login") {
+    return <>{children}</>;
+  }
+
   // Still read from localStorage for sidebar compatibility during migration
   const role = getAdminRole();
   const roleConfig = role ? getRoleConfig(role) : null;
