@@ -6,7 +6,6 @@ import { Shield, ArrowLeft } from "lucide-react";
 import PasswordInput from "@/components/PasswordInput";
 import sheroLogo from "@/assets/shero-logo.png";
 import mascotWelcome from "@/assets/shero-mascot-welcome.png";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 export default function AdminLogin() {
@@ -26,7 +25,6 @@ export default function AdminLogin() {
     setError("");
 
     const loginId = username.trim().toLowerCase();
-    console.log("[AdminLogin] handleLogin start — loginId:", loginId);
 
     if (!loginId || !password.trim()) {
       setError("Username and password are required.");
@@ -34,107 +32,33 @@ export default function AdminLogin() {
       return;
     }
 
-    let emailForAuth = loginId;
-
-    if (!loginId.includes("@")) {
-      console.log("[AdminLogin] Resolving username → email via get_admin_login_identity RPC…");
-      const { data: identityRows, error: identityError } = await supabase.rpc("get_admin_login_identity", {
-        username: loginId,
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: loginId, password }),
       });
 
-      console.log("[AdminLogin] get_admin_login_identity result:", { identityRows, identityError });
+      const data = await res.json();
 
-      const identity = Array.isArray(identityRows) ? identityRows[0] : null;
-
-      if (identityError || !identity?.email) {
-        console.error("[AdminLogin] Failed to resolve username to email.", { identityError, identity });
-        setError("Invalid username or password.");
+      if (!res.ok || !data.ok) {
+        setError(data.error ?? "Invalid username or password.");
         setIsSubmitting(false);
         return;
       }
 
-      emailForAuth = identity.email;
-      console.log("[AdminLogin] Resolved email:", emailForAuth);
-    }
-
-    console.log("[AdminLogin] Calling supabase.auth.signInWithPassword with email:", emailForAuth);
-    const { data, error: authError } = await supabase.auth.signInWithPassword({
-      email: emailForAuth,
-      password,
-    });
-
-    console.log("[AdminLogin] signInWithPassword result:", { user: data?.user, authError });
-
-    if (authError) {
-      console.error("[AdminLogin] Auth error:", authError);
-      setError("Invalid username or password.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (!data.user) {
-      console.error("[AdminLogin] No user returned after sign-in.");
-      setError("Login failed. Please try again.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    console.log("[AdminLogin] Signed in user ID:", data.user.id, "— calling is_admin RPC…");
-    const { data: isAdmin, error: isAdminError } = await supabase.rpc("is_admin", { _user_id: data.user.id });
-
-    console.log("[AdminLogin] is_admin result:", { isAdmin, isAdminError });
-
-    if (!isAdmin) {
-      console.warn("[AdminLogin] is_admin returned false/null — user lacks admin role.", { isAdminError });
-      setError("You do not have admin access. Contact your administrator.");
-      await supabase.auth.signOut();
-      setIsSubmitting(false);
-      return;
-    }
-
-    console.log("[AdminLogin] Fetching admin_accounts row…");
-    const { data: account, error: accountError } = await supabase
-      .from("admin_accounts")
-      .select("role, display_name, username")
-      .eq("auth_user_id", data.user.id)
-      .eq("is_active", true)
-      .maybeSingle();
-
-    console.log("[AdminLogin] admin_accounts result:", { account, accountError });
-
-    // Backward-compatibility fallback while existing admins are migrated to admin_accounts.
-    const { data: roles } = account
-      ? { data: [{ role: account.role }] }
-      : await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", data.user.id);
-
-    console.log("[AdminLogin] roles resolved:", roles);
-
-    const adminRole = roles?.find(r => r.role !== "customer" && r.role !== "partner");
-
-    console.log("[AdminLogin] adminRole picked:", adminRole);
-
-    if (adminRole) {
-      const adminIdentifier = account?.username || loginId;
-      const adminDisplayName = account?.display_name || adminIdentifier;
       localStorage.setItem("shero-admin", "true");
-      localStorage.setItem("shero-admin-role", adminRole.role);
-      localStorage.setItem("shero-admin-rem", adminIdentifier);
-      localStorage.setItem("shero-admin-name", adminDisplayName);
-      toast({ title: `✅ Logged in as ${adminDisplayName}` });
-      console.log("[AdminLogin] Login successful — navigating to /admin");
-    } else {
-      console.warn("[AdminLogin] No qualifying admin role found in roles list:", roles);
-      setError("You do not have admin access. Contact your administrator.");
-      await supabase.auth.signOut();
-      setIsSubmitting(false);
-      return;
+      localStorage.setItem("shero-admin-role", data.role);
+      localStorage.setItem("shero-admin-rem", data.username);
+      localStorage.setItem("shero-admin-name", data.display_name);
+      toast({ title: `✅ Logged in as ${data.display_name}` });
+      navigate("/admin");
+    } catch (err) {
+      console.error("[AdminLogin] fetch error:", err);
+      setError("Login failed. Please try again.");
     }
 
     setIsSubmitting(false);
-    navigate("/admin");
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
@@ -143,16 +67,8 @@ export default function AdminLogin() {
       toast({ title: "Please enter your email", variant: "destructive" });
       return;
     }
-    setIsSubmitting(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-    setIsSubmitting(false);
-
-    if (error) {
-      toast({ title: "Failed to send reset email", description: error.message, variant: "destructive" });
-      return;
-    }
+    // Password reset requires a Super Admin to update your credentials directly
+    // in the database. Contact your Super Admin with this email address.
     setForgotSent(true);
   };
 
@@ -164,7 +80,7 @@ export default function AdminLogin() {
             <img src={sheroLogo} alt="Shero" className="h-10 mx-auto mb-4" />
             <h1 className="text-xl font-bold text-foreground">Reset Password</h1>
             <p className="text-sm text-muted-foreground mt-1">
-              {forgotSent ? "Check your email for a reset link" : "Enter your email to receive a reset link"}
+              {forgotSent ? "Contact your Super Admin to reset your password" : "Enter your email so we can identify your account"}
             </p>
           </div>
 
@@ -174,7 +90,7 @@ export default function AdminLogin() {
                 <Shield className="w-6 h-6 text-primary" />
               </div>
               <p className="text-sm text-muted-foreground">
-                We've sent a password reset link to <strong className="text-foreground">{forgotEmail}</strong>. Please check your inbox.
+                Password reset for admin accounts must be done by a Super Admin. Please contact your Super Admin and provide the email address <strong className="text-foreground">{forgotEmail}</strong> to have your password reset.
               </p>
               <Button variant="outline" className="w-full" onClick={() => { setShowForgot(false); setForgotSent(false); }}>
                 <ArrowLeft className="w-4 h-4 mr-2" /> Back to Login
