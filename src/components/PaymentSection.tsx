@@ -16,7 +16,7 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled }: Paym
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState<"success" | "error" | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const appMode = (import.meta.env.NEXT_PUBLIC_APP_MODE || import.meta.env.VITE_APP_MODE || import.meta.env.MODE || "dev").toLowerCase();
+  const appMode = (process.env.NEXT_PUBLIC_APP_MODE || "dev").toLowerCase();
   const isLiveMode = appMode === "production" || appMode === "prod" || appMode === "live";
 
   const handlePay = async () => {

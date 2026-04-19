@@ -115,7 +115,16 @@ npm run dev
    npx supabase link --project-ref xdprzxmtudsmwsnwabec
    ```
 
-4. **Push all migrations:**
+4. **If `db push` / `db pull` fails with a migration history mismatch**, the remote database has migrations that were applied outside the Supabase CLI. Repair the history first:
+   ```bash
+   # Mark the remote-only migrations as "reverted" (they already exist as empty placeholders in supabase/migrations/)
+   npx supabase migration repair --status reverted 20260418064500 20260418120000 20260419020000 20260419023700 20260419033000
+   # Mark the local migration that was pushed manually as "applied"
+   npx supabase migration repair --status applied 20260419062000
+   ```
+   Then retry `npx supabase db push`.
+
+5. **Push all migrations:**
    ```bash
    npx supabase db push
    ```
@@ -153,9 +162,10 @@ Create a `.env.local` file in the project root:
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-supabase-anon-key
 NEXT_PUBLIC_APP_MODE=dev
+NEXT_PUBLIC_DEV_LOGIN_PASSWORD=123456
 ```
 
-> **Note:** The old Vite variable names (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`) are no longer used. Update your hosting platform (Vercel, Netlify, etc.) to use the `NEXT_PUBLIC_` prefix.
+> **Note:** The old Vite variable names (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_DEV_LOGIN_PASSWORD`) are no longer used. Use the `NEXT_PUBLIC_` prefix instead. Using `import.meta.env` (Vite-specific) will crash Next.js during SSR — always use `process.env.NEXT_PUBLIC_*` in this project.
 
 For Supabase Edge Functions (OTP + payment mode switching), configure runtime env vars in Supabase:
 
