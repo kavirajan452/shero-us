@@ -26,6 +26,8 @@ export default function AdminLogin() {
     setError("");
 
     const loginId = username.trim().toLowerCase();
+    console.log("[AdminLogin] handleLogin start — loginId:", loginId);
+
     if (!loginId || !password.trim()) {
       setError("Username and password are required.");
       setIsSubmitting(false);
@@ -35,53 +37,70 @@ export default function AdminLogin() {
     let emailForAuth = loginId;
 
     if (!loginId.includes("@")) {
+      console.log("[AdminLogin] Resolving username → email via get_admin_login_identity RPC…");
       const { data: identityRows, error: identityError } = await supabase.rpc("get_admin_login_identity", {
         _username: loginId,
       });
 
+      console.log("[AdminLogin] get_admin_login_identity result:", { identityRows, identityError });
+
       const identity = Array.isArray(identityRows) ? identityRows[0] : null;
 
       if (identityError || !identity?.email) {
+        console.error("[AdminLogin] Failed to resolve username to email.", { identityError, identity });
         setError("Invalid username or password.");
         setIsSubmitting(false);
         return;
       }
 
       emailForAuth = identity.email;
+      console.log("[AdminLogin] Resolved email:", emailForAuth);
     }
 
+    console.log("[AdminLogin] Calling supabase.auth.signInWithPassword with email:", emailForAuth);
     const { data, error: authError } = await supabase.auth.signInWithPassword({
       email: emailForAuth,
       password,
     });
 
+    console.log("[AdminLogin] signInWithPassword result:", { user: data?.user, authError });
+
     if (authError) {
+      console.error("[AdminLogin] Auth error:", authError);
       setError("Invalid username or password.");
       setIsSubmitting(false);
       return;
     }
 
     if (!data.user) {
+      console.error("[AdminLogin] No user returned after sign-in.");
       setError("Login failed. Please try again.");
       setIsSubmitting(false);
       return;
     }
 
-    const { data: isAdmin } = await supabase.rpc("is_admin", { _user_id: data.user.id });
+    console.log("[AdminLogin] Signed in user ID:", data.user.id, "— calling is_admin RPC…");
+    const { data: isAdmin, error: isAdminError } = await supabase.rpc("is_admin", { _user_id: data.user.id });
+
+    console.log("[AdminLogin] is_admin result:", { isAdmin, isAdminError });
 
     if (!isAdmin) {
+      console.warn("[AdminLogin] is_admin returned false/null — user lacks admin role.", { isAdminError });
       setError("You do not have admin access. Contact your administrator.");
       await supabase.auth.signOut();
       setIsSubmitting(false);
       return;
     }
 
-    const { data: account } = await supabase
+    console.log("[AdminLogin] Fetching admin_accounts row…");
+    const { data: account, error: accountError } = await supabase
       .from("admin_accounts")
       .select("role, display_name, username")
       .eq("auth_user_id", data.user.id)
       .eq("is_active", true)
       .maybeSingle();
+
+    console.log("[AdminLogin] admin_accounts result:", { account, accountError });
 
     // Backward-compatibility fallback while existing admins are migrated to admin_accounts.
     const { data: roles } = account
@@ -91,7 +110,11 @@ export default function AdminLogin() {
           .select("role")
           .eq("user_id", data.user.id);
 
+    console.log("[AdminLogin] roles resolved:", roles);
+
     const adminRole = roles?.find(r => r.role !== "customer" && r.role !== "partner");
+
+    console.log("[AdminLogin] adminRole picked:", adminRole);
 
     if (adminRole) {
       const adminIdentifier = account?.username || loginId;
@@ -101,7 +124,9 @@ export default function AdminLogin() {
       localStorage.setItem("shero-admin-rem", adminIdentifier);
       localStorage.setItem("shero-admin-name", adminDisplayName);
       toast({ title: `✅ Logged in as ${adminDisplayName}` });
+      console.log("[AdminLogin] Login successful — navigating to /admin");
     } else {
+      console.warn("[AdminLogin] No qualifying admin role found in roles list:", roles);
       setError("You do not have admin access. Contact your administrator.");
       await supabase.auth.signOut();
       setIsSubmitting(false);
