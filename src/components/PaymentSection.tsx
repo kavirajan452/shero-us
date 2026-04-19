@@ -16,6 +16,8 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled }: Paym
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState<"success" | "error" | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const appMode = (import.meta.env.NEXT_PUBLIC_APP_MODE || import.meta.env.VITE_APP_MODE || import.meta.env.MODE || "dev").toLowerCase();
+  const isLiveMode = appMode === "production" || appMode === "prod" || appMode === "live";
 
   const handlePay = async () => {
     setProcessing(true);
@@ -39,7 +41,9 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled }: Paym
       <div className="flex items-start justify-between gap-3 mb-4">
         <div>
           <h2 className="font-semibold text-foreground">Payment</h2>
-          <p className="text-xs text-muted-foreground mt-1">Test mode payment. Click Pay Now to complete checkout.</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            {isLiveMode ? "Secure live payment gateway." : "Test mode payment simulation."} Click Pay Now to complete checkout.
+          </p>
         </div>
         <span className="text-sm font-bold text-primary">{formatPrice(total)}</span>
       </div>

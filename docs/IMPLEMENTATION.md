@@ -1,6 +1,42 @@
 # Shero US — Phase 1 Implementation Guide
 
-> Last updated: 2026-04-17
+> Last updated: 2026-04-19
+
+## 🔄 Update Log (2026-04-19)
+
+- Added env-driven mode switch for OTP and payments (`APP_MODE` / `NEXT_PUBLIC_APP_MODE`).
+- Updated OTP send flow to support:
+  - **Dev/Test mode:** generate OTP, store hash in DB, return OTP for UI preview.
+  - **Production mode:** call SMS gateway using `SMS_INTEGRA_*` env vars.
+- Updated OTP verify flow to upsert profile details and role (`customer` / `partner`) after verification.
+- Registration now completes from OTP-verified phone identity and stores user/profile/role in DB.
+- Removed cart localStorage persistence; cart now hydrates from and syncs to `user_carts` in DB only.
+- Added payment mode behavior in `create-payment-intent`:
+  - **Dev/Test mode:** simulated payment intent response.
+  - **Production mode:** real Stripe payment intent creation.
+- Added Supabase migration: `20260419062000_phase1_task3_payment_modes.sql` for `payment_attempts` log table.
+- Added payment mode messaging in checkout payment UI.
+
+## ✅ Verification Guide (Phase 1 Task 3)
+
+1. Apply migrations:
+   - `npx supabase db push`
+2. Set env:
+   - Frontend: `NEXT_PUBLIC_APP_MODE=dev` (or `production`)
+   - Edge Functions: `APP_MODE=dev|production` and required SMS/Stripe vars for production
+3. OTP registration/login (dev mode):
+   - Go to `/auth`
+   - Send OTP; verify OTP preview is shown in UI and OTP row is stored in `otp_attempts`
+   - Verify OTP; confirm user/profile/role rows exist in `auth.users`, `profiles`, `user_roles`
+4. OTP registration/login (production mode):
+   - Ensure `SMS_INTEGRA_API_URL` and `SMS_INTEGRA_API_KEY` are set
+   - Send OTP; verify OTP is sent via SMS gateway and not shown in UI
+5. Cart/checkout DB persistence:
+   - Add items to cart and refresh; confirm cart restores from `user_carts`
+   - Place order; confirm `instant_orders` row is inserted
+6. Payment mode:
+   - Dev mode: place order and verify simulated response + row in `payment_attempts` with `mode='dev'`
+   - Production mode: verify Stripe payment intent is created and logged in `payment_attempts`
 
 ---
 

@@ -8,6 +8,7 @@ const corsHeaders = {
 const DEV_LOGIN_PASSWORD = "123456";
 
 const phoneToEmail = (phone: string) => `${phone.slice(-10)}@shero.dev`;
+const allowedOtpRoles = new Set(["customer", "partner"]);
 const hashOtp = async (otp: string) => {
   const bytes = new TextEncoder().encode(otp);
   const digest = await crypto.subtle.digest("SHA-256", bytes);
@@ -30,6 +31,10 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const digits = String(body?.phone ?? "").replace(/\D/g, "");
     const code = String(body?.code ?? "").trim();
+    const requestedRoleRaw = String(body?.role ?? "customer").toLowerCase();
+    const requestedRole = allowedOtpRoles.has(requestedRoleRaw) ? requestedRoleRaw : "customer";
+    const fullName = typeof body?.fullName === "string" ? body.fullName.trim() : "";
+    const providedEmail = typeof body?.email === "string" ? body.email.trim() : "";
 
     if (digits.length < 10 || code.length !== 6) {
       return new Response(JSON.stringify({ success: false, error: "Invalid input" }), {
@@ -109,7 +114,28 @@ Deno.serve(async (req) => {
 
     await supabase
       .from("profiles")
-      .upsert({ user_id: userId, phone: digits, email }, { onConflict: "user_id" });
+      .upsert(
+        {
+          user_id: userId,
+          phone: digits,
+          email: providedEmail || email,
+          full_name: fullName || undefined,
+        },
+        { onConflict: "user_id" },
+      );
+
+    const { data: roleRows, error: roleReadError } = await supabase
+      .from("user_roles")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("role", requestedRole);
+    if (roleReadError) throw roleReadError;
+    if (!roleRows?.length) {
+      const { error: roleInsertError } = await supabase
+        .from("user_roles")
+        .insert({ user_id: userId, role: requestedRole as any });
+      if (roleInsertError) throw roleInsertError;
+    }
 
     return new Response(JSON.stringify({ success: true, user: { id: userId, email, phone: digits } }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },

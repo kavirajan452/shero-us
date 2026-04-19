@@ -95,7 +95,7 @@ const Auth = () => {
     const verifyResponse = await fetch("/functions/v1/verify-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: digits, code: otp }),
+      body: JSON.stringify({ phone: digits, code: otp, role: isPartner ? "partner" : "customer" }),
     });
     const verifyResult = await verifyResponse.json();
     if (!verifyResponse.ok || !verifyResult?.success) {
@@ -151,7 +151,6 @@ const Auth = () => {
   const handleSignupSendOtp = async () => {
     if (!fullName.trim()) { toast({ title: "Name required", variant: "destructive" }); return; }
     if (!email.trim()) { toast({ title: "Email required", variant: "destructive" }); return; }
-    if (!password || password.length < 6) { toast({ title: "Password must be at least 6 characters", variant: "destructive" }); return; }
     const digits = phone.replace(/\D/g, "");
     if (digits.length < 10) { toast({ title: "Enter a valid 10-digit phone number", variant: "destructive" }); return; }
 
@@ -182,7 +181,13 @@ const Auth = () => {
     const verifyResponse = await fetch("/functions/v1/verify-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: digits, code: signupOtp }),
+      body: JSON.stringify({
+        phone: digits,
+        code: signupOtp,
+        role: isPartner ? "partner" : "customer",
+        fullName,
+        email,
+      }),
     });
     const verifyResult = await verifyResponse.json();
     if (!verifyResponse.ok || !verifyResult?.success) {
@@ -190,71 +195,21 @@ const Auth = () => {
       toast({ title: "Invalid OTP", description: verifyResult?.error || "Verification failed", variant: "destructive" });
       return;
     }
-    // OTP verified — proceed to create account
-    await handleSignup();
-  };
-
-  const handleSignup = async () => {
-
-    setIsSubmitting(true);
-    const { data: signUpData, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName, phone: phone || undefined },
-        emailRedirectTo: window.location.origin,
-      },
+    const devEmail = phoneToEmail(phone);
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      email: devEmail,
+      password: DEV_LOGIN_PASSWORD,
     });
-
-    // ── "User already registered" ─────────────────────────────────────────
-    // The account exists in auth.users but may be missing profile/role rows.
-    // Try signing in with the provided password to recover the account.
-    const isAlreadyRegistered =
-      error?.message?.toLowerCase().includes("already registered") ||
-      error?.message?.toLowerCase().includes("already been registered") ||
-      error?.status === 422;
-
-    if (isAlreadyRegistered) {
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    if (signInError) {
       setIsSubmitting(false);
-      if (signInError) {
-        // Wrong password or unconfirmed email — direct to login tab
-        toast({
-          title: "Account already exists",
-          description: "Please use the Log In tab. If you forgot your password, use the reset link.",
-          variant: "destructive",
-        });
-        setIsLogin(true);
-        return;
-      }
-      // Signed in — ensure profile and role rows exist
-      const userId = signInData?.user?.id;
-      if (userId) await upsertProfileAndRole(userId);
-      toast({ title: "Welcome back!", description: "You've been signed in successfully." });
-      navigate("/");
+      toast({ title: "Signup failed", description: signInError.message, variant: "destructive" });
       return;
     }
-    // ─────────────────────────────────────────────────────────────────────
-
-    setIsSubmitting(false);
-    if (error) {
-      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
-      return;
-    }
-
-    // New user — upsert profile and role
-    const userId = signUpData?.user?.id;
+    const userId = signInData?.user?.id;
     if (userId) await upsertProfileAndRole(userId);
-
-    if (signUpData?.session) {
-      // Email confirmation disabled — user is immediately logged in
-      toast({ title: "Account created!", description: "Welcome to Shero!" });
-      navigate("/");
-    } else {
-      // Email confirmation required
-      toast({ title: "Account created!", description: "Please check your email to confirm your account, then log in." });
-      setIsLogin(true);
-    }
+    setIsSubmitting(false);
+    toast({ title: "Account created!", description: "Your account is verified and ready." });
+    navigate("/");
   };
 
   // ─── SIGNUP FLOW ───
