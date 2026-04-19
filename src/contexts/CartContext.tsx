@@ -55,24 +55,30 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     let mounted = true;
     (async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from("user_carts")
         .select("items")
         .eq("user_id", user.id)
         .maybeSingle();
       if (error) {
         console.error("Failed to load user cart", error);
+        toast({
+          title: "Cart load failed",
+          description: "Unable to load your saved cart. Please refresh and try again.",
+          variant: "destructive",
+        });
         return;
       }
       if (!mounted) return;
       hydratedUserIdRef.current = user.id;
-      const dbItems = Array.isArray(data?.items) ? (data.items as CartItem[]) : [];
+      const dbItemsRaw = data?.items;
+      const dbItems = Array.isArray(dbItemsRaw) ? (dbItemsRaw as CartItem[]) : [];
       setItems(dbItems);
     })();
     return () => {
       mounted = false;
     };
-  }, [user?.id]);
+  }, [user?.id, toast]);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -84,12 +90,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     syncTimeoutRef.current = window.setTimeout(async () => {
       try {
-        await (supabase as any)
+        await supabase
           .from("user_carts")
           .upsert({ user_id: user.id, items }, { onConflict: "user_id" });
       } catch (error) {
         console.error("Failed to sync user_carts", error);
-        toast({ title: "Cart sync failed", description: "Unable to sync cart right now.", variant: "destructive" });
+        toast({
+          title: "Cart sync failed",
+          description: "Your recent cart changes may not be saved yet. Please try again in a moment.",
+          variant: "destructive",
+        });
       }
     }, 500);
 
@@ -98,7 +108,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         window.clearTimeout(syncTimeoutRef.current);
       }
     };
-  }, [items, user?.id]);
+  }, [items, user?.id, toast]);
 
   const addItem = useCallback((item: MenuItem, addOns?: AddOn[]) => {
     setItems((prev) => {

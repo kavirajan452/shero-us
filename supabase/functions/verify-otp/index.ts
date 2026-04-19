@@ -32,7 +32,9 @@ Deno.serve(async (req) => {
     const digits = String(body?.phone ?? "").replace(/\D/g, "");
     const code = String(body?.code ?? "").trim();
     const requestedRoleRaw = String(body?.role ?? "customer").toLowerCase();
-    const requestedRole = allowedOtpRoles.has(requestedRoleRaw) ? requestedRoleRaw : "customer";
+    const requestedRole: "customer" | "partner" = allowedOtpRoles.has(requestedRoleRaw) && requestedRoleRaw === "partner"
+      ? "partner"
+      : "customer";
     const fullName = typeof body?.fullName === "string" ? body.fullName.trim() : "";
     const providedEmail = typeof body?.email === "string" ? body.email.trim() : "";
 
@@ -133,7 +135,7 @@ Deno.serve(async (req) => {
     if (!roleRows?.length) {
       const { error: roleInsertError } = await supabase
         .from("user_roles")
-        .insert({ user_id: userId, role: requestedRole as any });
+        .insert({ user_id: userId, role: requestedRole });
       if (roleInsertError) throw roleInsertError;
     }
 

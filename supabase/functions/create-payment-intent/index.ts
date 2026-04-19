@@ -11,7 +11,7 @@ const isLiveMode = () => {
 };
 
 const logPaymentAttempt = async (params: {
-  orderId?: string;
+  orderId: string | null;
   amount: number;
   mode: "dev" | "production";
   provider: string;
@@ -23,14 +23,17 @@ const logPaymentAttempt = async (params: {
   if (!supabaseUrl || !serviceRole) return;
 
   const supabase = createClient(supabaseUrl, serviceRole, { auth: { autoRefreshToken: false, persistSession: false } });
-  await supabase.from("payment_attempts").insert({
-    order_id: params.orderId ?? null,
+  const { error } = await supabase.from("payment_attempts").insert({
+    order_id: params.orderId,
     amount: params.amount,
     mode: params.mode,
     provider: params.provider,
     status: params.status,
     gateway_response: params.responseBody,
   });
+  if (error) {
+    console.error("Failed to log payment attempt", error.message);
+  }
 };
 
 Deno.serve(async (req) => {
@@ -48,7 +51,7 @@ Deno.serve(async (req) => {
 
     const body = await req.json();
     const amount = Number(body?.amount ?? 0);
-    const orderId = typeof body?.orderId === "string" ? body.orderId : undefined;
+    const orderId: string | null = typeof body?.orderId === "string" ? body.orderId : null;
     if (!Number.isFinite(amount) || amount <= 0) {
       return new Response(JSON.stringify({ success: false, error: "Invalid amount" }), {
         status: 400,

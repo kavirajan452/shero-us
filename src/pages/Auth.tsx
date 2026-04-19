@@ -104,9 +104,9 @@ const Auth = () => {
       return;
     }
 
-    const devEmail = phoneToEmail(loginPhone);
+    const phoneBasedEmail = phoneToEmail(loginPhone);
     const { data: signInData, error } = await supabase.auth.signInWithPassword({
-      email: devEmail,
+      email: phoneBasedEmail,
       password: DEV_LOGIN_PASSWORD,
     });
 
@@ -195,9 +195,9 @@ const Auth = () => {
       toast({ title: "Invalid OTP", description: verifyResult?.error || "Verification failed", variant: "destructive" });
       return;
     }
-    const devEmail = phoneToEmail(phone);
+    const phoneBasedEmail = phoneToEmail(phone);
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-      email: devEmail,
+      email: phoneBasedEmail,
       password: DEV_LOGIN_PASSWORD,
     });
     if (signInError) {

@@ -27,8 +27,11 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled }: Paym
     try {
       await onPaymentSuccess();
       setResult("success");
-    } catch (err: any) {
-      const msg = err?.message ?? err?.error_description ?? "Unable to place order. Please try again.";
+    } catch (err: unknown) {
+      const msg =
+        typeof err === "object" && err !== null && "message" in err
+          ? String((err as { message?: string }).message ?? "Unable to place order. Please try again.")
+          : "Unable to place order. Please try again.";
       setErrorMessage(msg);
       setResult("error");
     } finally {
