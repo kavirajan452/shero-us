@@ -103,8 +103,22 @@ Deno.serve(async (req) => {
         email_confirm: true,
         user_metadata: { phone: digits },
       });
-      if (createUserError) throw createUserError;
-      userId = createdUser.user?.id ?? null;
+      if (createUserError) {
+        // User already exists in auth.users but not in profiles — look them up
+        if (
+          createUserError.message.toLowerCase().includes("already been registered") ||
+          createUserError.message.toLowerCase().includes("already registered")
+        ) {
+          const { data: listData } = await supabase.auth.admin.listUsers({ perPage: 1000 });
+          const existingAuthUser = listData?.users?.find((u) => u.email === email);
+          userId = existingAuthUser?.id ?? null;
+          if (!userId) throw new Error("User exists in auth but could not be retrieved");
+        } else {
+          throw createUserError;
+        }
+      } else {
+        userId = createdUser.user?.id ?? null;
+      }
     }
 
     if (!userId) {

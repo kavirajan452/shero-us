@@ -24,12 +24,9 @@ const Auth = () => {
   const role = searchParams.get("role") || "customer";
 
   // /login path → login mode, /register path → signup mode
-  const isLoginPath = location.pathname === "/login";
-  const isRegisterPath = location.pathname === "/register";
-  const loginParam = searchParams.get("login") === "true";
-  const defaultIsLogin = isLoginPath || (loginParam && !isRegisterPath);
+  const isLogin = location.pathname === "/login" ||
+    (searchParams.get("login") === "true" && location.pathname !== "/register");
 
-  const [isLogin, setIsLogin] = useState(defaultIsLogin);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Login (Phone + OTP) state
@@ -329,7 +326,7 @@ const Auth = () => {
             </div>
             <div className="mt-6 text-center text-sm text-muted-foreground">
               Already have an account?{" "}
-              <button onClick={() => setIsLogin(true)} className="text-primary font-semibold hover:underline">Log In</button>
+              <button onClick={() => navigate(`/login?role=${role}`)} className="text-primary font-semibold hover:underline">Log In</button>
             </div>
             <div className="mt-3 text-center">
               <Link to={`/register?role=${isPartner ? "customer" : "partner"}`} className="text-xs text-muted-foreground hover:text-primary transition-colors">
@@ -458,7 +455,7 @@ const Auth = () => {
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
             Don't have an account?{" "}
-            <button onClick={() => setIsLogin(false)} className="text-primary font-semibold hover:underline">Sign Up</button>
+            <button onClick={() => navigate(`/register?role=${role}`)} className="text-primary font-semibold hover:underline">Sign Up</button>
           </div>
 
           <div className="mt-3 text-center">
