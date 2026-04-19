@@ -68,14 +68,11 @@ const Auth = () => {
       return;
     }
     setIsSubmitting(true);
-    const response = await fetch("/functions/v1/send-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: digits }),
+    const { data: result, error: fnError } = await supabase.functions.invoke("send-otp", {
+      body: { phone: digits },
     });
-    const result = await response.json();
-    if (!response.ok || !result?.success) {
-      toast({ title: "Error", description: result?.error || "Failed to send OTP", variant: "destructive" });
+    if (fnError || !result?.success) {
+      toast({ title: "Error", description: result?.error || fnError?.message || "Failed to send OTP", variant: "destructive" });
       setIsSubmitting(false);
       return;
     }
@@ -92,13 +89,10 @@ const Auth = () => {
     }
     setIsSubmitting(true);
     const digits = loginPhone.replace(/\D/g, "");
-    const verifyResponse = await fetch("/functions/v1/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: digits, code: otp, role: isPartner ? "partner" : "customer" }),
+    const { data: verifyResult, error: verifyFnError } = await supabase.functions.invoke("verify-otp", {
+      body: { phone: digits, code: otp, role: isPartner ? "partner" : "customer" },
     });
-    const verifyResult = await verifyResponse.json();
-    if (!verifyResponse.ok || !verifyResult?.success) {
+    if (verifyFnError || !verifyResult?.success) {
       setIsSubmitting(false);
       toast({ title: "Invalid OTP", description: verifyResult?.error || "Verification failed", variant: "destructive" });
       return;
@@ -155,15 +149,12 @@ const Auth = () => {
     if (digits.length < 10) { toast({ title: "Enter a valid 10-digit phone number", variant: "destructive" }); return; }
 
     setIsSubmitting(true);
-    const response = await fetch("/functions/v1/send-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: digits }),
+    const { data: result, error: fnError } = await supabase.functions.invoke("send-otp", {
+      body: { phone: digits },
     });
-    const result = await response.json();
     setIsSubmitting(false);
-    if (!response.ok || !result?.success) {
-      toast({ title: "Error", description: result?.error || "Failed to send OTP", variant: "destructive" });
+    if (fnError || !result?.success) {
+      toast({ title: "Error", description: result?.error || fnError?.message || "Failed to send OTP", variant: "destructive" });
       return;
     }
     setSignupOtpPreview(result.otp || "");
@@ -178,19 +169,16 @@ const Auth = () => {
     }
     const digits = phone.replace(/\D/g, "");
     setIsSubmitting(true);
-    const verifyResponse = await fetch("/functions/v1/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+    const { data: verifyResult, error: verifyFnError } = await supabase.functions.invoke("verify-otp", {
+      body: {
         phone: digits,
         code: signupOtp,
         role: isPartner ? "partner" : "customer",
         fullName,
         email,
-      }),
+      },
     });
-    const verifyResult = await verifyResponse.json();
-    if (!verifyResponse.ok || !verifyResult?.success) {
+    if (verifyFnError || !verifyResult?.success) {
       setIsSubmitting(false);
       toast({ title: "Invalid OTP", description: verifyResult?.error || "Verification failed", variant: "destructive" });
       return;
