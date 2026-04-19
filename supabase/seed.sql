@@ -93,7 +93,8 @@ BEGIN
   INSERT INTO public.user_roles (user_id, role)
   VALUES
     (v_super_admin_id, 'super_admin'::public.app_role),
-    (v_partner_id,     'partner'::public.app_role)
+    (v_partner_id,     'partner'::public.app_role),
+    (v_partner_id,     'kob_executive'::public.app_role)
   ON CONFLICT (user_id, role) DO NOTHING;
 
 END

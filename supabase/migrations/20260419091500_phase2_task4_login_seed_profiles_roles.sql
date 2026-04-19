@@ -52,5 +52,13 @@ BEGIN
   FROM auth.users u
   WHERE lower(u.email) = 'kitchenpartner@shero.in'
   ON CONFLICT (user_id, role) DO NOTHING;
+
+  INSERT INTO public.user_roles (user_id, role)
+  SELECT
+    u.id,
+    'kob_executive'::public.app_role
+  FROM auth.users u
+  WHERE lower(u.email) = 'kitchenpartner@shero.in'
+  ON CONFLICT (user_id, role) DO NOTHING;
 END
 $$;
