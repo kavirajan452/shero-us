@@ -11,6 +11,11 @@ const hashOtp = async (otp: string) => {
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
 };
 
+const isLiveMode = () => {
+  const mode = (Deno.env.get("APP_MODE") ?? Deno.env.get("MODE") ?? "dev").toLowerCase();
+  return mode === "production" || mode === "prod" || mode === "live";
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -66,8 +71,42 @@ Deno.serve(async (req) => {
 
     if (error) throw error;
 
-    const isDevMode = Deno.env.get("OTP_DEV_MODE") !== "false";
-    return new Response(JSON.stringify({ success: true, otp: isDevMode ? otp : undefined }), {
+    const liveMode = isLiveMode();
+    if (liveMode) {
+      const smsApiUrl = Deno.env.get("SMS_INTEGRA_API_URL");
+      const smsApiKey = Deno.env.get("SMS_INTEGRA_API_KEY");
+      const smsSender = Deno.env.get("SMS_INTEGRA_SENDER_ID") ?? "SHERO";
+
+      if (!smsApiUrl || !smsApiKey) {
+        return new Response(JSON.stringify({ success: false, error: "SMS gateway is not configured" }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const smsResponse = await fetch(smsApiUrl, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${smsApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: digits,
+          from: smsSender,
+          message: `Your Shero OTP is ${otp}`,
+        }),
+      });
+
+      if (!smsResponse.ok) {
+        const smsErrorText = await smsResponse.text();
+        return new Response(JSON.stringify({ success: false, error: `SMS gateway failed: ${smsErrorText}` }), {
+          status: 502,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    }
+
+    return new Response(JSON.stringify({ success: true, otp: liveMode ? undefined : otp, mode: liveMode ? "production" : "dev" }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {

@@ -1,0 +1,5 @@
+-- Remote migration 20260419033000
+-- This migration was applied directly to the remote Supabase project and predates
+-- the current local migration history. It is kept as a placeholder so that the
+-- Supabase CLI migration history table stays consistent with the local files.
+-- No SQL changes are needed here.

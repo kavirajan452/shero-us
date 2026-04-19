@@ -16,6 +16,8 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled }: Paym
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState<"success" | "error" | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const appMode = (process.env.NEXT_PUBLIC_APP_MODE || "dev").toLowerCase();
+  const isLiveMode = appMode === "production" || appMode === "prod" || appMode === "live";
 
   const handlePay = async () => {
     setProcessing(true);
@@ -25,8 +27,11 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled }: Paym
     try {
       await onPaymentSuccess();
       setResult("success");
-    } catch (err: any) {
-      const msg = err?.message ?? err?.error_description ?? "Unable to place order. Please try again.";
+    } catch (err: unknown) {
+      const msg =
+        typeof err === "object" && err !== null && "message" in err
+          ? String((err as { message?: string }).message ?? "Unable to place order. Please try again.")
+          : "Unable to place order. Please try again.";
       setErrorMessage(msg);
       setResult("error");
     } finally {
@@ -39,7 +44,9 @@ const PaymentSection = ({ total, formatPrice, onPaymentSuccess, disabled }: Paym
       <div className="flex items-start justify-between gap-3 mb-4">
         <div>
           <h2 className="font-semibold text-foreground">Payment</h2>
-          <p className="text-xs text-muted-foreground mt-1">Test mode payment. Click Pay Now to complete checkout.</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            {isLiveMode ? "Secure live payment gateway." : "Test mode payment simulation."} Click Pay Now to complete checkout.
+          </p>
         </div>
         <span className="text-sm font-bold text-primary">{formatPrice(total)}</span>
       </div>

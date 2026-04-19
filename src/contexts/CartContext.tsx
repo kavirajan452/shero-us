@@ -45,28 +45,44 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { toast } = useToast();
   const { user } = useAuth();
   const syncTimeoutRef = useRef<number | null>(null);
+  const hydratedUserIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const stored = localStorage.getItem("shero_cart");
-    if (!stored) return;
-    try {
-      const parsed = JSON.parse(stored) as CartItem[];
-      if (Array.isArray(parsed)) {
-        setItems(parsed);
-      }
-    } catch {
-      localStorage.removeItem("shero_cart");
+    if (!user?.id) {
+      hydratedUserIdRef.current = null;
+      setItems([]);
+      return;
     }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    localStorage.setItem("shero_cart", JSON.stringify(items));
-  }, [items]);
+    let mounted = true;
+    (async () => {
+      const { data, error } = await supabase
+        .from("user_carts")
+        .select("items")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (error) {
+        console.error("Failed to load user cart", error);
+        toast({
+          title: "Cart load failed",
+          description: "Unable to load your saved cart. Please refresh and try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (!mounted) return;
+      hydratedUserIdRef.current = user.id;
+      const dbItemsRaw = data?.items;
+      const dbItems = Array.isArray(dbItemsRaw) ? (dbItemsRaw as CartItem[]) : [];
+      setItems(dbItems);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [user?.id, toast]);
 
   useEffect(() => {
     if (!user?.id) return;
+    if (hydratedUserIdRef.current !== user.id) return;
 
     if (syncTimeoutRef.current) {
       window.clearTimeout(syncTimeoutRef.current);
@@ -74,22 +90,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     syncTimeoutRef.current = window.setTimeout(async () => {
       try {
-        const rows = items.map((cartItem) => ({
-          user_id: user.id,
-          item_id: cartItem.item.id,
-          quantity: cartItem.quantity,
-          selected_add_ons: cartItem.selectedAddOns,
-        }));
-
-        if (!rows.length) {
-          await (supabase as any).from("cart_items").delete().eq("user_id", user.id);
-          return;
-        }
-
-        await (supabase as any).from("cart_items").upsert(rows, { onConflict: "user_id,item_id" });
+        await supabase
+          .from("user_carts")
+          .upsert({ user_id: user.id, items }, { onConflict: "user_id" });
       } catch (error) {
-        console.error("Failed to sync cart_items", error);
-        toast({ title: "Cart sync failed", description: "Unable to sync cart right now.", variant: "destructive" });
+        console.error("Failed to sync user_carts", error);
+        toast({
+          title: "Cart sync failed",
+          description: "Your recent cart changes may not be saved yet. Please try again in a moment.",
+          variant: "destructive",
+        });
       }
     }, 500);
 
@@ -98,7 +108,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         window.clearTimeout(syncTimeoutRef.current);
       }
     };
-  }, [items, user?.id]);
+  }, [items, user?.id, toast]);
 
   const addItem = useCallback((item: MenuItem, addOns?: AddOn[]) => {
     setItems((prev) => {

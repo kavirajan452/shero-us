@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 
-const DEV_LOGIN_PASSWORD = import.meta.env.VITE_DEV_LOGIN_PASSWORD || "123456";
+const DEV_LOGIN_PASSWORD = process.env.NEXT_PUBLIC_DEV_LOGIN_PASSWORD || "123456";
 
 type LoginStep = "phone" | "otp";
 type SignupStep = "details" | "otp";
@@ -24,12 +24,9 @@ const Auth = () => {
   const role = searchParams.get("role") || "customer";
 
   // /login path → login mode, /register path → signup mode
-  const isLoginPath = location.pathname === "/login";
-  const isRegisterPath = location.pathname === "/register";
-  const loginParam = searchParams.get("login") === "true";
-  const defaultIsLogin = isLoginPath || (loginParam && !isRegisterPath);
+  const isLogin = location.pathname === "/login" ||
+    (searchParams.get("login") === "true" && location.pathname !== "/register");
 
-  const [isLogin, setIsLogin] = useState(defaultIsLogin);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Login (Phone + OTP) state
@@ -68,14 +65,11 @@ const Auth = () => {
       return;
     }
     setIsSubmitting(true);
-    const response = await fetch("/functions/v1/send-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: digits }),
+    const { data: result, error: fnError } = await supabase.functions.invoke("send-otp", {
+      body: { phone: digits },
     });
-    const result = await response.json();
-    if (!response.ok || !result?.success) {
-      toast({ title: "Error", description: result?.error || "Failed to send OTP", variant: "destructive" });
+    if (fnError || !result?.success) {
+      toast({ title: "Error", description: result?.error || fnError?.message || "Failed to send OTP", variant: "destructive" });
       setIsSubmitting(false);
       return;
     }
@@ -92,21 +86,18 @@ const Auth = () => {
     }
     setIsSubmitting(true);
     const digits = loginPhone.replace(/\D/g, "");
-    const verifyResponse = await fetch("/functions/v1/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: digits, code: otp }),
+    const { data: verifyResult, error: verifyFnError } = await supabase.functions.invoke("verify-otp", {
+      body: { phone: digits, code: otp, role: isPartner ? "partner" : "customer" },
     });
-    const verifyResult = await verifyResponse.json();
-    if (!verifyResponse.ok || !verifyResult?.success) {
+    if (verifyFnError || !verifyResult?.success) {
       setIsSubmitting(false);
       toast({ title: "Invalid OTP", description: verifyResult?.error || "Verification failed", variant: "destructive" });
       return;
     }
 
-    const devEmail = phoneToEmail(loginPhone);
+    const phoneBasedEmail = phoneToEmail(loginPhone);
     const { data: signInData, error } = await supabase.auth.signInWithPassword({
-      email: devEmail,
+      email: phoneBasedEmail,
       password: DEV_LOGIN_PASSWORD,
     });
 
@@ -151,20 +142,16 @@ const Auth = () => {
   const handleSignupSendOtp = async () => {
     if (!fullName.trim()) { toast({ title: "Name required", variant: "destructive" }); return; }
     if (!email.trim()) { toast({ title: "Email required", variant: "destructive" }); return; }
-    if (!password || password.length < 6) { toast({ title: "Password must be at least 6 characters", variant: "destructive" }); return; }
     const digits = phone.replace(/\D/g, "");
     if (digits.length < 10) { toast({ title: "Enter a valid 10-digit phone number", variant: "destructive" }); return; }
 
     setIsSubmitting(true);
-    const response = await fetch("/functions/v1/send-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: digits }),
+    const { data: result, error: fnError } = await supabase.functions.invoke("send-otp", {
+      body: { phone: digits },
     });
-    const result = await response.json();
     setIsSubmitting(false);
-    if (!response.ok || !result?.success) {
-      toast({ title: "Error", description: result?.error || "Failed to send OTP", variant: "destructive" });
+    if (fnError || !result?.success) {
+      toast({ title: "Error", description: result?.error || fnError?.message || "Failed to send OTP", variant: "destructive" });
       return;
     }
     setSignupOtpPreview(result.otp || "");
@@ -179,82 +166,35 @@ const Auth = () => {
     }
     const digits = phone.replace(/\D/g, "");
     setIsSubmitting(true);
-    const verifyResponse = await fetch("/functions/v1/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: digits, code: signupOtp }),
+    const { data: verifyResult, error: verifyFnError } = await supabase.functions.invoke("verify-otp", {
+      body: {
+        phone: digits,
+        code: signupOtp,
+        role: isPartner ? "partner" : "customer",
+        fullName,
+        email,
+      },
     });
-    const verifyResult = await verifyResponse.json();
-    if (!verifyResponse.ok || !verifyResult?.success) {
+    if (verifyFnError || !verifyResult?.success) {
       setIsSubmitting(false);
       toast({ title: "Invalid OTP", description: verifyResult?.error || "Verification failed", variant: "destructive" });
       return;
     }
-    // OTP verified — proceed to create account
-    await handleSignup();
-  };
-
-  const handleSignup = async () => {
-
-    setIsSubmitting(true);
-    const { data: signUpData, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName, phone: phone || undefined },
-        emailRedirectTo: window.location.origin,
-      },
+    const phoneBasedEmail = phoneToEmail(phone);
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      email: phoneBasedEmail,
+      password: DEV_LOGIN_PASSWORD,
     });
-
-    // ── "User already registered" ─────────────────────────────────────────
-    // The account exists in auth.users but may be missing profile/role rows.
-    // Try signing in with the provided password to recover the account.
-    const isAlreadyRegistered =
-      error?.message?.toLowerCase().includes("already registered") ||
-      error?.message?.toLowerCase().includes("already been registered") ||
-      error?.status === 422;
-
-    if (isAlreadyRegistered) {
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    if (signInError) {
       setIsSubmitting(false);
-      if (signInError) {
-        // Wrong password or unconfirmed email — direct to login tab
-        toast({
-          title: "Account already exists",
-          description: "Please use the Log In tab. If you forgot your password, use the reset link.",
-          variant: "destructive",
-        });
-        setIsLogin(true);
-        return;
-      }
-      // Signed in — ensure profile and role rows exist
-      const userId = signInData?.user?.id;
-      if (userId) await upsertProfileAndRole(userId);
-      toast({ title: "Welcome back!", description: "You've been signed in successfully." });
-      navigate("/");
+      toast({ title: "Signup failed", description: signInError.message, variant: "destructive" });
       return;
     }
-    // ─────────────────────────────────────────────────────────────────────
-
-    setIsSubmitting(false);
-    if (error) {
-      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
-      return;
-    }
-
-    // New user — upsert profile and role
-    const userId = signUpData?.user?.id;
+    const userId = signInData?.user?.id;
     if (userId) await upsertProfileAndRole(userId);
-
-    if (signUpData?.session) {
-      // Email confirmation disabled — user is immediately logged in
-      toast({ title: "Account created!", description: "Welcome to Shero!" });
-      navigate("/");
-    } else {
-      // Email confirmation required
-      toast({ title: "Account created!", description: "Please check your email to confirm your account, then log in." });
-      setIsLogin(true);
-    }
+    setIsSubmitting(false);
+    toast({ title: "Account created!", description: "Your account is verified and ready." });
+    navigate("/");
   };
 
   // ─── SIGNUP FLOW ───
@@ -386,7 +326,7 @@ const Auth = () => {
             </div>
             <div className="mt-6 text-center text-sm text-muted-foreground">
               Already have an account?{" "}
-              <button onClick={() => setIsLogin(true)} className="text-primary font-semibold hover:underline">Log In</button>
+              <button onClick={() => navigate(`/login?role=${role}`)} className="text-primary font-semibold hover:underline">Log In</button>
             </div>
             <div className="mt-3 text-center">
               <Link to={`/register?role=${isPartner ? "customer" : "partner"}`} className="text-xs text-muted-foreground hover:text-primary transition-colors">
@@ -515,7 +455,7 @@ const Auth = () => {
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
             Don't have an account?{" "}
-            <button onClick={() => setIsLogin(false)} className="text-primary font-semibold hover:underline">Sign Up</button>
+            <button onClick={() => navigate(`/register?role=${role}`)} className="text-primary font-semibold hover:underline">Sign Up</button>
           </div>
 
           <div className="mt-3 text-center">

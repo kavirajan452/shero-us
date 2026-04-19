@@ -1,2 +1,6 @@
-'use client';
-export { default } from '@/pages/Auth';
+import { redirect } from 'next/navigation';
+
+export default function AuthPage() {
+  redirect('/login');
+}
+
