@@ -556,6 +556,9 @@ export const MOCK_ADMIN_ACCOUNTS: AdminAccount[] = [
 ];
 
 export function getAdminRole(): AdminRole | null {
+  if (typeof window === "undefined" || typeof localStorage === "undefined") {
+    return null;
+  }
   const storedRole = localStorage.getItem("shero-admin-role");
   if (storedRole === "admin") return "super_admin";
   return ADMIN_ROLES.some((role) => role.key === storedRole) ? (storedRole as AdminRole) : null;

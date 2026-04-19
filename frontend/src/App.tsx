@@ -44,6 +44,7 @@ import ReturnPolicy from "./pages/legal/ReturnPolicy";
 import PartnerLayout from "./layouts/PartnerLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminLogin from "./pages/AdminLogin";
+import PartnerLogin from "./pages/PartnerLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminPartners from "./pages/admin/AdminPartners";
 import AdminMenus from "./pages/admin/AdminMenus";
@@ -217,6 +218,7 @@ const App = () => (
                       <Route path="shero-classes" element={<ComingSoon title="Shero Classes" description="This vertical is currently disabled." section="Partner" />} />
                     </Route>
                     <Route path="/admin/login" element={<AdminLogin />} />
+                    <Route path="/partner/login" element={<PartnerLogin />} />
                     <Route path="/admin" element={<AdminLayout />}>
                       <Route index element={<AdminDashboard />} />
                       <Route path="partners" element={<AdminPartners />} />
