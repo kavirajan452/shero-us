@@ -58,14 +58,14 @@ export default function AdminLiveSupport() {
                   <TableHeader><TableRow><TableHead className="text-xs">Order</TableHead><TableHead className="text-xs">Customer</TableHead><TableHead className="text-xs">Kitchen</TableHead><TableHead className="text-xs">Status</TableHead><TableHead className="text-xs">Elapsed</TableHead><TableHead className="text-xs">Action</TableHead></TableRow></TableHeader>
                   <TableBody>
                     {active.map((o) => {
-                      const mins = Math.max(1, Math.floor((Date.now() - new Date(o.created_at).getTime()) / (1000 * 60)));
+                      const mins = Math.floor((Date.now() - new Date(o.created_at).getTime()) / (1000 * 60));
                       return (
                         <TableRow key={o.id}>
                           <TableCell className="text-xs font-mono font-bold">{o.order_code || o.id.slice(0, 8)}</TableCell>
                           <TableCell className="text-xs">{o.customer_name}</TableCell>
                           <TableCell className="text-xs">{o.kitchen_name || "—"}</TableCell>
                           <TableCell><Badge className={`text-[8px] ${statusColors[o.status] || "bg-muted text-muted-foreground"}`}>{o.status.replace(/_/g, " ")}</Badge></TableCell>
-                          <TableCell className="text-xs"><Clock className="w-3 h-3 inline mr-1" />{mins} min</TableCell>
+                          <TableCell className="text-xs"><Clock className="w-3 h-3 inline mr-1" />{mins < 1 ? "< 1 min" : `${mins} min`}</TableCell>
                           <TableCell><a href={`tel:${o.customer_phone || ""}`}><Button size="sm" variant="outline" className="h-6 text-[10px] gap-1"><Phone className="w-3 h-3" /> Call</Button></a></TableCell>
                         </TableRow>
                       );

@@ -105,7 +105,7 @@ const AdminManualOrder = () => {
 
   const handlePaymentSuccess = async () => {
     try {
-      const orderCode = `MAN-${Date.now().toString().slice(-8)}`;
+      const orderCode = `MAN-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
       await createInstantOrder.mutateAsync({
         order_code: orderCode,
         customer_name: custName.trim(),

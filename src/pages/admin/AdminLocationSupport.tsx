@@ -54,7 +54,7 @@ export default function AdminLocationSupport() {
                       <TableCell className="text-xs">{order?.kitchen_name || "—"}</TableCell>
                       <TableCell><Badge className={`text-[8px] ${statusColors[d.status] || "bg-muted text-muted-foreground"}`}>{d.status.replace(/_/g, " ")}</Badge></TableCell>
                       <TableCell className="text-xs">{d.estimated_arrival ? new Date(d.estimated_arrival).toLocaleTimeString() : "—"}</TableCell>
-                      <TableCell><a href={`tel:${d.agent_phone || ""}`}><Button size="sm" variant="outline" className="h-6 text-[10px] gap-1"><Navigation className="w-3 h-3" /> Track</Button></a></TableCell>
+                      <TableCell><a href={`tel:${d.agent_phone || ""}`}><Button size="sm" variant="outline" className="h-6 text-[10px] gap-1"><Navigation className="w-3 h-3" /> Call</Button></a></TableCell>
                     </TableRow>
                   );
                 })}

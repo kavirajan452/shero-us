@@ -6,10 +6,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useCustomerFeedback, useUpdateFeedback } from "@/hooks/useSupabaseData";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AdminCustomerFeedback() {
   const { data = [], isLoading } = useCustomerFeedback();
   const updateFeedback = useUpdateFeedback();
+  const { toast } = useToast();
 
   const stats = useMemo(() => {
     const rated = data.filter((x) => typeof x.rating === "number");
@@ -66,7 +68,7 @@ export default function AdminCustomerFeedback() {
                       <TableCell className="text-xs font-mono">{f.order_display_id || f.order_id}</TableCell>
                       <TableCell className="text-xs">{f.customer_name}</TableCell>
                       <TableCell className="text-xs">{f.partner_name || "—"}</TableCell>
-                      <TableCell className="text-xs">{f.rating ? Array.from({ length: f.rating }).map(() => "★").join("") : "—"}</TableCell>
+                      <TableCell className="text-xs">{f.rating ? Array(f.rating).fill("★").join("") : "—"}</TableCell>
                       <TableCell className="text-xs text-muted-foreground max-w-[220px] truncate">{f.comment || "No comment"}</TableCell>
                       <TableCell><Badge className={`text-[8px] ${f.status === "responded" ? "bg-action-done/15 text-action-done" : "bg-destructive/10 text-destructive"}`}>{f.status}</Badge></TableCell>
                       <TableCell>
@@ -76,7 +78,19 @@ export default function AdminCustomerFeedback() {
                             variant="outline"
                             className="h-6 text-[10px]"
                             disabled={updateFeedback.isPending}
-                            onClick={() => updateFeedback.mutate({ id: f.id, updates: { status: "responded", responded_at: new Date().toISOString() } })}
+                            onClick={() =>
+                              updateFeedback.mutate(
+                                { id: f.id, updates: { status: "responded", responded_at: new Date().toISOString() } },
+                                {
+                                  onError: (error) =>
+                                    toast({
+                                      title: "Update failed",
+                                      description: error instanceof Error ? error.message : "Please retry",
+                                      variant: "destructive",
+                                    }),
+                                },
+                              )
+                            }
                           >
                             Mark Responded
                           </Button>

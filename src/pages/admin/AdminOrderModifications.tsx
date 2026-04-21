@@ -74,7 +74,7 @@ export default function AdminOrderModifications() {
                   <TableRow key={m.id}>
                     <TableCell className="text-xs font-mono">{m.order_id}</TableCell>
                     <TableCell className="text-xs">{m.customer_name}</TableCell>
-                    <TableCell className="text-xs">{m.modification_type.replaceAll("_", " ")}</TableCell>
+                    <TableCell className="text-xs">{String(m.modification_type || "").replaceAll("_", " ")}</TableCell>
                     <TableCell className="text-xs font-medium">{m.description}</TableCell>
                     <TableCell className="text-xs text-muted-foreground">{new Date(m.requested_at).toLocaleString()}</TableCell>
                     <TableCell><Badge className={`text-[8px] ${statusColors[m.status] || "bg-muted text-muted-foreground"}`}>{m.status}</Badge></TableCell>

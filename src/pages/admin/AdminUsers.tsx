@@ -114,7 +114,9 @@ export default function AdminUsers() {
                   </Badge>
                 </td>
                 <td className="px-4 py-3 hidden sm:table-cell text-muted-foreground">{u.orders}</td>
-                <td className="px-4 py-3 hidden md:table-cell text-muted-foreground">{new Date(u.created_at).toLocaleDateString()}</td>
+                <td className="px-4 py-3 hidden md:table-cell text-muted-foreground">
+                  {new Date(u.created_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit" })}
+                </td>
                 <td className="px-4 py-3 text-right">
                   <Button
                     size="icon"
