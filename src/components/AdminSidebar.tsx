@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { LayoutDashboard, ChefHat, UtensilsCrossed, ClipboardList, LogOut, Shield, BarChart3, Users, DollarSign, Headphones, Radio, Gauge, Heart, PartyPopper, Store, FileBarChart, BadgePercent, Wallet, CalendarCheck, Settings, Target, Bike, Wrench, PieChart, MapPin, MessageSquare, Bot, Phone, Star, FileEdit, TicketCheck, BookOpen, GraduationCap, Plug, CreditCard, Truck, ChevronRight, UserCog, Megaphone, Package, Calendar } from "lucide-react";
+import { LayoutDashboard, ChefHat, UtensilsCrossed, ClipboardList, LogOut, Shield, Users, DollarSign, Headphones, Radio, Gauge, Heart, PartyPopper, Store, FileBarChart, BadgePercent, Wallet, CalendarCheck, Settings, Target, Bike, Wrench, PieChart, MapPin, MessageSquare, Bot, Phone, Star, FileEdit, TicketCheck, BookOpen, GraduationCap, Plug, CreditCard, Truck, ChevronRight, UserCog, Megaphone, Package, Calendar } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import sheroLogo from "@/assets/shero-logo.png";
@@ -214,27 +214,34 @@ export function AdminSidebar() {
 
   useEffect(() => {
     const loadDynamicPhase1Menu = async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("app_config")
         .select("value")
         .eq("key", "admin_phase1_single_meal_nav")
         .maybeSingle();
+      if (error) {
+        console.error("Failed to load admin phase1 navigation from app_config; using default navigation.", error);
+        return;
+      }
 
       const items = (data?.value as { items?: unknown } | null)?.items;
       if (!Array.isArray(items)) return;
 
-      const sanitizedItems = items
-        .filter((item): item is { title: string; url: string } => {
-          return (
-            typeof item === "object" &&
-            item !== null &&
-            typeof (item as { title?: unknown }).title === "string" &&
-            typeof (item as { url?: unknown }).url === "string" &&
-            (item as { url: string }).url.startsWith("/admin")
-          );
-        })
-        .map((item) => ({ title: item.title.trim(), url: item.url.trim() }))
-        .filter((item) => item.title.length > 0 && item.url.length > 0);
+      const sanitizedItems = items.reduce<AdminNavItem[]>((acc, item) => {
+        if (
+          typeof item !== "object" ||
+          item === null ||
+          typeof (item as { title?: unknown }).title !== "string" ||
+          typeof (item as { url?: unknown }).url !== "string"
+        ) {
+          return acc;
+        }
+        const title = (item as { title: string }).title.trim();
+        const url = (item as { url: string }).url.trim();
+        if (title.length === 0 || url.length === 0 || !url.startsWith("/admin")) return acc;
+        acc.push({ title, url });
+        return acc;
+      }, []);
 
       if (sanitizedItems.length > 0) {
         setDynamicInstantItems(sanitizedItems);

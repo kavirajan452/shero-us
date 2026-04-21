@@ -89,7 +89,7 @@
 6. Validate add/edit/delete/update behavior by editing JSON (example SQL):
    - Add: `update public.app_config set value = jsonb_set(value, '{items}', (value->'items') || '[{"title":"Custom Admin Link","url":"/admin/reports"}]'::jsonb), updated_at = now() where key = 'admin_phase1_single_meal_nav';`
    - Update title: `update public.app_config set value = jsonb_set(value, '{items,0,title}', '"Dashboard Home"'::jsonb), updated_at = now() where key = 'admin_phase1_single_meal_nav';`
-   - Delete last item: `update public.app_config set value = jsonb_set(value, '{items}', (value->'items') - (jsonb_array_length(value->'items') - 1), true), updated_at = now() where key = 'admin_phase1_single_meal_nav';`
+   - Delete last item: `update public.app_config set value = jsonb_set(value, '{items}', (value->'items') - (jsonb_array_length(value->'items') - 1), false), updated_at = now() where key = 'admin_phase1_single_meal_nav';`
    - Refresh `/admin` and confirm sidebar updates from DB value.
 
 ---
