@@ -8,6 +8,7 @@ import sheroLogo from "@/assets/shero-logo.png";
 import mascotWelcome from "@/assets/shero-mascot-welcome.png";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { ADMIN_ROLES, getRoleConfig, type AdminRole } from "@/data/adminRoles";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -20,49 +21,13 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Dummy credentials for testing (bypass real auth)
-  const DUMMY_CREDS = {
-    admin: { email: "admin@shero.in", password: "admin123", role: "super_admin", name: "Admin User" },
-    super_admin: { email: "superadmin@shero.in", password: "super123", role: "super_admin", name: "Super Admin" },
-    ceo: { email: "ceo@shero.in", password: "ceo123", role: "super_admin", name: "CEO" },
-  } as const;
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
-
-    // Check dummy credentials first (testing mode)
-    const dummyMatch = Object.values(DUMMY_CREDS).find(
-      (c) => c.email === email.trim().toLowerCase() && c.password === password
-    );
-
-    if (dummyMatch) {
-      localStorage.setItem("shero-admin", "true");
-      localStorage.setItem("shero-admin-role", dummyMatch.role);
-      localStorage.setItem("shero-admin-rem", dummyMatch.email);
-      localStorage.setItem("shero-admin-name", dummyMatch.name);
-
-      // Also grant admin role in DB for the current Supabase session user (so RLS works)
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        await supabase
-          .from("user_roles")
-          .upsert(
-            { user_id: session.user.id, role: dummyMatch.role },
-            { onConflict: "user_id,role" }
-          );
-      }
-
-      toast({ title: `✅ Logged in as ${dummyMatch.name} (${dummyMatch.role})` });
-      setIsSubmitting(false);
-      navigate("/admin");
-      return;
-    }
-
-    // Fallback to real Supabase auth
+    const normalizedEmail = email.trim().toLowerCase();
     const { data, error: authError } = await supabase.auth.signInWithPassword({
-      email,
+      email: normalizedEmail,
       password,
     });
 
@@ -78,29 +43,42 @@ export default function AdminLogin() {
       return;
     }
 
-    const { data: isAdmin } = await supabase.rpc("is_admin", { _user_id: data.user.id });
+    const { data: roles, error: rolesError } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.user.id);
 
-    if (!isAdmin) {
-      setError("You do not have admin access. Contact your administrator.");
+    if (rolesError) {
+      setError("Unable to verify admin permissions.");
       await supabase.auth.signOut();
       setIsSubmitting(false);
       return;
     }
 
-    const { data: roles } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", data.user.id);
+    const validRoleKeys = new Set(ADMIN_ROLES.map((r) => r.key));
+    const matchedRole = roles?.find((r) => validRoleKeys.has(r.role as AdminRole));
 
-    const adminRole = roles?.find(r => r.role !== "customer" && r.role !== "partner");
-
-    if (adminRole) {
-      localStorage.setItem("shero-admin", "true");
-      localStorage.setItem("shero-admin-role", adminRole.role);
-      localStorage.setItem("shero-admin-rem", email);
-      localStorage.setItem("shero-admin-name", data.user.user_metadata?.full_name || email);
+    if (!matchedRole) {
+      setError("You do not have permission to access the admin portal.");
+      await supabase.auth.signOut();
+      setIsSubmitting(false);
+      return;
     }
 
+    const roleKey = matchedRole.role as AdminRole;
+    const roleConfig = getRoleConfig(roleKey);
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("full_name")
+      .eq("user_id", data.user.id)
+      .maybeSingle();
+
+    localStorage.setItem("shero-admin", "true");
+    localStorage.setItem("shero-admin-role", roleKey);
+    localStorage.setItem("shero-admin-name", profile?.full_name || data.user.user_metadata?.full_name || roleConfig?.label || "Admin");
+
+    toast({ title: `✅ Logged in as ${roleConfig?.label ?? roleKey}` });
     setIsSubmitting(false);
     navigate("/admin");
   };

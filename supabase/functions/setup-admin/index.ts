@@ -14,42 +14,74 @@ Deno.serve(async (req) => {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  const email = "superadmin@shero.in";
-  const password = "Shero@Admin2026";
+  const seedUsers = [
+    {
+      email: "superadmin@shero.in",
+      password: "Shero@Admin2026",
+      role: "super_admin",
+      fullName: "Super Admin",
+      phone: "9999000001",
+    },
+    {
+      email: "kitchenpartner@shero.in",
+      password: "Shero@Partner2026",
+      role: "partner",
+      fullName: "Kitchen Partner",
+      phone: "9999000002",
+    },
+  ] as const;
 
-  // Check if user already exists
   const { data: existingUsers } = await supabase.auth.admin.listUsers();
-  const existing = existingUsers?.users?.find((u: any) => u.email === email);
+  const users = existingUsers?.users ?? [];
+  const seeded: Array<{ email: string; role: string; userId: string }> = [];
 
-  let userId: string;
+  for (const seed of seedUsers) {
+    const existing = users.find((u: { id: string; email?: string | null }) => (u.email ?? "").toLowerCase() === seed.email.toLowerCase());
+    let userId = existing?.id;
 
-  if (existing) {
-    userId = existing.id;
-  } else {
-    const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-      user_metadata: { full_name: "Super Admin" },
-    });
-    if (createError) return new Response(JSON.stringify({ error: createError.message }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    userId = newUser.user.id;
+    if (!userId) {
+      const { data: newUser, error: createError } = await supabase.auth.admin.createUser({
+        email: seed.email,
+        password: seed.password,
+        email_confirm: true,
+        user_metadata: { full_name: seed.fullName, phone: seed.phone },
+      });
+      if (createError) {
+        return new Response(JSON.stringify({ error: createError.message }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+      userId = newUser.user?.id;
+    }
+
+    if (!userId) {
+      return new Response(JSON.stringify({ error: `Could not create or resolve user for ${seed.email}` }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    await supabase
+      .from("profiles")
+      .upsert(
+        {
+          user_id: userId,
+          full_name: seed.fullName,
+          email: seed.email,
+          phone: seed.phone,
+        },
+        { onConflict: "user_id" },
+      );
+
+    await supabase
+      .from("user_roles")
+      .upsert(
+        {
+          user_id: userId,
+          role: seed.role,
+        },
+        { onConflict: "user_id,role" },
+      );
+
+    seeded.push({ email: seed.email, role: seed.role, userId });
   }
 
-  // Ensure super_admin role exists
-  const { data: existingRole } = await supabase
-    .from("user_roles")
-    .select("id")
-    .eq("user_id", userId)
-    .eq("role", "super_admin")
-    .maybeSingle();
-
-  if (!existingRole) {
-    await supabase.from("user_roles").insert({ user_id: userId, role: "super_admin" });
-  }
-
-  return new Response(
-    JSON.stringify({ success: true, message: `Admin account ready: ${email}`, userId }),
-    { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-  );
+  return new Response(JSON.stringify({ success: true, seeded }), {
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
 });

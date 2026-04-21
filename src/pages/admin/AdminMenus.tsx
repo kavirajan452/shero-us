@@ -939,7 +939,7 @@ function KitchenApprovalTab({ kitchens, setKitchens, stream }: { kitchens: Kitch
   const role = getAdminRole();
   const canApprove = role === "onboarding_manager" || role === "super_admin" || role === "country_manager";
   const adminName = localStorage.getItem("shero-admin-name") || "Unknown";
-  const adminEmail = localStorage.getItem("shero-admin-rem") || "";
+  const adminEmail = "";
   const adminRoleLabel = role ? (ADMIN_ROLES.find(r => r.key === role)?.label || role) : "";
 
   const filtered = useMemo(() => {
