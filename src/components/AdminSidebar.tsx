@@ -1,8 +1,10 @@
-import { LayoutDashboard, ChefHat, UtensilsCrossed, ClipboardList, LogOut, Shield, BarChart3, Users, DollarSign, Headphones, Radio, Gauge, Heart, PartyPopper, UserPlus, Store, FileBarChart, BadgePercent, Briefcase, Wallet, CalendarCheck, Settings, Target, Bike, Wrench, PieChart, MapPin, MessageSquare, Bot, Phone, Star, FileEdit, TicketCheck, BookOpen, GraduationCap, Plug, CreditCard, Truck, ChevronRight, UserCog, Megaphone, Cookie, Sparkles, Package, Calendar } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { LayoutDashboard, ChefHat, UtensilsCrossed, ClipboardList, LogOut, Shield, BarChart3, Users, DollarSign, Headphones, Radio, Gauge, Heart, PartyPopper, Store, FileBarChart, BadgePercent, Wallet, CalendarCheck, Settings, Target, Bike, Wrench, PieChart, MapPin, MessageSquare, Bot, Phone, Star, FileEdit, TicketCheck, BookOpen, GraduationCap, Plug, CreditCard, Truck, ChevronRight, UserCog, Megaphone, Package, Calendar } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import sheroLogo from "@/assets/shero-logo.png";
 import { getAdminRole, getRoleConfig, hasAccess } from "@/data/adminRoles";
+import { ADMIN_PHASE1_SINGLE_MEAL_DEFAULT_ITEMS, getAdminNavIcon, type AdminNavItem } from "@/data/adminNavigation";
 import { supabase } from "@/integrations/supabase/client";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
@@ -47,15 +49,11 @@ const financeItems = [
 ];
 
 // 3. SINGLE MEAL ORDER — Ops Managers, TLs, Executives
-const instantItems = [
-  { title: "Dashboard", url: "/admin/delivery-analytics", icon: LayoutDashboard },
-  { title: "Order Management", url: "/admin/orders", icon: ClipboardList },
-  { title: "Kitchen & Categories", url: "/admin/kitchen-categories", icon: Store },
-  { title: "Menu Management", url: "/admin/menus", icon: UtensilsCrossed },
-  { title: "Metrics & SCV", url: "/admin/metrics", icon: Gauge },
-  { title: "Offers & Promotions", url: "/admin/promotions", icon: BadgePercent },
-  { title: "Broadcast", url: "/admin/instant-comms", icon: Megaphone },
-];
+const toSidebarItems = (items: AdminNavItem[]) =>
+  items.map((item) => ({
+    ...item,
+    icon: getAdminNavIcon(item.url),
+  }));
 
 // 4. PARTY ORDERS — Party Managers, TLs, Executives
 const partyItems = [
@@ -173,10 +171,10 @@ const walletItems = [
   { title: "Wallet & Referral Settings", url: "/admin/wallet-referrals", icon: Wallet },
 ];
 
-const sections: NavSection[] = [
+const baseSections: NavSection[] = [
   { label: "Command", icon: Shield, items: commandItems, color: "section-command" },
   { label: "Finance Books", icon: Wallet, items: financeItems, color: "section-finance" },
-  { label: "Single Meal Order", icon: Bike, items: instantItems, color: "section-instant" },
+  { label: "Phase 1 – Single Meal Order", icon: Bike, items: toSidebarItems(ADMIN_PHASE1_SINGLE_MEAL_DEFAULT_ITEMS), color: "section-instant" },
   { label: "Party Orders", icon: PartyPopper, items: partyItems, color: "section-party" },
   { label: "Subscriptions", icon: CalendarCheck, items: subscriptionItems, color: "section-subscription" },
   // Sweets & Snacks, Cookery Classes, Shero Classes — disabled for now
@@ -212,6 +210,49 @@ export function AdminSidebar() {
   const navigate = useNavigate();
   const currentPath = location.pathname;
   const logoSrc = typeof sheroLogo === "string" ? sheroLogo : (sheroLogo as { src: string }).src;
+  const [dynamicInstantItems, setDynamicInstantItems] = useState<AdminNavItem[]>(ADMIN_PHASE1_SINGLE_MEAL_DEFAULT_ITEMS);
+
+  useEffect(() => {
+    const loadDynamicPhase1Menu = async () => {
+      const { data } = await supabase
+        .from("app_config")
+        .select("value")
+        .eq("key", "admin_phase1_single_meal_nav")
+        .maybeSingle();
+
+      const items = (data?.value as { items?: unknown } | null)?.items;
+      if (!Array.isArray(items)) return;
+
+      const sanitizedItems = items
+        .filter((item): item is { title: string; url: string } => {
+          return (
+            typeof item === "object" &&
+            item !== null &&
+            typeof (item as { title?: unknown }).title === "string" &&
+            typeof (item as { url?: unknown }).url === "string" &&
+            (item as { url: string }).url.startsWith("/admin")
+          );
+        })
+        .map((item) => ({ title: item.title.trim(), url: item.url.trim() }))
+        .filter((item) => item.title.length > 0 && item.url.length > 0);
+
+      if (sanitizedItems.length > 0) {
+        setDynamicInstantItems(sanitizedItems);
+      }
+    };
+
+    loadDynamicPhase1Menu();
+  }, []);
+
+  const sections = useMemo<NavSection[]>(
+    () =>
+      baseSections.map((section) =>
+        section.label === "Phase 1 – Single Meal Order"
+          ? { ...section, items: toSidebarItems(dynamicInstantItems) }
+          : section,
+      ),
+    [dynamicInstantItems],
+  );
 
   const handleLogout = async () => {
     await supabase.auth.signOut();

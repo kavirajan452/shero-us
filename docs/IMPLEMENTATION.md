@@ -1,8 +1,12 @@
 # Shero US — Phase 1 Implementation Guide
 
-> Last updated: 2026-04-19
+> Last updated: 2026-04-21
 
-## 🔄 Update Log (2026-04-19)
+## 🔄 Update Log (2026-04-21)
+
+- Added DB-driven admin Phase 1 navigation section (`Phase 1 – Single Meal Order`) loaded from `app_config.admin_phase1_single_meal_nav`.
+- Added migration `20260421172000_phase1_admin_dynamic_navigation.sql` to seed/update the full Phase 1 admin route list in Supabase.
+- Admin sidebar now renders the Phase 1 menu items dynamically from Supabase (with safe fallback to bundled defaults).
 
 - Phase 2 Task 4: replaced admin dummy-login bypass with database-backed role verification.
 - Admin portal (`/admin/*`) now allows access only for authenticated users with `super_admin` role.
@@ -68,6 +72,25 @@
 5. DB checks (Supabase SQL editor):
    - `select user_id, role from public.user_roles where role in ('super_admin','partner');`
    - `select user_id, email, phone from public.profiles where email in ('superadmin@shero.in','kitchenpartner@shero.in');`
+
+## ✅ Verification Guide (Admin Dynamic Phase 1 Navigation)
+
+1. Apply latest migrations:
+   - `npx supabase db push`
+2. Login as super admin:
+   - `/admin/login`
+   - `superadmin@shero.in` / configured password
+3. Open admin sidebar and verify the section label:
+   - `Phase 1 – Single Meal Order`
+4. Verify routes shown under this section include:
+   - `/admin`, `/admin/orders`, `/admin/menus`, `/admin/kitchen-categories`, `/admin/payments`, `/admin/manual-order`, `/admin/order-modifications`, `/admin/customer-feedback`, `/admin/users`, `/admin/delivery-mgmt`, `/admin/delivery-analytics`, `/admin/invoice-settings`, `/admin/promotions`, `/admin/debit-credit`, `/admin/wallet-referrals`, `/admin/instant-finance`, `/admin/financial-reports`, `/admin/business-metrics`, `/admin/metrics`, `/admin/reports`, `/admin/location-support`, `/admin/live-support`, `/admin/tickets`, `/admin/instant-comms`
+5. Validate dynamic DB source:
+   - `select value from public.app_config where key = 'admin_phase1_single_meal_nav';`
+6. Validate add/edit/delete/update behavior by editing JSON (example SQL):
+   - Add: `update public.app_config set value = jsonb_set(value, '{items}', (value->'items') || '[{"title":"Custom Admin Link","url":"/admin/reports"}]'::jsonb), updated_at = now() where key = 'admin_phase1_single_meal_nav';`
+   - Update title: `update public.app_config set value = jsonb_set(value, '{items,0,title}', '"Dashboard Home"'::jsonb), updated_at = now() where key = 'admin_phase1_single_meal_nav';`
+   - Delete last item: `update public.app_config set value = jsonb_set(value, '{items}', (value->'items') - (jsonb_array_length(value->'items') - 1), true), updated_at = now() where key = 'admin_phase1_single_meal_nav';`
+   - Refresh `/admin` and confirm sidebar updates from DB value.
 
 ---
 
@@ -262,6 +285,7 @@ Already implemented in prior migrations + hooks:
 | `20260417043000_…` | Phase 1 OTP, cart, payment refinements |
 | `20260417073000_…` | Fix `instant_orders` anon insert policy |
 | **`20260417100000_seed_phase1_kitchens_menus.sql`** | **⭐ Phase 1 seed: 10 kitchens, 57 menu items, 10 locations** |
+| **`20260421172000_phase1_admin_dynamic_navigation.sql`** | **Phase 1 admin sidebar menu config in `app_config` (`admin_phase1_single_meal_nav`)** |
 
 ### Applying Migrations
 

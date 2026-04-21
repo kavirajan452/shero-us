@@ -1,0 +1,81 @@
+import {
+  BarChart3,
+  Bike,
+  ClipboardList,
+  CreditCard,
+  DollarSign,
+  FileBarChart,
+  FileEdit,
+  Gauge,
+  Headphones,
+  Heart,
+  LayoutDashboard,
+  MapPin,
+  MessageSquare,
+  PieChart,
+  Star,
+  Store,
+  Truck,
+  type LucideIcon,
+} from "lucide-react";
+
+export interface AdminNavItem {
+  title: string;
+  url: string;
+}
+
+export const ADMIN_PHASE1_SINGLE_MEAL_DEFAULT_ITEMS: AdminNavItem[] = [
+  { title: "Dashboard", url: "/admin" },
+  { title: "Order Management", url: "/admin/orders" },
+  { title: "Menu Management", url: "/admin/menus" },
+  { title: "Kitchen & Categories", url: "/admin/kitchen-categories" },
+  { title: "Payments", url: "/admin/payments" },
+  { title: "Manual Order", url: "/admin/manual-order" },
+  { title: "Order Modifications", url: "/admin/order-modifications" },
+  { title: "Customer Feedback", url: "/admin/customer-feedback" },
+  { title: "Users", url: "/admin/users" },
+  { title: "Delivery Management", url: "/admin/delivery-mgmt" },
+  { title: "Delivery Analytics", url: "/admin/delivery-analytics" },
+  { title: "Invoice Settings", url: "/admin/invoice-settings" },
+  { title: "Promotions", url: "/admin/promotions" },
+  { title: "Debit & Credit", url: "/admin/debit-credit" },
+  { title: "Wallet & Referrals", url: "/admin/wallet-referrals" },
+  { title: "Instant Finance", url: "/admin/instant-finance" },
+  { title: "Financial Reports", url: "/admin/financial-reports" },
+  { title: "Business Metrics", url: "/admin/business-metrics" },
+  { title: "Metrics", url: "/admin/metrics" },
+  { title: "Reports", url: "/admin/reports" },
+  { title: "Location Support", url: "/admin/location-support" },
+  { title: "Live Support", url: "/admin/live-support" },
+  { title: "Tickets", url: "/admin/tickets" },
+  { title: "Broadcast", url: "/admin/instant-comms" },
+];
+
+const ITEM_ICON_MAP: Record<string, LucideIcon> = {
+  "/admin": LayoutDashboard,
+  "/admin/orders": ClipboardList,
+  "/admin/menus": Store,
+  "/admin/kitchen-categories": Store,
+  "/admin/payments": CreditCard,
+  "/admin/manual-order": FileEdit,
+  "/admin/order-modifications": FileEdit,
+  "/admin/customer-feedback": Star,
+  "/admin/users": Heart,
+  "/admin/delivery-mgmt": Truck,
+  "/admin/delivery-analytics": BarChart3,
+  "/admin/invoice-settings": FileBarChart,
+  "/admin/promotions": DollarSign,
+  "/admin/debit-credit": DollarSign,
+  "/admin/wallet-referrals": DollarSign,
+  "/admin/instant-finance": Bike,
+  "/admin/financial-reports": PieChart,
+  "/admin/business-metrics": Gauge,
+  "/admin/metrics": Gauge,
+  "/admin/reports": FileBarChart,
+  "/admin/location-support": MapPin,
+  "/admin/live-support": MessageSquare,
+  "/admin/tickets": Headphones,
+  "/admin/instant-comms": Bike,
+};
+
+export const getAdminNavIcon = (url: string): LucideIcon => ITEM_ICON_MAP[url] ?? LayoutDashboard;
