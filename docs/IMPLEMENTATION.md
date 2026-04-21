@@ -1,6 +1,34 @@
 # Shero US — Phase 1 Implementation Guide
 
-> Last updated: 2026-04-19
+> Last updated: 2026-04-21
+
+## 🔄 Update Log (2026-04-21)
+
+- Admin sidebar now enforces **Phase 1 single-meal routes only** (non-phase routes hidden).
+- `/admin/users` now loads live users from `profiles`, `user_roles`, and `instant_orders` instead of local mock rows.
+- `/admin/order-modifications` now reads `order_modifications` from Supabase and supports status updates (`new → acknowledged → resolved`).
+- `/admin/customer-feedback` now reads live `customer_feedback` and supports marking feedback as responded.
+- `/admin/live-support` now reads active/escalated orders from `instant_orders` in real time.
+- `/admin/location-support` now reads live delivery state from `delivery_tracking` and maps order context from `instant_orders`.
+- `/admin/manual-order` now fetches menu items from `instant_menu_items` and inserts placed manual orders into `instant_orders`.
+
+## 🔍 Verification Guide (2026-04-21 Admin Dynamic Updates)
+
+1. Apply migrations/seed as usual:
+   - `npx supabase db push`
+   - Ensure `supabase seed` or `setup-admin` is run for login users.
+2. Login checks:
+   - Super admin login at `/admin/login` should access phase-1 admin modules.
+   - Kitchen partner login (`kitchenpartner@shero.in`) should continue to work on partner flows.
+3. Sidebar scope checks:
+   - Under `/admin`, verify only the Phase 1 listed routes are shown in navigation.
+4. Page dynamics:
+   - `/admin/users`: list loads from DB (no hardcoded rows).
+   - `/admin/order-modifications`: update status buttons persist to DB.
+   - `/admin/customer-feedback`: “Mark Responded” updates `customer_feedback.status`.
+   - `/admin/live-support`: active order feed reflects `instant_orders`.
+   - `/admin/location-support`: delivery rows reflect `delivery_tracking`.
+   - `/admin/manual-order`: menu is loaded from `instant_menu_items`; successful payment creates an `instant_orders` row.
 
 ## 🔄 Update Log (2026-04-19)
 

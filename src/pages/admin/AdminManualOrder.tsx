@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,24 +10,19 @@ import PaymentSection from "@/components/PaymentSection";
 import type { PaymentMethod } from "@/components/PaymentSection";
 import { saveIncompleteOrder, getAllIncompleteOrders, removeIncompleteOrder, type IncompleteOrder } from "@/data/incompleteOrderStore";
 import { useToast } from "@/hooks/use-toast";
+import { useCreateInstantOrder } from "@/hooks/useSupabaseData";
+import { supabase } from "@/integrations/supabase/client";
 import {
   User, Phone, MapPin, Plus, Minus, Trash2, ShoppingCart, CreditCard,
   CheckCircle2, Clock, AlertTriangle, Search, RotateCcw
 } from "lucide-react";
 
-/* ── Mock data ── */
-const mockMenuItems = [
-  { id: "m1", name: "Chicken Biryani", price: 180, category: "Main Course" },
-  { id: "m2", name: "Masala Dosa", price: 60, category: "Tiffin" },
-  { id: "m3", name: "Sambar Rice", price: 80, category: "Rice" },
-  { id: "m4", name: "Idli Vada (4+2)", price: 50, category: "Tiffin" },
-  { id: "m5", name: "Fish Curry + Rice", price: 150, category: "Main Course" },
-  { id: "m6", name: "Curd Rice", price: 60, category: "Rice" },
-  { id: "m7", name: "Mutton Curry + Rice", price: 220, category: "Main Course" },
-  { id: "m8", name: "Pongal", price: 55, category: "Tiffin" },
-  { id: "m9", name: "Veg Thali", price: 120, category: "Thali" },
-  { id: "m10", name: "Non-Veg Thali", price: 160, category: "Thali" },
-];
+interface MenuItemLite {
+  id: string;
+  name: string;
+  price: number;
+  category: string | null;
+}
 
 const orderTypes = [
   { value: "instant", label: "Single Meal Order" },
@@ -45,6 +40,7 @@ interface CartEntry {
 
 const AdminManualOrder = () => {
   const { toast } = useToast();
+  const createInstantOrder = useCreateInstantOrder();
   const [activeTab, setActiveTab] = useState("new-order");
 
   // Customer profile
@@ -52,9 +48,10 @@ const AdminManualOrder = () => {
   const [custPhone, setCustPhone] = useState("");
   const [custAddress, setCustAddress] = useState("");
   const [custEmail, setCustEmail] = useState("");
-  const [orderType, setOrderType] = useState("instant");
+  const [orderType, setOrderType] = useState<IncompleteOrder["type"]>("instant");
 
   // Menu
+  const [menuItems, setMenuItems] = useState<MenuItemLite[]>([]);
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState<CartEntry[]>([]);
   const [notes, setNotes] = useState("");
@@ -65,11 +62,29 @@ const AdminManualOrder = () => {
   // Incomplete orders
   const [incompleteOrders, setIncompleteOrders] = useState<IncompleteOrder[]>(getAllIncompleteOrders());
 
-  const filteredMenu = mockMenuItems.filter(
-    (i) => i.name.toLowerCase().includes(search.toLowerCase()) || i.category.toLowerCase().includes(search.toLowerCase())
+  useEffect(() => {
+    const loadMenu = async () => {
+      const { data, error } = await supabase
+        .from("instant_menu_items")
+        .select("id, name, price, category")
+        .eq("is_active", true)
+        .order("name");
+      if (error) {
+        toast({ title: "Failed to load menu", description: error.message, variant: "destructive" });
+        return;
+      }
+      setMenuItems((data || []) as MenuItemLite[]);
+    };
+    void loadMenu();
+  }, [toast]);
+
+  const filteredMenu = menuItems.filter(
+    (i) =>
+      i.name.toLowerCase().includes(search.toLowerCase()) ||
+      (i.category || "").toLowerCase().includes(search.toLowerCase())
   );
 
-  const addToCart = (item: typeof mockMenuItems[0]) => {
+  const addToCart = (item: MenuItemLite) => {
     setCart((prev) => {
       const ex = prev.find((c) => c.id === item.id);
       if (ex) return prev.map((c) => c.id === item.id ? { ...c, qty: c.qty + 1 } : c);
@@ -88,15 +103,41 @@ const AdminManualOrder = () => {
   const canProceedToMenu = custName.trim() && custPhone.trim().length >= 10;
   const canProceedToPayment = cart.length > 0;
 
-  const handlePaymentSuccess = () => {
-    setStep("done");
-    removeIncompleteOrder(`admin-${custPhone}`);
-    toast({ title: "Order Placed", description: `Order placed for ${custName} — $${total}` });
+  const handlePaymentSuccess = async () => {
+    try {
+      const orderCode = `MAN-${Date.now().toString().slice(-8)}`;
+      await createInstantOrder.mutateAsync({
+        order_code: orderCode,
+        customer_name: custName.trim(),
+        customer_phone: custPhone.trim(),
+        customer_address: custAddress.trim() || null,
+        kitchen_name: "Manual Order",
+        items: cart.map((c) => ({ id: c.id, name: c.name, qty: c.qty, price: c.price })),
+        subtotal,
+        tax,
+        total,
+        order_type: "instant",
+        delivery_type: "self-delivery",
+        payment_method: "cod",
+        payment_status: "pending",
+        status: "accepted",
+        note: notes.trim() || null,
+      });
+      setStep("done");
+      removeIncompleteOrder(`admin-${custPhone}`);
+      toast({ title: "Order Placed", description: `Order ${orderCode} placed for ${custName} — $${total}` });
+    } catch (error) {
+      toast({
+        title: "Order creation failed",
+        description: error instanceof Error ? error.message : "Please retry",
+        variant: "destructive",
+      });
+    }
   };
 
   const handlePaymentFailure = (method: PaymentMethod) => {
     saveIncompleteOrder({
-      type: orderType as any,
+      type: orderType,
       customerName: custName,
       customerPhone: custPhone,
       address: custAddress,
