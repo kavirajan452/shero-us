@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import {
   Star, Clock, Percent, Target, Zap, AlertTriangle, CheckCircle, Download,
   ShoppingCart, Bike, PartyPopper, Calendar, Cookie, GraduationCap, Sparkles, Wrench
 } from "lucide-react";
+import { useInstantOrderStats, useCustomerFeedback } from "@/hooks/useSupabaseData";
 
 const COLORS = ["hsl(var(--primary))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))", "hsl(var(--accent))"];
 
@@ -78,8 +79,8 @@ const customerMetrics = [
   { metric: "Referral Conversion", value: "24.6%", delta: "+3.2%", trend: "up" },
 ];
 
-// ── Radar data for vertical comparison ──
-const radarData = verticalHealth.map(v => ({
+// ── Radar data for vertical comparison (computed inside component with live data) ──
+const _radarDataBase = verticalHealth.map(v => ({
   vertical: v.vertical.split(" ")[0],
   Health: v.score,
   NPS: v.nps,
@@ -89,10 +90,38 @@ const radarData = verticalHealth.map(v => ({
 
 export default function AdminBusinessMetrics() {
   const [tab, setTab] = useState("health");
+  const { data: orderStats } = useInstantOrderStats();
+  const { data: rawFeedback = [] } = useCustomerFeedback();
 
-  const totalRevenue = verticalHealth.reduce((s, v) => s + v.revenue, 0);
-  const avgHealth = Math.round(verticalHealth.reduce((s, v) => s + v.score, 0) / verticalHealth.length);
-  const avgNPS = Math.round(verticalHealth.reduce((s, v) => s + v.nps, 0) / verticalHealth.length);
+  // Compute real averages from live data
+  const avgRating = useMemo(() => {
+    const fb = rawFeedback as any[];
+    if (fb.length === 0) return null;
+    return (fb.reduce((s: number, f: any) => s + Number(f.rating || 0), 0) / fb.length).toFixed(1);
+  }, [rawFeedback]);
+
+  const liveInstantVertical = useMemo(() => {
+    const base = verticalHealth.find(v => v.vertical === "Single Meal Order")!;
+    return {
+      ...base,
+      revenue: Number(orderStats?.totalSales || base.revenue),
+      orders: Number(orderStats?.totalOrders || base.orders),
+      nps: avgRating ? Math.round(Number(avgRating) * 14) : base.nps,
+    };
+  }, [orderStats, avgRating]);
+
+  const liveHealth = useMemo(() => verticalHealth.map(v => v.vertical === "Single Meal Order" ? liveInstantVertical : v), [liveInstantVertical]);
+
+  const totalRevenue = liveHealth.reduce((s, v) => s + v.revenue, 0);
+  const avgHealth = Math.round(liveHealth.reduce((s, v) => s + v.score, 0) / liveHealth.length);
+  const avgNPS = Math.round(liveHealth.reduce((s, v) => s + v.nps, 0) / liveHealth.length);
+  const radarData = useMemo(() => liveHealth.map(v => ({
+    vertical: v.vertical.split(" ")[0],
+    Health: v.score,
+    NPS: v.nps,
+    Fulfillment: v.fulfillment,
+    Growth: Math.min(v.growth * 2, 100),
+  })), [liveHealth]);
   const chartConfig = { orders: { label: "Orders", color: COLORS[0] }, revenue: { label: "Revenue", color: COLORS[1] }, nps: { label: "NPS", color: COLORS[4] } };
 
   return (
@@ -138,7 +167,7 @@ export default function AdminBusinessMetrics() {
         {/* ── VERTICAL HEALTH ── */}
         <TabsContent value="health" className="mt-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {verticalHealth.map(v => {
+            {liveHealth.map(v => {
               const Icon = v.icon;
               return (
                 <Card key={v.vertical} className="overflow-hidden">

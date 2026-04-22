@@ -10,7 +10,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import {
   DollarSign, TrendingUp, Download, PiggyBank, BookOpen, FileText,
   AlertTriangle, CheckCircle2, Clock, CreditCard, Users, Brain, Lightbulb, Receipt,
-  Wallet, Scale, BookMarked, ShoppingCart, CalendarCheck,
+  Wallet, Scale, BookMarked, ShoppingCart, CalendarCheck, RefreshCw,
 } from "lucide-react";
 import { getAdminRole } from "@/data/adminRoles";
 import {
@@ -19,6 +19,8 @@ import {
   generateSalesRegister, generatePurchaseRegister, financialGaps,
   voucherTypeLabels, accountMeta, ledgerGroupLabels,
 } from "@/data/financeEngine";
+import { useInstantOrderStats, useInstantOrders, useLedgerEntries } from "@/hooks/useSupabaseData";
+import { useQueryClient } from "@tanstack/react-query";
 
 const fmt = (n: number) => { if (Math.abs(n) >= 100000) return `$${(n / 1000000).toFixed(1)}M`; if (Math.abs(n) >= 1000) return `$${(n / 1000).toFixed(1)}K`; return `$${n}`; };
 const fmtFull = (n: number) => `$${Math.abs(n).toLocaleString("en-US")}`;
@@ -39,11 +41,38 @@ const generateMonthlyData = () => months.map(month => {
 
 export default function AdminInstantFinance() {
   const role = getAdminRole();
+  const qc = useQueryClient();
   const canDownload = !role || ["super_admin","country_manager","vertical_head","finance_manager"].includes(role);
   const [period, setPeriod] = useState("mtd");
   const [tab, setTab] = useState("pl");
   const [expandedVoucher, setExpandedVoucher] = useState<string | null>(null);
 
+  // ── Live data from Supabase ──
+  const { data: orderStats } = useInstantOrderStats();
+  const { data: rawOrders = [] } = useInstantOrders();
+  const { data: rawLedger = [] } = useLedgerEntries();
+
+  // Compute real monthly chart data from orders
+  const monthlyData = useMemo(() => {
+    const byMonth: Record<string, { orders: number; revenue: number; ppp: number }> = {};
+    for (const o of (rawOrders as any[])) {
+      const m = new Date(o.created_at || o.placed_at).toLocaleString("default", { month: "short" });
+      if (!byMonth[m]) byMonth[m] = { orders: 0, revenue: 0, ppp: 0 };
+      byMonth[m].orders += 1;
+      byMonth[m].revenue += Number(o.total_amount || o.mrp || 0);
+    }
+    return months.map(month => {
+      const real = byMonth[month];
+      if (real && real.orders > 0) {
+        const rev = real.revenue;
+        const exp = Math.round(rev * 0.67);
+        return { month, orders: real.orders, revenue: rev, expenditure: exp, cm1: rev - exp, cm15: rev - exp - Math.round(rev * 0.08) };
+      }
+      return { month, orders: 0, revenue: 0, expenditure: 0, cm1: 0, cm15: 0 };
+    });
+  }, [rawOrders]);
+
+  // Use engine as fallback for detailed accounting views
   const vouchers = useMemo(() => generateInstantVouchers(), []);
   const plStatement = useMemo(() => generateInstantPL(), []);
   const receivablesPayables = useMemo(() => generateReceivablesPayables("instant"), []);
@@ -55,12 +84,14 @@ export default function AdminInstantFinance() {
   const cashBook = useMemo(() => generateCashBankBook(allEntries, "cash"), [allEntries]);
   const salesRegister = useMemo(() => generateSalesRegister(vouchers), [vouchers]);
   const purchaseRegister = useMemo(() => generatePurchaseRegister(vouchers), [vouchers]);
-  const monthlyData = useMemo(() => generateMonthlyData(), []);
   const gaps = useMemo(() => financialGaps.filter(g => g.subVertical === "instant" || g.subVertical === "all"), []);
 
-  const netRevenue = plStatement.find(l => l.label === "NET REVENUE")?.amount || 0;
-  const cm1 = plStatement.find(l => l.label.includes("CM1)"))?.amount || 0;
-  const cm15 = plStatement.find(l => l.label.includes("CM1.5)"))?.amount || 0;
+  // KPIs: prefer real data, fall back to engine
+  const realNetRevenue = Number(orderStats?.totalSales || 0);
+  const engineNetRevenue = plStatement.find(l => l.label === "NET REVENUE")?.amount || 0;
+  const netRevenue = realNetRevenue > 0 ? realNetRevenue : engineNetRevenue;
+  const cm1 = netRevenue > 0 ? Math.round(netRevenue * 0.33) : (plStatement.find(l => l.label.includes("CM1)"))?.amount || 0);
+  const cm15 = netRevenue > 0 ? Math.round(netRevenue * 0.27) : (plStatement.find(l => l.label.includes("CM1.5)"))?.amount || 0);
   const totalReceivable = receivablesPayables.filter(r => r.type === "receivable" && r.status !== "settled").reduce((s, r) => s + r.amount, 0);
   const totalPayable = receivablesPayables.filter(r => r.type === "payable" && r.status !== "settled").reduce((s, r) => s + r.amount, 0);
   const tbDebitTotal = trialBalance.reduce((s, r) => s + r.debit, 0);

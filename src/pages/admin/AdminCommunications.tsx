@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Send, Clock, FileText, Plus, Search, Filter, Eye, MessageCircle, Smartphone, Users, BarChart3, Megaphone, TrendingUp, AlertTriangle, PartyPopper, DollarSign, Radio, ChevronDown, ChevronUp, Copy, Sparkles } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Send, Clock, FileText, Plus, Search, Filter, Eye, MessageCircle, Smartphone, Users, BarChart3, Megaphone, TrendingUp, AlertTriangle, PartyPopper, DollarSign, Radio, ChevronDown, ChevronUp, Copy, Sparkles, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,6 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
 import {
-  MOCK_COMMUNICATIONS,
   COMM_TEMPLATES,
   REGIONS,
   CUISINES,
@@ -30,6 +29,8 @@ import {
   type AudienceFilter,
   type CommTemplate,
 } from "@/data/communicationsData";
+import { useCommunications, useCreateCommunication } from "@/hooks/useSupabaseData";
+import { useQueryClient } from "@tanstack/react-query";
 
 const categoryIcons: Record<CommCategory, any> = {
   performance: TrendingUp,
@@ -533,11 +534,39 @@ const sectionLabels: Record<string, string> = {
 };
 
 const AdminCommunications = ({ sectionFilter = null }: { sectionFilter?: SectionFilter }) => {
+  const qc = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
 
-  const filtered = MOCK_COMMUNICATIONS.filter((c) => {
+  const { data: rawComms = [], isLoading } = useCommunications();
+  const createComm = useCreateCommunication();
+
+  // Map Supabase rows to Communication shape
+  const comms: Communication[] = useMemo(
+    () =>
+      (rawComms as any[]).map((c: any) => ({
+        id: c.id,
+        subject: c.subject || "",
+        body: c.body || "",
+        category: (c.category || "announcement") as CommCategory,
+        channel: (c.channel || "in_app") as CommChannel,
+        priority: (c.priority || "normal") as CommPriority,
+        status: (c.status || "draft") as CommStatus,
+        audience: (c.audience_json || {}) as AudienceFilter,
+        audienceCount: Number(c.audience_count || 0),
+        sentBy: c.sent_by || "Admin",
+        sentByRole: c.sent_by_role || "admin",
+        sentAt: c.sent_at || c.created_at || "",
+        scheduledAt: c.scheduled_at || null,
+        deliveredCount: Number(c.delivered_count || 0),
+        readCount: Number(c.read_count || 0),
+        createdAt: c.created_at || "",
+      })),
+    [rawComms]
+  );
+
+  const filtered = comms.filter((c) => {
     if (statusFilter !== "all" && c.status !== statusFilter) return false;
     if (categoryFilter !== "all" && c.category !== categoryFilter) return false;
     if (searchQuery && !c.subject.toLowerCase().includes(searchQuery.toLowerCase()) && !c.body.toLowerCase().includes(searchQuery.toLowerCase())) return false;
@@ -556,11 +585,16 @@ const AdminCommunications = ({ sectionFilter = null }: { sectionFilter?: Section
             {sectionFilter ? `WhatsApp & In-App broadcast centre for ${sectionLabels[sectionFilter]} team` : "Send targeted broadcasts to partners via In-App & WhatsApp"}
           </p>
         </div>
-        <ComposeDialog templates={COMM_TEMPLATES} />
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => qc.invalidateQueries({ queryKey: ["communications"] })}>
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
+          </Button>
+          <ComposeDialog templates={COMM_TEMPLATES} />
+        </div>
       </div>
 
       {/* Stats */}
-      <StatsBar comms={MOCK_COMMUNICATIONS} />
+      <StatsBar comms={comms} />
 
       {/* Tabs */}
       <Tabs defaultValue="history" className="space-y-4">
@@ -605,11 +639,14 @@ const AdminCommunications = ({ sectionFilter = null }: { sectionFilter?: Section
 
           {/* List */}
           <div className="space-y-2">
-            {filtered.length === 0 ? (
+            {isLoading ? (
+              <div className="text-center py-8 text-muted-foreground text-sm">Loading communications…</div>
+            ) : filtered.length === 0 ? (
               <Card className="border-dashed border-border">
                 <CardContent className="py-8 text-center">
                   <MessageCircle className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
                   <p className="text-sm text-muted-foreground">No communications found</p>
+                  <p className="text-xs text-muted-foreground/60 mt-1">Compose a new broadcast to get started.</p>
                 </CardContent>
               </Card>
             ) : (
@@ -627,7 +664,7 @@ const AdminCommunications = ({ sectionFilter = null }: { sectionFilter?: Section
         </TabsContent>
 
         <TabsContent value="analytics">
-          <AnalyticsView comms={MOCK_COMMUNICATIONS} />
+          <AnalyticsView comms={comms} />
         </TabsContent>
       </Tabs>
     </div>

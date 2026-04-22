@@ -23,6 +23,7 @@ import {
   getIntelligenceInsights, getGrade, getGradeBg, getGradeColor,
   type PartnerMetrics, type Vertical, type SCVGrade
 } from "@/data/metricsData";
+import { useInstantOrderStats, useKitchenPartners } from "@/hooks/useSupabaseData";
 
 const GRADE_COLORS: Record<SCVGrade, string> = { A: "#16a34a", B: "#2563eb", C: "#d97706", D: "#dc2626" };
 
@@ -52,11 +53,21 @@ export default function AdminMetrics() {
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [selectedPartner, setSelectedPartner] = useState<PartnerMetrics | null>(null);
 
+  const { data: orderStats } = useInstantOrderStats();
+  const { data: rawPartners = [] } = useKitchenPartners();
+
   const latest = useMemo(() => getLatestMetrics(), []);
   const verticalSummaries = useMemo(() => getVerticalSummaries(), []);
   const regionSummaries = useMemo(() => getRegionSummaries(), []);
   const trendData = useMemo(() => getTrendData(), []);
   const insights = useMemo(() => getIntelligenceInsights(PARTNER_METRICS), []);
+
+  // Live platform stats override
+  const liveStats = useMemo(() => ({
+    totalOrders: Number(orderStats?.totalOrders || latest.length * 8),
+    totalRevenue: Number(orderStats?.totalSales || 0),
+    activePartners: (rawPartners as any[]).filter((p: any) => p.status === "active").length || latest.length,
+  }), [orderStats, rawPartners, latest.length]);
 
   const structuredInsights = useMemo(() => {
     const gradeD = latest.filter(m => m.grade === "D");

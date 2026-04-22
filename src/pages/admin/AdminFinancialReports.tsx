@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import {
   DollarSign, TrendingUp, TrendingDown, PieChart, FileText, Download, Calendar,
   ArrowUpRight, ArrowDownRight, Wallet, Receipt, BookOpen, Building2, Percent
 } from "lucide-react";
+import { useInstantOrderStats } from "@/hooks/useSupabaseData";
 
 const fmt = (n: number) => `$${(n / 1000000).toFixed(1)}M`;
 const fmtFull = (n: number) => `$${n.toLocaleString("en-US")}`;
@@ -26,9 +27,8 @@ const verticalPnL = [
   { vertical: "Shero Classes", revenue: 62000, cogs: 24800, grossProfit: 37200, opex: 12400, netProfit: 24800, cm1Pct: 60.0, orders: 98 },
   { vertical: "Home Services", revenue: 48000, cogs: 28800, grossProfit: 19200, opex: 9600, netProfit: 9600, cm1Pct: 40.0, orders: 42 },
 ];
-const totalRevenue = verticalPnL.reduce((s, v) => s + v.revenue, 0);
-const totalNet = verticalPnL.reduce((s, v) => s + v.netProfit, 0);
-const totalOrders = verticalPnL.reduce((s, v) => s + v.orders, 0);
+// Note: totalRevenue, totalNet, totalOrders, revenuePie are now computed inside the component
+// using liveVerticalPnL to pick up real instant orders data.
 
 // ── Monthly Trend ──
 const monthlyTrend = [
@@ -65,11 +65,34 @@ const arAp = [
   { type: "AP", entity: "Instructor Payouts", amount: 36000, aging: "Bi-weekly", status: "Processing" },
 ];
 
-const revenuePie = verticalPnL.map(v => ({ name: v.vertical, value: v.revenue }));
+// ── Revenue Pie (used inside component) ──
 
 export default function AdminFinancialReports() {
   const [tab, setTab] = useState("overview");
   const [period, setPeriod] = useState("mtd");
+  const { data: orderStats } = useInstantOrderStats();
+
+  // Override instant vertical with live data
+  const liveVerticalPnL = useMemo(() => {
+    const liveRevenue = Number(orderStats?.totalSales || 0);
+    if (liveRevenue > 0) {
+      return verticalPnL.map(v => v.vertical === "Single Meal Order" ? {
+        ...v,
+        revenue: liveRevenue,
+        cogs: Math.round(liveRevenue * 0.60),
+        grossProfit: Math.round(liveRevenue * 0.40),
+        opex: Math.round(liveRevenue * 0.20),
+        netProfit: Math.round(liveRevenue * 0.20),
+        orders: Number(orderStats?.totalOrders || v.orders),
+      } : v);
+    }
+    return verticalPnL;
+  }, [orderStats]);
+
+  const totalRevenue = liveVerticalPnL.reduce((s, v) => s + v.revenue, 0);
+  const totalNet = liveVerticalPnL.reduce((s, v) => s + v.netProfit, 0);
+  const totalOrders = liveVerticalPnL.reduce((s, v) => s + v.orders, 0);
+  const revenuePie = liveVerticalPnL.map(v => ({ name: v.vertical, value: v.revenue }));
 
   const chartConfig = { revenue: { label: "Revenue", color: COLORS[0] }, expenses: { label: "Expenses", color: COLORS[2] }, profit: { label: "Profit", color: COLORS[1] } };
 
@@ -100,7 +123,7 @@ export default function AdminFinancialReports() {
           { label: "Net Profit", value: fmtFull(totalNet), icon: TrendingUp, color: "text-primary", delta: "+18.5%" },
           { label: "Net Margin", value: `${((totalNet / totalRevenue) * 100).toFixed(1)}%`, icon: Percent, color: "text-blue-600", delta: "+2.1pp" },
           { label: "Total Orders", value: totalOrders.toLocaleString(), icon: Receipt, color: "text-accent", delta: "+15.7%" },
-          { label: "Verticals", value: verticalPnL.length, icon: Building2, color: "text-muted-foreground" },
+          { label: "Verticals", value: liveVerticalPnL.length, icon: Building2, color: "text-muted-foreground" },
         ].map(s => (
           <Card key={s.label}>
             <CardContent className="pt-4">
@@ -165,9 +188,9 @@ export default function AdminFinancialReports() {
                   { label: "Gross Revenue", value: totalRevenue, bold: true },
                   { label: "  Less: Sales Tax Collected", value: -(taxSummary[0].amount + taxSummary[1].amount), indent: true },
                   { label: "Net Revenue", value: totalRevenue - (taxSummary[0].amount + taxSummary[1].amount), bold: true, border: true },
-                  { label: "  Less: COGS (Partner Payouts + Raw Material)", value: -verticalPnL.reduce((s, v) => s + v.cogs, 0), indent: true },
-                  { label: "Gross Profit (CM1)", value: verticalPnL.reduce((s, v) => s + v.grossProfit, 0), bold: true, border: true },
-                  { label: "  Less: Operational Expenses", value: -verticalPnL.reduce((s, v) => s + v.opex, 0), indent: true },
+                  { label: "  Less: COGS (Partner Payouts + Raw Material)", value: -liveVerticalPnL.reduce((s, v) => s + v.cogs, 0), indent: true },
+                  { label: "Gross Profit (CM1)", value: liveVerticalPnL.reduce((s, v) => s + v.grossProfit, 0), bold: true, border: true },
+                  { label: "  Less: Operational Expenses", value: -liveVerticalPnL.reduce((s, v) => s + v.opex, 0), indent: true },
                   { label: "  Less: Delivery & Logistics", value: -85000, indent: true },
                   { label: "  Less: Tech & Infrastructure", value: -42000, indent: true },
                   { label: "  Less: Marketing & Promotions", value: -35000, indent: true },
@@ -203,7 +226,7 @@ export default function AdminFinancialReports() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {verticalPnL.map(v => (
+                  {liveVerticalPnL.map(v => (
                     <TableRow key={v.vertical}>
                       <TableCell className="text-sm font-medium">{v.vertical}</TableCell>
                       <TableCell className="text-xs text-right font-semibold">{fmtFull(v.revenue)}</TableCell>
@@ -218,11 +241,11 @@ export default function AdminFinancialReports() {
                   <TableRow className="bg-muted/30 font-bold">
                     <TableCell className="text-sm">TOTAL</TableCell>
                     <TableCell className="text-xs text-right">{fmtFull(totalRevenue)}</TableCell>
-                    <TableCell className="text-xs text-right text-destructive">({fmtFull(verticalPnL.reduce((s, v) => s + v.cogs, 0))})</TableCell>
-                    <TableCell className="text-xs text-right">{fmtFull(verticalPnL.reduce((s, v) => s + v.grossProfit, 0))}</TableCell>
-                    <TableCell className="text-xs text-right text-muted-foreground">({fmtFull(verticalPnL.reduce((s, v) => s + v.opex, 0))})</TableCell>
+                    <TableCell className="text-xs text-right text-destructive">({fmtFull(liveVerticalPnL.reduce((s, v) => s + v.cogs, 0))})</TableCell>
+                    <TableCell className="text-xs text-right">{fmtFull(liveVerticalPnL.reduce((s, v) => s + v.grossProfit, 0))}</TableCell>
+                    <TableCell className="text-xs text-right text-muted-foreground">({fmtFull(liveVerticalPnL.reduce((s, v) => s + v.opex, 0))})</TableCell>
                     <TableCell className="text-xs text-right text-primary">{fmtFull(totalNet)}</TableCell>
-                    <TableCell className="text-right"><Badge className="text-[10px] bg-primary/10 text-primary">{((verticalPnL.reduce((s, v) => s + v.grossProfit, 0) / totalRevenue) * 100).toFixed(1)}%</Badge></TableCell>
+                    <TableCell className="text-right"><Badge className="text-[10px] bg-primary/10 text-primary">{((liveVerticalPnL.reduce((s, v) => s + v.grossProfit, 0) / totalRevenue) * 100).toFixed(1)}%</Badge></TableCell>
                     <TableCell className="text-xs text-right">{totalOrders}</TableCell>
                   </TableRow>
                 </TableBody>

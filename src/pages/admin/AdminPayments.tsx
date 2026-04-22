@@ -17,7 +17,7 @@ import {
   DollarSign, Upload, Download, Search, Eye, AlertTriangle, CheckCircle2,
   TrendingUp, Clock, FileSpreadsheet, Calendar, CalendarIcon, Building2, MapPin, BarChart3,
   XCircle, Ban, PieChart, Wallet, Receipt, Users, ArrowUpRight, ArrowDownRight,
-  ShieldCheck, Lock, Unlock, FileDown, Stamp, Gift, X,
+  ShieldCheck, Lock, Unlock, FileDown, Stamp, Gift, X, RefreshCw,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { getAdminRole } from "@/data/adminRoles";
@@ -28,6 +28,10 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, LineChart, Line, PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, AreaChart, Area, Legend,
 } from "recharts";
 import * as XLSX from "xlsx";
+import {
+  usePartnerPayments, usePPPPenalties, useUpdatePartnerPayment, useInstantOrderStats,
+} from "@/hooks/useSupabaseData";
+import { useQueryClient } from "@tanstack/react-query";
 
 /* ── Types ── */
 
@@ -246,6 +250,7 @@ function formatCurrency(amount: number): string {
 export default function AdminPayments() {
   const role = getAdminRole();
   const { toast } = useToast();
+  const qc = useQueryClient();
   const [search, setSearch] = useState("");
   const [stateFilter, setStateFilter] = useState("all");
   const [streamFilter, setStreamFilter] = useState("all");
@@ -256,45 +261,117 @@ export default function AdminPayments() {
   const [dateFrom, setDateFrom] = useState<Date | undefined>(undefined);
   const [dateTo, setDateTo] = useState<Date | undefined>(undefined);
 
-  // PPP Approval state
-  const [payoutWeeks, setPayoutWeeks] = useState<PayoutWeek[]>(mockOpenWeeks);
+  // ── Live data from Supabase ──
+  const { data: rawPayments = [], isLoading: loadingPayments } = usePartnerPayments();
+  const { data: rawPenalties = [], isLoading: loadingPenalties } = usePPPPenalties();
+  const { data: orderStats } = useInstantOrderStats();
+  const updatePayment = useUpdatePartnerPayment();
+
+  // Map Supabase records to PartnerPaymentRecord shape
+  const paymentRecords: PartnerPaymentRecord[] = useMemo(
+    () =>
+      (rawPayments as any[]).map((p: any) => ({
+        id: p.id,
+        partnerName: p.partner_name || "",
+        rmn: p.rmn || "",
+        state: p.state || "",
+        city: p.city || "",
+        cuisine: p.cuisine || "",
+        stream: (p.stream || "SHF") as "SHF" | "HCF",
+        totalOrders: Number(p.total_orders || 0),
+        totalSales: Number(p.total_sales || 0),
+        totalPPP: Number(p.total_ppp || 0),
+        penalties: Number(p.penalties || 0),
+        netPayable: Number(p.net_payable || 0),
+        status: (p.status || "pending") as "pending" | "paid" | "on_hold",
+        weekEnding: p.week_end || "",
+      })),
+    [rawPayments]
+  );
+
+  // Map penalties
+  const penaltyRecords: PenaltyRecord[] = useMemo(
+    () =>
+      (rawPenalties as any[]).map((p: any) => ({
+        id: p.id,
+        partnerName: p.partner_name || "",
+        rmn: p.rmn || "",
+        orderId: p.order_id || "—",
+        reason: p.reason || "",
+        amount: Number(p.amount || 0),
+        date: p.penalty_date || p.created_at?.split("T")[0] || "",
+        type: (p.type || "late_delivery") as PenaltyRecord["type"],
+      })),
+    [rawPenalties]
+  );
+
+  // Build payout weeks from payments grouped by week_id
+  const payoutWeeksData = useMemo(() => {
+    const byWeek: Record<string, { weekId: string; weekLabel: string; weekStart: string; weekEnd: string; status: string; financeApprover: string | null; financeApprovedAt: string | null; opsApprover: string | null; opsApprovedAt: string | null; partners: any[] }> = {};
+    for (const p of (rawPayments as any[])) {
+      if (!p.week_id) continue;
+      if (!byWeek[p.week_id]) {
+        byWeek[p.week_id] = {
+          weekId: p.week_id, weekLabel: p.week_label || p.week_id,
+          weekStart: p.week_start, weekEnd: p.week_end,
+          status: p.status || "open",
+          financeApprover: p.finance_approver || null, financeApprovedAt: p.finance_approved_at || null,
+          opsApprover: p.ops_approver || null, opsApprovedAt: p.ops_approved_at || null,
+          partners: [],
+        };
+      }
+      byWeek[p.week_id].partners.push({
+        id: p.id, rmn: p.rmn, name: p.partner_name, skid: p.skid || "", stream: p.stream,
+        state: p.state, city: p.city, cuisine: p.cuisine,
+        totalOrders: Number(p.total_orders || 0), totalMRP: Number(p.total_sales || 0),
+        totalPPP: Number(p.total_ppp || 0), penalties: Number(p.penalties || 0),
+        netPayable: Number(p.net_payable || 0), pppRatio: Number(p.ppp_ratio || 65),
+        bankName: p.bank_name || "", accountNo: p.account_no || "", ifsc: p.ifsc || "", upiId: p.upi_id || "",
+      });
+      // Week-level status is determined by most restrictive partner record status
+      const wk = byWeek[p.week_id];
+      if (["finance_approved", "ops_approved", "paid"].includes(p.status) && wk.status === "open") {
+        wk.status = p.status;
+        if (p.finance_approved_at) { wk.financeApprover = p.finance_approver; wk.financeApprovedAt = p.finance_approved_at; }
+        if (p.ops_approved_at) { wk.opsApprover = p.ops_approver; wk.opsApprovedAt = p.ops_approved_at; }
+      }
+    }
+    return Object.values(byWeek).sort((a, b) => (b.weekStart > a.weekStart ? 1 : -1));
+  }, [rawPayments]);
+
   const [selectedWeek, setSelectedWeek] = useState<string | null>(null);
   const [showApprovalConfirm, setShowApprovalConfirm] = useState<"finance" | "ops" | null>(null);
 
-  const activeWeek = useMemo(() => payoutWeeks.find(w => w.weekId === selectedWeek), [payoutWeeks, selectedWeek]);
+  const activeWeek = useMemo(() => payoutWeeksData.find((w) => w.weekId === selectedWeek), [payoutWeeksData, selectedWeek]);
 
-  const handleFinanceApprove = () => {
-    setPayoutWeeks(prev => prev.map(w => w.weekId === selectedWeek ? { ...w, status: "finance_approved" as const, financeApprover: "Ganesh R.", financeApprovedAt: new Date().toLocaleString("en-US") } : w));
+  const handleFinanceApprove = async () => {
+    const weekPartnerIds = (rawPayments as any[]).filter((p: any) => p.week_id === selectedWeek).map((p: any) => p.id);
+    const now = new Date().toLocaleString("en-US");
+    for (const id of weekPartnerIds) {
+      await updatePayment.mutateAsync({ id, updates: { status: "finance_approved", finance_approver: "Ganesh R.", finance_approved_at: new Date().toISOString() } });
+    }
     setShowApprovalConfirm(null);
     toast({ title: "Finance Approved", description: `Week ${selectedWeek} approved by Finance Manager. Pending Ops Head approval.` });
   };
 
-  const handleOpsApprove = () => {
-    setPayoutWeeks(prev => prev.map(w => w.weekId === selectedWeek ? { ...w, status: "ops_approved" as const, opsApprover: "Kavitha R.", opsApprovedAt: new Date().toLocaleString("en-US") } : w));
+  const handleOpsApprove = async () => {
+    const weekPartnerIds = (rawPayments as any[]).filter((p: any) => p.week_id === selectedWeek).map((p: any) => p.id);
+    for (const id of weekPartnerIds) {
+      await updatePayment.mutateAsync({ id, updates: { status: "ops_approved", ops_approver: "Kavitha R.", ops_approved_at: new Date().toISOString() } });
+    }
     setShowApprovalConfirm(null);
     toast({ title: "Ops Head Approved", description: `Week ${selectedWeek} fully approved. Ready for bank download.` });
   };
 
   const handleDownloadBankFile = () => {
     if (!activeWeek) return;
-    const rows = activeWeek.partnerBreakdown.map((p, i) => ({
-      "Sl. No": i + 1,
-      "Partner Name": p.name,
-      "RMN": p.rmn,
-      "SKID": p.skid,
-      "Stream": p.stream,
-      "State": p.state,
-      "City": p.city,
-      "Bank Name": p.bankName,
-      "Account No": p.accountNo,
-      "IFSC": p.ifsc,
-      "UPI ID": p.upiId,
-      "Total Orders": p.totalOrders,
-      "MRP Sales ($)": p.totalMRP,
-      "PPP Payable ($)": p.totalPPP,
-      "Penalties ($)": p.penalties,
-      "Net Payable ($)": p.netPayable,
-      "PPP Ratio %": p.pppRatio,
+    const rows = activeWeek.partners.map((p: any, i: number) => ({
+      "Sl. No": i + 1, "Partner Name": p.name, "RMN": p.rmn, "SKID": p.skid,
+      "Stream": p.stream, "State": p.state, "City": p.city,
+      "Bank Name": p.bankName, "Account No": p.accountNo, "IFSC": p.ifsc, "UPI ID": p.upiId,
+      "Total Orders": p.totalOrders, "MRP Sales ($)": p.totalMRP,
+      "PPP Payable ($)": p.totalPPP, "Penalties ($)": p.penalties,
+      "Net Payable ($)": p.netPayable, "PPP Ratio %": p.pppRatio,
     }));
     const ws = XLSX.utils.json_to_sheet(rows);
     const wb = XLSX.utils.book_new();
@@ -303,10 +380,10 @@ export default function AdminPayments() {
     toast({ title: "Excel Downloaded", description: `Bank payout file for ${activeWeek.weekId} downloaded successfully.` });
   };
 
-  const states = [...new Set(mockPaymentRecords.map((p) => p.state))].sort();
+  const states = useMemo(() => [...new Set(paymentRecords.map((p) => p.state))].filter(Boolean).sort(), [paymentRecords]);
 
   const filtered = useMemo(() => {
-    return mockPaymentRecords.filter((p) => {
+    return paymentRecords.filter((p) => {
       if (stateFilter !== "all" && p.state !== stateFilter) return false;
       if (streamFilter !== "all" && p.stream !== streamFilter) return false;
       if (statusFilter !== "all" && p.status !== statusFilter) return false;
@@ -318,11 +395,12 @@ export default function AdminPayments() {
       }
       return true;
     });
-  }, [search, stateFilter, streamFilter, statusFilter, dateFrom, dateTo]);
+  }, [paymentRecords, search, stateFilter, streamFilter, statusFilter, dateFrom, dateTo]);
 
-  const totalSales = filtered.reduce((s, p) => s + p.totalSales, 0);
+  // Aggregate from orderStats or fall back to filtered records
+  const totalSales = filtered.reduce((s, p) => s + p.totalSales, 0) || Number(orderStats?.totalSales || 0);
   const totalPPP = filtered.reduce((s, p) => s + p.totalPPP, 0);
-  const totalPenalties = filtered.reduce((s, p) => s + p.penalties, 0);
+  const totalPenalties = filtered.reduce((s, p) => s + p.penalties, 0) || penaltyRecords.reduce((s, p) => s + p.amount, 0);
   const totalNet = filtered.reduce((s, p) => s + p.netPayable, 0);
 
   const handleBulkUpload = () => {
@@ -503,6 +581,13 @@ export default function AdminPayments() {
             )}
           </div>
 
+          {loadingPayments ? (
+            <div className="text-center py-6 text-muted-foreground text-sm">Loading partner payments…</div>
+          ) : filtered.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground text-sm">
+              No payment records found. Upload a bulk payment file or add payment records to get started.
+            </div>
+          ) : (
           <div className="rounded-xl border border-border overflow-hidden">
             <Table>
               <TableHeader>
@@ -544,14 +629,15 @@ export default function AdminPayments() {
               </TableBody>
             </Table>
           </div>
+          )}
         </TabsContent>
 
         {/* ── Penalties Tab ── */}
         <TabsContent value="penalties" className="space-y-5 mt-5">
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
             {Object.entries(penaltyTypeConfig).map(([key, cfg]) => {
-              const count = mockPenalties.filter((p) => p.type === key).length;
-              const total = mockPenalties.filter((p) => p.type === key).reduce((s, p) => s + p.amount, 0);
+              const count = penaltyRecords.filter((p) => p.type === key).length;
+              const total = penaltyRecords.filter((p) => p.type === key).reduce((s, p) => s + p.amount, 0);
               return (
                 <Card key={key}><CardContent className="p-3">
                   <Badge className={`${cfg.color} text-[9px] border-0 mb-1.5`}>{cfg.label}</Badge>
@@ -562,6 +648,11 @@ export default function AdminPayments() {
             })}
           </div>
 
+          {loadingPenalties ? (
+            <div className="text-center py-6 text-muted-foreground text-sm">Loading penalties…</div>
+          ) : penaltyRecords.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground text-sm">No penalty records yet. Penalties will appear here once added.</div>
+          ) : (
           <div className="rounded-xl border border-border overflow-hidden">
             <Table>
               <TableHeader>
@@ -575,7 +666,7 @@ export default function AdminPayments() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {mockPenalties.map((p) => (
+                {penaltyRecords.map((p) => (
                   <TableRow key={p.id}>
                     <TableCell className="text-[10px] text-muted-foreground">{p.date}</TableCell>
                     <TableCell>
@@ -591,6 +682,7 @@ export default function AdminPayments() {
               </TableBody>
             </Table>
           </div>
+          )}
         </TabsContent>
 
         {/* ── Payout History Tab ── */}
@@ -598,56 +690,64 @@ export default function AdminPayments() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <Card><CardContent className="p-4 flex items-center gap-3">
               <Wallet className="w-8 h-8 text-primary/70" />
-              <div><p className="text-xl font-bold text-foreground">{mockBulkUploads.length}</p><p className="text-[10px] text-muted-foreground">Total Payouts</p></div>
+              <div><p className="text-xl font-bold text-foreground">{payoutWeeksData.length}</p><p className="text-[10px] text-muted-foreground">Payout Weeks</p></div>
             </CardContent></Card>
             <Card><CardContent className="p-4 flex items-center gap-3">
               <DollarSign className="w-8 h-8 text-accent/70" />
-              <div><p className="text-xl font-bold text-foreground">{formatCurrency(mockBulkUploads.reduce((s, b) => s + b.totalAmount, 0))}</p><p className="text-[10px] text-muted-foreground">Total Disbursed</p></div>
+              <div><p className="text-xl font-bold text-foreground">{formatCurrency(paymentRecords.filter((p) => p.status === "paid").reduce((s, p) => s + p.netPayable, 0))}</p><p className="text-[10px] text-muted-foreground">Total Disbursed</p></div>
             </CardContent></Card>
             <Card><CardContent className="p-4 flex items-center gap-3">
               <Users className="w-8 h-8 text-primary/50" />
-              <div><p className="text-xl font-bold text-foreground">{mockBulkUploads.reduce((s, b) => s + b.partnerCount, 0)}</p><p className="text-[10px] text-muted-foreground">Partners Paid</p></div>
+              <div><p className="text-xl font-bold text-foreground">{paymentRecords.filter((p) => p.status === "paid").length}</p><p className="text-[10px] text-muted-foreground">Partners Paid</p></div>
             </CardContent></Card>
             <Card><CardContent className="p-4 flex items-center gap-3">
               <CheckCircle2 className="w-8 h-8 text-green-600/70" />
-              <div><p className="text-xl font-bold text-foreground">{mockBulkUploads.filter(b => b.status === "completed").length}/{mockBulkUploads.length}</p><p className="text-[10px] text-muted-foreground">Success Rate</p></div>
+              <div>
+                <p className="text-xl font-bold text-foreground">
+                  {paymentRecords.length > 0 ? `${((paymentRecords.filter((p) => p.status === "paid").length / paymentRecords.length) * 100).toFixed(0)}%` : "—"}
+                </p>
+                <p className="text-[10px] text-muted-foreground">Success Rate</p>
+              </div>
             </CardContent></Card>
           </div>
 
+          {loadingPayments ? (
+            <div className="text-center py-6 text-muted-foreground text-sm">Loading payout data…</div>
+          ) : payoutWeeksData.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground text-sm">No payout records yet. Upload a bulk payment file to get started.</div>
+          ) : (
           <div className="rounded-xl border border-border overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/40">
-                  <TableHead className="text-[10px] font-semibold">File</TableHead>
-                  <TableHead className="text-[10px] font-semibold">Uploaded By</TableHead>
-                  <TableHead className="text-[10px] font-semibold">Date</TableHead>
+                  <TableHead className="text-[10px] font-semibold">Week</TableHead>
                   <TableHead className="text-[10px] font-semibold text-right">Partners</TableHead>
-                  <TableHead className="text-[10px] font-semibold text-right">Total Amount</TableHead>
+                  <TableHead className="text-[10px] font-semibold text-right">Total PPP</TableHead>
                   <TableHead className="text-[10px] font-semibold">Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {mockBulkUploads.map((bu) => (
-                  <TableRow key={bu.id}>
-                    <TableCell className="text-xs font-medium text-foreground flex items-center gap-1.5">
-                      <FileSpreadsheet className="w-3.5 h-3.5 text-primary" /> {bu.fileName}
-                    </TableCell>
-                    <TableCell className="text-xs text-muted-foreground">{bu.uploadedBy}</TableCell>
-                    <TableCell className="text-[10px] text-muted-foreground">
-                      {bu.uploadedAt.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" })}
-                    </TableCell>
-                    <TableCell className="text-xs text-right text-foreground">{bu.partnerCount}</TableCell>
-                    <TableCell className="text-xs text-right font-semibold text-foreground">{formatCurrency(bu.totalAmount)}</TableCell>
-                    <TableCell>
-                      <Badge className={`text-[9px] border-0 ${bu.status === "completed" ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400" : bu.status === "processing" ? "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400" : "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400"}`}>
-                        {bu.status}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {payoutWeeksData.map((w) => {
+                  const wTotal = w.partners.reduce((s: number, p: any) => s + Number(p.netPayable || 0), 0);
+                  return (
+                    <TableRow key={w.weekId}>
+                      <TableCell className="text-xs font-medium text-foreground">{w.weekLabel}</TableCell>
+                      <TableCell className="text-xs text-right">{w.partners.length}</TableCell>
+                      <TableCell className="text-xs text-right font-semibold">{formatCurrency(wTotal)}</TableCell>
+                      <TableCell>
+                        <Badge className={`text-[9px] border-0 ${
+                          w.status === "paid" ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400" :
+                          w.status === "ops_approved" ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400" :
+                          w.status === "finance_approved" ? "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400" :
+                          "bg-muted text-muted-foreground"}`}>{w.status.replace(/_/g, " ")}</Badge>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </div>
+          )}
         </TabsContent>
 
         {/* ── Reconciliation Tab ── */}
@@ -655,20 +755,23 @@ export default function AdminPayments() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <Card><CardContent className="p-4">
               <p className="text-[11px] text-muted-foreground">Total Processed</p>
-              <p className="text-lg font-bold text-foreground">{reconciliationData.reduce((s, r) => s + r.processed, 0)}</p>
+              <p className="text-lg font-bold text-foreground">{paymentRecords.length}</p>
             </CardContent></Card>
             <Card><CardContent className="p-4">
               <p className="text-[11px] text-muted-foreground">On-Time Payments</p>
-              <p className="text-lg font-bold text-foreground">{reconciliationData.reduce((s, r) => s + r.onTime, 0)}</p>
-              <p className="text-[10px] text-green-600 flex items-center gap-0.5 mt-0.5"><ArrowUpRight className="w-3 h-3" /> 94.6%</p>
+              <p className="text-lg font-bold text-foreground">{paymentRecords.filter((p) => p.status === "paid").length}</p>
+              <p className="text-[10px] text-green-600 flex items-center gap-0.5 mt-0.5">
+                <ArrowUpRight className="w-3 h-3" />
+                {paymentRecords.length > 0 ? `${((paymentRecords.filter((p) => p.status === "paid").length / paymentRecords.length) * 100).toFixed(1)}%` : "—"}
+              </p>
             </CardContent></Card>
             <Card><CardContent className="p-4">
-              <p className="text-[11px] text-muted-foreground">Delayed</p>
-              <p className="text-lg font-bold text-amber-600">{reconciliationData.reduce((s, r) => s + r.delayed, 0)}</p>
+              <p className="text-[11px] text-muted-foreground">Pending</p>
+              <p className="text-lg font-bold text-amber-600">{paymentRecords.filter((p) => p.status === "pending").length}</p>
             </CardContent></Card>
             <Card><CardContent className="p-4">
-              <p className="text-[11px] text-muted-foreground">Disputed</p>
-              <p className="text-lg font-bold text-destructive">{reconciliationData.reduce((s, r) => s + r.disputed, 0)}</p>
+              <p className="text-[11px] text-muted-foreground">On Hold</p>
+              <p className="text-lg font-bold text-destructive">{paymentRecords.filter((p) => p.status === "on_hold").length}</p>
             </CardContent></Card>
           </div>
 
@@ -924,18 +1027,26 @@ export default function AdminPayments() {
         {/* ═══════ PPP APPROVAL TAB ═══════ */}
         <TabsContent value="ppp_approval" className="space-y-5 mt-5">
           {/* Open Weeks Selector */}
+          {payoutWeeksData.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-border bg-muted/20 p-8 text-center">
+              <Stamp className="w-8 h-8 text-muted-foreground/50 mx-auto mb-2" />
+              <p className="text-sm font-medium text-muted-foreground">No payout weeks found</p>
+              <p className="text-[10px] text-muted-foreground/70 mt-1">Upload a bulk payment file to create payout weeks.</p>
+            </div>
+          ) : (
           <div className="grid md:grid-cols-3 gap-3">
-            {payoutWeeks.map((w) => {
-              const wTotal = w.partnerBreakdown.reduce((s, p) => s + p.netPayable, 0);
-              const wPartners = w.partnerBreakdown.length;
+            {payoutWeeksData.map((w) => {
+              const wTotal = w.partners.reduce((s: number, p: any) => s + Number(p.netPayable || 0), 0);
+              const wPartners = w.partners.length;
               const isSelected = selectedWeek === w.weekId;
               const statusConfig: Record<string, { label: string; color: string; icon: typeof Clock }> = {
                 open: { label: "Open — Awaiting Finance", color: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400", icon: Clock },
+                pending: { label: "Open — Awaiting Finance", color: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400", icon: Clock },
                 finance_approved: { label: "Finance Approved", color: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400", icon: ShieldCheck },
                 ops_approved: { label: "Fully Approved", color: "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400", icon: CheckCircle2 },
                 paid: { label: "Paid", color: "bg-muted text-muted-foreground", icon: CheckCircle2 },
               };
-              const sc = statusConfig[w.status];
+              const sc = statusConfig[w.status] || statusConfig["open"];
               return (
                 <button
                   key={w.weekId}
@@ -971,20 +1082,20 @@ export default function AdminPayments() {
               );
             })}
           </div>
+          )}
 
           {/* Selected Week Detail */}
           {activeWeek && (() => {
-            const bp = activeWeek.partnerBreakdown;
-            const wTotalMRP = bp.reduce((s, p) => s + p.totalMRP, 0);
-            const wTotalPPP = bp.reduce((s, p) => s + p.totalPPP, 0);
-            const wTotalPen = bp.reduce((s, p) => s + p.penalties, 0);
-            const wTotalNet = bp.reduce((s, p) => s + p.netPayable, 0);
-            const wTotalOrders = bp.reduce((s, p) => s + p.totalOrders, 0);
+            const bp = activeWeek.partners;
+            const wTotalMRP = bp.reduce((s: number, p: any) => s + Number(p.totalMRP || 0), 0);
+            const wTotalPPP = bp.reduce((s: number, p: any) => s + Number(p.totalPPP || 0), 0);
+            const wTotalPen = bp.reduce((s: number, p: any) => s + Number(p.penalties || 0), 0);
+            const wTotalNet = bp.reduce((s: number, p: any) => s + Number(p.netPayable || 0), 0);
+            const wTotalOrders = bp.reduce((s: number, p: any) => s + Number(p.totalOrders || 0), 0);
             const avgPPPRatio = wTotalMRP > 0 ? ((wTotalPPP / wTotalMRP) * 100).toFixed(1) : "0";
 
             return (
               <div className="space-y-4">
-                {/* Week Summary KPIs */}
                 <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
                   <Card><CardContent className="p-3 text-center">
                     <p className="text-[10px] text-muted-foreground">Partners</p>
@@ -1013,17 +1124,15 @@ export default function AdminPayments() {
                   </CardContent></Card>
                 </div>
 
-                {/* Approval Status & Actions */}
                 <Card>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between flex-wrap gap-3">
                       <div className="space-y-2">
                         <p className="text-xs font-semibold text-foreground">Approval Workflow — {activeWeek.weekId}</p>
                         <div className="flex items-center gap-6">
-                          {/* Step 1: Finance */}
                           <div className="flex items-center gap-2">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${activeWeek.status !== "open" ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400" : "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400"}`}>
-                              {activeWeek.status !== "open" ? <CheckCircle2 className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${activeWeek.status !== "open" && activeWeek.status !== "pending" ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400" : "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400"}`}>
+                              {activeWeek.status !== "open" && activeWeek.status !== "pending" ? <CheckCircle2 className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
                             </div>
                             <div>
                               <p className="text-[10px] font-semibold text-foreground">Finance Manager</p>
@@ -1035,7 +1144,6 @@ export default function AdminPayments() {
                             </div>
                           </div>
                           <div className="w-8 border-t border-border" />
-                          {/* Step 2: Ops Head */}
                           <div className="flex items-center gap-2">
                             <div className={`w-8 h-8 rounded-full flex items-center justify-center ${activeWeek.status === "ops_approved" || activeWeek.status === "paid" ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400" : activeWeek.status === "finance_approved" ? "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-400" : "bg-muted text-muted-foreground"}`}>
                               {activeWeek.status === "ops_approved" || activeWeek.status === "paid" ? <CheckCircle2 className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
@@ -1052,7 +1160,6 @@ export default function AdminPayments() {
                             </div>
                           </div>
                           <div className="w-8 border-t border-border" />
-                          {/* Step 3: Download */}
                           <div className="flex items-center gap-2">
                             <div className={`w-8 h-8 rounded-full flex items-center justify-center ${activeWeek.status === "ops_approved" || activeWeek.status === "paid" ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400" : "bg-muted text-muted-foreground"}`}>
                               <FileDown className="w-4 h-4" />
@@ -1065,7 +1172,7 @@ export default function AdminPayments() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        {activeWeek.status === "open" && (
+                        {(activeWeek.status === "open" || activeWeek.status === "pending") && (
                           <Button size="sm" className="gap-1.5 text-xs" onClick={() => setShowApprovalConfirm("finance")}>
                             <ShieldCheck className="w-3.5 h-3.5" /> Finance Approve
                           </Button>
@@ -1085,7 +1192,6 @@ export default function AdminPayments() {
                   </CardContent>
                 </Card>
 
-                {/* Partner Breakdown Table */}
                 <Card>
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
@@ -1114,8 +1220,8 @@ export default function AdminPayments() {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {bp.map((p) => (
-                            <TableRow key={p.rmn} className="hover:bg-muted/20">
+                          {bp.map((p: any) => (
+                            <TableRow key={p.rmn || p.id} className="hover:bg-muted/20">
                               <TableCell className="py-2.5">
                                 <p className="text-xs font-medium text-foreground">{p.name}</p>
                                 <p className="text-[10px] text-muted-foreground">{p.rmn}</p>
@@ -1137,7 +1243,6 @@ export default function AdminPayments() {
                               </TableCell>
                             </TableRow>
                           ))}
-                          {/* Total Row */}
                           <TableRow className="bg-muted/30 font-semibold">
                             <TableCell colSpan={4} className="text-xs text-foreground">Total ({bp.length} partners)</TableCell>
                             <TableCell className="text-xs text-right">{wTotalOrders}</TableCell>
@@ -1157,7 +1262,7 @@ export default function AdminPayments() {
             );
           })()}
 
-          {!selectedWeek && (
+          {!selectedWeek && payoutWeeksData.length > 0 && (
             <div className="rounded-xl border border-dashed border-border bg-muted/20 p-8 text-center">
               <Stamp className="w-8 h-8 text-muted-foreground/50 mx-auto mb-2" />
               <p className="text-sm font-medium text-muted-foreground">Select a calendar week above to view the payout breakdown</p>
@@ -1185,7 +1290,7 @@ export default function AdminPayments() {
             {activeWeek && (
               <div className="rounded-lg bg-muted/30 border border-border p-3 space-y-1">
                 <p className="text-xs font-semibold text-foreground">{activeWeek.weekLabel}</p>
-                <p className="text-xs text-muted-foreground">{activeWeek.partnerBreakdown.length} partners · {formatCurrency(activeWeek.partnerBreakdown.reduce((s, p) => s + p.netPayable, 0))} net payable</p>
+                <p className="text-xs text-muted-foreground">{activeWeek.partners.length} partners · {formatCurrency(activeWeek.partners.reduce((s: number, p: any) => s + Number(p.netPayable || 0), 0))} net payable</p>
               </div>
             )}
           </div>
