@@ -1,9 +1,10 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import SSCPartnerChats from "@/components/admin/SSCPartnerChats";
 import SSCFloatingChat from "@/components/admin/SSCFloatingChat";
-import { getStockAlerts, updateStockAlertStatus, type SSCStockAlert } from "@/data/sscStockAlerts";
-import { getOrderModifications, getNewModificationsCount, updateModificationStatus, subscribeModifications, type SSCOrderModification } from "@/data/sscOrderModifications";
-import { getDelayComplaints, getNewDelayComplaintsCount, updateDelayComplaintStatus, subscribeDelayComplaints, type DelayComplaint } from "@/data/delayComplaints";
+import { type SSCStockAlert } from "@/data/sscStockAlerts";
+import { type SSCOrderModification } from "@/data/sscOrderModifications";
+import { type DelayComplaint } from "@/data/delayComplaints";
+import { useStockAlerts, useUpdateStockAlert, useOrderModifications, useDelayComplaints } from "@/hooks/useSupabaseData";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -297,10 +298,12 @@ export default function AdminTickets() {
   const { toast } = useToast();
   const role = getAdminRole();
   const [activeTab, setActiveTab] = useState<"console" | "stock_alerts" | "order_mods" | "delay_complaints" | "tickets" | "calls" | "analytics" | "partner_chats">("console");
-  const [, setModTick] = useState(0);
-  useEffect(() => {
-    return subscribeModifications(() => setModTick((t) => t + 1));
-  }, []);
+
+  // ── Live data from Supabase ──
+  const { data: stockAlerts = [], isLoading: loadingAlerts } = useStockAlerts();
+  const { data: orderMods = [], isLoading: loadingMods } = useOrderModifications();
+  const { data: delayComplaints = [], isLoading: loadingDelays } = useDelayComplaints();
+  const updateStockAlert = useUpdateStockAlert();
 
   // ── Console State ──
   const [lookupType, setLookupType] = useState<"partner_rmn" | "customer_rmn" | "order_id">("partner_rmn");
@@ -422,21 +425,9 @@ export default function AdminTickets() {
   const resolvedToday = tickets.filter(t => t.status === "resolved").length;
   const escalatedCount = tickets.filter(t => t.status === "escalated").length;
 
-  const stockAlerts = getStockAlerts();
-  const newStockAlerts = stockAlerts.filter(a => a.status === "new").length;
-
-  const orderMods = getOrderModifications();
-  const newModsCount = getNewModificationsCount();
-
-  const delayComplaints = getDelayComplaints();
-  const newDelayCount = getNewDelayComplaintsCount();
-
-  // Subscribe to delay complaints for live updates
-  const [, setDelayTick] = useState(0);
-  useEffect(() => {
-    const unsub = subscribeDelayComplaints(() => setDelayTick(t => t + 1));
-    return unsub;
-  }, []);
+  const newStockAlerts = (stockAlerts as any[]).filter((a: any) => a.status === "new").length;
+  const newModsCount = (orderMods as any[]).filter((m: any) => m.status === "new" || m.status === "pending").length;
+  const newDelayCount = (delayComplaints as any[]).filter((d: any) => d.status === "new" || d.status === "open").length;
 
   const tabs = [
     { key: "console" as const, label: "Agent Console", icon: Headphones, badge: "" },
