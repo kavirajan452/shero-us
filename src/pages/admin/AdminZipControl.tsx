@@ -148,11 +148,18 @@ export default function AdminZipControl() {
         onSuccess: () => {
           toast({ title: `ZIP ${zip} added` });
           setShowAddDialog(false);
-          setNewZip(""); setNewKitchenId(""); setNewLat(""); setNewLng("");
+          resetAddForm();
         },
         onError: (err: Error) => toast({ title: "Failed to add ZIP", description: err.message, variant: "destructive" }),
       }
     );
+  };
+
+  const resetAddForm = () => {
+    setNewZip("");
+    setNewKitchenId("");
+    setNewLat("");
+    setNewLng("");
   };
 
   const handleDelete = (id: string) => {
@@ -325,7 +332,7 @@ export default function AdminZipControl() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddDialog(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => { setShowAddDialog(false); resetAddForm(); }}>Cancel</Button>
             <Button
               onClick={handleAdd}
               disabled={!newZip.trim() || !newKitchenId || addLocation.isPending}

@@ -45,6 +45,16 @@ const HeroSection = () => {
     if (e.key === "Enter") handleZipCheck();
   };
 
+  const handleZipInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setZipInput(e.target.value.replace(/\D/g, "").slice(0, 10));
+    setZipState("idle");
+  };
+
+  const clearZip = () => {
+    setZipInput("");
+    setZipState("idle");
+  };
+
   // Hide language switcher if user has previously selected a language.
   // Initialize to false so server and client agree during hydration;
   // useEffect updates the value after mount when localStorage is available.
@@ -251,14 +261,14 @@ const HeroSection = () => {
                 <input
                   type="text"
                   value={zipInput}
-                  onChange={(e) => { setZipInput(e.target.value.replace(/\D/g, "").slice(0, 10)); setZipState("idle"); }}
+                  onChange={handleZipInputChange}
                   onKeyDown={handleZipKeyDown}
                   placeholder={c["hero.zip_placeholder"] || "Check delivery by ZIP code…"}
                   className="flex-1 text-xs bg-transparent text-foreground placeholder:text-muted-foreground/40 outline-none"
                   maxLength={10}
                 />
                 {zipInput && zipState === "idle" && (
-                  <button onClick={() => { setZipInput(""); setZipState("idle"); }} className="p-0.5 text-muted-foreground/50 hover:text-foreground"><X className="w-3 h-3" /></button>
+                  <button onClick={clearZip} className="p-0.5 text-muted-foreground/50 hover:text-foreground"><X className="w-3 h-3" /></button>
                 )}
               </div>
               <button
@@ -346,14 +356,14 @@ const HeroSection = () => {
               <input
                 type="text"
                 value={zipInput}
-                onChange={(e) => { setZipInput(e.target.value.replace(/\D/g, "").slice(0, 10)); setZipState("idle"); }}
+                onChange={handleZipInputChange}
                 onKeyDown={handleZipKeyDown}
                 placeholder={c["hero.zip_placeholder"] || "Check delivery by ZIP…"}
                 className="flex-1 text-xs bg-transparent text-foreground placeholder:text-muted-foreground/40 outline-none"
                 maxLength={10}
               />
               {zipInput && zipState === "idle" && (
-                <button onClick={() => { setZipInput(""); setZipState("idle"); }} className="p-0.5 text-muted-foreground/50 hover:text-foreground"><X className="w-3 h-3" /></button>
+                <button onClick={clearZip} className="p-0.5 text-muted-foreground/50 hover:text-foreground"><X className="w-3 h-3" /></button>
               )}
             </div>
             <button

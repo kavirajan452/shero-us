@@ -175,7 +175,11 @@ const Profile = () => {
       .eq("status", "active")
       .order("created_at", { ascending: false })
       .limit(1)
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Failed to fetch active subscription:", error.message);
+          return;
+        }
         if (data && data.length > 0) {
           setActivePlan({
             name: data[0].plan_name,
