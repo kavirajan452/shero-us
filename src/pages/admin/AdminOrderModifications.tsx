@@ -1,16 +1,13 @@
-import { FileEdit, Clock, CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
+import { useMemo } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { FileEdit, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-
-const modifications = [
-  { id: "MOD-301", order: "ORD-8821", customer: "Priya S.", type: "Add Item", detail: "+1 Sambar Vada", requestedAt: "2 min ago", status: "new", source: "customer" },
-  { id: "MOD-299", order: "ORD-8819", customer: "Ravi K.", type: "Remove Item", detail: "-1 Curd Rice", requestedAt: "8 min ago", status: "acknowledged", source: "customer" },
-  { id: "MOD-297", order: "ORD-8815", customer: "Kumar R.", type: "Qty Change", detail: "Biryani: 2→3", requestedAt: "15 min ago", status: "resolved", source: "admin" },
-  { id: "MOD-295", order: "ORD-8810", customer: "Meera L.", type: "Cancel Item", detail: "-1 Fish Curry", requestedAt: "22 min ago", status: "escalated", source: "customer" },
-  { id: "MOD-293", order: "ORD-8808", customer: "Sudha P.", type: "Add Item", detail: "+2 Idli", requestedAt: "30 min ago", status: "resolved", source: "customer" },
-];
+import { useOrderModifications } from "@/hooks/useSupabaseData";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const statusColors: Record<string, string> = {
   new: "bg-primary/15 text-primary",
@@ -20,43 +17,76 @@ const statusColors: Record<string, string> = {
 };
 
 export default function AdminOrderModifications() {
+  const { toast } = useToast();
+  const qc = useQueryClient();
+  const { data = [], isLoading } = useOrderModifications();
+
+  const updateStatus = useMutation({
+    mutationFn: async ({ id, status }: { id: string; status: string }) => {
+      const updates: Record<string, unknown> = { status };
+      if (status === "resolved") updates.resolved_at = new Date().toISOString();
+      const { error } = await supabase.from("order_modifications").update(updates).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["order_modifications"] }),
+  });
+
+  const stats = useMemo(() => {
+    return {
+      newCount: data.filter((x) => x.status === "new").length,
+      acknowledged: data.filter((x) => x.status === "acknowledged").length,
+      resolved: data.filter((x) => x.status === "resolved").length,
+      escalated: data.filter((x) => x.status === "escalated").length,
+    };
+  }, [data]);
+
+  const handleUpdate = async (id: string, status: string) => {
+    await updateStatus.mutateAsync({ id, status });
+    toast({ title: "Modification updated", description: `Marked as ${status}` });
+  };
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <FileEdit className="w-6 h-6 text-primary" /> Order Modifications
         </h1>
-        <p className="text-sm text-muted-foreground mt-1">Customer & admin-initiated order changes within the 5-minute modification window</p>
+        <p className="text-sm text-muted-foreground mt-1">Live request queue from Supabase</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Card className="border-primary/20"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">New Requests</p><p className="text-2xl font-bold text-primary mt-1">1</p></CardContent></Card>
-        <Card><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Acknowledged</p><p className="text-2xl font-bold text-action-cook mt-1">1</p></CardContent></Card>
-        <Card><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Resolved Today</p><p className="text-2xl font-bold text-action-done mt-1">2</p></CardContent></Card>
-        <Card className="border-destructive/20"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Escalated</p><p className="text-2xl font-bold text-destructive mt-1">1</p></CardContent></Card>
+        <Card className="border-primary/20"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">New Requests</p><p className="text-2xl font-bold text-primary mt-1">{stats.newCount}</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Acknowledged</p><p className="text-2xl font-bold text-action-cook mt-1">{stats.acknowledged}</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Resolved</p><p className="text-2xl font-bold text-action-done mt-1">{stats.resolved}</p></CardContent></Card>
+        <Card className="border-destructive/20"><CardContent className="p-3 text-center"><p className="text-[10px] uppercase tracking-wider text-muted-foreground">Escalated</p><p className="text-2xl font-bold text-destructive mt-1">{stats.escalated}</p></CardContent></Card>
       </div>
 
       <Card>
         <CardHeader className="pb-2"><CardTitle className="text-sm">Modification Requests</CardTitle></CardHeader>
         <CardContent className="overflow-x-auto">
-          <Table>
-            <TableHeader><TableRow><TableHead className="text-xs">Mod ID</TableHead><TableHead className="text-xs">Order</TableHead><TableHead className="text-xs">Customer</TableHead><TableHead className="text-xs">Type</TableHead><TableHead className="text-xs">Detail</TableHead><TableHead className="text-xs">Source</TableHead><TableHead className="text-xs">Requested</TableHead><TableHead className="text-xs">Status</TableHead><TableHead className="text-xs">Action</TableHead></TableRow></TableHeader>
-            <TableBody>
-              {modifications.map(m => (
-                <TableRow key={m.id}>
-                  <TableCell className="text-xs font-mono font-bold">{m.id}</TableCell>
-                  <TableCell className="text-xs font-mono">{m.order}</TableCell>
-                  <TableCell className="text-xs">{m.customer}</TableCell>
-                  <TableCell className="text-xs">{m.type}</TableCell>
-                  <TableCell className="text-xs font-medium">{m.detail}</TableCell>
-                  <TableCell><Badge variant="outline" className="text-[8px]">{m.source}</Badge></TableCell>
-                  <TableCell className="text-xs text-muted-foreground">{m.requestedAt}</TableCell>
-                  <TableCell><Badge className={`text-[8px] ${statusColors[m.status]}`}>{m.status}</Badge></TableCell>
-                  <TableCell>{m.status === "new" && <Button size="sm" variant="outline" className="h-6 text-[10px]">Acknowledge</Button>}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          {isLoading ? (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground"><Loader2 className="w-4 h-4 animate-spin" /> Loading...</div>
+          ) : (
+            <Table>
+              <TableHeader><TableRow><TableHead className="text-xs">Order</TableHead><TableHead className="text-xs">Customer</TableHead><TableHead className="text-xs">Type</TableHead><TableHead className="text-xs">Detail</TableHead><TableHead className="text-xs">Requested</TableHead><TableHead className="text-xs">Status</TableHead><TableHead className="text-xs">Action</TableHead></TableRow></TableHeader>
+              <TableBody>
+                {data.map((m) => (
+                  <TableRow key={m.id}>
+                    <TableCell className="text-xs font-mono">{m.order_id}</TableCell>
+                    <TableCell className="text-xs">{m.customer_name}</TableCell>
+                    <TableCell className="text-xs">{String(m.modification_type || "").replaceAll("_", " ")}</TableCell>
+                    <TableCell className="text-xs font-medium">{m.description}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{new Date(m.requested_at).toLocaleString()}</TableCell>
+                    <TableCell><Badge className={`text-[8px] ${statusColors[m.status] || "bg-muted text-muted-foreground"}`}>{m.status}</Badge></TableCell>
+                    <TableCell className="space-x-1">
+                      {m.status === "new" && <Button size="sm" variant="outline" className="h-6 text-[10px]" onClick={() => handleUpdate(m.id, "acknowledged")}>Acknowledge</Button>}
+                      {(m.status === "new" || m.status === "acknowledged") && <Button size="sm" className="h-6 text-[10px]" onClick={() => handleUpdate(m.id, "resolved")}>Resolve</Button>}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
         </CardContent>
       </Card>
     </div>

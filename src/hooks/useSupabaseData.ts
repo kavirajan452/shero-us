@@ -1027,3 +1027,210 @@ export function usePendingInstantOrders(limit = 5) {
     },
   });
 }
+
+// ═══ PARTNER PAYMENTS ═══
+export function usePartnerPayments(weekId?: string) {
+  return useQuery({
+    queryKey: ["partner_payments", weekId],
+    queryFn: async () => {
+      let q = supabase.from("partner_payments" as any).select("*").order("created_at", { ascending: false });
+      if (weekId) q = (q as any).eq("week_id", weekId);
+      const { data, error } = await q;
+      if (error) throw error;
+      return (data ?? []) as any[];
+    },
+  });
+}
+
+export function usePartnerPaymentWeeks() {
+  return useQuery({
+    queryKey: ["partner_payment_weeks"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("partner_payments" as any)
+        .select("week_id, week_label, week_start, week_end, status")
+        .order("week_start", { ascending: false });
+      if (error) throw error;
+      // Deduplicate by week_id
+      const seen = new Set<string>();
+      return ((data ?? []) as any[]).filter((r: any) => {
+        if (seen.has(r.week_id)) return false;
+        seen.add(r.week_id);
+        return true;
+      });
+    },
+  });
+}
+
+export function useCreatePartnerPayment() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payment: any) => {
+      const { data, error } = await supabase.from("partner_payments" as any).insert(payment).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["partner_payments"] });
+      qc.invalidateQueries({ queryKey: ["partner_payment_weeks"] });
+    },
+  });
+}
+
+export function useUpdatePartnerPayment() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, updates }: { id: string; updates: any }) => {
+      const { data, error } = await supabase.from("partner_payments" as any).update(updates).eq("id", id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["partner_payments"] });
+      qc.invalidateQueries({ queryKey: ["partner_payment_weeks"] });
+    },
+  });
+}
+
+// ═══ PPP PENALTIES ═══
+export function usePPPPenalties(partnerId?: string) {
+  return useQuery({
+    queryKey: ["ppp_penalties", partnerId],
+    queryFn: async () => {
+      let q = supabase.from("ppp_penalties" as any).select("*").order("created_at", { ascending: false });
+      if (partnerId) q = (q as any).eq("partner_id", partnerId);
+      const { data, error } = await q;
+      if (error) throw error;
+      return (data ?? []) as any[];
+    },
+  });
+}
+
+export function useCreatePPPPenalty() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (penalty: any) => {
+      const { data, error } = await supabase.from("ppp_penalties" as any).insert(penalty).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["ppp_penalties"] }),
+  });
+}
+
+export function useUpdatePPPPenalty() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, updates }: { id: string; updates: any }) => {
+      const { data, error } = await supabase.from("ppp_penalties" as any).update(updates).eq("id", id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["ppp_penalties"] }),
+  });
+}
+
+// ═══ COMMUNICATIONS ═══
+export function useCommunications(vertical?: string) {
+  return useQuery({
+    queryKey: ["communications", vertical],
+    queryFn: async () => {
+      let q = supabase.from("communications" as any).select("*").order("created_at", { ascending: false });
+      if (vertical) q = (q as any).eq("vertical", vertical);
+      const { data, error } = await q;
+      if (error) throw error;
+      return (data ?? []) as any[];
+    },
+  });
+}
+
+export function useCreateCommunication() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (comm: any) => {
+      const { data, error } = await supabase.from("communications" as any).insert(comm).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["communications"] }),
+  });
+}
+
+export function useUpdateCommunication() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, updates }: { id: string; updates: any }) => {
+      const { data, error } = await supabase.from("communications" as any).update(updates).eq("id", id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["communications"] }),
+  });
+}
+
+export function useDeleteCommunication() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("communications" as any).delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["communications"] }),
+  });
+}
+
+// ═══ INSTANT ORDER STATS (aggregated) ═══
+export function useInstantOrderStats() {
+  return useQuery({
+    queryKey: ["instant_order_stats"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("instant_orders")
+        .select("id, status, total, subtotal, delivery_fee, platform_fee, tax, discount, created_at, kitchen_name, partner_id");
+      if (error) throw error;
+      const orders = data ?? [];
+      const delivered = orders.filter((o: any) => o.status === "delivered");
+      const totalRevenue = delivered.reduce((s: number, o: any) => s + Number(o.total || 0), 0);
+      const totalSales = delivered.reduce((s: number, o: any) => s + Number(o.subtotal || 0), 0);
+      const totalDeliveryFee = delivered.reduce((s: number, o: any) => s + Number(o.delivery_fee || 0), 0);
+      const totalPlatformFee = delivered.reduce((s: number, o: any) => s + Number(o.platform_fee || 0), 0);
+      const totalTax = delivered.reduce((s: number, o: any) => s + Number(o.tax || 0), 0);
+      const totalDiscount = delivered.reduce((s: number, o: any) => s + Number(o.discount || 0), 0);
+      // Group by month
+      const byMonth: Record<string, { revenue: number; orders: number }> = {};
+      for (const o of delivered) {
+        const month = new Date(o.created_at).toLocaleDateString("en-US", { month: "short" });
+        if (!byMonth[month]) byMonth[month] = { revenue: 0, orders: 0 };
+        byMonth[month].revenue += Number(o.total || 0);
+        byMonth[month].orders += 1;
+      }
+      const statusCounts: Record<string, number> = {};
+      for (const o of orders) {
+        statusCounts[o.status] = (statusCounts[o.status] || 0) + 1;
+      }
+      // By partner
+      const byPartner: Record<string, { name: string; orders: number; revenue: number }> = {};
+      for (const o of delivered) {
+        const key = o.partner_id || "unknown";
+        if (!byPartner[key]) byPartner[key] = { name: o.kitchen_name || key, orders: 0, revenue: 0 };
+        byPartner[key].orders += 1;
+        byPartner[key].revenue += Number(o.total || 0);
+      }
+      return {
+        totalOrders: orders.length,
+        deliveredOrders: delivered.length,
+        totalRevenue,
+        totalSales,
+        totalDeliveryFee,
+        totalPlatformFee,
+        totalTax,
+        totalDiscount,
+        byMonth,
+        statusCounts,
+        byPartner,
+        avgOrderValue: delivered.length > 0 ? Math.round(totalRevenue / delivered.length) : 0,
+      };
+    },
+    staleTime: 60 * 1000,
+  });
+}

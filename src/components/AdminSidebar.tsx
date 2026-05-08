@@ -187,6 +187,33 @@ const sections: NavSection[] = [
   { label: "Wallet & Referrals", icon: Wallet, items: walletItems, color: "section-command" },
 ];
 
+const PHASE1_REQUIRED_ROUTES = new Set([
+  "/admin",
+  "/admin/orders",
+  "/admin/menus",
+  "/admin/kitchen-categories",
+  "/admin/payments",
+  "/admin/manual-order",
+  "/admin/order-modifications",
+  "/admin/customer-feedback",
+  "/admin/users",
+  "/admin/delivery-mgmt",
+  "/admin/delivery-analytics",
+  "/admin/invoice-settings",
+  "/admin/promotions",
+  "/admin/debit-credit",
+  "/admin/wallet-referrals",
+  "/admin/instant-finance",
+  "/admin/financial-reports",
+  "/admin/business-metrics",
+  "/admin/metrics",
+  "/admin/reports",
+  "/admin/location-support",
+  "/admin/live-support",
+  "/admin/tickets",
+  "/admin/instant-comms",
+]);
+
 // Section color CSS variable mapping
 const sectionCssVar: Record<string, string> = {
   "section-command": "var(--section-command)",
@@ -251,7 +278,7 @@ export function AdminSidebar() {
         {/* Dynamic Sections */}
         {sections.map((section) => {
           const visibleItems = section.items.filter(
-            (item) => !role || hasAccess(role, item.url)
+            (item) => PHASE1_REQUIRED_ROUTES.has(item.url) && (!role || hasAccess(role, item.url))
           );
           if (visibleItems.length === 0) return null;
           const SectionIcon = section.icon;

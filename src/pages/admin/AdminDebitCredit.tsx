@@ -16,22 +16,104 @@ import {
 import {
   Search, Download, FileText, DollarSign, AlertTriangle, CheckCircle2,
   Clock, XCircle, ArrowLeftRight, Shield, Eye, Book, Wallet,
-  TrendingDown, TrendingUp, RotateCcw, Users, Link2,
+  TrendingDown, TrendingUp, RotateCcw, Users, Link2, RefreshCw,
 } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, LineChart, Line,
 } from "recharts";
 import {
-  generateDebitNotes, generateCreditNotes, generateJournalEntries,
-  generateSupportVouchers, generateAuditLog, generatePartnerLedger,
-  generateCustomerLedger, getDCSummary,
+  generatePartnerLedger, generateCustomerLedger,
   DEBIT_REASONS, CREDIT_REASONS, SUPPORT_VOUCHER_REASONS,
   CEILING_LIMITS, TIER_LABELS,
   type DebitNote, type CreditNote, type JournalEntry as JE, type SupportVoucher,
   type AuditLogEntry, type PartnerLedgerRow, type CustomerLedgerRow,
   type ApprovalTier,
 } from "@/data/debitCreditEngine";
+import { useLedgerEntries, useCreateLedgerEntry } from "@/hooks/useSupabaseData";
+import { useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+
+// ── Map Supabase ledger_entries rows to engine display types ──
+
+function mapToDebitNote(row: any): DebitNote {
+  return {
+    id: row.id,
+    date: row.created_at ? new Date(row.created_at).toISOString().split("T")[0] : "",
+    partnerId: row.partner_id || "",
+    partnerName: row.partner_name || "",
+    kitchenId: row.partner_id || "",
+    orderId: row.order_id || "—",
+    reason: (row.reason_code || "quality_complaint") as any,
+    severity: (row.severity || "medium") as any,
+    amount: Number(row.amount || 0),
+    gstAmount: 0,
+    netAmount: Number(row.amount || 0),
+    description: row.notes || row.reason_label || "",
+    status: (row.status || "pending_approval") as any,
+    linkedCreditNoteId: row.linked_entry_id || null,
+    linkedJournalId: null,
+    raisedBy: row.raised_by || "Admin",
+    raisedByRole: row.raised_by_role || "admin",
+    approvedBy: row.approved_by || null,
+    approvedByRole: row.approved_by_role || null,
+    createdAt: row.created_at || "",
+    updatedAt: row.created_at || "",
+    subVertical: (row.sub_vertical || "instant") as any,
+    evidenceUrls: [],
+    voucherId: `DN-${row.id?.slice(0, 8)?.toUpperCase() || ""}`,
+  };
+}
+
+function mapToCreditNote(row: any, debitNotes: DebitNote[]): CreditNote {
+  const linkedDebit = row.linked_entry_id
+    ? debitNotes.find((d) => d.id === row.linked_entry_id)
+    : debitNotes[0];
+  return {
+    id: row.id,
+    date: row.created_at ? new Date(row.created_at).toISOString().split("T")[0] : "",
+    customerId: row.customer_id || "",
+    customerName: row.customer_name || "",
+    customerPhone: "",
+    orderId: row.order_id || "—",
+    reason: (row.reason_code || "order_cancellation") as any,
+    amount: Number(row.amount || 0),
+    creditType: "wallet" as const,
+    description: row.notes || row.reason_label || "",
+    status: (row.status || "pending_approval") as any,
+    linkedDebitNoteId: linkedDebit?.id || "",
+    linkedJournalId: null,
+    raisedBy: row.raised_by || "Admin",
+    raisedByRole: row.raised_by_role || "admin",
+    approvedBy: row.approved_by || null,
+    approvedByRole: row.approved_by_role || null,
+    createdAt: row.created_at || "",
+    updatedAt: row.created_at || "",
+    subVertical: (row.sub_vertical || "instant") as any,
+    voucherId: `CN-${row.id?.slice(0, 8)?.toUpperCase() || ""}`,
+  };
+}
+
+function mapToSupportVoucher(row: any): SupportVoucher {
+  return {
+    id: row.id,
+    date: row.created_at ? new Date(row.created_at).toISOString().split("T")[0] : "",
+    customerId: row.customer_id || "",
+    customerName: row.customer_name || "",
+    orderId: row.order_id || "—",
+    reason: (row.reason_code || "delay_compensation") as any,
+    amount: Number(row.amount || 0),
+    description: row.notes || row.reason_label || "",
+    status: (row.status || "pending_approval") as any,
+    raisedBy: row.raised_by || "Admin",
+    raisedByRole: row.raised_by_role || "admin",
+    approvedBy: row.approved_by || null,
+    createdAt: row.created_at || "",
+    subVertical: (row.sub_vertical || "instant") as any,
+    voucherId: `SV-${row.id?.slice(0, 8)?.toUpperCase() || ""}`,
+  };
+}
 
 // ── Status Config ──
 
@@ -54,12 +136,38 @@ const severityConfig: Record<string, { label: string; color: string }> = {
 };
 
 export default function AdminDebitCredit() {
-  const debitNotes = useMemo(() => generateDebitNotes(), []);
-  const creditNotes = useMemo(() => generateCreditNotes(debitNotes), [debitNotes]);
-  const journals = useMemo(() => generateJournalEntries(debitNotes), [debitNotes]);
-  const supportVouchers = useMemo(() => generateSupportVouchers(), []);
-  const auditLog = useMemo(() => generateAuditLog(debitNotes, creditNotes, journals, supportVouchers), [debitNotes, creditNotes, journals, supportVouchers]);
-  const summary = useMemo(() => getDCSummary(debitNotes, creditNotes, supportVouchers), [debitNotes, creditNotes, supportVouchers]);
+  const { toast } = useToast();
+  const qc = useQueryClient();
+  const { data: rawEntries = [], isLoading } = useLedgerEntries();
+
+  // Separate by entry_type
+  const debitNotes: DebitNote[] = useMemo(
+    () => (rawEntries as any[]).filter((e: any) => e.entry_type === "debit").map(mapToDebitNote),
+    [rawEntries]
+  );
+  const creditNotes: CreditNote[] = useMemo(
+    () => (rawEntries as any[]).filter((e: any) => e.entry_type === "credit").map((e) => mapToCreditNote(e, debitNotes)),
+    [rawEntries, debitNotes]
+  );
+  const supportVouchers: SupportVoucher[] = useMemo(
+    () => (rawEntries as any[]).filter((e: any) => e.entry_type === "voucher").map(mapToSupportVoucher),
+    [rawEntries]
+  );
+  const journals: JE[] = useMemo(() => [], []);
+  const auditLog: AuditLogEntry[] = useMemo(() => [], []);
+
+  const summary = useMemo(() => {
+    const totalDebits = debitNotes.reduce((s, n) => s + n.amount, 0);
+    const totalCredits = creditNotes.reduce((s, n) => s + n.amount, 0);
+    const totalSV = supportVouchers.reduce((s, v) => s + v.amount, 0);
+    const pendingApproval = [...debitNotes, ...creditNotes, ...supportVouchers].filter(
+      (n) => n.status === "pending_approval" || n.status === "pending"
+    ).length;
+    const reversedCount = [...debitNotes, ...creditNotes].filter((n) => n.status === "reversed").length;
+    const linkedDebitIds = new Set(creditNotes.map((c) => c.linkedDebitNoteId));
+    const orphanedDebits = debitNotes.filter((d) => !linkedDebitIds.has(d.id)).length;
+    return { totalDebits, totalCredits, totalSV, pendingApproval, reversedCount, orphanedDebits, netImpact: totalDebits - totalCredits };
+  }, [debitNotes, creditNotes, supportVouchers]);
 
   return (
     <div className="space-y-5">
@@ -73,7 +181,12 @@ export default function AdminDebitCredit() {
             Partner debits ↔ Customer credits · Foolproof dual-approval · Ledger downloads · Journal entries
           </p>
         </div>
-        <Button size="sm" variant="outline" className="h-7 text-xs gap-1"><Download className="w-3.5 h-3.5" /> Export All</Button>
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={() => qc.invalidateQueries({ queryKey: ["ledger_entries"] })}>
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
+          </Button>
+          <Button size="sm" variant="outline" className="h-7 text-xs gap-1"><Download className="w-3.5 h-3.5" /> Export All</Button>
+        </div>
       </div>
 
       {/* Summary KPIs */}
@@ -98,26 +211,29 @@ export default function AdminDebitCredit() {
         </div>
       </div>
 
-      {/* Main Tabs */}
-      <Tabs defaultValue="debit_notes">
-        <TabsList className="h-auto flex-wrap gap-1">
-          <TabsTrigger value="debit_notes" className="text-xs gap-1"><TrendingDown className="w-3 h-3" /> Debit Notes ({debitNotes.length})</TabsTrigger>
-          <TabsTrigger value="credit_notes" className="text-xs gap-1"><TrendingUp className="w-3 h-3" /> Credit Notes ({creditNotes.length})</TabsTrigger>
-          <TabsTrigger value="journals" className="text-xs gap-1"><Book className="w-3 h-3" /> Journal Entries ({journals.length})</TabsTrigger>
-          <TabsTrigger value="support" className="text-xs gap-1"><Wallet className="w-3 h-3" /> Support Vouchers ({supportVouchers.length})</TabsTrigger>
-          <TabsTrigger value="ledger" className="text-xs gap-1"><FileText className="w-3 h-3" /> Partner/Customer Ledger</TabsTrigger>
-          <TabsTrigger value="audit" className="text-xs gap-1"><Shield className="w-3 h-3" /> Audit Trail ({auditLog.length})</TabsTrigger>
-          <TabsTrigger value="analytics" className="text-xs gap-1"><DollarSign className="w-3 h-3" /> Analytics</TabsTrigger>
-        </TabsList>
+      {isLoading ? (
+        <div className="text-center py-12 text-muted-foreground text-sm">Loading ledger entries…</div>
+      ) : (
+        <Tabs defaultValue="debit_notes">
+          <TabsList className="h-auto flex-wrap gap-1">
+            <TabsTrigger value="debit_notes" className="text-xs gap-1"><TrendingDown className="w-3 h-3" /> Debit Notes ({debitNotes.length})</TabsTrigger>
+            <TabsTrigger value="credit_notes" className="text-xs gap-1"><TrendingUp className="w-3 h-3" /> Credit Notes ({creditNotes.length})</TabsTrigger>
+            <TabsTrigger value="journals" className="text-xs gap-1"><Book className="w-3 h-3" /> Journal Entries ({journals.length})</TabsTrigger>
+            <TabsTrigger value="support" className="text-xs gap-1"><Wallet className="w-3 h-3" /> Support Vouchers ({supportVouchers.length})</TabsTrigger>
+            <TabsTrigger value="ledger" className="text-xs gap-1"><FileText className="w-3 h-3" /> Partner/Customer Ledger</TabsTrigger>
+            <TabsTrigger value="audit" className="text-xs gap-1"><Shield className="w-3 h-3" /> Audit Trail ({auditLog.length})</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs gap-1"><DollarSign className="w-3 h-3" /> Analytics</TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="debit_notes"><DebitNotesTab notes={debitNotes} /></TabsContent>
-        <TabsContent value="credit_notes"><CreditNotesTab notes={creditNotes} debitNotes={debitNotes} /></TabsContent>
-        <TabsContent value="journals"><JournalsTab entries={journals} /></TabsContent>
-        <TabsContent value="support"><SupportVouchersTab vouchers={supportVouchers} /></TabsContent>
-        <TabsContent value="ledger"><LedgerTab debitNotes={debitNotes} creditNotes={creditNotes} /></TabsContent>
-        <TabsContent value="audit"><AuditTrailTab log={auditLog} /></TabsContent>
-        <TabsContent value="analytics"><AnalyticsTab debitNotes={debitNotes} creditNotes={creditNotes} supportVouchers={supportVouchers} /></TabsContent>
-      </Tabs>
+          <TabsContent value="debit_notes"><DebitNotesTab notes={debitNotes} /></TabsContent>
+          <TabsContent value="credit_notes"><CreditNotesTab notes={creditNotes} debitNotes={debitNotes} /></TabsContent>
+          <TabsContent value="journals"><JournalsTab entries={journals} /></TabsContent>
+          <TabsContent value="support"><SupportVouchersTab vouchers={supportVouchers} /></TabsContent>
+          <TabsContent value="ledger"><LedgerTab debitNotes={debitNotes} creditNotes={creditNotes} /></TabsContent>
+          <TabsContent value="audit"><AuditTrailTab log={auditLog} /></TabsContent>
+          <TabsContent value="analytics"><AnalyticsTab debitNotes={debitNotes} creditNotes={creditNotes} supportVouchers={supportVouchers} /></TabsContent>
+        </Tabs>
+      )}
     </div>
   );
 }

@@ -24,6 +24,7 @@ import {
   PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, AreaChart, Area,
 } from "recharts";
 import { getAdminRole, getRoleConfig, type AdminRole } from "@/data/adminRoles";
+import { useInstantOrderStats, useKitchenPartners } from "@/hooks/useSupabaseData";
 
 /* ═══════════════════════════════════════════
    MOCK DATA — CEO-LEVEL MANAGEMENT DASHBOARD
@@ -179,6 +180,18 @@ export default function AdminReports() {
   const [drillOrder, setDrillOrder] = useState<typeof recentOrders[0] | null>(null);
   const [drillTeam, setDrillTeam] = useState<typeof teamSummary[0] | null>(null);
 
+  // ── Live data ──
+  const { data: orderStats } = useInstantOrderStats();
+  const { data: rawPartners = [] } = useKitchenPartners();
+
+  // Override overview KPIs with real Supabase data where available
+  const liveKPIs = useMemo(() => ({
+    ...overviewKPIs,
+    totalRevenue: Number(orderStats?.totalSales || overviewKPIs.totalRevenue),
+    totalOrders: Number(orderStats?.totalOrders || overviewKPIs.totalOrders),
+    activePartners: (rawPartners as any[]).filter((p: any) => p.status === "active").length || overviewKPIs.activePartners,
+  }), [orderStats, rawPartners]);
+
   const isCEO = !role || role === "super_admin" || role === "country_manager";
   const isVerticalHead = role === "vertical_head";
   const isRegional = role === "regional_manager";
@@ -242,13 +255,13 @@ export default function AdminReports() {
           {/* KPI Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
             {[
-              { label: "Total Revenue", value: fmt(overviewKPIs.totalRevenue), change: `+${overviewKPIs.revenueGrowth}%`, icon: DollarSign, up: true },
-              { label: "Orders", value: overviewKPIs.totalOrders.toLocaleString(), change: `+${overviewKPIs.orderGrowth}%`, icon: ClipboardList, up: true },
-              { label: "Active Partners", value: String(overviewKPIs.activePartners), change: `+${overviewKPIs.partnerGrowth}`, icon: ChefHat, up: true },
-              { label: "Active Users", value: overviewKPIs.activeUsers.toLocaleString(), change: `+${overviewKPIs.userGrowth}`, icon: Users, up: true },
-              { label: "Avg Order Value", value: fmt(overviewKPIs.avgOrderValue), change: `+${overviewKPIs.aovGrowth}%`, icon: TrendingUp, up: true },
-              { label: "Fulfillment %", value: `${overviewKPIs.fulfillmentRate}%`, change: "+0.8%", icon: CheckCircle2, up: true },
-              { label: "CSAT", value: `${overviewKPIs.customerSatisfaction}/5`, change: "+0.1", icon: Star, up: true },
+              { label: "Total Revenue", value: fmt(liveKPIs.totalRevenue), change: `+${liveKPIs.revenueGrowth}%`, icon: DollarSign, up: true },
+              { label: "Orders", value: liveKPIs.totalOrders.toLocaleString(), change: `+${liveKPIs.orderGrowth}%`, icon: ClipboardList, up: true },
+              { label: "Active Partners", value: String(liveKPIs.activePartners), change: `+${liveKPIs.partnerGrowth}`, icon: ChefHat, up: true },
+              { label: "Active Users", value: liveKPIs.activeUsers.toLocaleString(), change: `+${liveKPIs.userGrowth}`, icon: Users, up: true },
+              { label: "Avg Order Value", value: fmt(liveKPIs.avgOrderValue), change: `+${liveKPIs.aovGrowth}%`, icon: TrendingUp, up: true },
+              { label: "Fulfillment %", value: `${liveKPIs.fulfillmentRate}%`, change: "+0.8%", icon: CheckCircle2, up: true },
+              { label: "CSAT", value: `${liveKPIs.customerSatisfaction}/5`, change: "+0.1", icon: Star, up: true },
             ].map((k) => (
               <Card key={k.label}><CardContent className="p-3">
                 <k.icon className="w-4 h-4 text-primary/60 mb-1.5" />
@@ -524,7 +537,7 @@ export default function AdminReports() {
             </CardContent></Card>
             <Card><CardContent className="p-3 text-center">
               <p className="text-[10px] text-muted-foreground">Avg Delivery Time</p>
-              <p className="text-lg font-bold text-foreground">{overviewKPIs.avgDeliveryTime} min</p>
+              <p className="text-lg font-bold text-foreground">{liveKPIs.avgDeliveryTime} min</p>
             </CardContent></Card>
             <Card><CardContent className="p-3 text-center">
               <p className="text-[10px] text-muted-foreground">Cancellation Rate</p>
@@ -627,7 +640,7 @@ export default function AdminReports() {
             </CardContent></Card>
             <Card><CardContent className="p-4">
               <p className="text-[11px] text-muted-foreground">Partner Retention</p>
-              <p className="text-lg font-bold text-foreground">{overviewKPIs.partnerRetention}%</p>
+              <p className="text-lg font-bold text-foreground">{liveKPIs.partnerRetention}%</p>
             </CardContent></Card>
           </div>
 
