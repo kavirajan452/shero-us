@@ -1,6 +1,6 @@
 # 🍽️ Shero US — Single Meal Order: Full Implementation Plan
 
-> Version 1.0 | April 2026 | Assignable Task Document
+> Version 1.1 | May 2026 | Baseline corrected to current repository state
 
 ---
 
@@ -32,23 +32,50 @@
 
 ## 1. Current State Assessment
 
-| Area | Status | Gap |
+> **Authoritative baseline:** this repository now runs on **Next.js + Supabase**, not the older Vite/React Router/Prisma/Twilio/SendGrid assumptions still referenced in historical sections below. Treat Sections 1–3 in this document as the current source of truth; later sub-phase tasks remain useful as backlog ideas but may mention superseded implementation options.
+
+### 1.1 Updated Tech Stack Baseline
+
+| Layer | Current stack in repo | Evidence |
 |---|---|---|
-| Kitchen listing (`/instant-delivery`) | ✅ Live — reads `kitchen_partners` from Supabase | Geo-filter is client-side only; no server-side radius query |
-| Kitchen detail (`/instant-delivery/kitchen/:id`) | ✅ Live — reads `instant_menu_items` | Menu toggle not real-time per partner session |
-| Item detail (`/instant-delivery/item/:id`) | ✅ Live | Allergen/nutrition data entered manually |
-| Cart | ⚠️ In-memory React state only | Lost on refresh; no cross-device persistence |
-| Auth (`/auth`) | ⚠️ Dev stub — phone → fake email, hardcoded OTP `123456` | Must switch to real Twilio OTP or Supabase Phone Auth |
-| Checkout (`/checkout`) | ⚠️ Order is inserted BUT payment is a fake `setTimeout` | Stripe not integrated |
-| Order confirmation | ⚠️ Static screen | No SMS / email is fired |
-| Order tracking (`/order-tracking`) | ❌ Uses `mockTrackedOrder` hardcoded data | Must read real `instant_orders` via Supabase Realtime |
-| Customer dashboard (`/customer`) | ⚠️ Fetches real orders but falls back to mock `orderHistory` array | Wallet is in-memory; lost on refresh |
-| Wallet | ⚠️ In-memory `WalletContext` only | No `wallet_transactions` table write; balance not persisted |
-| Admin orders (`/admin/orders`) | ✅ Reads `instant_orders` from Supabase | Status updates wired; delivery assignment is stub |
-| Partner portal | ✅ UI complete | Order accept / prep / mark-ready not writing to `instant_orders` |
-| Payments | ❌ Demo only | Stripe PaymentIntent + webhook not implemented |
-| Notifications | ❌ Not implemented | Twilio SMS + SendGrid email needed |
-| Delivery partner | ❌ Config exists in `deliveryTrackingData.ts` | DoorDash Drive / Uber Direct API not called |
+| Frontend | Next.js 15 App Router, React 18, TypeScript, Tailwind CSS, shadcn/ui | `/home/runner/work/shero-us/shero-us/package.json`, `/home/runner/work/shero-us/shero-us/README.md`, `/home/runner/work/shero-us/shero-us/app/layout.tsx` |
+| Backend / DB | Supabase (Postgres, Auth, Realtime, Edge Functions) — **not Prisma** | `/home/runner/work/shero-us/shero-us/src/integrations/supabase/client.ts`, `/home/runner/work/shero-us/shero-us/supabase/migrations/20260417043000_phase1_otp_cart_payment.sql` |
+| State / data | TanStack Query + React Contexts | `/home/runner/work/shero-us/shero-us/src/components/Providers.tsx`, `/home/runner/work/shero-us/shero-us/src/contexts/AuthContext.tsx`, `/home/runner/work/shero-us/shero-us/src/contexts/CartContext.tsx` |
+| Auth | Supabase Auth + custom OTP edge functions | `/home/runner/work/shero-us/shero-us/src/pages/Auth.tsx`, `/home/runner/work/shero-us/shero-us/supabase/functions/send-otp/index.ts`, `/home/runner/work/shero-us/shero-us/supabase/functions/verify-otp/index.ts` |
+| Payments | Stripe backend payment intent is present; frontend Stripe Elements/webhooks are not | `/home/runner/work/shero-us/shero-us/supabase/functions/create-payment-intent/index.ts`, `/home/runner/work/shero-us/shero-us/src/components/PaymentSection.tsx` |
+| Tax | Local/manual tax logic only; Avalara not integrated | `/home/runner/work/shero-us/shero-us/src/pages/Checkout.tsx` |
+| Delivery | Internal delivery tracking/UI exists; DoorDash not integrated | `/home/runner/work/shero-us/shero-us/src/pages/OrderTracking.tsx`, `/home/runner/work/shero-us/shero-us/src/pages/admin/AdminLocationSupport.tsx` |
+| SMS | Generic OTP SMS gateway via `SMS_INTEGRA_*`; Gallabox not integrated | `/home/runner/work/shero-us/shero-us/supabase/functions/send-otp/index.ts`, `/home/runner/work/shero-us/shero-us/README.md` |
+| Email | SMTP / transactional email notifications are not implemented | `/home/runner/work/shero-us/shero-us/supabase/functions/create-payment-intent/index.ts`, `/home/runner/work/shero-us/shero-us/supabase/functions/send-otp/index.ts`, `/home/runner/work/shero-us/shero-us/supabase/functions/verify-otp/index.ts` |
+| UI / CMS | Lovable-style screens are preserved; some screens are DB-driven via `screen_content` / `promotions` | `/home/runner/work/shero-us/shero-us/src/components/HeroSection.tsx`, `/home/runner/work/shero-us/shero-us/src/components/CategoryCards.tsx`, `/home/runner/work/shero-us/shero-us/src/hooks/useScreenContent.ts` |
+
+### 1.2 Requirement Status Matrix (23 items)
+
+| S.no | Requirement | Status | Evidence |
+|---|---|---|---|
+| 1 | Project setup (Next.js + Prisma + Postgres) | **Partial** | Next.js + Postgres are in use, but the repo uses Supabase instead of Prisma: `/home/runner/work/shero-us/shero-us/package.json`, `/home/runner/work/shero-us/shero-us/README.md`, `/home/runner/work/shero-us/shero-us/src/integrations/supabase/client.ts` |
+| 2 | DB schema design | **Completed** | `/home/runner/work/shero-us/shero-us/supabase/migrations/20260417043000_phase1_otp_cart_payment.sql`, `/home/runner/work/shero-us/shero-us/supabase/migrations/20260422050000_phase1_dynamic_partner_payments_comms.sql`, `/home/runner/work/shero-us/shero-us/src/integrations/supabase/types.ts` |
+| 3 | UI/UX – Lovable screens integration | **Partial** | `/home/runner/work/shero-us/shero-us/src/components/HeroSection.tsx`, `/home/runner/work/shero-us/shero-us/src/components/CategoryCards.tsx`, `/home/runner/work/shero-us/shero-us/src/hooks/useScreenContent.ts` |
+| 4 | Auth system (Login/Signup + session) | **Completed** | `/home/runner/work/shero-us/shero-us/src/pages/Auth.tsx`, `/home/runner/work/shero-us/shero-us/src/contexts/AuthContext.tsx`, `/home/runner/work/shero-us/shero-us/supabase/functions/send-otp/index.ts`, `/home/runner/work/shero-us/shero-us/supabase/functions/verify-otp/index.ts` |
+| 5 | Homepage + ZIP validation | **Partial** | Homepage exists, but ZIP validation is mainly wired through serviceability and checkout flows: `/home/runner/work/shero-us/shero-us/src/pages/Index.tsx`, `/home/runner/work/shero-us/shero-us/src/components/HeroSection.tsx`, `/home/runner/work/shero-us/shero-us/src/hooks/useServiceability.ts`, `/home/runner/work/shero-us/shero-us/src/pages/Checkout.tsx` |
+| 6 | Delivery radius logic | **Completed** | `/home/runner/work/shero-us/shero-us/src/hooks/useServiceability.ts`, `/home/runner/work/shero-us/shero-us/src/hooks/useSupabaseData.ts`, `/home/runner/work/shero-us/shero-us/src/pages/InstantDelivery.tsx` |
+| 7 | Menu API + UI binding | **Completed** | `/home/runner/work/shero-us/shero-us/src/pages/InstantDelivery.tsx`, `/home/runner/work/shero-us/shero-us/src/pages/KitchenDetail.tsx`, `/home/runner/work/shero-us/shero-us/src/pages/ItemDetail.tsx`, `/home/runner/work/shero-us/shero-us/src/hooks/useSupabaseData.ts` |
+| 8 | Cart system | **Completed** | `/home/runner/work/shero-us/shero-us/src/contexts/CartContext.tsx` |
+| 9 | Checkout flow | **Completed** | `/home/runner/work/shero-us/shero-us/src/pages/Checkout.tsx`, `/home/runner/work/shero-us/shero-us/src/components/PaymentSection.tsx` |
+| 10 | Payment gateway (Stripe) | **Partial** | `/home/runner/work/shero-us/shero-us/supabase/functions/create-payment-intent/index.ts`, `/home/runner/work/shero-us/shero-us/src/components/PaymentSection.tsx` |
+| 11 | Tax ERP/API (Avalara) | **Pending** | Manual tax calculation exists, but no Avalara integration code is present: `/home/runner/work/shero-us/shero-us/src/pages/Checkout.tsx`, `/home/runner/work/shero-us/shero-us/package.json` |
+| 12 | Delivery integration (DoorDash) | **Pending** | Delivery tracking UI exists, but no dispatch integration is implemented: `/home/runner/work/shero-us/shero-us/src/pages/admin/AdminLocationSupport.tsx`, `/home/runner/work/shero-us/shero-us/src/pages/OrderTracking.tsx`, `/home/runner/work/shero-us/shero-us/src/data/deliveryTrackingData.ts` |
+| 13 | Email notification (SMTP) | **Pending** | Current edge functions do not include email sending: `/home/runner/work/shero-us/shero-us/supabase/functions/create-payment-intent/index.ts`, `/home/runner/work/shero-us/shero-us/supabase/functions/send-otp/index.ts`, `/home/runner/work/shero-us/shero-us/supabase/functions/verify-otp/index.ts` |
+| 14 | SMS gateway (Gallabox) | **Pending** | OTP SMS is wired through a generic SMS gateway, not Gallabox: `/home/runner/work/shero-us/shero-us/supabase/functions/send-otp/index.ts`, `/home/runner/work/shero-us/shero-us/README.md` |
+| 15 | Order placement + DB | **Completed** | `/home/runner/work/shero-us/shero-us/src/pages/Checkout.tsx`, `/home/runner/work/shero-us/shero-us/src/hooks/useSupabaseData.ts` |
+| 16 | User dashboard | **Partial** | `/home/runner/work/shero-us/shero-us/src/pages/Profile.tsx`, `/home/runner/work/shero-us/shero-us/src/contexts/WalletContext.tsx` |
+| 17 | Admin – Menu management | **Partial** | `/home/runner/work/shero-us/shero-us/src/pages/admin/AdminMenus.tsx`, `/home/runner/work/shero-us/shero-us/src/pages/admin/AdminKitchenCategories.tsx` |
+| 18 | Admin – Order management | **Partial** | `/home/runner/work/shero-us/shero-us/src/pages/admin/AdminOrders.tsx`, `/home/runner/work/shero-us/shero-us/src/hooks/useSupabaseData.ts` |
+| 19 | Admin – ZIP control | **Partial** | ZIP / pincode management exists through kitchen and partner-location management: `/home/runner/work/shero-us/shero-us/src/pages/admin/AdminKitchenCategories.tsx` |
+| 20 | Compliance pages | **Completed** | `/home/runner/work/shero-us/shero-us/src/pages/legal/PrivacyPolicy.tsx`, `/home/runner/work/shero-us/shero-us/src/pages/legal/TermsOfService.tsx`, `/home/runner/work/shero-us/shero-us/src/pages/legal/CookiePolicy.tsx`, `/home/runner/work/shero-us/shero-us/src/pages/legal/Accessibility.tsx`, `/home/runner/work/shero-us/shero-us/src/pages/legal/AllergenNotice.tsx`, `/home/runner/work/shero-us/shero-us/src/pages/legal/DoNotSell.tsx`, `/home/runner/work/shero-us/shero-us/src/pages/legal/ReturnPolicy.tsx` |
+| 21 | Security & validation | **Partial** | OTP rate limiting/basic checks exist, but there is no broad validation layer and build currently ignores type/lint failures: `/home/runner/work/shero-us/shero-us/supabase/functions/send-otp/index.ts`, `/home/runner/work/shero-us/shero-us/next.config.mjs` |
+| 22 | Testing + bug fixing | **Pending** | Only minimal test coverage exists: `/home/runner/work/shero-us/shero-us/src/test/example.test.ts` |
+| 23 | Deployment | **Partial** | Deployment guidance exists, but full deployment completion is not evidenced in code: `/home/runner/work/shero-us/shero-us/README.md`, `/home/runner/work/shero-us/shero-us/capacitor.config.ts` |
 
 ---
 
@@ -116,44 +143,43 @@
 
 ## 3. Tech Stack
 
-### 3.1 Frontend (already in repo — no changes needed)
+### 3.1 Frontend
 
-| Tool | Version | Role |
+| Tool | Version / usage | Role |
 |---|---|---|
+| Next.js | 15.5.15 | App Router framework |
 | React | 18.3 | UI library |
 | TypeScript | 5.8 | Type safety |
-| Vite | 5.4 | Build tool |
 | Tailwind CSS | 3.4 | Styling |
-| shadcn/ui + Radix UI | latest | Component library |
-| TanStack Query | 5.83 | Data fetching + caching |
-| React Router | 6.30 | Client-side routing |
-| React Hook Form + Zod | latest | Forms + validation |
+| shadcn/ui + Radix UI | Current repo dependencies | Component library |
+| TanStack Query | 5.83 | Data fetching + cache invalidation |
+| React Contexts | Repo-specific providers | Auth, cart, wallet, region state |
+| React Hook Form + Zod | Installed; only lightly adopted | Forms + validation |
 | Framer Motion | 12 | Animations |
-| react-leaflet | 4.2 | Maps for delivery radius visualisation |
-| jsPDF | 4.2 | Invoice PDF generation |
-| Lucide React | latest | Icons |
+| react-leaflet / leaflet | 4.2 / 1.9 | Maps and distance visualisation |
+| jsPDF | 4.2 | Invoice generation |
+| Lucide React | Current repo dependency | Icons |
 
 ### 3.2 Backend / Database
 
-| Tool | Role | Current Status |
+| Tool | Role | Current status |
 |---|---|---|
-| Supabase (PostgreSQL) | Primary DB, Auth, Realtime, Storage | Partially wired |
-| Supabase Auth | User sessions, RLS policies | Dev stub (needs real phone OTP) |
-| Supabase Realtime | Live order status push to customer + partner | Hooks exist; order tracking page needs wiring |
-| Supabase Edge Functions | Serverless endpoints for Stripe webhooks, notifications, cron | Not yet created |
-| Supabase Storage | Menu item images, chef photos | Used for some partner images |
+| Supabase PostgreSQL | Primary relational database | Active |
+| Supabase Auth | User sessions and auth state | Active |
+| Supabase Realtime | Realtime invalidation / row updates | Active in multiple hooks and pages |
+| Supabase Edge Functions | OTP, payment intent, admin setup, wallet expiry | Active, but limited scope |
+| Supabase generated types | Typed DB access from frontend | Active |
 
-### 3.3 Third-Party Integrations to Add
+### 3.3 Integrations status
 
-| Service | Purpose | Provider |
+| Integration | Current status | Notes |
 |---|---|---|
-| **Stripe** | Payment processing — card, Apple Pay, Google Pay, ACH | stripe.com |
-| **Twilio Verify** | Phone OTP for auth | twilio.com |
-| **Twilio SMS** | Order status SMS notifications | twilio.com |
-| **SendGrid** | Transactional email — order confirm, invoice | sendgrid.com |
-| **Google Maps Platform** | Address autocomplete + geocoding | console.cloud.google.com |
-| **DoorDash Drive** OR **Uber Direct** | Third-party delivery dispatch | developer.doordash.com |
-| **Firebase Cloud Messaging** | Push notifications (optional — Phase 2+) | firebase.google.com |
+| Stripe | Partial | Backend payment intent exists; Stripe Elements/webhooks not yet wired |
+| Avalara | Pending | No integration present |
+| DoorDash | Pending | No delivery dispatch integration present |
+| Gallabox | Pending | Not present; OTP uses generic SMS gateway env vars |
+| SMTP / transactional email | Pending | No email-sending function present |
+| Google geocoding / Nominatim | Partial | Address/serviceability UX uses browser geolocation and Nominatim |
 
 ---
 

@@ -1,6 +1,14 @@
 # Shero US — Phase 1 Implementation Guide
 
-> Last updated: 2026-04-21
+> Last updated: 2026-05-08
+
+## 🔄 Baseline Correction (2026-05-08)
+
+- The live repository stack is **Next.js 15 + Supabase**, not the older Vite / React Router / Prisma assumptions.
+- OTP auth, DB-backed cart sync, delivery-radius logic, menu binding, checkout, order placement, and compliance pages are already implemented.
+- Stripe is only **partially** implemented (backend payment intent exists; frontend Stripe Elements / webhooks are still pending).
+- Avalara, DoorDash, SMTP email notifications, and Gallabox-specific SMS integration are still pending.
+- Treat `/home/runner/work/shero-us/shero-us/docs/implementation-plan.md` Sections 1–3 as the authoritative plan/status baseline.
 
 ## 🔄 Update Log (2026-04-21)
 
@@ -117,11 +125,11 @@
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | React 18 + TypeScript, Vite, Tailwind CSS, shadcn/ui |
-| State / Data | TanStack Query v5, Zustand (cart/wallet context) |
-| Backend | Supabase (PostgreSQL, Row Level Security, Realtime, Auth) |
-| Payments | Payment section wired; gateway integration TBD |
-| Hosting | Vercel / Netlify (static export) |
+| Frontend | Next.js 15 App Router, React 18, TypeScript, Tailwind CSS, shadcn/ui |
+| State / Data | TanStack Query v5, React Contexts |
+| Backend | Supabase (PostgreSQL, Auth, Realtime, Edge Functions) |
+| Payments | Stripe payment-intent backend exists; frontend gateway integration still partial |
+| Hosting | Vercel deployment guidance present in repo |
 
 ### Core Data Flow
 
