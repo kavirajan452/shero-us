@@ -21,7 +21,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { getAdminRole } from "@/data/adminRoles";
 import { addOrderModification } from "@/data/sscOrderModifications";
-import { useInstantOrders } from "@/hooks/useSupabaseData";
+import { useInstantOrders, useUpdateInstantOrder } from "@/hooks/useSupabaseData";
 
 /* ── Types ── */
 type OrderStatus = "new" | "pending" | "accepted" | "preparing" | "ready" | "in_transit" | "picked_up" | "delivered" | "cancelled" | "rejected";
@@ -112,6 +112,7 @@ export default function AdminOrders() {
 
   // ── Supabase data ──
   const { data: rawOrders = [], isLoading } = useInstantOrders();
+  const updateOrder = useUpdateInstantOrder();
   const allOrders: AdminOrder[] = useMemo(() => rawOrders.map(mapSupabaseToAdmin), [rawOrders]);
 
   const today = new Date().toISOString().slice(0, 10);
@@ -134,9 +135,34 @@ export default function AdminOrders() {
   const liveOrders = baseOrders.filter((o) => ["new", "accepted", "preparing", "ready", "in_transit", "picked_up"].includes(o.status));
   const completedOrders = baseOrders.filter((o) => o.status === "delivered");
 
-  const handleCancelOrder = (orderId: string) => {
-    toast({ title: `Order ${orderId} Cancelled`, description: "Customer and partner have been notified.", variant: "destructive" });
-    setSelectedOrder(null);
+  const handleCancelOrder = (orderId: string, dbId: string) => {
+    updateOrder.mutate(
+      { id: dbId, updates: { status: "cancelled" } },
+      {
+        onSuccess: () => {
+          toast({ title: `Order ${orderId} Cancelled`, description: "Status updated in database.", variant: "destructive" });
+          setSelectedOrder(null);
+        },
+        onError: () => {
+          toast({ title: "Update failed", description: "Could not cancel the order. Please retry.", variant: "destructive" });
+        },
+      }
+    );
+  };
+
+  const handleStatusChange = (dbId: string, orderId: string, newStatus: OrderStatus) => {
+    updateOrder.mutate(
+      { id: dbId, updates: { status: newStatus } },
+      {
+        onSuccess: () => {
+          toast({ title: `Order ${orderId} → ${statusConfig[newStatus]?.label ?? newStatus}`, description: "Status updated in database." });
+          setSelectedOrder(null);
+        },
+        onError: () => {
+          toast({ title: "Update failed", description: "Could not update order status. Please retry.", variant: "destructive" });
+        },
+      }
+    );
   };
 
   const handleRequestModification = () => {
@@ -380,8 +406,33 @@ export default function AdminOrders() {
                 <Button variant="outline" size="sm" onClick={() => { setModifyOrder(selectedOrder); setShowModifyDialog(true); setSelectedOrder(null); }} className="text-xs gap-1">
                   <Edit3 className="w-3 h-3" /> Modify
                 </Button>
+                {selectedOrder.status === "new" && (
+                  <Button size="sm" variant="default" onClick={() => handleStatusChange(selectedOrder.dbId, selectedOrder.id, "accepted")} disabled={updateOrder.isPending} className="text-xs gap-1">
+                    <CheckCircle2 className="w-3 h-3" /> Accept
+                  </Button>
+                )}
+                {selectedOrder.status === "accepted" && (
+                  <Button size="sm" variant="default" onClick={() => handleStatusChange(selectedOrder.dbId, selectedOrder.id, "preparing")} disabled={updateOrder.isPending} className="text-xs gap-1">
+                    <ChefHat className="w-3 h-3" /> Mark Preparing
+                  </Button>
+                )}
+                {selectedOrder.status === "preparing" && (
+                  <Button size="sm" variant="default" onClick={() => handleStatusChange(selectedOrder.dbId, selectedOrder.id, "ready")} disabled={updateOrder.isPending} className="text-xs gap-1">
+                    <Package className="w-3 h-3" /> Mark Ready
+                  </Button>
+                )}
+                {selectedOrder.status === "ready" && (
+                  <Button size="sm" variant="default" onClick={() => handleStatusChange(selectedOrder.dbId, selectedOrder.id, "in_transit")} disabled={updateOrder.isPending} className="text-xs gap-1">
+                    <Truck className="w-3 h-3" /> Mark In Transit
+                  </Button>
+                )}
+                {selectedOrder.status === "in_transit" && (
+                  <Button size="sm" variant="default" onClick={() => handleStatusChange(selectedOrder.dbId, selectedOrder.id, "delivered")} disabled={updateOrder.isPending} className="text-xs gap-1">
+                    <CheckCircle2 className="w-3 h-3" /> Mark Delivered
+                  </Button>
+                )}
                 {!["delivered", "cancelled", "rejected"].includes(selectedOrder.status) && (
-                  <Button variant="destructive" size="sm" onClick={() => handleCancelOrder(selectedOrder.id)} className="text-xs gap-1">
+                  <Button variant="destructive" size="sm" onClick={() => handleCancelOrder(selectedOrder.id, selectedOrder.dbId)} disabled={updateOrder.isPending} className="text-xs gap-1">
                     <XCircle className="w-3 h-3" /> Cancel Order
                   </Button>
                 )}

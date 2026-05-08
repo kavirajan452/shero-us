@@ -1,14 +1,19 @@
 import { useState, useRef, useEffect } from "react";
-import { Search, Briefcase, ChevronDown, LocateFixed, Plus, X, Mic, MapPin, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Search, ChevronDown, LocateFixed, Plus, X, Mic, MapPin, ArrowRight, CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import sheroLogo from "@/assets/shero-logo.png";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import heroMascot from "@/assets/shero-mascot-cooking.jpeg";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
+import { useServiceability } from "@/hooks/useServiceability";
+
+type ZipCheckState = "idle" | "checking" | "available" | "unavailable";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const { data: contentItems } = useScreenContent("home");
   const c = contentMap(contentItems || []);
+  const { checkByZip, hasKitchens } = useServiceability();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [address, setAddress] = useState("Midtown");
@@ -20,6 +25,25 @@ const HeroSection = () => {
   const [listening, setListening] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+
+  // ZIP serviceability check
+  const [zipInput, setZipInput] = useState("");
+  const [zipState, setZipState] = useState<ZipCheckState>("idle");
+
+  const handleZipCheck = () => {
+    const zip = zipInput.trim();
+    if (!zip) return;
+    setZipState("checking");
+    // Simulate brief async to let UI feel responsive
+    setTimeout(() => {
+      const serviceable = checkByZip(zip);
+      setZipState(serviceable ? "available" : "unavailable");
+    }, 400);
+  };
+
+  const handleZipKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") handleZipCheck();
+  };
 
   // Hide language switcher if user has previously selected a language.
   // Initialize to false so server and client agree during hydration;
@@ -218,6 +242,47 @@ const HeroSection = () => {
               <Mic className="w-5 h-5" />
             </button>
           </div>
+
+          {/* ZIP availability check */}
+          <div className="mt-3 max-w-[520px]">
+            <div className="flex items-center gap-2">
+              <div className="flex-1 flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2 shadow-sm">
+                <MapPin className="w-3.5 h-3.5 text-muted-foreground/50 shrink-0" />
+                <input
+                  type="text"
+                  value={zipInput}
+                  onChange={(e) => { setZipInput(e.target.value.replace(/\D/g, "").slice(0, 10)); setZipState("idle"); }}
+                  onKeyDown={handleZipKeyDown}
+                  placeholder={c["hero.zip_placeholder"] || "Check delivery by ZIP code…"}
+                  className="flex-1 text-xs bg-transparent text-foreground placeholder:text-muted-foreground/40 outline-none"
+                  maxLength={10}
+                />
+                {zipInput && zipState === "idle" && (
+                  <button onClick={() => { setZipInput(""); setZipState("idle"); }} className="p-0.5 text-muted-foreground/50 hover:text-foreground"><X className="w-3 h-3" /></button>
+                )}
+              </div>
+              <button
+                onClick={handleZipCheck}
+                disabled={zipInput.trim().length < 4 || zipState === "checking"}
+                className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 disabled:opacity-40 transition-colors flex items-center gap-1.5 shrink-0"
+              >
+                {zipState === "checking" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Check"}
+              </button>
+            </div>
+            {zipState === "available" && (
+              <div className="mt-1.5 flex items-center gap-1.5 text-xs text-green-700 dark:text-green-400">
+                <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                <span>Great news — we deliver to <strong>{zipInput}</strong>!</span>
+                <button onClick={() => navigate("/instant-delivery")} className="ml-1 underline font-semibold">Order now →</button>
+              </div>
+            )}
+            {zipState === "unavailable" && (
+              <div className="mt-1.5 flex items-center gap-1.5 text-xs text-destructive">
+                <XCircle className="w-3.5 h-3.5 shrink-0" />
+                <span>We don't deliver to <strong>{zipInput}</strong> yet. <span className="text-muted-foreground">We're expanding soon!</span></span>
+              </div>
+            )}
+          </div>
         </div>
 
       {/* Right: mascot image */}
@@ -272,6 +337,46 @@ const HeroSection = () => {
           <button onClick={handleMic} className={`p-2 rounded-full shrink-0 transition-colors ${listening ? "bg-primary/10 text-primary animate-pulse" : "text-muted-foreground/50 hover:text-primary"}`} aria-label="Voice search">
             <Mic className="w-5 h-5" />
           </button>
+        </div>
+        {/* Mobile ZIP availability check */}
+        <div className="mt-2">
+          <div className="flex items-center gap-2">
+            <div className="flex-1 flex items-center gap-2 bg-card border border-border rounded-xl px-3 py-2 shadow-sm">
+              <MapPin className="w-3.5 h-3.5 text-muted-foreground/50 shrink-0" />
+              <input
+                type="text"
+                value={zipInput}
+                onChange={(e) => { setZipInput(e.target.value.replace(/\D/g, "").slice(0, 10)); setZipState("idle"); }}
+                onKeyDown={handleZipKeyDown}
+                placeholder={c["hero.zip_placeholder"] || "Check delivery by ZIP…"}
+                className="flex-1 text-xs bg-transparent text-foreground placeholder:text-muted-foreground/40 outline-none"
+                maxLength={10}
+              />
+              {zipInput && zipState === "idle" && (
+                <button onClick={() => { setZipInput(""); setZipState("idle"); }} className="p-0.5 text-muted-foreground/50 hover:text-foreground"><X className="w-3 h-3" /></button>
+              )}
+            </div>
+            <button
+              onClick={handleZipCheck}
+              disabled={zipInput.trim().length < 4 || zipState === "checking"}
+              className="px-3 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 disabled:opacity-40 transition-colors flex items-center gap-1.5 shrink-0"
+            >
+              {zipState === "checking" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Check"}
+            </button>
+          </div>
+          {zipState === "available" && (
+            <div className="mt-1.5 flex items-center gap-1.5 text-xs text-green-700 dark:text-green-400">
+              <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+              <span>We deliver to <strong>{zipInput}</strong>!</span>
+              <button onClick={() => navigate("/instant-delivery")} className="ml-1 underline font-semibold">Order now →</button>
+            </div>
+          )}
+          {zipState === "unavailable" && (
+            <div className="mt-1.5 flex items-center gap-1.5 text-xs text-destructive">
+              <XCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>Not in <strong>{zipInput}</strong> yet. <span className="text-muted-foreground">Expanding soon!</span></span>
+            </div>
+          )}
         </div>
       </div>
     </section>

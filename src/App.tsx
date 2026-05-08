@@ -104,6 +104,7 @@ import AdminMasterComms from "./pages/admin/AdminMasterComms";
 import AdminFinancialReports from "./pages/admin/AdminFinancialReports";
 import AdminBusinessMetrics from "./pages/admin/AdminBusinessMetrics";
 import AdminKitchenCategories from "./pages/admin/AdminKitchenCategories";
+import AdminZipControl from "./pages/admin/AdminZipControl";
 import PartnerDashboard from "./pages/partner/PartnerDashboard";
 import PartnerOrders from "./pages/partner/PartnerOrders";
 import PartnerMenuManagement from "./pages/partner/PartnerMenuManagement";
@@ -225,6 +226,7 @@ const App = () => (
                       <Route path="business-metrics" element={<AdminBusinessMetrics />} />
                       <Route path="menus" element={<AdminMenus />} />
                       <Route path="kitchen-categories" element={<AdminKitchenCategories />} />
+                      <Route path="zip-control" element={<AdminZipControl />} />
                       <Route path="orders" element={<AdminOrders />} />
                       <Route path="payments" element={<AdminPayments />} />
                       <Route path="tickets" element={<AdminTickets />} />

@@ -165,7 +165,26 @@ const Profile = () => {
     .map(([name]) => ({ name, emoji: "👩‍🍳" }));
 
   // Active subscription plan derived from liveOrders (first active subscription type if present)
-  const activePlan = null; // Will be wired to subscription_customers in a future phase
+  const [activePlan, setActivePlan] = useState<{ name: string; chef: string; end_date: string } | null>(null);
+  useEffect(() => {
+    if (!authUser?.id) return;
+    supabase
+      .from("subscription_customers")
+      .select("plan_name, partner_name, end_date")
+      .eq("customer_id", authUser.id)
+      .eq("status", "active")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .then(({ data }) => {
+        if (data && data.length > 0) {
+          setActivePlan({
+            name: data[0].plan_name,
+            chef: data[0].partner_name || "Shero Chef",
+            end_date: data[0].end_date,
+          });
+        }
+      });
+  }, [authUser?.id]);
 
   if (isLoading) {
     return (
@@ -242,8 +261,9 @@ const Profile = () => {
                     <h3 className="text-lg font-serif font-bold text-foreground mb-4">Active Plan</h3>
                     {activePlan ? (
                       <div className="p-5 rounded-2xl bg-gradient-shero text-primary-foreground">
-                        <h4 className="font-bold text-lg mb-1">{(activePlan as any).name}</h4>
-                        <p className="text-primary-foreground/80 text-sm mb-3">with {(activePlan as any).chef}</p>
+                        <h4 className="font-bold text-lg mb-1">{activePlan.name}</h4>
+                        <p className="text-primary-foreground/80 text-sm mb-3">with {activePlan.chef}</p>
+                        <p className="text-primary-foreground/60 text-xs">Until {new Date(activePlan.end_date).toLocaleDateString()}</p>
                       </div>
                     ) : (
                       <div className="p-5 rounded-2xl bg-gradient-shero text-primary-foreground text-center">
