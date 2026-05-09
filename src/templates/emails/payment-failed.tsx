@@ -1,10 +1,18 @@
 import type { EmailPayload } from "./order-confirmation";
 
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
 export const renderPaymentFailedEmail = (payload: EmailPayload) => {
-  const customerName = payload.customerName || "Customer";
-  const orderId = payload.orderId || "-";
-  const retryLink = payload.paymentRetryLink || "https://www.shero.us/checkout";
-  const supportContact = payload.supportContact || "support@shero.com";
+  const customerName = escapeHtml(payload.customerName || "Customer");
+  const orderId = escapeHtml(payload.orderId || "-");
+  const retryLink = escapeHtml(encodeURI(payload.paymentRetryLink || "https://www.shero.us/checkout"));
+  const supportContact = escapeHtml(payload.supportContact || "support@shero.com");
 
   return `
     <h2>Payment Failed — Please Retry</h2>

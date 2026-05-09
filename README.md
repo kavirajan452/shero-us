@@ -165,6 +165,7 @@ NEXT_PUBLIC_APP_MODE=dev
 NEXT_PUBLIC_DEV_LOGIN_PASSWORD=123456
 NEXT_PUBLIC_EMAIL_MODE=demo              # demo | smtp
 NEXT_PUBLIC_ADMIN_ALERT_EMAILS=ops@shero.com,admin@shero.com
+NEXT_PUBLIC_HIGH_VALUE_ORDER_ALERT_THRESHOLD=100
 ```
 
 > **Note:** The old Vite variable names (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_DEV_LOGIN_PASSWORD`) are no longer used. Use the `NEXT_PUBLIC_` prefix instead. Using `import.meta.env` (Vite-specific) will crash Next.js during SSR — always use `process.env.NEXT_PUBLIC_*` in this project.

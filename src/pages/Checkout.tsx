@@ -26,7 +26,7 @@ import {
 
 const DELIVERY_FEE_DEFAULT = 30;
 const TIP_PRESETS_DEFAULT = [5, 10, 15, 20];
-const HIGH_VALUE_ORDER_ALERT_THRESHOLD = 100;
+const HIGH_VALUE_ORDER_ALERT_THRESHOLD = Number(process.env.NEXT_PUBLIC_HIGH_VALUE_ORDER_ALERT_THRESHOLD ?? "100");
 
 const Checkout = () => {
   const { items, updateQuantity, removeItem, subtotal, clearCart, totalItems, appliedPromo, promoDiscount, applyPromoCode, removePromoCode, promoLoading } = useCart();
@@ -266,14 +266,14 @@ const Checkout = () => {
     }
 
     if (total >= HIGH_VALUE_ORDER_ALERT_THRESHOLD && adminRecipients.length > 0) {
-      for (const adminRecipient of adminRecipients) {
-        void sendHighValueAdminAlert({
+      void Promise.all(adminRecipients.map((adminRecipient) =>
+        sendHighValueAdminAlert({
           recipient: adminRecipient,
           customerName: name,
           orderId: createdOrder.id,
           total,
-        });
-      }
+        }),
+      ));
     }
 
     if (walletUsable > 0) {
@@ -313,14 +313,14 @@ const Checkout = () => {
     }
 
     if (adminRecipients.length > 0) {
-      for (const adminRecipient of adminRecipients) {
-        void sendPaymentFailureAdminAlert({
+      void Promise.all(adminRecipients.map((adminRecipient) =>
+        sendPaymentFailureAdminAlert({
           recipient: adminRecipient,
           customerName: name || "Customer",
           orderId: fallbackOrderId,
           total,
-        });
-      }
+        }),
+      ));
     }
 
     toast({

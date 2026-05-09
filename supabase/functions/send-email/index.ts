@@ -40,28 +40,34 @@ const EMAIL_SUBJECTS: Record<string, string> = {
   admin_delivery_failure: "Delivery Failure Alert",
 };
 
-const sanitize = (value: string) => value.replace(/[<>"'&]/g, "");
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 
 const renderItems = (items: EmailPayload["items"] = []) =>
   items
     .map((item) => {
       const qty = item.qty ?? 1;
-      const name = sanitize(item.name ?? "Item");
+      const name = escapeHtml(item.name ?? "Item");
       const price = typeof item.price === "number" ? ` - $${item.price.toFixed(2)}` : "";
       return `<li>${qty}x ${name}${price}</li>`;
     })
     .join("");
 
 const renderTemplate = (type: string, payload: EmailPayload = {}) => {
-  const customerName = sanitize(payload.customerName || "Customer");
-  const orderId = sanitize(payload.orderId || "-");
+  const customerName = escapeHtml(payload.customerName || "Customer");
+  const orderId = escapeHtml(payload.orderId || "-");
   const total = typeof payload.total === "number" ? `$${payload.total.toFixed(2)}` : "-";
-  const deliveryAddress = sanitize(payload.deliveryAddress || "-");
-  const deliveryEta = sanitize(payload.deliveryEta || "We'll share an ETA soon.");
-  const supportContact = sanitize(payload.supportContact || "support@shero.com");
-  const paymentRetryLink = sanitize(payload.paymentRetryLink || "https://www.shero.us/checkout");
-  const courierName = sanitize(payload.courierName || "Shero delivery partner");
-  const trackingStatus = sanitize(payload.trackingStatus || "Out for delivery");
+  const deliveryAddress = escapeHtml(payload.deliveryAddress || "-");
+  const deliveryEta = escapeHtml(payload.deliveryEta || "We'll share an ETA soon.");
+  const supportContact = escapeHtml(payload.supportContact || "support@shero.com");
+  const paymentRetryLink = escapeHtml(encodeURI(payload.paymentRetryLink || "https://www.shero.us/checkout"));
+  const courierName = escapeHtml(payload.courierName || "Shero delivery partner");
+  const trackingStatus = escapeHtml(payload.trackingStatus || "Out for delivery");
 
   switch (type) {
     case "order_confirmation":
@@ -94,7 +100,7 @@ const renderTemplate = (type: string, payload: EmailPayload = {}) => {
       `;
     default:
       return `
-        <h2>${sanitize(EMAIL_SUBJECTS[type] || "Shero Notification")}</h2>
+        <h2>${escapeHtml(EMAIL_SUBJECTS[type] || "Shero Notification")}</h2>
         <p><strong>Order ID:</strong> ${orderId}</p>
         <p><strong>Customer:</strong> ${customerName}</p>
         <p><strong>Total:</strong> ${total}</p>
