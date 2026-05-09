@@ -30,7 +30,7 @@ CREATE POLICY "Authenticated users can read tax calculations"
 CREATE POLICY "Service role can insert tax calculations"
   ON public.tax_calculations
   FOR INSERT
-  TO authenticated
+  TO service_role
   WITH CHECK (true);
 
 CREATE INDEX IF NOT EXISTS idx_tax_calc_order ON public.tax_calculations(order_id);

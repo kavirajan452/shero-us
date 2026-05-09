@@ -21,6 +21,29 @@ const US_STATE_TAX_RATES: Record<string, number> = {
   Wisconsin: 0.05, Wyoming: 0.04, "District of Columbia": 0.06,
 };
 
+// Mapping from full state name → 2-letter USPS abbreviation (for Avalara API)
+const US_STATE_ABBR: Record<string, string> = {
+  Alabama: "AL", Alaska: "AK", Arizona: "AZ", Arkansas: "AR", California: "CA",
+  Colorado: "CO", Connecticut: "CT", Delaware: "DE", Florida: "FL", Georgia: "GA",
+  Hawaii: "HI", Idaho: "ID", Illinois: "IL", Indiana: "IN", Iowa: "IA",
+  Kansas: "KS", Kentucky: "KY", Louisiana: "LA", Maine: "ME", Maryland: "MD",
+  Massachusetts: "MA", Michigan: "MI", Minnesota: "MN", Mississippi: "MS",
+  Missouri: "MO", Montana: "MT", Nebraska: "NE", Nevada: "NV",
+  "New Hampshire": "NH", "New Jersey": "NJ", "New Mexico": "NM", "New York": "NY",
+  "North Carolina": "NC", "North Dakota": "ND", Ohio: "OH", Oklahoma: "OK",
+  Oregon: "OR", Pennsylvania: "PA", "Rhode Island": "RI", "South Carolina": "SC",
+  "South Dakota": "SD", Tennessee: "TN", Texas: "TX", Utah: "UT",
+  Vermont: "VT", Virginia: "VA", Washington: "WA", "West Virginia": "WV",
+  Wisconsin: "WI", Wyoming: "WY", "District of Columbia": "DC",
+};
+
+/** Returns the 2-letter state abbreviation accepted by Avalara.
+ *  Accepts either a full state name ("California") or an abbreviation ("CA"). */
+const toStateAbbr = (state: string): string => {
+  if (state.length === 2) return state.toUpperCase();
+  return US_STATE_ABBR[state] ?? state.slice(0, 2).toUpperCase();
+};
+
 const isLiveMode = () => {
   const mode = (Deno.env.get("APP_MODE") ?? Deno.env.get("MODE") ?? "dev").toLowerCase();
   return mode === "production" || mode === "prod" || mode === "live";
@@ -120,7 +143,8 @@ const buildAvalaraResponse = async (req: TaxRequest): Promise<TaxResult> => {
   const accountId = Deno.env.get("AVALARA_ACCOUNT_ID");
   const licenseKey = Deno.env.get("AVALARA_LICENSE_KEY");
   const companyCode = Deno.env.get("AVALARA_COMPANY_CODE") ?? "DEFAULT";
-  const environment = Deno.env.get("AVALARA_ENVIRONMENT") ?? "production"; // production | sandbox
+  // Default to 'sandbox' to prevent accidental production API calls when env var is missing
+  const environment = Deno.env.get("AVALARA_ENVIRONMENT") ?? "sandbox";
 
   if (!accountId || !licenseKey) {
     return {
@@ -157,7 +181,7 @@ const buildAvalaraResponse = async (req: TaxRequest): Promise<TaxResult> => {
     country: req.regionCode === "IN" ? "IN" : "US",
   };
   if (req.zipCode) destinationAddress.postalCode = req.zipCode;
-  if (req.customerState) destinationAddress.region = req.customerState.slice(0, 2).toUpperCase();
+  if (req.customerState) destinationAddress.region = toStateAbbr(req.customerState);
   if (req.city) destinationAddress.city = req.city;
 
   const transactionBody = {

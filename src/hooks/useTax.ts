@@ -39,7 +39,8 @@ function calcClientSideTax(
       ? `Sales Tax (${taxPct}% · ${customerState})`
       : `Sales Tax (${taxPct}%)`;
   return {
-    taxAmount: Math.round(subtotal * taxRate),
+    // Round to nearest cent (2 decimal places) for precision
+    taxAmount: Math.round(subtotal * taxRate * 100) / 100,
     taxRate,
     taxLabel,
   };
@@ -109,7 +110,8 @@ export function useTax({ subtotal, regionCode, customerState, zipCode, city }: U
           body: { subtotal, regionCode, customerState, zipCode, city },
         });
         if (!error && data?.success) {
-          setTaxAmount(Math.round(data.taxAmount));
+          // Preserve cents: round to 2 decimal places, not to the nearest dollar
+          setTaxAmount(Math.round(data.taxAmount * 100) / 100);
           setTaxRate(data.taxRate);
           setTaxLabel(data.taxLabel);
           setTransactionId(data.transactionId ?? null);
@@ -125,6 +127,8 @@ export function useTax({ subtotal, regionCode, customerState, zipCode, city }: U
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
+    // supabase is a module-level singleton and does not change between renders;
+    // omitting it from deps is intentional to avoid spurious re-subscriptions.
   }, [subtotal, regionCode, customerState, zipCode, city]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return { taxAmount, taxRate, taxLabel, transactionId, loading, serverCalculated };
