@@ -732,7 +732,11 @@ export type Database = {
           delivery_type: string | null
           id: string
           payment_method: string | null
+          payment_completed_at: string | null
+          payment_mode: string | null
+          payment_provider: string | null
           payment_status: string
+          payment_transaction_id: string | null
           region: string | null
           selected_slot: string | null
           total_amount: number
@@ -749,7 +753,11 @@ export type Database = {
           delivery_type?: string | null
           id?: string
           payment_method?: string | null
+          payment_completed_at?: string | null
+          payment_mode?: string | null
+          payment_provider?: string | null
           payment_status?: string
+          payment_transaction_id?: string | null
           region?: string | null
           selected_slot?: string | null
           total_amount?: number
@@ -766,7 +774,11 @@ export type Database = {
           delivery_type?: string | null
           id?: string
           payment_method?: string | null
+          payment_completed_at?: string | null
+          payment_mode?: string | null
+          payment_provider?: string | null
           payment_status?: string
+          payment_transaction_id?: string | null
           region?: string | null
           selected_slot?: string | null
           total_amount?: number

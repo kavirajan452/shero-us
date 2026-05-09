@@ -16,6 +16,9 @@ const OrderConfirmation = () => {
   const customerPhone = searchParams.get("phone") || "";
   const eventDate = searchParams.get("eventDate") || "";
   const guestCount = parseInt(searchParams.get("guests") || "0");
+  const paymentStatus = searchParams.get("paymentStatus") || "pending";
+  const paymentMode = searchParams.get("paymentMode") || "demo";
+  const transactionId = searchParams.get("transactionId") || "";
 
   const handleShareWhatsApp = () => {
     const message = buildOrderConfirmationMessage({
@@ -78,6 +81,17 @@ const OrderConfirmation = () => {
             <p className="text-sm text-muted-foreground mb-4">
               Order ID: #{orderId}
             </p>
+            <div className="bg-card border border-border rounded-2xl p-4 mb-4 text-left space-y-2">
+              <p className="text-xs text-muted-foreground">
+                Payment: <span className="font-semibold text-foreground">{paymentStatus.toUpperCase()}</span> ({paymentMode})
+              </p>
+              {transactionId && (
+                <p className="text-xs text-muted-foreground break-all">
+                  Transaction ID: <span className="font-medium text-foreground">{transactionId}</span>
+                </p>
+              )}
+              <p className="text-xs text-muted-foreground">Estimated delivery: 35-55 mins based on your selected slot.</p>
+            </div>
 
             {/* Scheduled Delivery Details */}
             <div className="bg-card border border-border rounded-2xl p-4 mb-4 text-left space-y-3">

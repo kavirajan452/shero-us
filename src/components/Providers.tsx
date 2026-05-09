@@ -4,6 +4,7 @@ import { CartProvider } from '@/contexts/CartContext';
 import { RegionProvider } from '@/contexts/RegionContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { WalletProvider } from '@/contexts/WalletContext';
+import { PaymentProvider } from '@/contexts/PaymentContext';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
@@ -21,18 +22,20 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <RegionProvider>
         <AuthProvider>
           <WalletProvider>
-            <CartProvider>
-              <TooltipProvider>
-                <Toaster />
-                <Sonner />
-                <ScrollToTop />
-                <Analytics />
-                <Suspense fallback={<div className="min-h-screen bg-background" />}>
-                  {children}
-                </Suspense>
-                <WhatsAppSupport />
-              </TooltipProvider>
-            </CartProvider>
+            <PaymentProvider>
+              <CartProvider>
+                <TooltipProvider>
+                  <Toaster />
+                  <Sonner />
+                  <ScrollToTop />
+                  <Analytics />
+                  <Suspense fallback={<div className="min-h-screen bg-background" />}>
+                    {children}
+                  </Suspense>
+                  <WhatsAppSupport />
+                </TooltipProvider>
+              </CartProvider>
+            </PaymentProvider>
           </WalletProvider>
         </AuthProvider>
       </RegionProvider>

@@ -1,12 +1,10 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Tag, Heart } from "lucide-react";
-import { ArrowLeft, Minus, Plus, Trash2, MapPin, Phone, User, Clock, Truck, Package, Shield, Wallet, AlertTriangle } from "lucide-react";
+import { Tag, Heart, ArrowLeft, Minus, Plus, Trash2, MapPin, Phone, User, Clock, Truck, Package, Wallet, AlertTriangle, Loader2 } from "lucide-react";
 import CheckoutAuth from "@/components/CheckoutAuth";
 import NonServiceableArea from "@/components/NonServiceableArea";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
-import { Loader2 } from "lucide-react";
 import DemoPaymentModal from "@/components/payments/DemoPaymentModal";
 import StripePaymentForm from "@/components/payments/StripePaymentForm";
 import { useCart } from "@/contexts/CartContext";
@@ -23,13 +21,28 @@ import { supabase } from "@/integrations/supabase/client";
 const DELIVERY_FEE_DEFAULT = 30;
 const TIP_PRESETS_DEFAULT = [5, 10, 15, 20];
 type PaymentMethod = "card" | "apple_pay" | "google_pay" | "ach" | "payment_link";
+type PaymentIntentResponse = {
+  success: boolean;
+  mode: PaymentMode;
+  clientSecret?: string;
+  transactionId?: string;
+};
 
 const Checkout = () => {
   const { items, updateQuantity, removeItem, subtotal, clearCart, totalItems, appliedPromo, promoDiscount, applyPromoCode, removePromoCode, promoLoading } = useCart();
   const [promoInput, setPromoInput] = useState("");
-  const { formatPrice, calcTax, region } = useRegion();
+  const { formatPrice, region } = useRegion();
   const { isLoggedIn, user, profile } = useAuth();
   const { balance, getUsableAmount, spendOnPurchase } = useWallet();
+  const {
+    isProcessing,
+    paymentMode,
+    paymentStatus,
+    setIsProcessing,
+    setPaymentMode,
+    setPaymentStatus,
+    resetPaymentState,
+  } = usePayment();
   const navigate = useNavigate();
   const createOrder = useCreateInstantOrder();
   const saveIncomplete = useSaveIncompleteOrder();
@@ -82,6 +95,10 @@ const Checkout = () => {
   const [city, setCity] = useState("");
   const [customerState, setCustomerState] = useState("");
   const [attempted, setAttempted] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
+  const [stripeClientSecret, setStripeClientSecret] = useState<string | null>(null);
+  const [demoPaymentOpen, setDemoPaymentOpen] = useState(false);
 
   // Auto-check serviceability on mount via GPS (non-blocking)
   useEffect(() => {
@@ -195,62 +212,101 @@ const Checkout = () => {
     return parts.length > 0 ? parts.join(", ") : undefined;
   };
 
-  const handlePaymentSuccess = async (method?: PaymentMethod) => {
-    const createdOrder = await createOrder.mutateAsync({
-      order_code: `SH-INS-${Date.now().toString(36).toUpperCase()}`,
-      customer_id: user?.id ?? null,
-      customer_name: name,
-      customer_phone: phone,
-      customer_address: address,
-      items: items.map(({ item, quantity, selectedAddOns }) => ({
-        name: item.name, qty: quantity, price: item.price, addOns: selectedAddOns.map(a => a.name),
-      })),
-      subtotal,
-      discount: promoDiscount,
-      delivery_fee: deliveryFee,
-      platform_fee: 0,
-      tax,
-      wallet_used: walletUsable,
-      total,
-      note: appliedPromo ? `Promo: ${appliedPromo.code}` : undefined,
-      delivery_type: deliveryType,
-      delivery_slot: selectedSlot,
-      payment_method: method || "online",
-      payment_status: "paid",
-      status: "new",
-      pickup_instructions: buildPickupInstructions(),
-      delivery_instructions: buildDeliveryInstructions(),
-    } as any);
+  const buildOrder = () => ({
+    order_code: `SH-INS-${Date.now().toString(36).toUpperCase()}`,
+    customer_id: user?.id ?? null,
+    customer_name: name,
+    customer_phone: phone,
+    customer_address: address,
+    items: items.map(({ item, quantity, selectedAddOns }) => ({
+      name: item.name, qty: quantity, price: item.price, addOns: selectedAddOns.map(a => a.name),
+    })),
+    subtotal,
+    discount: promoDiscount,
+    delivery_fee: deliveryFee,
+    platform_fee: 0,
+    tax,
+    wallet_used: walletUsable,
+    total,
+    note: appliedPromo ? `Promo: ${appliedPromo.code}` : undefined,
+    delivery_type: deliveryType,
+    delivery_slot: selectedSlot,
+    payment_method: "online" as PaymentMethod,
+    payment_status: "pending",
+    payment_mode: paymentMode,
+    status: "payment_pending",
+    pickup_instructions: buildPickupInstructions(),
+    delivery_instructions: buildDeliveryInstructions(),
+  });
 
-    // In test/dev mode the create-payment-intent edge function may not be deployed.
-    // We attempt to call it, but if it fails we still treat the order as placed
-    // (the order was already written to the DB with status "new" awaiting admin acceptance).
-    try {
-      const { data: paymentData, error: paymentError } = await supabase.functions.invoke("create-payment-intent", {
-        body: { orderId: createdOrder.id, amount: total },
-      });
-      if (!paymentError && paymentData?.paymentIntentId) {
-        await (supabase as any)
-          .from("instant_orders")
-          .update({ payment_intent_id: paymentData.paymentIntentId })
-          .eq("id", createdOrder.id);
-      }
-    } catch {
-      // edge function unavailable in dev — order is still placed
-    }
-
-    if (walletUsable > 0) {
-      spendOnPurchase(walletUsable, subtotalWithFees);
-    }
-    clearCart();
-
+  const navigateToConfirmation = (orderId: string, extraQuery: string) => {
     const slotDay = deliveryDays.find(d => d.index === selectedDay);
     const slotTime = sessionSlots.find(s => s.value === selectedSlot);
     const slotLabel = slotDay && slotTime ? `${slotDay.label}, ${slotDay.date} · ${selectedSession} · ${slotTime.label}` : "";
-    navigate(`/order-confirmation?orderId=${createdOrder.id}&slot=${encodeURIComponent(slotLabel)}`);
+    navigate(`/order-confirmation?orderId=${orderId}&slot=${encodeURIComponent(slotLabel)}${extraQuery}`);
   };
 
-  const handlePaymentFailure = (method: PaymentMethod) => {
+  const startPayment = async () => {
+    setIsProcessing(true);
+    setPaymentError("");
+    setPaymentStatus("processing");
+    try {
+      const createdOrder = await createOrder.mutateAsync(buildOrder() as any);
+      setPendingOrderId(createdOrder.id);
+      const { data, error } = await supabase.functions.invoke("create-payment-intent", {
+        body: { orderId: createdOrder.id, amount: total, currency: "usd" },
+      });
+      if (error || !data?.success) throw new Error(error?.message ?? "Unable to initiate payment.");
+      const paymentData = data as PaymentIntentResponse;
+      setPaymentMode(paymentData.mode);
+
+      if (paymentData.mode === "demo") {
+        setDemoPaymentOpen(true);
+      } else if (paymentData.clientSecret) {
+        setStripeClientSecret(paymentData.clientSecret);
+      } else {
+        throw new Error("Stripe client secret is missing.");
+      }
+    } catch (err) {
+      setPaymentStatus("failed");
+      setPaymentError(err instanceof Error ? err.message : "Payment initiation failed.");
+      setPendingOrderId(null);
+      toast({ title: "Payment failed", description: "Unable to start payment. Please retry." });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const onDemoSuccess = async ({ transactionId }: { success: true; transactionId: string }) => {
+    if (!pendingOrderId) return;
+    await (supabase as any)
+      .from("instant_orders")
+      .update({
+        payment_status: "paid",
+        status: "confirmed",
+        payment_provider: "demo",
+        payment_transaction_id: transactionId,
+        payment_completed_at: new Date().toISOString(),
+      })
+      .eq("id", pendingOrderId);
+    setPaymentStatus("paid");
+    if (walletUsable > 0) spendOnPurchase(walletUsable, subtotalWithFees);
+    clearCart();
+    navigateToConfirmation(
+      pendingOrderId,
+      `&paymentStatus=paid&paymentMode=demo&transactionId=${encodeURIComponent(transactionId)}`
+    );
+  };
+
+  const onDemoFailure = async ({ message }: { success: false; message: string }) => {
+    if (!pendingOrderId) return;
+    await (supabase as any)
+      .from("instant_orders")
+      .update({
+        payment_status: "failed",
+        payment_provider: "demo",
+      })
+      .eq("id", pendingOrderId);
     saveIncomplete.mutate({
       type: "instant",
       customer_name: name,
@@ -261,15 +317,47 @@ const Checkout = () => {
       cart_snapshot: items.map(({ item, quantity, selectedAddOns }) => ({
         id: item.id, name: item.name, price: item.price, quantity, addOns: selectedAddOns,
       })),
-      payment_method: method,
+      payment_method: "card",
       payment_status: "failed",
       total_amount: total,
       region: region.code,
     });
-    toast({
-      title: "Order saved",
-      description: "Your order details have been saved. You can retry payment anytime.",
-    });
+    setPaymentStatus("failed");
+    setPaymentError(message);
+    toast({ title: "Payment failed", description: message });
+  };
+
+  const onStripeSuccess = async ({ paymentIntentId }: { paymentIntentId: string }) => {
+    if (!pendingOrderId) return;
+    await (supabase as any)
+      .from("instant_orders")
+      .update({
+        payment_status: "processing",
+        payment_provider: "stripe",
+        payment_transaction_id: paymentIntentId,
+      })
+      .eq("id", pendingOrderId);
+    setPaymentStatus("processing");
+    if (walletUsable > 0) spendOnPurchase(walletUsable, subtotalWithFees);
+    clearCart();
+    navigateToConfirmation(
+      pendingOrderId,
+      `&paymentStatus=processing&paymentMode=stripe&transactionId=${encodeURIComponent(paymentIntentId)}`
+    );
+  };
+
+  const onStripeFailure = async ({ message }: { message: string }) => {
+    if (!pendingOrderId) return;
+    await (supabase as any)
+      .from("instant_orders")
+      .update({
+        payment_status: "failed",
+        payment_provider: "stripe",
+      })
+      .eq("id", pendingOrderId);
+    setPaymentStatus("failed");
+    setPaymentError(message);
+    toast({ title: "Payment failed", description: message });
   };
 
   if (items.length === 0) {
@@ -705,12 +793,52 @@ const Checkout = () => {
         {!isLoggedIn && <CheckoutAuth />}
 
         {isLoggedIn && canPlaceOrder ? (
-          <PaymentSection
-            total={total}
-            formatPrice={formatPrice}
-            onPaymentSuccess={handlePaymentSuccess}
-            onPaymentFailure={handlePaymentFailure}
-          />
+          <section className="bg-card border border-border rounded-2xl p-5 mb-5 space-y-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="font-semibold text-foreground">Payment</h2>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {paymentMode === "stripe" ? "Secure card payment with Stripe." : "Demo mode payment simulation."}
+                </p>
+              </div>
+              <span className="text-sm font-bold text-primary">{formatPrice(total)}</span>
+            </div>
+            {paymentError && (
+              <p className="text-sm text-destructive">{paymentError}</p>
+            )}
+            {paymentStatus === "paid" && (
+              <p className="text-sm text-accent">Payment successful.</p>
+            )}
+            {!stripeClientSecret && (
+              <button
+                onClick={startPayment}
+                disabled={isProcessing}
+                className="w-full py-4 rounded-2xl bg-gradient-shero text-primary-foreground font-semibold text-lg disabled:opacity-60 shadow-shero hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+              >
+                {isProcessing ? <><Loader2 className="w-4 h-4 animate-spin" /> Processing...</> : `Pay ${formatPrice(total)} & Place Order`}
+              </button>
+            )}
+            {stripeClientSecret && paymentMode === "stripe" && (
+              <StripePaymentForm
+                clientSecret={stripeClientSecret}
+                amount={total}
+                formatPrice={formatPrice}
+                onSuccess={onStripeSuccess}
+                onFailure={onStripeFailure}
+              />
+            )}
+            <DemoPaymentModal
+              open={demoPaymentOpen}
+              amount={total}
+              formatPrice={formatPrice}
+              onOpenChange={(open) => {
+                setDemoPaymentOpen(open);
+                if (!open) resetPaymentState();
+              }}
+              onSuccess={onDemoSuccess}
+              onFailure={onDemoFailure}
+            />
+          </section>
         ) : (
           <>
             <button onClick={() => { if (isLoggedIn) setAttempted(true); }} className="w-full py-4 rounded-2xl bg-gradient-shero text-primary-foreground font-semibold text-lg opacity-70 shadow-shero hover:opacity-80 transition-opacity">
