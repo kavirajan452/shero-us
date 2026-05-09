@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Search, Briefcase, ChevronDown, LocateFixed, Plus, X, Mic, MapPin, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import sheroLogo from "@/assets/shero-logo.png";
@@ -7,7 +7,7 @@ import heroMascot from "@/assets/shero-mascot-cooking.jpeg";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 import { useServiceability } from "@/hooks/useServiceability";
 
-const extractUsZip = (value: string) => {
+const extractUSZip = (value: string) => {
   const match = value.match(/\b\d{5}(?:-\d{4})?\b/);
   return match ? match[0].slice(0, 5) : "";
 };
@@ -55,25 +55,42 @@ const HeroSection = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const updateZipServiceability = useCallback((zip: string) => {
+    if (!hasKitchens) {
+      setZipValidationStatus("idle");
+      return;
+    }
+    setZipValidationStatus(checkByZip(zip) ? "serviceable" : "not_serviceable");
+  }, [hasKitchens, checkByZip]);
+
   const validateZipFromAddress = (value: string) => {
-    const zip = extractUsZip(value);
+    const zip = extractUSZip(value);
     if (!zip) {
       setValidatedZip("");
       setZipValidationStatus("missing_zip");
       return;
     }
     setValidatedZip(zip);
-    if (!hasKitchens) {
-      setZipValidationStatus("idle");
-      return;
-    }
-    setZipValidationStatus(checkByZip(zip) ? "serviceable" : "not_serviceable");
+    updateZipServiceability(zip);
   };
 
   useEffect(() => {
     if (!validatedZip || !hasKitchens) return;
-    setZipValidationStatus(checkByZip(validatedZip) ? "serviceable" : "not_serviceable");
-  }, [validatedZip, hasKitchens, checkByZip]);
+    updateZipServiceability(validatedZip);
+  }, [validatedZip, hasKitchens, updateZipServiceability]);
+
+  const renderZipValidationMessage = () => {
+    if (zipValidationStatus === "serviceable") {
+      return <p className="mt-2 text-xs text-primary">ZIP {validatedZip} is serviceable for delivery.</p>;
+    }
+    if (zipValidationStatus === "not_serviceable") {
+      return <p className="mt-2 text-xs text-destructive">ZIP {validatedZip} is currently outside our delivery area.</p>;
+    }
+    if (zipValidationStatus === "missing_zip") {
+      return <p className="mt-2 text-xs text-muted-foreground">Enter a 5-digit ZIP in the address input before searching.</p>;
+    }
+    return null;
+  };
 
   const handleDetect = () => {
     if (!navigator.geolocation) return;
@@ -249,15 +266,7 @@ const HeroSection = () => {
               <Mic className="w-5 h-5" />
             </button>
           </div>
-          {zipValidationStatus === "serviceable" && (
-            <p className="mt-2 text-xs text-primary">ZIP {validatedZip} is serviceable for delivery.</p>
-          )}
-          {zipValidationStatus === "not_serviceable" && (
-            <p className="mt-2 text-xs text-destructive">ZIP {validatedZip} is currently outside our delivery area.</p>
-          )}
-          {zipValidationStatus === "missing_zip" && (
-            <p className="mt-2 text-xs text-muted-foreground">Enter a 5-digit ZIP in the address input before searching.</p>
-          )}
+          {renderZipValidationMessage()}
         </div>
 
       {/* Right: mascot image */}
@@ -313,15 +322,7 @@ const HeroSection = () => {
             <Mic className="w-5 h-5" />
           </button>
         </div>
-        {zipValidationStatus === "serviceable" && (
-          <p className="mt-2 text-xs text-primary">ZIP {validatedZip} is serviceable for delivery.</p>
-        )}
-        {zipValidationStatus === "not_serviceable" && (
-          <p className="mt-2 text-xs text-destructive">ZIP {validatedZip} is currently outside our delivery area.</p>
-        )}
-        {zipValidationStatus === "missing_zip" && (
-          <p className="mt-2 text-xs text-muted-foreground">Enter a 5-digit ZIP in the address input before searching.</p>
-        )}
+        {renderZipValidationMessage()}
       </div>
     </section>
   );
