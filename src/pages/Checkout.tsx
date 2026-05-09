@@ -73,7 +73,7 @@ const Checkout = () => {
         const cfg = data.value as Record<string, string>;
         if (cfg.deliveryFee) setConfigDeliveryFee(parseFloat(cfg.deliveryFee) || DELIVERY_FEE_DEFAULT);
         if (cfg.tipPresets) {
-          try { setTipPresets(JSON.parse(cfg.tipPresets)); } catch (error) { console.error("Invalid invoice_settings.tipPresets JSON", error); }
+          try { setTipPresets(JSON.parse(cfg.tipPresets)); } catch (error) { console.error("Invalid app_config.invoice_settings.tipPresets JSON", error); }
         }
       }
     });
@@ -240,7 +240,7 @@ const Checkout = () => {
     note: appliedPromo ? `Promo: ${appliedPromo.code}` : undefined,
     delivery_type: deliveryType,
     delivery_slot: selectedSlot,
-    payment_method: "online" as PaymentMethod,
+    payment_method: "card" as PaymentMethod,
     payment_status: "pending",
     payment_mode: paymentMode,
     status: "payment_pending",
