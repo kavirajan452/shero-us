@@ -1234,3 +1234,89 @@ export function useInstantOrderStats() {
     staleTime: 60 * 1000,
   });
 }
+
+// ═══ SEARCH SUGGESTIONS (location-aware) ═══
+export interface SearchSuggestion {
+  label: string;
+  subLabel: string;
+  type: "dish" | "kitchen" | "cuisine" | "category";
+  distance?: number;
+}
+
+export function useSearchSuggestions(query: string, lat?: number | null, lng?: number | null) {
+  return useQuery({
+    queryKey: ["search_suggestions", query, lat, lng],
+    queryFn: async (): Promise<SearchSuggestion[]> => {
+      const q = query.toLowerCase().trim();
+      if (!q) return [];
+
+      const [menuRes, kitchenRes, locRes, radiusRes] = await Promise.all([
+        supabase.from("instant_menu_items").select("name, category, kitchen_id").eq("is_active", true).ilike("name", `%${q}%`).limit(20),
+        supabase.from("kitchen_partners").select("id, name, cuisine, location, latitude, longitude, is_attendance_marked").eq("is_active", true).ilike("name", `%${q}%`).limit(10),
+        supabase.from("kitchen_partner_locations").select("kitchen_id, latitude, longitude").eq("is_active", true),
+        supabase.from("app_config").select("value").eq("key", "kitchen_visibility_radius_km").maybeSingle(),
+      ]);
+
+      const radius = radiusRes.data ? Number(radiusRes.data.value) : 7;
+      const locations = locRes.data || [];
+
+      const results: SearchSuggestion[] = [];
+      const seen = new Set<string>();
+
+      // Kitchen suggestions
+      for (const k of kitchenRes.data || []) {
+        let distance: number | null = null;
+        if (lat && lng) {
+          const kitchenLocs = locations.filter((l: any) => l.kitchen_id === k.id);
+          if (kitchenLocs.length > 0) {
+            const dists = kitchenLocs
+              .filter((l: any) => l.latitude && l.longitude)
+              .map((l: any) => haversineDistance(lat, lng, Number(l.latitude), Number(l.longitude)));
+            distance = dists.length > 0 ? Math.min(...dists) : null;
+          } else if (k.latitude && k.longitude) {
+            distance = haversineDistance(lat, lng, Number(k.latitude), Number(k.longitude));
+          }
+        }
+        if (lat && lng && distance !== null && distance > radius) continue;
+        const key = `kitchen:${k.id}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          results.push({
+            label: k.name,
+            subLabel: (k.cuisine || []).join(", ") || k.location || "Kitchen",
+            type: "kitchen",
+            distance: distance ?? undefined,
+          });
+        }
+      }
+
+      // Dish suggestions (deduplicated by name, filtered to nearby kitchen_ids if location known)
+      const nearbyKitchenIds = lat && lng
+        ? new Set([...(kitchenRes.data || []).map((k: any) => k.id)])
+        : null;
+
+      for (const item of menuRes.data || []) {
+        if (nearbyKitchenIds && !nearbyKitchenIds.has(item.kitchen_id)) continue;
+        const key = `dish:${item.name.toLowerCase()}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          results.push({ label: item.name, subLabel: item.category || "Dish", type: "dish" });
+        }
+      }
+
+      // Category suggestions from menu items
+      for (const item of menuRes.data || []) {
+        if (!item.category) continue;
+        const key = `cat:${item.category.toLowerCase()}`;
+        if (!seen.has(key) && item.category.toLowerCase().includes(q)) {
+          seen.add(key);
+          results.push({ label: item.category, subLabel: "Category", type: "category" });
+        }
+      }
+
+      return results.slice(0, 12);
+    },
+    enabled: query.trim().length >= 1,
+    staleTime: 30 * 1000,
+  });
+}

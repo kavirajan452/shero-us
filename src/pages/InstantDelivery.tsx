@@ -1,12 +1,13 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Search, SlidersHorizontal, Leaf, X, Bike, AlertTriangle, MapPin } from "lucide-react";
+import { Search, SlidersHorizontal, Leaf, X, Bike, TriangleAlert as AlertTriangle, MapPin, LocateFixed } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
 import { useNearbyKitchenPartners, useInstantMenuCategories, useKitchenVisibilityRadius } from "@/hooks/useSupabaseData";
 import { Badge } from "@/components/ui/badge";
 import { useRegion } from "@/contexts/RegionContext";
+import { useLocation as useUserLocation } from "@/contexts/LocationContext";
 
 const sortOptions = ["Relevance", "Distance"];
 
@@ -19,25 +20,38 @@ const InstantDelivery = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showUnavailable, setShowUnavailable] = useState(false);
   const { formatPrice } = useRegion();
+  const { location, isDetecting, detectGPS } = useUserLocation();
 
-  // Customer location
-  const [customerLat, setCustomerLat] = useState<number | null>(null);
-  const [customerLng, setCustomerLng] = useState<number | null>(null);
-  const [locationStatus, setLocationStatus] = useState<"detecting" | "found" | "denied" | "idle">("idle");
+  // Prefer location from context; fall back to coords in URL params; finally auto-detect GPS
+  const paramLat = searchParams.get("lat") ? parseFloat(searchParams.get("lat")!) : null;
+  const paramLng = searchParams.get("lng") ? parseFloat(searchParams.get("lng")!) : null;
+
+  const [gpsFallbackLat, setGpsFallbackLat] = useState<number | null>(null);
+  const [gpsFallbackLng, setGpsFallbackLng] = useState<number | null>(null);
+  const [gpsStatus, setGpsStatus] = useState<"idle" | "detecting" | "found" | "denied">("idle");
 
   useEffect(() => {
+    // Only auto-detect GPS if no location set anywhere
+    if (location.lat || paramLat) return;
     if (!navigator.geolocation) return;
-    setLocationStatus("detecting");
+    setGpsStatus("detecting");
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        setCustomerLat(pos.coords.latitude);
-        setCustomerLng(pos.coords.longitude);
-        setLocationStatus("found");
+        setGpsFallbackLat(pos.coords.latitude);
+        setGpsFallbackLng(pos.coords.longitude);
+        setGpsStatus("found");
       },
-      () => setLocationStatus("denied"),
+      () => setGpsStatus("denied"),
       { enableHighAccuracy: true, timeout: 8000 }
     );
-  }, []);
+  }, [location.lat, paramLat]);
+
+  const customerLat = location.lat ?? paramLat ?? gpsFallbackLat;
+  const customerLng = location.lng ?? paramLng ?? gpsFallbackLng;
+
+  const locationName = location.displayName || (paramLat ? "selected location" : null);
+  const hasKnownLocation = !!(customerLat && customerLng);
+  const showingWithRadius = hasKnownLocation && gpsStatus !== "denied";
 
   const { data: menuCategories } = useInstantMenuCategories();
   const categoryFilters = useMemo(() => ["All", ...(menuCategories || [])], [menuCategories]);
@@ -45,22 +59,34 @@ const InstantDelivery = () => {
 
   const { data: allKitchens, isLoading } = useNearbyKitchenPartners(customerLat, customerLng);
 
-  const livePartners = useMemo(() => (allKitchens || []).filter((k: any) => k.is_attendance_marked), [allKitchens]);
-  const unavailablePartners = useMemo(() => (allKitchens || []).filter((k: any) => !k.is_attendance_marked), [allKitchens]);
+  const livePartners = useMemo(
+    () => (allKitchens || []).filter((k: any) => k.is_attendance_marked),
+    [allKitchens]
+  );
+  const unavailablePartners = useMemo(
+    () => (allKitchens || []).filter((k: any) => !k.is_attendance_marked),
+    [allKitchens]
+  );
 
   const filtered = useMemo(() => {
     let result = livePartners;
     if (search) {
       const q = search.toLowerCase();
-      result = result.filter((k: any) => k.name.toLowerCase().includes(q) || (k.cuisine || []).some((c: string) => c.toLowerCase().includes(q)) || (k.location || "").toLowerCase().includes(q));
+      result = result.filter(
+        (k: any) =>
+          k.name.toLowerCase().includes(q) ||
+          (k.cuisine || []).some((c: string) => c.toLowerCase().includes(q)) ||
+          (k.location || "").toLowerCase().includes(q)
+      );
     }
     if (selectedCategory !== "All") {
-      result = result.filter((k: any) => (k.cuisine || []).some((c: string) => c.toLowerCase() === selectedCategory.toLowerCase()));
+      result = result.filter((k: any) =>
+        (k.cuisine || []).some((c: string) => c.toLowerCase() === selectedCategory.toLowerCase())
+      );
     }
-    if (vegOnly) {
-      result = result.filter((k: any) => k.is_veg);
-    }
-    if (sortBy === "Distance") result = [...result].sort((a: any, b: any) => (a.distance ?? 999) - (b.distance ?? 999));
+    if (vegOnly) result = result.filter((k: any) => k.is_veg);
+    if (sortBy === "Distance")
+      result = [...result].sort((a: any, b: any) => (a.distance ?? 999) - (b.distance ?? 999));
     return result;
   }, [search, selectedCategory, vegOnly, sortBy, livePartners]);
 
@@ -84,23 +110,57 @@ const InstantDelivery = () => {
           <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">
             <Bike className="w-6 h-6 text-primary" />
           </Link>
-          <div>
+          <div className="flex-1 min-w-0">
             <h1 className="text-2xl font-serif font-bold text-foreground">Single Meal Order</h1>
-            <p className="text-sm text-muted-foreground">Choose Menu & Time</p>
+            {locationName ? (
+              <p className="text-sm text-muted-foreground flex items-center gap-1 truncate">
+                <MapPin className="w-3 h-3 text-primary shrink-0" />
+                Showing kitchens near <span className="font-medium text-foreground truncate">{locationName}</span>
+                {location.pincode && <span className="text-muted-foreground">({location.pincode})</span>}
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground">Choose Menu & Time</p>
+            )}
           </div>
+          {!hasKnownLocation && gpsStatus !== "detecting" && (
+            <button
+              onClick={detectGPS}
+              className="flex items-center gap-1.5 text-xs text-primary hover:text-primary/80 transition-colors shrink-0 px-3 py-1.5 rounded-lg border border-primary/30 hover:bg-primary/5"
+            >
+              <LocateFixed className="w-3.5 h-3.5" />
+              Detect location
+            </button>
+          )}
         </div>
 
         <div className="relative mb-4">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search kitchens, cuisines, locations..." className="w-full pl-11 pr-12 py-3 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors" />
-          <button onClick={() => setShowFilters(!showFilters)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-secondary transition-colors">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search kitchens, cuisines, locations..."
+            className="w-full pl-11 pr-12 py-3 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors"
+          />
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-secondary transition-colors"
+          >
             <SlidersHorizontal className="w-4 h-4 text-muted-foreground" />
           </button>
         </div>
 
         <div className="flex gap-2 overflow-x-auto pb-2 mb-2 scrollbar-hide">
           {categoryFilters.map((c) => (
-            <button key={c} onClick={() => setSelectedCategory(c)} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${selectedCategory === c ? "bg-primary text-primary-foreground" : "bg-card border border-border text-foreground hover:border-primary/40"}`}>
+            <button
+              key={c}
+              onClick={() => setSelectedCategory(c)}
+              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                selectedCategory === c
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-card border border-border text-foreground hover:border-primary/40"
+              }`}
+            >
               {c}
             </button>
           ))}
@@ -108,58 +168,98 @@ const InstantDelivery = () => {
 
         {showFilters && (
           <div className="bg-card border border-border rounded-xl p-4 mb-4 flex flex-wrap items-center gap-4 animate-scale-in">
-            <button onClick={() => setVegOnly(!vegOnly)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${vegOnly ? "bg-accent text-accent-foreground" : "bg-secondary text-foreground"}`}>
+            <button
+              onClick={() => setVegOnly(!vegOnly)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                vegOnly ? "bg-accent text-accent-foreground" : "bg-secondary text-foreground"
+              }`}
+            >
               <Leaf className="w-3.5 h-3.5" /> Veg Only
             </button>
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">Sort:</span>
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="text-sm bg-secondary border border-border rounded-lg px-3 py-1.5 text-foreground outline-none">
-                {sortOptions.map((s) => <option key={s}>{s}</option>)}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="text-sm bg-secondary border border-border rounded-lg px-3 py-1.5 text-foreground outline-none"
+              >
+                {sortOptions.map((s) => (
+                  <option key={s}>{s}</option>
+                ))}
               </select>
             </div>
             {(vegOnly || selectedCategory !== "All") && (
-              <button onClick={() => { setVegOnly(false); setSelectedCategory("All"); }} className="flex items-center gap-1 text-xs text-destructive hover:underline">
+              <button
+                onClick={() => { setVegOnly(false); setSelectedCategory("All"); }}
+                className="flex items-center gap-1 text-xs text-destructive hover:underline"
+              >
                 <X className="w-3 h-3" /> Clear Filters
               </button>
             )}
           </div>
         )}
 
-        {locationStatus === "detecting" && (
+        {/* Location status messages */}
+        {(isDetecting || gpsStatus === "detecting") && (
           <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
             <MapPin className="w-3 h-3 animate-pulse text-primary" /> Detecting your location...
           </div>
         )}
-        {locationStatus === "found" && (
+        {showingWithRadius && !(isDetecting || gpsStatus === "detecting") && (
           <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-            <MapPin className="w-3 h-3 text-primary" /> Showing kitchens within <strong className="text-foreground">{radiusKm || 7} km</strong> of your location
+            <MapPin className="w-3 h-3 text-primary" />
+            Showing kitchens within{" "}
+            <strong className="text-foreground">{radiusKm || 7} km</strong>
+            {locationName && <> of <span className="font-medium text-foreground">{locationName}</span></>}
           </div>
         )}
-        {locationStatus === "denied" && (
+        {gpsStatus === "denied" && !location.lat && (
           <div className="flex items-center gap-2 text-xs text-destructive mb-2">
             <MapPin className="w-3 h-3" /> Location access denied — showing all kitchens
           </div>
         )}
 
-        <p className="text-sm text-muted-foreground mb-4">{filtered.length} live kitchen{filtered.length !== 1 ? "s" : ""} available now</p>
+        <p className="text-sm text-muted-foreground mb-4">
+          {filtered.length} live kitchen{filtered.length !== 1 ? "s" : ""} available now
+        </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((kitchen: any) => (
-            <Link key={kitchen.id} to={`/instant-delivery/kitchen/${kitchen.id}`} className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300">
+            <Link
+              key={kitchen.id}
+              to={`/instant-delivery/kitchen/${kitchen.id}`}
+              className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all duration-300"
+            >
               <div className="relative h-44 overflow-hidden">
-                <img src={kitchen.image} alt={kitchen.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                {kitchen.is_branded && <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs">Shero Branded</Badge>}
-                <Badge className="absolute top-3 right-3 bg-accent/90 text-accent-foreground text-[10px]">🟢 Live</Badge>
+                <img
+                  src={kitchen.image}
+                  alt={kitchen.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                {kitchen.is_branded && (
+                  <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs">
+                    Shero Branded
+                  </Badge>
+                )}
+                <Badge className="absolute top-3 right-3 bg-accent/90 text-accent-foreground text-[10px]">
+                  🟢 Live
+                </Badge>
                 {kitchen.distance != null && (
                   <div className="absolute bottom-3 right-3 bg-card/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
                     <MapPin className="w-3 h-3 text-primary" />
-                    <span className="text-xs font-medium text-foreground">{kitchen.distance.toFixed(1)} km</span>
+                    <span className="text-xs font-medium text-foreground">
+                      {kitchen.distance.toFixed(1)} km
+                    </span>
                   </div>
                 )}
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{kitchen.name}</h3>
-                <p className="text-xs text-muted-foreground">{(kitchen.cuisine || []).join(" • ")} — {kitchen.location}</p>
+                <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
+                  {kitchen.name}
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  {(kitchen.cuisine || []).join(" • ")} — {kitchen.location}
+                </p>
               </div>
             </Link>
           ))}
@@ -167,27 +267,50 @@ const InstantDelivery = () => {
 
         {filtered.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-lg text-muted-foreground">No live kitchens found. Try adjusting your filters.</p>
+            <p className="text-lg text-muted-foreground">
+              No live kitchens found. Try adjusting your filters or{" "}
+              <button
+                onClick={detectGPS}
+                className="text-primary hover:underline"
+              >
+                update your location
+              </button>
+              .
+            </p>
           </div>
         )}
 
         {unavailablePartners.length > 0 && (
           <div className="mt-8">
-            <button onClick={() => setShowUnavailable(!showUnavailable)} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-3">
+            <button
+              onClick={() => setShowUnavailable(!showUnavailable)}
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-3"
+            >
               <AlertTriangle className="w-4 h-4" />
               {showUnavailable ? "Hide" : "Show"} unavailable kitchens ({unavailablePartners.length})
             </button>
             {showUnavailable && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 opacity-50">
                 {unavailablePartners.map((kitchen: any) => (
-                  <div key={kitchen.id} className="bg-card border border-border rounded-2xl overflow-hidden">
+                  <div
+                    key={kitchen.id}
+                    className="bg-card border border-border rounded-2xl overflow-hidden"
+                  >
                     <div className="relative h-44 overflow-hidden">
-                      <img src={kitchen.image} alt={kitchen.name} className="w-full h-full object-cover grayscale" />
-                      <Badge variant="destructive" className="absolute top-3 right-3 text-[10px]">Closed Today</Badge>
+                      <img
+                        src={kitchen.image}
+                        alt={kitchen.name}
+                        className="w-full h-full object-cover grayscale"
+                      />
+                      <Badge variant="destructive" className="absolute top-3 right-3 text-[10px]">
+                        Closed Today
+                      </Badge>
                     </div>
                     <div className="p-4">
                       <h3 className="font-semibold text-foreground mb-1">{kitchen.name}</h3>
-                      <p className="text-xs text-muted-foreground">{(kitchen.cuisine || []).join(" • ")} — {kitchen.location}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {(kitchen.cuisine || []).join(" • ")} — {kitchen.location}
+                      </p>
                     </div>
                   </div>
                 ))}
