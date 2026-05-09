@@ -163,6 +163,8 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-supabase-anon-key
 NEXT_PUBLIC_APP_MODE=dev
 NEXT_PUBLIC_DEV_LOGIN_PASSWORD=123456
+NEXT_PUBLIC_EMAIL_MODE=demo              # demo | smtp
+NEXT_PUBLIC_ADMIN_ALERT_EMAILS=ops@shero.com,admin@shero.com
 ```
 
 > **Note:** The old Vite variable names (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_DEV_LOGIN_PASSWORD`) are no longer used. Use the `NEXT_PUBLIC_` prefix instead. Using `import.meta.env` (Vite-specific) will crash Next.js during SSR — always use `process.env.NEXT_PUBLIC_*` in this project.
@@ -176,6 +178,13 @@ SMS_INTEGRA_API_KEY=...
 SMS_INTEGRA_SENDER_ID=SHERO
 STRIPE_SECRET_KEY=...                # required in production for payment intent
 STRIPE_CURRENCY=usd
+EMAIL_MODE=demo                      # demo | smtp
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASSWORD=
+SMTP_FROM_EMAIL=
+SMTP_FROM_NAME=Shero
 ```
 
 ---

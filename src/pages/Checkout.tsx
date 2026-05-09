@@ -17,9 +17,16 @@ import { useServiceability } from "@/hooks/useServiceability";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  sendHighValueAdminAlert,
+  sendOrderConfirmationNotification,
+  sendPaymentFailureAdminAlert,
+  sendPaymentFailureNotification,
+} from "@/services/emailService";
 
 const DELIVERY_FEE_DEFAULT = 30;
 const TIP_PRESETS_DEFAULT = [5, 10, 15, 20];
+const HIGH_VALUE_ORDER_ALERT_THRESHOLD = 100;
 
 const Checkout = () => {
   const { items, updateQuantity, removeItem, subtotal, clearCart, totalItems, appliedPromo, promoDiscount, applyPromoCode, removePromoCode, promoLoading } = useCart();
@@ -180,6 +187,11 @@ const Checkout = () => {
   }, [addressQuery]);
 
   const { toast } = useToast();
+  const customerEmail = (user?.email ?? "").trim();
+  const adminRecipients = (process.env.NEXT_PUBLIC_ADMIN_ALERT_EMAILS ?? "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
 
   const buildPickupInstructions = () => {
     const parts = [...pickupChips];
@@ -193,6 +205,10 @@ const Checkout = () => {
   };
 
   const handlePaymentSuccess = async (method?: PaymentMethod) => {
+    const slotDay = deliveryDays.find(d => d.index === selectedDay);
+    const slotTime = sessionSlots.find(s => s.value === selectedSlot);
+    const slotLabel = slotDay && slotTime ? `${slotDay.label}, ${slotDay.date} · ${selectedSession} · ${slotTime.label}` : "";
+
     const createdOrder = await createOrder.mutateAsync({
       order_code: `SH-INS-${Date.now().toString(36).toUpperCase()}`,
       customer_id: user?.id ?? null,
@@ -236,18 +252,40 @@ const Checkout = () => {
       // edge function unavailable in dev — order is still placed
     }
 
+    if (customerEmail) {
+      void sendOrderConfirmationNotification({
+        recipient: customerEmail,
+        customerName: name,
+        orderId: createdOrder.id,
+        items: items.map(({ item, quantity }) => ({ name: item.name, qty: quantity, price: item.price })),
+        total,
+        deliveryAddress: address,
+        deliveryEta: slotLabel || "Scheduled",
+        supportContact: "support@shero.com",
+      });
+    }
+
+    if (total >= HIGH_VALUE_ORDER_ALERT_THRESHOLD && adminRecipients.length > 0) {
+      for (const adminRecipient of adminRecipients) {
+        void sendHighValueAdminAlert({
+          recipient: adminRecipient,
+          customerName: name,
+          orderId: createdOrder.id,
+          total,
+        });
+      }
+    }
+
     if (walletUsable > 0) {
       spendOnPurchase(walletUsable, subtotalWithFees);
     }
     clearCart();
-
-    const slotDay = deliveryDays.find(d => d.index === selectedDay);
-    const slotTime = sessionSlots.find(s => s.value === selectedSlot);
-    const slotLabel = slotDay && slotTime ? `${slotDay.label}, ${slotDay.date} · ${selectedSession} · ${slotTime.label}` : "";
     navigate(`/order-confirmation?orderId=${createdOrder.id}&slot=${encodeURIComponent(slotLabel)}`);
   };
 
   const handlePaymentFailure = (method: PaymentMethod) => {
+    const fallbackOrderId = `TEMP-${Date.now().toString(36).toUpperCase()}`;
+
     saveIncomplete.mutate({
       type: "instant",
       customer_name: name,
@@ -263,6 +301,28 @@ const Checkout = () => {
       total_amount: total,
       region: region.code,
     });
+
+    if (customerEmail) {
+      void sendPaymentFailureNotification({
+        recipient: customerEmail,
+        customerName: name || "Customer",
+        orderId: fallbackOrderId,
+        paymentRetryLink: "https://www.shero.us/checkout",
+        supportContact: "support@shero.com",
+      });
+    }
+
+    if (adminRecipients.length > 0) {
+      for (const adminRecipient of adminRecipients) {
+        void sendPaymentFailureAdminAlert({
+          recipient: adminRecipient,
+          customerName: name || "Customer",
+          orderId: fallbackOrderId,
+          total,
+        });
+      }
+    }
+
     toast({
       title: "Order saved",
       description: "Your order details have been saved. You can retry payment anytime.",
