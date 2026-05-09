@@ -20,6 +20,7 @@ import heroMascot from "@/assets/shero-mascot-cooking.jpeg";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 import { useServiceability } from "@/hooks/useServiceability";
 import { useLocation as useLocationCtx } from "@/contexts/LocationContext";
+import { useRegion } from "@/contexts/RegionContext";
 import {
   Dialog,
   DialogContent,
@@ -36,6 +37,9 @@ const HeroSection = () => {
   // Global location / serviceability state
   const locationCtx = useLocationCtx();
   const { checkByZip, detectAndCheck, hasKitchens } = useServiceability();
+  const { regionCode } = useRegion();
+  // US ZIP codes are 5 digits; Indian pincodes are 6 digits
+  const zipLength = regionCode === "IN" ? 6 : 5;
 
   // Local UI state
   const [showDropdown, setShowDropdown] = useState(false);
@@ -94,7 +98,7 @@ const HeroSection = () => {
   // ZIP check
   const handleZipCheck = () => {
     const zip = zipInput.trim();
-    if (zip.length < 5) return;
+    if (zip.length < zipLength) return;
     const serviceable = checkByZip(zip);
     locationCtx.setZip(zip);
     locationCtx.setStatus(serviceable ? "serviceable" : "not_serviceable");
@@ -222,12 +226,12 @@ const HeroSection = () => {
               inputMode="numeric"
               pattern="[0-9]*"
               value={zipInput}
-              onChange={(e) => setZipInput(e.target.value.replace(/\D/g, "").slice(0, 5))}
+              onChange={(e) => setZipInput(e.target.value.replace(/\D/g, "").slice(0, zipLength))}
               onKeyDown={(e) => e.key === "Enter" && handleZipCheck()}
-              placeholder="e.g. 10001"
+              placeholder={regionCode === "IN" ? "e.g. 600001" : "e.g. 10001"}
               className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors"
               autoFocus
-              maxLength={5}
+              maxLength={zipLength}
             />
             <button
               onClick={() => { setShowZipInput(false); setZipInput(""); }}
@@ -238,7 +242,7 @@ const HeroSection = () => {
           </div>
           <button
             onClick={handleZipCheck}
-            disabled={zipInput.length < 5}
+            disabled={zipInput.length < zipLength}
             className="w-full text-xs font-medium bg-primary text-primary-foreground rounded-lg py-2 hover:bg-primary/90 transition-colors disabled:opacity-40"
           >
             Check Availability
