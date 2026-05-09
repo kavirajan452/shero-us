@@ -150,6 +150,7 @@ npm run dev
 | `subscription_plans`, `subscription_customers` | Subscriptions |
 | `cookery_classes`, `shero_classes`, `service_items` | Classes & Services |
 | `invoices`, `ledger_entries`, `wallet_transactions` | Finance |
+| `tax_calculations` | Avalara tax audit log (all tax queries, dev + production) |
 | `customer_referrals`, `area_leads` | Growth |
 
 ---
@@ -167,16 +168,28 @@ NEXT_PUBLIC_DEV_LOGIN_PASSWORD=123456
 
 > **Note:** The old Vite variable names (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_DEV_LOGIN_PASSWORD`) are no longer used. Use the `NEXT_PUBLIC_` prefix instead. Using `import.meta.env` (Vite-specific) will crash Next.js during SSR — always use `process.env.NEXT_PUBLIC_*` in this project.
 
-For Supabase Edge Functions (OTP + payment mode switching), configure runtime env vars in Supabase:
+For Supabase Edge Functions (OTP + payment mode switching + tax), configure runtime env vars in Supabase:
 
 ```env
 APP_MODE=dev                         # dev | production
+
+# SMS OTP
 SMS_INTEGRA_API_URL=https://...      # required in production for OTP SMS
 SMS_INTEGRA_API_KEY=...
 SMS_INTEGRA_SENDER_ID=SHERO
+
+# Payment (Stripe)
 STRIPE_SECRET_KEY=...                # required in production for payment intent
 STRIPE_CURRENCY=usd
+
+# Tax (Avalara AvaTax) — required in production; demo mode works without these
+AVALARA_ACCOUNT_ID=...               # Avalara account number
+AVALARA_LICENSE_KEY=...              # Avalara license key
+AVALARA_COMPANY_CODE=DEFAULT         # company code set up in Avalara admin
+AVALARA_ENVIRONMENT=production       # production | sandbox
 ```
+
+> **Demo / dev mode:** When `APP_MODE` is `dev` (the default), all three edge functions — `create-payment-intent`, `send-otp`, and `calculate-tax` — return simulated responses without calling any real external API. The tax function uses the built-in US state-level rates table and returns a dummy `transactionId` prefixed with `avlr_sim_`. All results are logged to the `tax_calculations` table in Supabase for audit purposes.
 
 ---
 

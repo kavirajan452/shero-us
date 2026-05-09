@@ -14,6 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useWallet } from "@/contexts/WalletContext";
 import { useCreateInstantOrder, useSaveIncompleteOrder } from "@/hooks/useSupabaseData";
 import { useServiceability } from "@/hooks/useServiceability";
+import { useTax } from "@/hooks/useTax";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,7 +25,7 @@ const TIP_PRESETS_DEFAULT = [5, 10, 15, 20];
 const Checkout = () => {
   const { items, updateQuantity, removeItem, subtotal, clearCart, totalItems, appliedPromo, promoDiscount, applyPromoCode, removePromoCode, promoLoading } = useCart();
   const [promoInput, setPromoInput] = useState("");
-  const { formatPrice, calcTax, region } = useRegion();
+  const { formatPrice, region } = useRegion();
   const { isLoggedIn, user, profile } = useAuth();
   const { balance, getUsableAmount, spendOnPurchase } = useWallet();
   const navigate = useNavigate();
@@ -103,29 +104,16 @@ const Checkout = () => {
     }
   }, [zipCode, hasKitchens, checkByZip]);
 
-  // US state sales tax rates
-  const STATE_TAX_RATES: Record<string, number> = {
-    "Alabama": 0.04, "Alaska": 0, "Arizona": 0.056, "Arkansas": 0.065, "California": 0.0725,
-    "Colorado": 0.029, "Connecticut": 0.0635, "Delaware": 0, "Florida": 0.06, "Georgia": 0.04,
-    "Hawaii": 0.04, "Idaho": 0.06, "Illinois": 0.0625, "Indiana": 0.07, "Iowa": 0.06,
-    "Kansas": 0.065, "Kentucky": 0.06, "Louisiana": 0.0445, "Maine": 0.055, "Maryland": 0.06,
-    "Massachusetts": 0.0625, "Michigan": 0.06, "Minnesota": 0.06875, "Mississippi": 0.07,
-    "Missouri": 0.04225, "Montana": 0, "Nebraska": 0.055, "Nevada": 0.0685, "New Hampshire": 0,
-    "New Jersey": 0.06625, "New Mexico": 0.05125, "New York": 0.04, "North Carolina": 0.0475,
-    "North Dakota": 0.05, "Ohio": 0.0575, "Oklahoma": 0.045, "Oregon": 0, "Pennsylvania": 0.06,
-    "Rhode Island": 0.07, "South Carolina": 0.06, "South Dakota": 0.042, "Tennessee": 0.07,
-    "Texas": 0.0625, "Utah": 0.061, "Vermont": 0.06, "Virginia": 0.053, "Washington": 0.065,
-    "West Virginia": 0.06, "Wisconsin": 0.05, "Wyoming": 0.04, "District of Columbia": 0.06,
-  };
-
-  const localTaxRate = customerState && STATE_TAX_RATES[customerState] !== undefined
-    ? STATE_TAX_RATES[customerState] : region.taxRate;
-  const localTaxLabel = customerState
-    ? `Sales Tax (${(localTaxRate * 100).toFixed(2)}% · ${customerState})`
-    : region.taxLabel;
+  // --- Tax calculation via Avalara edge function (demo mode: simulated; production: real API) ---
+  const { taxAmount: tax, taxLabel: localTaxLabel, loading: taxLoading } = useTax({
+    subtotal: subtotal - promoDiscount,
+    regionCode: region.code,
+    customerState: customerState || undefined,
+    zipCode: zipCode || undefined,
+    city: city || undefined,
+  });
 
   const deliveryFee = isSnacksOnly ? (subtotal >= 50 ? 0 : 5) : configDeliveryFee;
-  const tax = Math.round((subtotal - promoDiscount) * localTaxRate);
   const subtotalWithFees = subtotal - promoDiscount + deliveryFee + tax + tipAmount;
   const walletUsable = useWalletBalance ? getUsableAmount(subtotalWithFees) : 0;
   const total = subtotalWithFees - walletUsable;
@@ -666,7 +654,7 @@ const Checkout = () => {
             )}
             <div className="flex justify-between"><span className="text-muted-foreground">Delivery Fee</span><span className="text-foreground">{deliveryFee === 0 ? "Free" : formatPrice(deliveryFee)}</span></div>
             
-            <div className="flex justify-between"><span className="text-muted-foreground">{localTaxLabel}</span><span className="text-foreground">{formatPrice(tax)}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">{localTaxLabel}</span><span className="text-foreground">{taxLoading ? <span className="text-xs text-muted-foreground animate-pulse">Calculating…</span> : formatPrice(tax)}</span></div>
             {tipAmount > 0 && (
               <div className="flex justify-between text-primary">
                 <span className="flex items-center gap-1"><Heart className="w-3 h-3" /> Tip</span>
