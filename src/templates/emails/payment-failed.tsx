@@ -8,10 +8,21 @@ const escapeHtml = (value: string) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
+const DEFAULT_RETRY_LINK = "https://www.shero.us/checkout";
+const getSafeRetryLink = (value?: string) => {
+  try {
+    const parsed = new URL(value || DEFAULT_RETRY_LINK);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return DEFAULT_RETRY_LINK;
+    return parsed.toString();
+  } catch {
+    return DEFAULT_RETRY_LINK;
+  }
+};
+
 export const renderPaymentFailedEmail = (payload: EmailPayload) => {
   const customerName = escapeHtml(payload.customerName || "Customer");
   const orderId = escapeHtml(payload.orderId || "-");
-  const retryLink = escapeHtml(encodeURI(payload.paymentRetryLink || "https://www.shero.us/checkout"));
+  const retryLink = escapeHtml(getSafeRetryLink(payload.paymentRetryLink));
   const supportContact = escapeHtml(payload.supportContact || "support@shero.com");
 
   return `

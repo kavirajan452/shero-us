@@ -253,6 +253,7 @@ const Checkout = () => {
     }
 
     if (customerEmail) {
+      // Non-blocking email dispatch; checkout success should not depend on email delivery.
       void sendOrderConfirmationNotification({
         recipient: customerEmail,
         customerName: name,
@@ -266,6 +267,7 @@ const Checkout = () => {
     }
 
     if (total >= HIGH_VALUE_ORDER_ALERT_THRESHOLD && ADMIN_ALERT_RECIPIENTS.length > 0) {
+      // Non-blocking admin notifications; user checkout flow must continue even if alert email fails.
       void Promise.all(ADMIN_ALERT_RECIPIENTS.map((adminRecipient) =>
         sendHighValueAdminAlert({
           recipient: adminRecipient,
@@ -303,6 +305,7 @@ const Checkout = () => {
     });
 
     if (customerEmail) {
+      // Non-blocking email dispatch for payment retry guidance.
       void sendPaymentFailureNotification({
         recipient: customerEmail,
         customerName: name || "Customer",
@@ -313,6 +316,7 @@ const Checkout = () => {
     }
 
     if (ADMIN_ALERT_RECIPIENTS.length > 0) {
+      // Non-blocking admin alerts for payment failures.
       void Promise.all(ADMIN_ALERT_RECIPIENTS.map((adminRecipient) =>
         sendPaymentFailureAdminAlert({
           recipient: adminRecipient,

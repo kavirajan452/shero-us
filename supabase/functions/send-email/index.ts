@@ -58,6 +58,17 @@ const renderItems = (items: EmailPayload["items"] = []) =>
     })
     .join("");
 
+const DEFAULT_RETRY_LINK = "https://www.shero.us/checkout";
+const toSafeRetryLink = (value?: string) => {
+  try {
+    const parsed = new URL(value || DEFAULT_RETRY_LINK);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return DEFAULT_RETRY_LINK;
+    return parsed.toString();
+  } catch {
+    return DEFAULT_RETRY_LINK;
+  }
+};
+
 const renderTemplate = (type: string, payload: EmailPayload = {}) => {
   const customerName = escapeHtml(payload.customerName || "Customer");
   const orderId = escapeHtml(payload.orderId || "-");
@@ -65,7 +76,7 @@ const renderTemplate = (type: string, payload: EmailPayload = {}) => {
   const deliveryAddress = escapeHtml(payload.deliveryAddress || "-");
   const deliveryEta = escapeHtml(payload.deliveryEta || "We'll share an ETA soon.");
   const supportContact = escapeHtml(payload.supportContact || "support@shero.com");
-  const paymentRetryLink = encodeURI(escapeHtml(payload.paymentRetryLink || "https://www.shero.us/checkout"));
+  const paymentRetryLink = escapeHtml(toSafeRetryLink(payload.paymentRetryLink));
   const courierName = escapeHtml(payload.courierName || "Shero delivery partner");
   const trackingStatus = escapeHtml(payload.trackingStatus || "Out for delivery");
 
@@ -151,14 +162,18 @@ const logNotification = async (params: {
 
 const sendWithSmtp = async (recipient: string, subject: string, html: string) => {
   const host = Deno.env.get("SMTP_HOST");
-  const port = Number(Deno.env.get("SMTP_PORT") ?? "587");
+  const portRaw = Deno.env.get("SMTP_PORT") ?? "587";
+  const port = Number(portRaw);
   const user = Deno.env.get("SMTP_USER");
   const pass = Deno.env.get("SMTP_PASSWORD");
   const fromEmail = Deno.env.get("SMTP_FROM_EMAIL");
   const fromName = Deno.env.get("SMTP_FROM_NAME") ?? "Shero";
 
-  if (!host || !port || !user || !pass || !fromEmail) {
+  if (!host || !user || !pass || !fromEmail) {
     throw new Error("SMTP configuration is incomplete");
+  }
+  if (!Number.isFinite(port) || port <= 0) {
+    throw new Error(`Invalid SMTP_PORT: ${portRaw}`);
   }
 
   const transporter = nodemailer.createTransport({
@@ -196,7 +211,7 @@ Deno.serve(async (req) => {
     const type = body?.type?.trim() || "";
     const recipient = body?.recipient?.trim() || "";
 
-    if (!type || !(type in EMAIL_SUBJECTS)) {
+    if (!type || !Object.hasOwn(EMAIL_SUBJECTS, type)) {
       return new Response(JSON.stringify({ success: false, error: "Invalid notification type" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
