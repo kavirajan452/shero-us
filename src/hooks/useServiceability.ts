@@ -93,21 +93,22 @@ export function useServiceability() {
       setCustomerCoords({ lat: latitude, lng: longitude });
 
       // Reverse geocode for display
+      let loc = "Your location";
       try {
         const res = await fetch(
           `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
         );
         const data = await res.json();
-        const loc =
+        loc =
           data.address?.suburb ||
           data.address?.neighbourhood ||
           data.address?.city ||
           data.address?.state ||
           "Your location";
-        setDetectedLocation(loc);
       } catch {
-        setDetectedLocation("Your location");
+        // keep default
       }
+      setDetectedLocation(loc);
 
       const result = checkServiceability(latitude, longitude);
       setGeoChecking(false);
@@ -115,7 +116,7 @@ export function useServiceability() {
         serviceable: result.serviceable,
         nearestKitchenMiles: result.nearestMiles,
         checking: false,
-        detectedLocation: detectedLocation,
+        detectedLocation: loc,
         customerCoords: { lat: latitude, lng: longitude },
       };
     } catch {
@@ -129,7 +130,7 @@ export function useServiceability() {
         customerCoords: null,
       };
     }
-  }, [checkServiceability, detectedLocation]);
+  }, [checkServiceability]);
 
   // Check by ZIP code — match against partner location pincodes
   const checkByZip = useCallback(

@@ -52,7 +52,8 @@ const HeroSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [listening, setListening] = useState(false);
   const [showWaitlist, setShowWaitlist] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRefDesktop = useRef<HTMLDivElement>(null);
+  const dropdownRefMobile = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
 
   const [langSet, setLangSet] = useState(false);
@@ -67,7 +68,10 @@ const HeroSection = () => {
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      const insideDesktop = dropdownRefDesktop.current?.contains(target);
+      const insideMobile = dropdownRefMobile.current?.contains(target);
+      if (!insideDesktop && !insideMobile) {
         setShowDropdown(false);
         setShowManual(false);
         setShowZipInput(false);
@@ -357,7 +361,7 @@ const HeroSection = () => {
           {/* Desktop search bar */}
           <div className="mt-5 max-w-[520px]">
             <div className="bg-card rounded-2xl p-2.5 flex items-center gap-2 shadow-lg border border-border">
-              <div className="relative" ref={dropdownRef}>
+              <div className="relative" ref={dropdownRefDesktop}>
                 <button
                   onClick={() => setShowDropdown(!showDropdown)}
                   className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-secondary shrink-0"
@@ -368,7 +372,6 @@ const HeroSection = () => {
                 </button>
                 {showDropdown && renderLocationDropdown()}
               </div>
-              <div className="h-5 w-px bg-border" />
               <Search className="w-4 h-4 text-muted-foreground/40 shrink-0 ml-1" />
               <input
                 type="text"
@@ -405,7 +408,7 @@ const HeroSection = () => {
       {/* === MOBILE search bar (below hero) === */}
       <div className="md:hidden container mx-auto px-4 -mt-6 relative z-20">
         <div className="bg-card rounded-2xl p-2.5 flex items-center gap-2 shadow-lg border border-border">
-          <div className="relative" ref={dropdownRef}>
+          <div className="relative" ref={dropdownRefMobile}>
             <button
               onClick={() => setShowDropdown(!showDropdown)}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-secondary shrink-0"
