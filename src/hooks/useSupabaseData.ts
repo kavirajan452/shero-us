@@ -4,6 +4,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
+import { normalizeZip } from "@/lib/customerLocation";
 
 // ── Helper: subscribe to realtime changes on a table ──
 function useRealtimeSubscription(table: string, queryKeys: string[]) {
@@ -738,7 +739,7 @@ export function useNearbyKitchenPartners(customerLat?: number | null, customerLn
       const kitchens = kitchenRes.data || [];
       const locations = locRes.data || [];
       const radius = radiusKm || 7;
-      const normalizedZip = (customerZip || "").replace(/\D/g, "").slice(0, 5);
+      const normalizedZip = normalizeZip(customerZip || "");
 
       const kitchenWithMeta = kitchens.map((k: any) => {
         let distance: number | null = null;
@@ -754,7 +755,7 @@ export function useNearbyKitchenPartners(customerLat?: number | null, customerLn
           }
 
           zipMatch = normalizedZip
-            ? kitchenLocs.some((l: any) => String(l.pincode || "").replace(/\D/g, "").slice(0, 5) === normalizedZip)
+            ? kitchenLocs.some((l: any) => normalizeZip(String(l.pincode || "")) === normalizedZip)
             : false;
         } else {
           if (customerLat != null && customerLng != null && k.latitude && k.longitude) {
@@ -762,7 +763,7 @@ export function useNearbyKitchenPartners(customerLat?: number | null, customerLn
           }
 
           zipMatch = normalizedZip
-            ? String(k.pincode || "").replace(/\D/g, "").slice(0, 5) === normalizedZip
+            ? normalizeZip(String(k.pincode || "")) === normalizedZip
             : false;
         }
 
