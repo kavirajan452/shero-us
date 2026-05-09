@@ -8,7 +8,7 @@ import { useNearbyKitchenPartners, useInstantMenuCategories, useKitchenVisibilit
 import { Badge } from "@/components/ui/badge";
 import { useRegion } from "@/contexts/RegionContext";
 import { useCustomerLocation } from "@/contexts/CustomerLocationContext";
-import { applyLocationToSearchParams, getLocationSummary, normalizeZip, readLocationFromSearchParams } from "@/lib/customerLocation";
+import { applyLocationToSearchParams, getLocationSummary, isValidZip, normalizeZip, readLocationFromSearchParams } from "@/lib/customerLocation";
 import { trackEvent } from "@/lib/analyticsEvents";
 
 const sortOptions = ["Relevance", "Distance"];
@@ -51,7 +51,7 @@ const InstantDelivery = () => {
     const urlZipRaw = searchParams.get("locZip");
     const hasUrlLocation = !!(fromUrl.method || fromUrl.label || fromUrl.zip || fromUrl.lat != null || fromUrl.lng != null);
 
-    if (urlZipRaw && normalizeZip(urlZipRaw).length !== 5) {
+    if (urlZipRaw && !isValidZip(urlZipRaw)) {
       setLocationStatus("invalid_zip");
     }
 
@@ -327,7 +327,7 @@ const InstantDelivery = () => {
   const handleZipSave = () => {
     const normalized = normalizeZip(zipInput);
 
-    if (!/^\d{5}$/.test(normalized)) {
+    if (!isValidZip(normalized)) {
       setLocationStatus("invalid_zip");
       setLocationError("Please enter a valid 5-digit ZIP code.");
       return;

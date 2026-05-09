@@ -6,7 +6,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import heroMascot from "@/assets/shero-mascot-cooking.jpeg";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
 import { useCustomerLocation } from "@/contexts/CustomerLocationContext";
-import { applyLocationToSearchParams, getLocationSummary, normalizeZip } from "@/lib/customerLocation";
+import { applyLocationToSearchParams, getLocationSummary, isValidZip, normalizeZip } from "@/lib/customerLocation";
 import { trackEvent } from "@/lib/analyticsEvents";
 
 type SpeechRecognitionAlternative = { transcript: string };
@@ -222,7 +222,7 @@ const HeroSection = () => {
 
   const handleZipSave = () => {
     const normalized = normalizeZip(zipInput);
-    if (!/^\d{5}$/.test(normalized)) {
+    if (!isValidZip(normalized)) {
       setLocationError("Please enter a valid 5-digit ZIP code.");
       return;
     }

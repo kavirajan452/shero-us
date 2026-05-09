@@ -31,6 +31,10 @@ export function normalizeZip(value: string): string {
   return value.replace(/\D/g, "").slice(0, 5);
 }
 
+export function isValidZip(value: string): boolean {
+  return /^\d{5}$/.test(normalizeZip(value));
+}
+
 function parseNumber(value: string | null): number | null {
   if (!value) return null;
   const parsed = Number(value);
