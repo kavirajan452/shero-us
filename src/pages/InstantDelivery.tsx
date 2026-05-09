@@ -1,12 +1,15 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Search, SlidersHorizontal, Leaf, X, Bike, AlertTriangle, MapPin } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
 import { useNearbyKitchenPartners, useInstantMenuCategories, useKitchenVisibilityRadius } from "@/hooks/useSupabaseData";
 import { Badge } from "@/components/ui/badge";
 import { useRegion } from "@/contexts/RegionContext";
+import { useLocation as useLocationCtx } from "@/contexts/LocationContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const sortOptions = ["Relevance", "Distance"];
 
@@ -19,29 +22,60 @@ const InstantDelivery = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showUnavailable, setShowUnavailable] = useState(false);
   const { formatPrice } = useRegion();
+  const locationCtx = useLocationCtx();
 
   // Customer location
-  const [customerLat, setCustomerLat] = useState<number | null>(null);
-  const [customerLng, setCustomerLng] = useState<number | null>(null);
+  const [customerLat, setCustomerLat] = useState<number | null>(locationCtx.coords?.lat ?? null);
+  const [customerLng, setCustomerLng] = useState<number | null>(locationCtx.coords?.lng ?? null);
   const [locationStatus, setLocationStatus] = useState<"detecting" | "found" | "denied" | "idle">("idle");
+  const searchQueryParam = searchParams.get("q") || "";
 
   useEffect(() => {
+    setSearch(searchQueryParam);
+  }, [searchQueryParam]);
+
+  useEffect(() => {
+    if (locationCtx.coords) {
+      setCustomerLat(locationCtx.coords.lat);
+      setCustomerLng(locationCtx.coords.lng);
+      setLocationStatus("found");
+      return;
+    }
     if (!navigator.geolocation) return;
     setLocationStatus("detecting");
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setCustomerLat(pos.coords.latitude);
         setCustomerLng(pos.coords.longitude);
+        locationCtx.setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
         setLocationStatus("found");
       },
       () => setLocationStatus("denied"),
       { enableHighAccuracy: true, timeout: 8000 }
     );
-  }, []);
+  }, [locationCtx.coords, locationCtx.setCoords]);
 
   const { data: menuCategories } = useInstantMenuCategories();
   const categoryFilters = useMemo(() => ["All", ...(menuCategories || [])], [menuCategories]);
   const { data: radiusKm } = useKitchenVisibilityRadius();
+  const normalizedSearch = search.trim().toLowerCase();
+  const searchForMenuMatch = normalizedSearch.replace(/,/g, " ");
+  const { data: matchedKitchenIds = [] } = useQuery({
+    queryKey: ["instant_menu_search_kitchen_ids", normalizedSearch],
+    queryFn: async () => {
+      if (!normalizedSearch) return [];
+      const { data, error } = await supabase
+        .from("instant_menu_items")
+        .select("kitchen_id")
+        .eq("is_active", true)
+        .or(`name.ilike.%${searchForMenuMatch}%,category.ilike.%${searchForMenuMatch}%`);
+      if (error) throw error;
+      return Array.from(new Set((data || []).map((item: any) => item.kitchen_id)));
+    },
+    enabled: !!normalizedSearch,
+    staleTime: 60 * 1000,
+  });
+  const matchedKitchenIdSet = useMemo(() => new Set(matchedKitchenIds), [matchedKitchenIds]);
 
   const { data: allKitchens, isLoading } = useNearbyKitchenPartners(customerLat, customerLng);
 
@@ -52,7 +86,13 @@ const InstantDelivery = () => {
     let result = livePartners;
     if (search) {
       const q = search.toLowerCase();
-      result = result.filter((k: any) => k.name.toLowerCase().includes(q) || (k.cuisine || []).some((c: string) => c.toLowerCase().includes(q)) || (k.location || "").toLowerCase().includes(q));
+      result = result.filter((k: any) => {
+        const kitchenMatch =
+          k.name.toLowerCase().includes(q) ||
+          (k.cuisine || []).some((c: string) => c.toLowerCase().includes(q)) ||
+          (k.location || "").toLowerCase().includes(q);
+        return kitchenMatch || matchedKitchenIdSet.has(k.id);
+      });
     }
     if (selectedCategory !== "All") {
       result = result.filter((k: any) => (k.cuisine || []).some((c: string) => c.toLowerCase() === selectedCategory.toLowerCase()));
@@ -62,7 +102,7 @@ const InstantDelivery = () => {
     }
     if (sortBy === "Distance") result = [...result].sort((a: any, b: any) => (a.distance ?? 999) - (b.distance ?? 999));
     return result;
-  }, [search, selectedCategory, vegOnly, sortBy, livePartners]);
+  }, [search, selectedCategory, vegOnly, sortBy, livePartners, matchedKitchenIdSet]);
 
   if (isLoading) {
     return (

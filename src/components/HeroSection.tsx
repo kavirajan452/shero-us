@@ -36,7 +36,7 @@ const HeroSection = () => {
 
   // Global location / serviceability state
   const locationCtx = useLocationCtx();
-  const { checkByZip, detectAndCheck, hasKitchens } = useServiceability();
+  const { checkByZip, detectAndCheck, resolveZipToCoords, hasKitchens } = useServiceability();
   const { regionCode } = useRegion();
   // US ZIP codes are 5 digits; Indian pincodes are 6 digits
   const zipLength = regionCode === "IN" ? 6 : 5;
@@ -91,8 +91,10 @@ const HeroSection = () => {
       const locality = result.detectedLocation || "Current Location";
       setAddressLabel("Current");
       locationCtx.setDetectedLocation(locality);
+      locationCtx.setCoords(result.customerCoords);
       locationCtx.setStatus(result.serviceable ? "serviceable" : "not_serviceable");
     } catch {
+      locationCtx.setCoords(null);
       locationCtx.setStatus("idle");
     }
     setDetecting(false);
@@ -100,11 +102,13 @@ const HeroSection = () => {
   };
 
   // ZIP check
-  const handleZipCheck = () => {
+  const handleZipCheck = async () => {
     const zip = zipInput.trim();
     if (zip.length < zipLength) return;
     const serviceable = checkByZip(zip);
+    const coords = await resolveZipToCoords(zip);
     locationCtx.setZip(zip);
+    locationCtx.setCoords(coords);
     locationCtx.setStatus(serviceable ? "serviceable" : "not_serviceable");
     setAddressLabel(zip);
     setShowZipInput(false);

@@ -5,12 +5,14 @@ export type ServiceabilityStatus = "idle" | "checking" | "serviceable" | "not_se
 interface LocationState {
   zip: string;
   detectedLocation: string | null;
+  coords: { lat: number; lng: number } | null;
   status: ServiceabilityStatus;
 }
 
 interface LocationContextType extends LocationState {
   setZip: (zip: string) => void;
   setDetectedLocation: (loc: string | null) => void;
+  setCoords: (coords: { lat: number; lng: number } | null) => void;
   setStatus: (s: ServiceabilityStatus) => void;
   reset: () => void;
 }
@@ -18,6 +20,7 @@ interface LocationContextType extends LocationState {
 const defaultState: LocationState = {
   zip: "",
   detectedLocation: null,
+  coords: null,
   status: "idle",
 };
 
@@ -31,6 +34,10 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     (detectedLocation: string | null) => setState((s) => ({ ...s, detectedLocation })),
     []
   );
+  const setCoords = useCallback(
+    (coords: { lat: number; lng: number } | null) => setState((s) => ({ ...s, coords })),
+    []
+  );
   const setStatus = useCallback(
     (status: ServiceabilityStatus) => setState((s) => ({ ...s, status })),
     []
@@ -38,7 +45,7 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const reset = useCallback(() => setState(defaultState), []);
 
   return (
-    <LocationContext.Provider value={{ ...state, setZip, setDetectedLocation, setStatus, reset }}>
+    <LocationContext.Provider value={{ ...state, setZip, setDetectedLocation, setCoords, setStatus, reset }}>
       {children}
     </LocationContext.Provider>
   );

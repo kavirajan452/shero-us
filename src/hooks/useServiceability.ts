@@ -141,10 +141,27 @@ export function useServiceability() {
     [locations]
   );
 
+  const resolveZipToCoords = useCallback(async (zip: string): Promise<{ lat: number; lng: number } | null> => {
+    const normalized = zip.trim();
+    if (!normalized) return null;
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?postalcode=${encodeURIComponent(normalized)}&countrycodes=us,in&format=json&limit=1`
+      );
+      const data = await res.json();
+      const first = Array.isArray(data) ? data[0] : null;
+      if (!first?.lat || !first?.lon) return null;
+      return { lat: Number(first.lat), lng: Number(first.lon) };
+    } catch {
+      return null;
+    }
+  }, []);
+
   return {
     detectAndCheck,
     checkServiceability,
     checkByZip,
+    resolveZipToCoords,
     customerCoords,
     detectedLocation,
     checking: geoChecking,

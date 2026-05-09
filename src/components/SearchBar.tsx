@@ -57,7 +57,7 @@ const SearchBar = () => {
 
   // Global location / serviceability state
   const locationCtx = useLocationCtx();
-  const { checkByZip, detectAndCheck, hasKitchens } = useServiceability();
+  const { checkByZip, detectAndCheck, resolveZipToCoords, hasKitchens } = useServiceability();
   const { regionCode } = useRegion();
   // US ZIP codes are 5 digits; Indian pincodes are 6 digits
   const zipLength = regionCode === "IN" ? 6 : 5;
@@ -117,9 +117,11 @@ const SearchBar = () => {
       const locality = result.detectedLocation || "Current Location";
       setAddressLabel("Current");
       locationCtx.setDetectedLocation(locality);
+      locationCtx.setCoords(result.customerCoords);
       locationCtx.setStatus(result.serviceable ? "serviceable" : "not_serviceable");
     } catch {
       setAddressLabel("Current Location");
+      locationCtx.setCoords(null);
       locationCtx.setStatus("idle");
     }
     setDetecting(false);
@@ -127,11 +129,13 @@ const SearchBar = () => {
   };
 
   // ZIP check
-  const handleZipCheck = () => {
+  const handleZipCheck = async () => {
     const zip = zipInput.trim();
     if (zip.length < zipLength) return;
     const serviceable = checkByZip(zip);
+    const coords = await resolveZipToCoords(zip);
     locationCtx.setZip(zip);
+    locationCtx.setCoords(coords);
     locationCtx.setStatus(serviceable ? "serviceable" : "not_serviceable");
     setAddressLabel(zip);
     setShowZipInput(false);
@@ -159,7 +163,7 @@ const SearchBar = () => {
     const item = popularSuggestions.find((s) => s.label === label);
     if (item?.category === "Service" && label === "Party Orders") navigate("/party-orders");
     else if (item?.category === "Service" && label === "Subscriptions") navigate("/subscriptions");
-    else navigate("/instant-delivery");
+    else navigate(`/instant-delivery?q=${encodeURIComponent(label)}`);
   };
 
   const handleSearchSubmit = () => {
