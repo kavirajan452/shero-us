@@ -120,13 +120,12 @@
 
 | Tool | Version | Role |
 |---|---|---|
+| Next.js (App Router) | 15.x | Framework + routing |
 | React | 18.3 | UI library |
 | TypeScript | 5.8 | Type safety |
-| Vite | 5.4 | Build tool |
 | Tailwind CSS | 3.4 | Styling |
 | shadcn/ui + Radix UI | latest | Component library |
 | TanStack Query | 5.83 | Data fetching + caching |
-| React Router | 6.30 | Client-side routing |
 | React Hook Form + Zod | latest | Forms + validation |
 | Framer Motion | 12 | Animations |
 | react-leaflet | 4.2 | Maps for delivery radius visualisation |
@@ -145,15 +144,43 @@
 
 ### 3.3 Third-Party Integrations to Add
 
-| Service | Purpose | Provider |
-|---|---|---|
-| **Stripe** | Payment processing — card, Apple Pay, Google Pay, ACH | stripe.com |
-| **Twilio Verify** | Phone OTP for auth | twilio.com |
-| **Twilio SMS** | Order status SMS notifications | twilio.com |
-| **SendGrid** | Transactional email — order confirm, invoice | sendgrid.com |
-| **Google Maps Platform** | Address autocomplete + geocoding | console.cloud.google.com |
-| **DoorDash Drive** OR **Uber Direct** | Third-party delivery dispatch | developer.doordash.com |
-| **Firebase Cloud Messaging** | Push notifications (optional — Phase 2+) | firebase.google.com |
+| Service | Purpose | Mode behavior | Provider |
+|---|---|---|---|
+| **Stripe** | Payment processing — card/UPI/wallet flows | **Demo:** simulated payment intent response; **Live:** real Stripe API | stripe.com |
+| **Avalara** | Tax ERP/API | **Demo:** simulated tax breakdown; **Live:** real Avalara API | avalara.com |
+| **DoorDash Drive** | Third-party delivery dispatch/tracking | **Demo:** simulated delivery id + tracking payload; **Live:** real DoorDash API | developer.doordash.com |
+| **Gallabox** | SMS notifications/OTP/status alerts | **Demo:** simulated send + delivery status; **Live:** real Gallabox API | gallabox.com |
+| **SMTP Provider** | Transactional email — order confirm/invoice | **Demo:** logged/simulated email response; **Live:** real SMTP delivery | (provider-specific) |
+| **Google Maps Platform** | Address autocomplete + geocoding | Same behavior in demo/live | console.cloud.google.com |
+
+### 3.4 Current Delivery Snapshot (Completed vs Pending)
+
+#### ✅ Completed
+1. DB schema design (migrations/tables/RLS exist)
+2. UI/UX screens integration (broad coverage in app/src pages)
+3. Auth system (OTP send/verify + session + role handling)
+4. Delivery radius logic (geo + radius + ZIP check hook)
+5. Menu API + UI binding (Supabase hooks wired to menu/kitchens)
+6. Cart system (DB-backed user cart sync)
+7. Checkout flow (address/slot/promo/payment section/order submit flow)
+8. Order placement + DB (`instant_orders` insert wired)
+9. User dashboard (live orders/profile/wallet sections wired)
+10. Admin order management (live orders + actions UI)
+11. Compliance pages (privacy/terms/cookies/accessibility/etc.)
+12. Deployment readiness (Next.js build + Vercel docs/scripts)
+
+#### 🔲 Pending / Partial
+1. Project setup wording mismatch: "Next.js + Prisma + Postgres" vs actual stack (Next.js + Supabase Postgres)
+2. Homepage ZIP validation on existing address input before search bar
+3. Stripe end-to-end integration (Elements/webhook confirmation path)
+4. Avalara tax API integration
+5. DoorDash API dispatch integration
+6. SMTP email notification integration
+7. Gallabox SMS integration
+8. Admin menu upload persistence to DB
+9. Admin ZIP control dedicated module
+10. Security/validation hardening pass
+11. Expanded tests + bug fixing pass
 
 ---
 

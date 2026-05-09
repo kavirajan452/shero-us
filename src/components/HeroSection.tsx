@@ -5,6 +5,7 @@ import sheroLogo from "@/assets/shero-logo.png";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import heroMascot from "@/assets/shero-mascot-cooking.jpeg";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
+import { useServiceability } from "@/hooks/useServiceability";
 
 const HeroSection = () => {
   const { data: contentItems } = useScreenContent("home");
@@ -18,8 +19,11 @@ const HeroSection = () => {
   const [showManual, setShowManual] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [listening, setListening] = useState(false);
+  const [zipValidationStatus, setZipValidationStatus] = useState<"idle" | "valid" | "invalid">("idle");
+  const [validatedZip, setValidatedZip] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+  const { checkByZip, hasKitchens } = useServiceability();
 
   // Hide language switcher if user has previously selected a language.
   // Initialize to false so server and client agree during hydration;
@@ -34,6 +38,25 @@ const HeroSection = () => {
     const t = setTimeout(check, 500);
     return () => { window.removeEventListener("storage", check); clearTimeout(t); };
   }, []);
+
+  const normalizeZip = (value: string) => value.replace(/\D/g, "").slice(0, 5);
+
+  const validateZip = (zip: string) => {
+    if (zip.length !== 5) {
+      setZipValidationStatus("invalid");
+      setValidatedZip("");
+      return false;
+    }
+    if (!hasKitchens) {
+      setZipValidationStatus("idle");
+      setValidatedZip(zip);
+      return true;
+    }
+    const isServiceable = checkByZip(zip);
+    setZipValidationStatus(isServiceable ? "valid" : "invalid");
+    setValidatedZip(zip);
+    return isServiceable;
+  };
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -62,8 +85,17 @@ const HeroSection = () => {
             data.address?.city_district ||
             data.address?.city ||
             "Current Location";
-          setAddress(locality);
-          setAddressLabel("Current");
+          const detectedZip = normalizeZip(data.address?.postcode || "");
+          if (detectedZip.length === 5) {
+            validateZip(detectedZip);
+            setAddress(detectedZip);
+            setAddressLabel("ZIP");
+          } else {
+            setAddress(locality);
+            setAddressLabel("Current");
+            setZipValidationStatus("idle");
+            setValidatedZip("");
+          }
         } catch {
           setAddress("Current Location");
         }
@@ -75,10 +107,10 @@ const HeroSection = () => {
   };
 
   const handleManualSave = () => {
-    const trimmed = manualInput.trim();
-    if (trimmed.length > 0 && trimmed.length <= 100) {
-      setAddress(trimmed);
-      setAddressLabel("Other");
+    const zip = normalizeZip(manualInput);
+    if (validateZip(zip)) {
+      setAddress(zip);
+      setAddressLabel("ZIP");
       setManualInput("");
       setShowManual(false);
       setShowDropdown(false);
@@ -202,10 +234,10 @@ const HeroSection = () => {
                   ) : (
                     <div className="px-4 py-3 space-y-2">
                       <div className="flex items-center gap-2">
-                        <input type="text" value={manualInput} onChange={(e) => setManualInput(e.target.value.slice(0, 100))} onKeyDown={(e) => e.key === "Enter" && handleManualSave()} placeholder="e.g. Manhattan, New York" className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors" autoFocus maxLength={100} />
+                        <input type="text" value={manualInput} onChange={(e) => setManualInput(normalizeZip(e.target.value))} onKeyDown={(e) => e.key === "Enter" && handleManualSave()} placeholder="Enter 5-digit ZIP code" className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors" autoFocus maxLength={5} inputMode="numeric" pattern="[0-9]*" />
                         <button onClick={() => { setShowManual(false); setManualInput(""); }} className="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><X className="w-3.5 h-3.5" /></button>
                       </div>
-                      <button onClick={handleManualSave} disabled={manualInput.trim().length === 0} className="w-full text-xs font-medium bg-primary text-primary-foreground rounded-lg py-2 hover:bg-primary/90 transition-colors disabled:opacity-40">Save</button>
+                      <button onClick={handleManualSave} disabled={normalizeZip(manualInput).length !== 5} className="w-full text-xs font-medium bg-primary text-primary-foreground rounded-lg py-2 hover:bg-primary/90 transition-colors disabled:opacity-40">Save</button>
                     </div>
                   )}
                 </div>
@@ -218,6 +250,15 @@ const HeroSection = () => {
               <Mic className="w-5 h-5" />
             </button>
           </div>
+          {zipValidationStatus !== "idle" && (
+            <p className={`mt-2 text-xs ${zipValidationStatus === "valid" ? "text-green-600" : "text-destructive"}`}>
+              {zipValidationStatus === "valid"
+                ? `ZIP ${validatedZip} is serviceable.`
+                : validatedZip
+                  ? `Sorry, ZIP ${validatedZip} is not serviceable yet.`
+                  : "Please enter a valid 5-digit ZIP code."}
+            </p>
+          )}
         </div>
 
       {/* Right: mascot image */}
@@ -257,10 +298,10 @@ const HeroSection = () => {
                 ) : (
                   <div className="px-4 py-3 space-y-2">
                     <div className="flex items-center gap-2">
-                      <input type="text" value={manualInput} onChange={(e) => setManualInput(e.target.value.slice(0, 100))} onKeyDown={(e) => e.key === "Enter" && handleManualSave()} placeholder="e.g. Manhattan, New York" className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors" autoFocus maxLength={100} />
+                      <input type="text" value={manualInput} onChange={(e) => setManualInput(normalizeZip(e.target.value))} onKeyDown={(e) => e.key === "Enter" && handleManualSave()} placeholder="Enter 5-digit ZIP code" className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors" autoFocus maxLength={5} inputMode="numeric" pattern="[0-9]*" />
                       <button onClick={() => { setShowManual(false); setManualInput(""); }} className="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"><X className="w-3.5 h-3.5" /></button>
                     </div>
-                    <button onClick={handleManualSave} disabled={manualInput.trim().length === 0} className="w-full text-xs font-medium bg-primary text-primary-foreground rounded-lg py-2 hover:bg-primary/90 transition-colors disabled:opacity-40">Save</button>
+                    <button onClick={handleManualSave} disabled={normalizeZip(manualInput).length !== 5} className="w-full text-xs font-medium bg-primary text-primary-foreground rounded-lg py-2 hover:bg-primary/90 transition-colors disabled:opacity-40">Save</button>
                   </div>
                 )}
               </div>
@@ -273,6 +314,15 @@ const HeroSection = () => {
             <Mic className="w-5 h-5" />
           </button>
         </div>
+        {zipValidationStatus !== "idle" && (
+          <p className={`mt-2 text-xs px-1 ${zipValidationStatus === "valid" ? "text-green-600" : "text-destructive"}`}>
+            {zipValidationStatus === "valid"
+              ? `ZIP ${validatedZip} is serviceable.`
+              : validatedZip
+                ? `Sorry, ZIP ${validatedZip} is not serviceable yet.`
+                : "Please enter a valid 5-digit ZIP code."}
+          </p>
+        )}
       </div>
     </section>
   );
