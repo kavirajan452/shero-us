@@ -8,6 +8,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { RegionProvider } from "@/contexts/RegionContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { WalletProvider } from "@/contexts/WalletContext";
+import { PaymentProvider } from "@/contexts/PaymentContext";
 import Index from "./pages/Index";
 import Analytics from "./components/Analytics";
 import ScrollToTop from "./components/ScrollToTop";
@@ -139,15 +140,16 @@ const App = () => (
     <RegionProvider>
       <AuthProvider>
         <WalletProvider>
-          <CartProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <ScrollToTop />
-                <Analytics />
-                <Suspense fallback={<div className="min-h-screen bg-background" />}>
-                  <Routes>
+          <PaymentProvider>
+            <CartProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <ScrollToTop />
+                  <Analytics />
+                  <Suspense fallback={<div className="min-h-screen bg-background" />}>
+                    <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/app-store" element={<AppStoreListing />} />
                     <Route path="/splash" element={<SplashScreen />} />
@@ -318,12 +320,13 @@ const App = () => (
                     </Route>
                     <Route path="/screenshots" element={<ScreenshotsGallery />} />
                     <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </Suspense>
-                <WhatsAppSupport />
-              </BrowserRouter>
-            </TooltipProvider>
-          </CartProvider>
+                    </Routes>
+                  </Suspense>
+                  <WhatsAppSupport />
+                </BrowserRouter>
+              </TooltipProvider>
+            </CartProvider>
+          </PaymentProvider>
         </WalletProvider>
       </AuthProvider>
     </RegionProvider>

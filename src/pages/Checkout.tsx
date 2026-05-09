@@ -3,15 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { Tag, Heart } from "lucide-react";
 import { ArrowLeft, Minus, Plus, Trash2, MapPin, Phone, User, Clock, Truck, Package, Shield, Wallet, AlertTriangle } from "lucide-react";
 import CheckoutAuth from "@/components/CheckoutAuth";
-import PaymentSection from "@/components/PaymentSection";
-import type { PaymentMethod } from "@/components/PaymentSection";
 import NonServiceableArea from "@/components/NonServiceableArea";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
+import { Loader2 } from "lucide-react";
+import DemoPaymentModal from "@/components/payments/DemoPaymentModal";
+import StripePaymentForm from "@/components/payments/StripePaymentForm";
 import { useCart } from "@/contexts/CartContext";
 import { useRegion } from "@/contexts/RegionContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWallet } from "@/contexts/WalletContext";
+import { usePayment, type PaymentMode } from "@/contexts/PaymentContext";
 import { useCreateInstantOrder, useSaveIncompleteOrder } from "@/hooks/useSupabaseData";
 import { useServiceability } from "@/hooks/useServiceability";
 import { Switch } from "@/components/ui/switch";
@@ -20,6 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const DELIVERY_FEE_DEFAULT = 30;
 const TIP_PRESETS_DEFAULT = [5, 10, 15, 20];
+type PaymentMethod = "card" | "apple_pay" | "google_pay" | "ach" | "payment_link";
 
 const Checkout = () => {
   const { items, updateQuantity, removeItem, subtotal, clearCart, totalItems, appliedPromo, promoDiscount, applyPromoCode, removePromoCode, promoLoading } = useCart();
