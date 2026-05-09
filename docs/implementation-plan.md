@@ -168,19 +168,19 @@
 10. Admin order management (live orders + actions UI)
 11. Compliance pages (privacy/terms/cookies/accessibility/etc.)
 12. Deployment readiness (Next.js build + Vercel docs/scripts)
+13. Homepage ZIP validation on existing address input before search bar
 
 #### 🔲 Pending / Partial
 1. Project setup wording mismatch: "Next.js + Prisma + Postgres" vs actual stack (Next.js + Supabase Postgres)
-2. Homepage ZIP validation on existing address input before search bar
-3. Stripe end-to-end integration (Elements/webhook confirmation path)
-4. Avalara tax API integration
-5. DoorDash API dispatch integration
-6. SMTP email notification integration
-7. Gallabox SMS integration
-8. Admin menu upload persistence to DB
-9. Admin ZIP control dedicated module
-10. Security/validation hardening pass
-11. Expanded tests + bug fixing pass
+2. Stripe end-to-end integration (Elements/webhook confirmation path)
+3. Avalara tax API integration
+4. DoorDash API dispatch integration
+5. SMTP email notification integration
+6. Gallabox SMS integration
+7. Admin menu upload persistence to DB
+8. Admin ZIP control dedicated module
+9. Security/validation hardening pass
+10. Expanded tests + bug fixing pass
 
 ---
 
