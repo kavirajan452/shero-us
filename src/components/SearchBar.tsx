@@ -1,7 +1,29 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { Search, MapPin, LocateFixed, Plus, X, Mic, TrendingUp, Clock, ChefHat, UtensilsCrossed } from "lucide-react";
+import {
+  Search,
+  MapPin,
+  LocateFixed,
+  Plus,
+  X,
+  Mic,
+  TrendingUp,
+  Clock,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+  Hash,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useServiceability } from "@/hooks/useServiceability";
+import { useLocation as useLocationCtx } from "@/contexts/LocationContext";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import NonServiceableArea from "@/components/NonServiceableArea";
 
 const popularSuggestions = [
   { label: "Biryani", icon: "🍛", category: "Dish" },
@@ -10,7 +32,7 @@ const popularSuggestions = [
   { label: "Chapati", icon: "🫓", category: "Dish" },
   { label: "Paneer Butter Masala", icon: "🍛", category: "Dish" },
   { label: "Chicken Curry", icon: "🍗", category: "Dish" },
-  { label: "Sambar Rice", icon: "🍚", category: "Dish" },
+  { label: "Sambar Rice", icon: "��", category: "Dish" },
   { label: "Curd Rice", icon: "🍚", category: "Dish" },
   { label: "Fried Rice", icon: "🍚", category: "Dish" },
   { label: "Pulihora", icon: "🍋", category: "Dish" },
@@ -31,14 +53,22 @@ const recentSearches = ["Biryani", "Dosa", "Sambar Rice"];
 const SearchBar = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  // Global location / serviceability state
+  const locationCtx = useLocationCtx();
+  const { checkByZip, detectAndCheck, hasKitchens } = useServiceability();
+
   const [showDropdown, setShowDropdown] = useState(false);
-  const [address, setAddress] = useState("Anna Nagar");
+  const [addressLabel, setAddressLabel] = useState("Anna Nagar");
   const [detecting, setDetecting] = useState(false);
   const [manualInput, setManualInput] = useState("");
   const [showManual, setShowManual] = useState(false);
+  const [zipInput, setZipInput] = useState("");
+  const [showZipInput, setShowZipInput] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [listening, setListening] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showWaitlist, setShowWaitlist] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
@@ -49,8 +79,13 @@ const SearchBar = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setShowDropdown(false);
         setShowManual(false);
+        setShowZipInput(false);
       }
-      if (suggestionsRef.current && !suggestionsRef.current.contains(e.target as Node) && e.target !== inputRef.current) {
+      if (
+        suggestionsRef.current &&
+        !suggestionsRef.current.contains(e.target as Node) &&
+        e.target !== inputRef.current
+      ) {
         setShowSuggestions(false);
       }
     };
@@ -61,18 +96,63 @@ const SearchBar = () => {
   const filteredSuggestions = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const q = searchQuery.toLowerCase();
-    return popularSuggestions.filter(s => s.label.toLowerCase().includes(q)).slice(0, 8);
+    return popularSuggestions.filter((s) => s.label.toLowerCase().includes(q)).slice(0, 8);
   }, [searchQuery]);
 
   const trendingSuggestions = useMemo(() => {
-    return popularSuggestions.filter(s => s.category === "Dish").slice(0, 6);
+    return popularSuggestions.filter((s) => s.category === "Dish").slice(0, 6);
   }, []);
+
+  // GPS detect and serviceability check
+  const handleDetect = async () => {
+    if (!navigator.geolocation) return;
+    setDetecting(true);
+    locationCtx.setStatus("checking");
+    try {
+      const result = await detectAndCheck();
+      const locality = result.detectedLocation || "Current Location";
+      setAddressLabel("Current");
+      locationCtx.setDetectedLocation(locality);
+      locationCtx.setStatus(result.serviceable ? "serviceable" : "not_serviceable");
+    } catch {
+      setAddressLabel("Current Location");
+      locationCtx.setStatus("idle");
+    }
+    setDetecting(false);
+    setShowDropdown(false);
+  };
+
+  // ZIP check
+  const handleZipCheck = () => {
+    const zip = zipInput.trim();
+    if (zip.length < 5) return;
+    const serviceable = checkByZip(zip);
+    locationCtx.setZip(zip);
+    locationCtx.setStatus(serviceable ? "serviceable" : "not_serviceable");
+    setAddressLabel(zip);
+    setShowZipInput(false);
+    setShowDropdown(false);
+  };
+
+  const handleManualSave = () => {
+    const trimmed = manualInput.trim();
+    if (trimmed.length > 0 && trimmed.length <= 100) {
+      setAddressLabel(trimmed);
+      setManualInput("");
+      setShowManual(false);
+      setShowDropdown(false);
+      locationCtx.setStatus("idle");
+    }
+  };
 
   const handleSelectSuggestion = (label: string) => {
     setSearchQuery(label);
     setShowSuggestions(false);
-    // Navigate based on suggestion
-    const item = popularSuggestions.find(s => s.label === label);
+    if (locationCtx.status === "not_serviceable") {
+      setShowWaitlist(true);
+      return;
+    }
+    const item = popularSuggestions.find((s) => s.label === label);
     if (item?.category === "Service" && label === "Party Orders") navigate("/party-orders");
     else if (item?.category === "Service" && label === "Subscriptions") navigate("/subscriptions");
     else navigate("/instant-delivery");
@@ -82,64 +162,26 @@ const SearchBar = () => {
     const q = searchQuery.trim();
     if (!q) return;
     setShowSuggestions(false);
-    navigate(`/instant-delivery?q=${encodeURIComponent(q)}`);
-  };
-
-  const handleDetect = () => {
-    if (!navigator.geolocation) return;
-    setDetecting(true);
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`
-          );
-          const data = await res.json();
-          const locality =
-            data.address?.suburb ||
-            data.address?.neighbourhood ||
-            data.address?.city_district ||
-            data.address?.city ||
-            "Current Location";
-          setAddress(locality);
-        } catch {
-          setAddress("Current Location");
-        }
-        setDetecting(false);
-        setShowDropdown(false);
-      },
-      () => {
-        setDetecting(false);
-      }
-    );
-  };
-
-  const handleManualSave = () => {
-    const trimmed = manualInput.trim();
-    if (trimmed.length > 0 && trimmed.length <= 100) {
-      setAddress(trimmed);
-      setManualInput("");
-      setShowManual(false);
-      setShowDropdown(false);
+    if (locationCtx.status === "not_serviceable") {
+      setShowWaitlist(true);
+      return;
     }
+    navigate(`/instant-delivery?q=${encodeURIComponent(q)}`);
   };
 
   const handleMic = () => {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) return;
-
     if (listening && recognitionRef.current) {
       recognitionRef.current.stop();
       setListening(false);
       return;
     }
-
     const recognition = new SpeechRecognition();
     recognitionRef.current = recognition;
     recognition.lang = "en-IN";
     recognition.interimResults = true;
     recognition.continuous = false;
-
     recognition.onresult = (event: any) => {
       const transcript = Array.from(event.results)
         .map((r: any) => r[0].transcript)
@@ -147,12 +189,49 @@ const SearchBar = () => {
       setSearchQuery(transcript);
       setShowSuggestions(true);
     };
-
     recognition.onend = () => setListening(false);
     recognition.onerror = () => setListening(false);
-
     setListening(true);
     recognition.start();
+  };
+
+  // Serviceability status badge
+  const renderStatusBadge = () => {
+    if (!hasKitchens) return null;
+    const { status, zip, detectedLocation } = locationCtx;
+    const label = zip || detectedLocation;
+
+    if (status === "checking" || detecting) {
+      return (
+        <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground mt-1.5 ml-1">
+          <Loader2 className="w-3 h-3 animate-spin text-primary" />
+          Checking your location…
+        </div>
+      );
+    }
+    if (status === "serviceable") {
+      return (
+        <div className="flex items-center gap-1.5 text-[11px] text-emerald-600 mt-1.5 ml-1">
+          <CheckCircle2 className="w-3.5 h-3.5" />
+          {label ? `We deliver to ${label}!` : "We deliver to your area!"}
+        </div>
+      );
+    }
+    if (status === "not_serviceable") {
+      return (
+        <div className="flex items-center gap-1.5 text-[11px] text-destructive mt-1.5 ml-1">
+          <AlertCircle className="w-3.5 h-3.5" />
+          {label ? `Not available yet in ${label}` : "Not available in your area yet"}
+          <button
+            onClick={() => setShowWaitlist(true)}
+            className="underline underline-offset-2 hover:text-destructive/80 transition-colors"
+          >
+            — Notify me
+          </button>
+        </div>
+      );
+    }
+    return null;
   };
 
   const shouldShowPanel = showSuggestions && !showDropdown;
@@ -170,13 +249,14 @@ const SearchBar = () => {
             >
               <MapPin className="w-4 h-4 text-primary" />
               <span className="text-foreground font-medium text-xs hidden sm:inline max-w-[120px] truncate">
-                {address}
+                {addressLabel}
               </span>
               <span className="text-[10px] text-muted-foreground">▾</span>
             </button>
 
             {showDropdown && (
               <div className="absolute top-full left-0 mt-1 w-64 bg-background border border-border rounded-xl shadow-lg z-50 overflow-hidden">
+                {/* GPS detect */}
                 <button
                   onClick={handleDetect}
                   disabled={detecting}
@@ -193,9 +273,56 @@ const SearchBar = () => {
 
                 <div className="h-px bg-border" />
 
+                {/* Check by ZIP */}
+                {!showZipInput ? (
+                  <button
+                    onClick={() => { setShowZipInput(true); setShowManual(false); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-secondary transition-colors text-left"
+                  >
+                    <Hash className="w-4 h-4 text-primary shrink-0" />
+                    <div>
+                      <p className="text-xs font-medium text-foreground">Check by ZIP code</p>
+                      <p className="text-[10px] text-muted-foreground">See if we deliver to your area</p>
+                    </div>
+                  </button>
+                ) : (
+                  <div className="px-4 py-3 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        value={zipInput}
+                        onChange={(e) => setZipInput(e.target.value.replace(/\D/g, "").slice(0, 5))}
+                        onKeyDown={(e) => e.key === "Enter" && handleZipCheck()}
+                        placeholder="e.g. 10001"
+                        className="flex-1 text-xs bg-secondary rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground/50 outline-none border border-border focus:border-primary transition-colors"
+                        autoFocus
+                        maxLength={5}
+                      />
+                      <button
+                        onClick={() => { setShowZipInput(false); setZipInput(""); }}
+                        className="p-1.5 rounded-lg hover:bg-secondary text-muted-foreground"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                    <button
+                      onClick={handleZipCheck}
+                      disabled={zipInput.length < 5}
+                      className="w-full text-xs font-medium bg-primary text-primary-foreground rounded-lg py-2 hover:bg-primary/90 transition-colors disabled:opacity-40"
+                    >
+                      Check Availability
+                    </button>
+                  </div>
+                )}
+
+                <div className="h-px bg-border" />
+
+                {/* Manual address */}
                 {!showManual ? (
                   <button
-                    onClick={() => setShowManual(true)}
+                    onClick={() => { setShowManual(true); setShowZipInput(false); }}
                     className="w-full flex items-center gap-3 px-4 py-3 hover:bg-secondary transition-colors text-left"
                   >
                     <Plus className="w-4 h-4 text-primary shrink-0" />
@@ -251,7 +378,10 @@ const SearchBar = () => {
               className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 outline-none"
             />
             {searchQuery && (
-              <button onClick={() => { setSearchQuery(""); setShowSuggestions(false); }} className="p-1 rounded-full text-muted-foreground hover:text-foreground">
+              <button
+                onClick={() => { setSearchQuery(""); setShowSuggestions(false); }}
+                className="p-1 rounded-full text-muted-foreground hover:text-foreground"
+              >
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
@@ -269,6 +399,8 @@ const SearchBar = () => {
           </div>
         </div>
 
+        {renderStatusBadge()}
+
         {/* Suggestions Dropdown */}
         {shouldShowPanel && (
           <div
@@ -281,7 +413,9 @@ const SearchBar = () => {
                 className="w-full flex items-center gap-2 px-4 py-3 text-left hover:bg-secondary transition-colors border-b border-border"
               >
                 <Search className="w-4 h-4 text-primary shrink-0" />
-                <span className="text-xs font-medium text-foreground">Search for "<span className="text-primary">{searchQuery.trim()}</span>"</span>
+                <span className="text-xs font-medium text-foreground">
+                  Search for "<span className="text-primary">{searchQuery.trim()}</span>"
+                </span>
                 <span className="text-[10px] text-muted-foreground ml-auto">↵ Enter</span>
               </button>
             )}
@@ -315,7 +449,6 @@ const SearchBar = () => {
 
             {!hasQuery && (
               <>
-                {/* Recent Searches */}
                 {recentSearches.length > 0 && (
                   <div className="p-2 border-b border-border">
                     <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider px-2 pb-1.5 flex items-center gap-1">
@@ -335,7 +468,6 @@ const SearchBar = () => {
                   </div>
                 )}
 
-                {/* Trending */}
                 <div className="p-2">
                   <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider px-2 pb-1.5 flex items-center gap-1">
                     <TrendingUp className="w-3 h-3" /> Trending
@@ -352,7 +484,6 @@ const SearchBar = () => {
                   ))}
                 </div>
 
-                {/* Quick Links */}
                 <div className="p-2 border-t border-border">
                   <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider px-2 pb-1.5">Quick Links</p>
                   <div className="grid grid-cols-2 gap-1.5">
@@ -378,6 +509,20 @@ const SearchBar = () => {
           </div>
         )}
       </div>
+
+      {/* Waitlist dialog */}
+      <Dialog open={showWaitlist} onOpenChange={setShowWaitlist}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="font-serif">Get notified when we arrive</DialogTitle>
+          </DialogHeader>
+          <NonServiceableArea
+            compact
+            detectedLocation={locationCtx.detectedLocation || undefined}
+            zipCode={locationCtx.zip || undefined}
+          />
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

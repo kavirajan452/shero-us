@@ -8,6 +8,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { RegionProvider } from "@/contexts/RegionContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { WalletProvider } from "@/contexts/WalletContext";
+import { LocationProvider } from "@/contexts/LocationContext";
 import Index from "./pages/Index";
 import Analytics from "./components/Analytics";
 import ScrollToTop from "./components/ScrollToTop";
@@ -137,9 +138,10 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <RegionProvider>
-      <AuthProvider>
-        <WalletProvider>
-          <CartProvider>
+      <LocationProvider>
+        <AuthProvider>
+          <WalletProvider>
+            <CartProvider>
             <TooltipProvider>
               <Toaster />
               <Sonner />
@@ -326,6 +328,7 @@ const App = () => (
           </CartProvider>
         </WalletProvider>
       </AuthProvider>
+    </LocationProvider>
     </RegionProvider>
   </QueryClientProvider>
 );
