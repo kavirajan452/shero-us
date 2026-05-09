@@ -19,14 +19,14 @@ type EmailNotificationInput = {
   referenceId?: string;
 };
 
-const isDemoMode = () => (process.env.NEXT_PUBLIC_EMAIL_MODE ?? "demo").toLowerCase() === "demo";
+const IS_DEMO_MODE = (process.env.NEXT_PUBLIC_EMAIL_MODE ?? "demo").toLowerCase() === "demo";
 
 export async function sendEmailNotification(input: EmailNotificationInput) {
   if (!input.recipient?.trim()) return { success: false, skipped: true, reason: "missing_recipient" };
 
   const { data, error } = await supabase.functions.invoke("send-email", {
     body: {
-      mode: isDemoMode() ? "demo" : "smtp",
+      mode: IS_DEMO_MODE ? "demo" : "smtp",
       type: input.type,
       recipient: input.recipient.trim(),
       payload: input.payload,

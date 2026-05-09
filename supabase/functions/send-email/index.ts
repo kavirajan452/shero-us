@@ -65,7 +65,7 @@ const renderTemplate = (type: string, payload: EmailPayload = {}) => {
   const deliveryAddress = escapeHtml(payload.deliveryAddress || "-");
   const deliveryEta = escapeHtml(payload.deliveryEta || "We'll share an ETA soon.");
   const supportContact = escapeHtml(payload.supportContact || "support@shero.com");
-  const paymentRetryLink = escapeHtml(encodeURI(payload.paymentRetryLink || "https://www.shero.us/checkout"));
+  const paymentRetryLink = encodeURI(escapeHtml(payload.paymentRetryLink || "https://www.shero.us/checkout"));
   const courierName = escapeHtml(payload.courierName || "Shero delivery partner");
   const trackingStatus = escapeHtml(payload.trackingStatus || "Out for delivery");
 

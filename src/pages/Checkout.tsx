@@ -27,6 +27,10 @@ import {
 const DELIVERY_FEE_DEFAULT = 30;
 const TIP_PRESETS_DEFAULT = [5, 10, 15, 20];
 const HIGH_VALUE_ORDER_ALERT_THRESHOLD = Number(process.env.NEXT_PUBLIC_HIGH_VALUE_ORDER_ALERT_THRESHOLD ?? "100");
+const ADMIN_ALERT_RECIPIENTS = (process.env.NEXT_PUBLIC_ADMIN_ALERT_EMAILS ?? "")
+  .split(",")
+  .map((value) => value.trim())
+  .filter(Boolean);
 
 const Checkout = () => {
   const { items, updateQuantity, removeItem, subtotal, clearCart, totalItems, appliedPromo, promoDiscount, applyPromoCode, removePromoCode, promoLoading } = useCart();
@@ -188,10 +192,6 @@ const Checkout = () => {
 
   const { toast } = useToast();
   const customerEmail = (user?.email ?? "").trim();
-  const adminRecipients = (process.env.NEXT_PUBLIC_ADMIN_ALERT_EMAILS ?? "")
-    .split(",")
-    .map((value) => value.trim())
-    .filter(Boolean);
 
   const buildPickupInstructions = () => {
     const parts = [...pickupChips];
@@ -262,18 +262,18 @@ const Checkout = () => {
         deliveryAddress: address,
         deliveryEta: slotLabel || "Scheduled",
         supportContact: "support@shero.com",
-      });
+      }).catch((error) => console.error("Failed to send order confirmation email", error));
     }
 
-    if (total >= HIGH_VALUE_ORDER_ALERT_THRESHOLD && adminRecipients.length > 0) {
-      void Promise.all(adminRecipients.map((adminRecipient) =>
+    if (total >= HIGH_VALUE_ORDER_ALERT_THRESHOLD && ADMIN_ALERT_RECIPIENTS.length > 0) {
+      void Promise.all(ADMIN_ALERT_RECIPIENTS.map((adminRecipient) =>
         sendHighValueAdminAlert({
           recipient: adminRecipient,
           customerName: name,
           orderId: createdOrder.id,
           total,
         }),
-      ));
+      )).catch((error) => console.error("Failed to send high-value order admin alerts", error));
     }
 
     if (walletUsable > 0) {
@@ -309,18 +309,18 @@ const Checkout = () => {
         orderId: fallbackOrderId,
         paymentRetryLink: "https://www.shero.us/checkout",
         supportContact: "support@shero.com",
-      });
+      }).catch((error) => console.error("Failed to send payment failure email", error));
     }
 
-    if (adminRecipients.length > 0) {
-      void Promise.all(adminRecipients.map((adminRecipient) =>
+    if (ADMIN_ALERT_RECIPIENTS.length > 0) {
+      void Promise.all(ADMIN_ALERT_RECIPIENTS.map((adminRecipient) =>
         sendPaymentFailureAdminAlert({
           recipient: adminRecipient,
           customerName: name || "Customer",
           orderId: fallbackOrderId,
           total,
         }),
-      ));
+      )).catch((error) => console.error("Failed to send payment failure admin alerts", error));
     }
 
     toast({
