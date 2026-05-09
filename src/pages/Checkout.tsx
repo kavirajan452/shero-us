@@ -17,6 +17,7 @@ import { useServiceability } from "@/hooks/useServiceability";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
 const DELIVERY_FEE_DEFAULT = 30;
 const TIP_PRESETS_DEFAULT = [5, 10, 15, 20];
@@ -64,7 +65,7 @@ const Checkout = () => {
         const cfg = data.value as Record<string, string>;
         if (cfg.deliveryFee) setConfigDeliveryFee(parseFloat(cfg.deliveryFee) || DELIVERY_FEE_DEFAULT);
         if (cfg.tipPresets) {
-          try { setTipPresets(JSON.parse(cfg.tipPresets)); } catch {}
+          try { setTipPresets(JSON.parse(cfg.tipPresets)); } catch (error) { console.error("Invalid tipPresets config", error); }
         }
       }
     });
@@ -190,8 +191,8 @@ const Checkout = () => {
       setSearchingAddress(true);
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addressQuery)}&format=json&limit=5&addressdetails=1&countrycodes=us`);
-        const data = await res.json();
-        setAddressSuggestions(data.map((d: any) => ({ display: d.display_name, lat: d.lat, lon: d.lon, state: d.address?.state || "" })));
+        const data = await res.json() as Array<{ display_name: string; lat: string; lon: string; address?: { state?: string } }>;
+        setAddressSuggestions(data.map((d) => ({ display: d.display_name, lat: d.lat, lon: d.lon, state: d.address?.state || "" })));
         setShowSuggestions(true);
       } catch { setAddressSuggestions([]); }
       setSearchingAddress(false);
@@ -212,14 +213,14 @@ const Checkout = () => {
     return parts.length > 0 ? parts.join(", ") : undefined;
   };
 
-  const buildOrder = () => ({
+  const buildOrder = (): Database["public"]["Tables"]["instant_orders"]["Insert"] => ({
     order_code: `SH-INS-${Date.now().toString(36).toUpperCase()}`,
     customer_id: user?.id ?? null,
     customer_name: name,
     customer_phone: phone,
     customer_address: address,
     items: items.map(({ item, quantity, selectedAddOns }) => ({
-      name: item.name, qty: quantity, price: item.price, addOns: selectedAddOns.map(a => a.name),
+      name: item.name, qty: quantity, price: item.price, addOns: selectedAddOns.map((a: { name: string }) => a.name),
     })),
     subtotal,
     discount: promoDiscount,
@@ -251,7 +252,7 @@ const Checkout = () => {
     setPaymentError("");
     setPaymentStatus("processing");
     try {
-      const createdOrder = await createOrder.mutateAsync(buildOrder() as any);
+      const createdOrder = await createOrder.mutateAsync(buildOrder());
       setPendingOrderId(createdOrder.id);
       const { data, error } = await supabase.functions.invoke("create-payment-intent", {
         body: { orderId: createdOrder.id, amount: total, currency: "usd" },
@@ -279,7 +280,7 @@ const Checkout = () => {
 
   const onDemoSuccess = async ({ transactionId }: { success: true; transactionId: string }) => {
     if (!pendingOrderId) return;
-    await (supabase as any)
+    await supabase
       .from("instant_orders")
       .update({
         payment_status: "paid",
@@ -300,7 +301,7 @@ const Checkout = () => {
 
   const onDemoFailure = async ({ message }: { success: false; message: string }) => {
     if (!pendingOrderId) return;
-    await (supabase as any)
+    await supabase
       .from("instant_orders")
       .update({
         payment_status: "failed",
@@ -329,7 +330,7 @@ const Checkout = () => {
 
   const onStripeSuccess = async ({ paymentIntentId }: { paymentIntentId: string }) => {
     if (!pendingOrderId) return;
-    await (supabase as any)
+    await supabase
       .from("instant_orders")
       .update({
         payment_status: "processing",
@@ -348,7 +349,7 @@ const Checkout = () => {
 
   const onStripeFailure = async ({ message }: { message: string }) => {
     if (!pendingOrderId) return;
-    await (supabase as any)
+    await supabase
       .from("instant_orders")
       .update({
         payment_status: "failed",
