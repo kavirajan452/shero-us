@@ -14,6 +14,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useWallet } from "@/contexts/WalletContext";
 import { useCreateInstantOrder, useSaveIncompleteOrder } from "@/hooks/useSupabaseData";
 import { useServiceability } from "@/hooks/useServiceability";
+import { useCustomerLocation } from "@/contexts/CustomerLocationContext";
+import { normalizeZip } from "@/lib/customerLocation";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -33,6 +35,7 @@ const Checkout = () => {
   const [useWalletBalance, setUseWalletBalance] = useState(true);
   const { detectAndCheck, checkByZip, detectedLocation, checking: geoChecking, radiusMiles, hasKitchens } = useServiceability();
   const [serviceableStatus, setServiceableStatus] = useState<"unknown" | "checking" | "serviceable" | "not_serviceable">("unknown");
+  const { location, setLocation, setServiceabilityStatus } = useCustomerLocation();
 
   // Tips state
   const [tipAmount, setTipAmount] = useState(0);
@@ -61,7 +64,7 @@ const Checkout = () => {
   const [selectedSlot, setSelectedSlot] = useState(isSnacksOnly ? "shipping" : "");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(location.label || "");
   const [addressQuery, setAddressQuery] = useState("");
   const [addressSuggestions, setAddressSuggestions] = useState<{ display: string; lat: string; lon: string; state: string }[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -69,7 +72,7 @@ const Checkout = () => {
   const [flatDoor, setFlatDoor] = useState("");
   const [floorBlock, setFloorBlock] = useState("");
   const [addressExtra, setAddressExtra] = useState("");
-  const [zipCode, setZipCode] = useState("");
+  const [zipCode, setZipCode] = useState(normalizeZip(location.zip || ""));
 
   // Delivery & Pickup Instructions
   const [pickupChips, setPickupChips] = useState<string[]>([]);
@@ -85,7 +88,17 @@ const Checkout = () => {
     if (isSnacksOnly || serviceableStatus !== "unknown" || !hasKitchens) return;
     setServiceableStatus("checking");
     detectAndCheck().then((result) => {
-      setServiceableStatus(result.serviceable ? "serviceable" : "not_serviceable");
+      const nextStatus = result.serviceable ? "serviceable" : "not_serviceable";
+      setServiceableStatus(nextStatus);
+      setServiceabilityStatus(nextStatus);
+      if (result.customerCoords) {
+        setLocation({
+          method: "gps",
+          label: result.detectedLocation || location.label || "Current Location",
+          lat: result.customerCoords.lat,
+          lng: result.customerCoords.lng,
+        });
+      }
     });
   }, [hasKitchens]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -99,7 +112,10 @@ const Checkout = () => {
   useEffect(() => {
     if (zipCode.length === 5 && hasKitchens) {
       const isServiceable = checkByZip(zipCode);
-      setServiceableStatus(isServiceable ? "serviceable" : "not_serviceable");
+      const nextStatus = isServiceable ? "serviceable" : "not_serviceable";
+      setServiceableStatus(nextStatus);
+      setServiceabilityStatus(nextStatus);
+      setLocation({ method: "manual_zip", zip: zipCode, label: address || `ZIP ${zipCode}` });
     }
   }, [zipCode, hasKitchens, checkByZip]);
 
@@ -180,6 +196,11 @@ const Checkout = () => {
   }, [addressQuery]);
 
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (location.label && !address) setAddress(location.label);
+    if (location.zip && !zipCode) setZipCode(normalizeZip(location.zip));
+  }, [location.label, location.zip]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const buildPickupInstructions = () => {
     const parts = [...pickupChips];
@@ -378,7 +399,7 @@ const Checkout = () => {
               {showSuggestions && addressSuggestions.length > 0 && (
                 <div className="absolute left-0 right-0 top-full mt-1 bg-card border border-border rounded-xl shadow-lg z-10 max-h-48 overflow-y-auto">
                   {addressSuggestions.map((s, i) => (
-                    <button key={i} onMouseDown={() => { setAddress(s.display); setAddressQuery(s.display); setShowSuggestions(false); if (s.state) setCustomerState(s.state); }} className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors first:rounded-t-xl last:rounded-b-xl">
+                    <button key={i} onMouseDown={() => { setAddress(s.display); setAddressQuery(s.display); setShowSuggestions(false); if (s.state) setCustomerState(s.state); setLocation({ method: "manual_address", label: s.display, lat: Number(s.lat), lng: Number(s.lon), zip: zipCode }); }} className="w-full text-left px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors first:rounded-t-xl last:rounded-b-xl">
                       <MapPin className="w-3 h-3 inline mr-2 text-muted-foreground" />{s.display}
                     </button>
                   ))}
@@ -394,7 +415,7 @@ const Checkout = () => {
             {/* Snacks-specific: ZIP code + city */}
             {isSnacksOnly && (
               <div className="grid grid-cols-2 gap-3">
-                <input value={zipCode} onChange={(e) => setZipCode(e.target.value)} type="text" placeholder="ZIP Code" maxLength={5} className={`w-full px-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted-foreground outline-none transition-colors ${attempted && missingZipCode ? "border-destructive focus:border-destructive" : "border-border focus:border-primary"}`} />
+                <input value={zipCode} onChange={(e) => setZipCode(normalizeZip(e.target.value))} type="text" placeholder="ZIP Code" maxLength={5} className={`w-full px-4 py-3 rounded-xl bg-background border text-foreground placeholder:text-muted-foreground outline-none transition-colors ${attempted && missingZipCode ? "border-destructive focus:border-destructive" : "border-border focus:border-primary"}`} />
                 <input value={city} onChange={(e) => setCity(e.target.value)} type="text" placeholder="City" className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors" />
               </div>
             )}

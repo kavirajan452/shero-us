@@ -721,12 +721,12 @@ export function useKitchenPartners(activeOnly?: boolean) {
   });
 }
 
-export function useNearbyKitchenPartners(customerLat?: number | null, customerLng?: number | null) {
+export function useNearbyKitchenPartners(customerLat?: number | null, customerLng?: number | null, customerZip?: string | null) {
   useRealtimeSubscription("kitchen_partners", ["kitchen_partners_nearby"]);
   const { data: radiusKm } = useKitchenVisibilityRadius();
 
   return useQuery({
-    queryKey: ["kitchen_partners_nearby", customerLat, customerLng, radiusKm],
+    queryKey: ["kitchen_partners_nearby", customerLat, customerLng, customerZip, radiusKm],
     queryFn: async () => {
       const [kitchenRes, locRes] = await Promise.all([
         supabase.from("kitchen_partners").select("*").eq("is_active", true),
@@ -737,29 +737,53 @@ export function useNearbyKitchenPartners(customerLat?: number | null, customerLn
 
       const kitchens = kitchenRes.data || [];
       const locations = locRes.data || [];
-
       const radius = radiusKm || 7;
-      return kitchens.map((k: any) => {
+      const normalizedZip = (customerZip || "").replace(/\D/g, "").slice(0, 5);
+
+      const kitchenWithMeta = kitchens.map((k: any) => {
         let distance: number | null = null;
-        if (customerLat && customerLng) {
-          if (k.is_branded) {
-            const kitchenLocs = locations.filter((l: any) => l.kitchen_id === k.id);
+        let zipMatch = false;
+
+        if (k.is_branded) {
+          const kitchenLocs = locations.filter((l: any) => l.kitchen_id === k.id);
+          if (customerLat != null && customerLng != null) {
             const distances = kitchenLocs
               .filter((l: any) => l.latitude && l.longitude)
               .map((l: any) => haversineDistance(customerLat, customerLng, Number(l.latitude), Number(l.longitude)));
             distance = distances.length > 0 ? Math.min(...distances) : null;
-          } else {
-            if (k.latitude && k.longitude) {
-              distance = haversineDistance(customerLat, customerLng, Number(k.latitude), Number(k.longitude));
-            }
           }
+
+          zipMatch = normalizedZip
+            ? kitchenLocs.some((l: any) => String(l.pincode || "").replace(/\D/g, "").slice(0, 5) === normalizedZip)
+            : false;
+        } else {
+          if (customerLat != null && customerLng != null && k.latitude && k.longitude) {
+            distance = haversineDistance(Number(customerLat), Number(customerLng), Number(k.latitude), Number(k.longitude));
+          }
+
+          zipMatch = normalizedZip
+            ? String(k.pincode || "").replace(/\D/g, "").slice(0, 5) === normalizedZip
+            : false;
         }
-        return { ...k, distance };
-      }).filter((k: any) => {
-        if (!customerLat || !customerLng) return true;
-        if (k.distance === null) return true;
-        return k.distance <= radius;
+
+        return { ...k, distance, zipMatch };
       });
+
+      const hasCoords = customerLat != null && customerLng != null;
+      const hasZip = !!normalizedZip;
+
+      if (hasCoords) {
+        const coordFiltered = kitchenWithMeta.filter((k: any) => k.distance != null && k.distance <= radius);
+        if (coordFiltered.length > 0 || !hasZip) {
+          return coordFiltered;
+        }
+      }
+
+      if (hasZip) {
+        return kitchenWithMeta.filter((k: any) => k.zipMatch);
+      }
+
+      return kitchenWithMeta;
     },
   });
 }

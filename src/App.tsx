@@ -8,6 +8,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { RegionProvider } from "@/contexts/RegionContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { WalletProvider } from "@/contexts/WalletContext";
+import { CustomerLocationProvider } from "@/contexts/CustomerLocationContext";
 import Index from "./pages/Index";
 import Analytics from "./components/Analytics";
 import ScrollToTop from "./components/ScrollToTop";
@@ -139,7 +140,8 @@ const App = () => (
     <RegionProvider>
       <AuthProvider>
         <WalletProvider>
-          <CartProvider>
+          <CustomerLocationProvider>
+            <CartProvider>
             <TooltipProvider>
               <Toaster />
               <Sonner />
@@ -322,8 +324,9 @@ const App = () => (
                 </Suspense>
                 <WhatsAppSupport />
               </BrowserRouter>
-            </TooltipProvider>
-          </CartProvider>
+              </TooltipProvider>
+            </CartProvider>
+          </CustomerLocationProvider>
         </WalletProvider>
       </AuthProvider>
     </RegionProvider>
