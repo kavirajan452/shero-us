@@ -47,8 +47,9 @@
 | Admin orders (`/admin/orders`) | ✅ Reads `instant_orders` from Supabase | Status updates wired; delivery assignment is stub |
 | Partner portal | ✅ UI complete | Order accept / prep / mark-ready not writing to `instant_orders` |
 | Payments | ❌ Demo only | Stripe PaymentIntent + webhook not implemented |
-| Notifications | ❌ Not implemented | Twilio SMS + SendGrid email needed |
-| Delivery partner | ❌ Config exists in `deliveryTrackingData.ts` | DoorDash Drive / Uber Direct API not called |
+| Notifications | ❌ Not implemented | Gallabox SMS + SMTP email needed |
+| Delivery partner | ❌ Config exists in `deliveryTrackingData.ts` | DoorDash API not called |
+| Tax engine | ❌ Not implemented | Avalara API not integrated |
 
 ---
 
@@ -145,15 +146,31 @@
 
 ### 3.3 Third-Party Integrations to Add
 
-| Service | Purpose | Provider |
-|---|---|---|
-| **Stripe** | Payment processing — card, Apple Pay, Google Pay, ACH | stripe.com |
-| **Twilio Verify** | Phone OTP for auth | twilio.com |
-| **Twilio SMS** | Order status SMS notifications | twilio.com |
-| **SendGrid** | Transactional email — order confirm, invoice | sendgrid.com |
-| **Google Maps Platform** | Address autocomplete + geocoding | console.cloud.google.com |
-| **DoorDash Drive** OR **Uber Direct** | Third-party delivery dispatch | developer.doordash.com |
-| **Firebase Cloud Messaging** | Push notifications (optional — Phase 2+) | firebase.google.com |
+| Service | Purpose | Provider | Demo Mode (non-production) |
+|---|---|---|---|
+| **Stripe** | Payment processing — card, Apple Pay, Google Pay, ACH | stripe.com | Simulate dummy PaymentIntent response + data |
+| **Avalara** | Tax calculation and compliance | avalara.com | Simulate dummy tax quote/commit response + data |
+| **DoorDash** | Third-party delivery dispatch | developer.doordash.com | Simulate dummy dispatch/tracking response + data |
+| **SMTP** | Transactional email — order confirmation, invoice | Any SMTP provider | Disabled send; log payload only |
+| **Gallabox** | SMS notifications and messaging workflows | gallabox.com | Simulate dummy SMS send/delivery response + data |
+| **Google Maps Platform** | Address autocomplete + geocoding | console.cloud.google.com | Live only |
+| **Firebase Cloud Messaging** | Push notifications (optional — Phase 2+) | firebase.google.com | Optional (Phase 2+) |
+
+### 3.4 Integration Status Snapshot (Completed vs Pending)
+
+> Scope checked against codebase and this requirement set: Stripe, Avalara, DoorDash, SMTP, Gallabox.
+
+#### Completed
+
+- **Stripe (demo mode simulation)** — `supabase/functions/create-payment-intent/index.ts` returns simulated dummy response/data in non-production mode.
+
+#### Pending
+
+- **Stripe (live-ready end-to-end)** — webhook + full checkout Stripe Elements flow still pending in this plan.
+- **Avalara integration** — no API calls or edge function implementation yet.
+- **DoorDash integration** — no dispatch API integration yet (config/mock references only).
+- **SMTP integration** — no SMTP sender integration yet.
+- **Gallabox integration** — no Gallabox-specific integration yet (SMS gateway wiring is generic).
 
 ---
 
@@ -423,19 +440,19 @@ formatted address, latitude, longitude, and ZIP code via an onChange callback."
 - [ ] **Task 1.5.2** — Create Edge Function `send-sms`
   - File: `supabase/functions/send-sms/index.ts`
   - Accepts: `POST { to: string, body: string }`
-  - Calls Twilio Messages API
-  - Environment vars: `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER`
+  - Calls Gallabox API
+  - Environment vars: `GALLABOX_API_URL`, `GALLABOX_API_KEY`, `GALLABOX_SENDER_ID`
 
 - [ ] **Task 1.5.3** — Create Edge Function `send-order-email`
   - File: `supabase/functions/send-order-email/index.ts`
   - Accepts: `POST { to: string, templateId: string, dynamicData: object }`
-  - Calls SendGrid API
+  - Calls SMTP gateway
   - Templates needed:
     - `order_confirmation` — order ID, items list, total, expected delivery time
     - `new_order_alert` (to partner) — items, customer name/phone, delivery slot
     - `order_delivered` — "Thank you" + link to download invoice PDF
     - `order_cancelled` — confirmation of cancellation + refund ETA
-  - Environment var: `SENDGRID_API_KEY`
+  - Environment vars: `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM_EMAIL`
 
 - [ ] **Task 1.5.4** — Create SMS template store in DB
   - Connect `/admin/instant-comms` page to a `communications_templates` table
@@ -629,7 +646,7 @@ alphanumeric referral_code on insert into the profiles table."
 - [ ] **Task 1.8.3** — Create Edge Function `dispatch-delivery`
   - File: `supabase/functions/dispatch-delivery/index.ts`
   - Triggered when admin clicks "Assign Delivery"
-  - Calls DoorDash Drive API `POST /drive/v2/deliveries` (or Uber Direct equivalent)
+  - Calls DoorDash API `POST /drive/v2/deliveries`
   - Stores returned `deliveryId` and tracking URL in `instant_orders.delivery_details` (JSONB)
   - Migration: `ALTER TABLE instant_orders ADD COLUMN IF NOT EXISTS delivery_details JSONB DEFAULT '{}';`
 
@@ -890,14 +907,15 @@ $$ LANGUAGE SQL STABLE;
 
 | Function | Method | Trigger | Description |
 |---|---|---|---|
-| `send-otp` | POST | Auth page — "Send OTP" | Call Twilio Verify to send OTP to phone |
+| `send-otp` | POST | Auth page — "Send OTP" | Call SMS OTP provider to send OTP to phone |
 | `verify-otp` | POST | Auth page — "Verify" | Verify OTP code, sign in user |
 | `create-payment-intent` | POST | Checkout — payment step | Create Stripe PaymentIntent, return clientSecret |
 | `stripe-webhook` | POST | Stripe Dashboard webhook | Handle payment events, update order status |
 | `trigger-notification` | POST | All status changes | Route to SMS + email based on event type |
-| `send-sms` | POST | trigger-notification | Send SMS via Twilio |
-| `send-order-email` | POST | trigger-notification | Send email via SendGrid |
-| `dispatch-delivery` | POST | Admin — assign delivery | Call DoorDash Drive / Uber Direct API |
+| `send-sms` | POST | trigger-notification | Send SMS via Gallabox |
+| `send-order-email` | POST | trigger-notification | Send email via SMTP |
+| `dispatch-delivery` | POST | Admin — assign delivery | Call DoorDash API |
+| `calculate-tax` | POST | Checkout — pre-payment | Fetch tax from Avalara (or simulate in demo mode) |
 | `process-refund` | POST | Order cancel | Stripe refund + wallet credit |
 | `process-referral` | POST | Signup with `?ref=` | Credit referrer wallet |
 
@@ -1072,10 +1090,11 @@ Customer Browser
          ├── Supabase Storage
          └── Edge Functions (Deno runtime)
               ├── → Stripe API
-              ├── → Twilio Verify (OTP)
-              ├── → Twilio SMS (notifications)
-              ├── → SendGrid (email)
-              ├── → DoorDash Drive / Uber Direct
+         ├── → OTP SMS provider
+         ├── → Gallabox SMS (notifications)
+         ├── → SMTP (email)
+         ├── → DoorDash
+         ├── → Avalara
               └── → Google Maps Geocoding
 ```
 
@@ -1118,15 +1137,20 @@ jobs:
 | Stripe Publishable Key | dashboard.stripe.com → API Keys | 1.4 | `VITE_STRIPE_PUBLISHABLE_KEY` |
 | Stripe Secret Key | dashboard.stripe.com → API Keys | 1.4 | `STRIPE_SECRET_KEY` |
 | Stripe Webhook Secret | dashboard.stripe.com → Webhooks | 1.4 | `STRIPE_WEBHOOK_SECRET` |
-| Twilio Account SID | console.twilio.com | 1.1, 1.5 | `TWILIO_ACCOUNT_SID` |
-| Twilio Auth Token | console.twilio.com | 1.1, 1.5 | `TWILIO_AUTH_TOKEN` |
-| Twilio Verify Service SID | console.twilio.com → Verify | 1.1 | `TWILIO_VERIFY_SID` |
-| Twilio From Phone Number | console.twilio.com → Phone Numbers | 1.5 | `TWILIO_FROM_NUMBER` |
-| SendGrid API Key | app.sendgrid.com → API Keys | 1.5 | `SENDGRID_API_KEY` |
-| SendGrid Verified Sender | app.sendgrid.com → Sender Auth | 1.5 | `SENDGRID_FROM_EMAIL` |
+| Gallabox API URL | app.gallabox.com | 1.5 | `GALLABOX_API_URL` |
+| Gallabox API Key | app.gallabox.com | 1.5 | `GALLABOX_API_KEY` |
+| Gallabox Sender ID | app.gallabox.com | 1.5 | `GALLABOX_SENDER_ID` |
+| SMTP Host | Your SMTP provider | 1.5 | `SMTP_HOST` |
+| SMTP Port | Your SMTP provider | 1.5 | `SMTP_PORT` |
+| SMTP Username | Your SMTP provider | 1.5 | `SMTP_USERNAME` |
+| SMTP Password | Your SMTP provider | 1.5 | `SMTP_PASSWORD` |
+| SMTP From Email | Your SMTP provider | 1.5 | `SMTP_FROM_EMAIL` |
+| Avalara Account ID | admin.avalara.com | 1.10 | `AVALARA_ACCOUNT_ID` |
+| Avalara License Key | admin.avalara.com | 1.10 | `AVALARA_LICENSE_KEY` |
+| Avalara Environment | admin.avalara.com | 1.10 | `AVALARA_ENV` |
 | Google Maps API Key | console.cloud.google.com | 1.4 | `VITE_GOOGLE_MAPS_API_KEY` |
 | Google Places API enabled | console.cloud.google.com → APIs | 1.4 | — (enable in console) |
-| DoorDash Drive API Key | developer.doordash.com | 1.8 | `DOORDASH_API_KEY` |
+| DoorDash API Key | developer.doordash.com | 1.8 | `DOORDASH_API_KEY` |
 | DoorDash Developer ID | developer.doordash.com | 1.8 | `DOORDASH_DEVELOPER_ID` |
 | Supabase Service Role Key | supabase.com → Project Settings | All Edge Functions | `SUPABASE_SERVICE_ROLE_KEY` |
 | Supabase Project URL | supabase.com → Project Settings | All Edge Functions | `SUPABASE_URL` |
@@ -1144,10 +1168,10 @@ jobs:
 | Q1 | What is the exact delivery radius for US launch? | 1.2 | 7 km (in app_config) |
 | Q2 | Is the first-order wallet cap 50% or a different amount? | 1.4 | 50% |
 | Q3 | Should cancelled orders within 5 min get a full refund or partial? | 1.6 | Full refund |
-| Q4 | Which delivery API to use: DoorDash Drive or Uber Direct? | 1.8 | DoorDash Drive |
+| Q4 | Confirm DoorDash account provisioning + onboarding timeline | 1.8 | DoorDash as primary |
 | Q5 | What is the partner commission rate (% of subtotal)? | 1.9 | Stored per partner in `kitchen_partners.commission_rate` |
 | Q6 | Should wallet credits expire? If yes, after how many days? | 1.7 | 365 days for referral credits; spin credits no expiry |
 | Q7 | Is phone-only signup acceptable or should email also be required? | 1.1 | Phone-only for customers, email for partners |
 | Q8 | What US states will be supported at launch? Tax rates needed. | 1.10 | Texas + Florida at launch |
 | Q9 | Should the modification window be 5 minutes or configurable from admin? | 1.6 | Configurable via app_config |
-| Q10 | Will DoorDash Drive cover all serviceable zones or only some? | 1.8 | DoorDash Drive as primary; partner self-delivery as fallback |
+| Q10 | Will DoorDash cover all serviceable zones or only some? | 1.8 | DoorDash as primary; partner self-delivery as fallback |

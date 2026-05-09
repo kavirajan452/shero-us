@@ -5,10 +5,17 @@ import sheroLogo from "@/assets/shero-logo.png";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import heroMascot from "@/assets/shero-mascot-cooking.jpeg";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
+import { useServiceability } from "@/hooks/useServiceability";
+
+const extractUsZip = (value: string) => {
+  const match = value.match(/\b\d{5}(?:-\d{4})?\b/);
+  return match ? match[0].slice(0, 5) : "";
+};
 
 const HeroSection = () => {
   const { data: contentItems } = useScreenContent("home");
   const c = contentMap(contentItems || []);
+  const { checkByZip, hasKitchens } = useServiceability();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [address, setAddress] = useState("Midtown");
@@ -18,6 +25,8 @@ const HeroSection = () => {
   const [showManual, setShowManual] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [listening, setListening] = useState(false);
+  const [validatedZip, setValidatedZip] = useState("");
+  const [zipValidationStatus, setZipValidationStatus] = useState<"idle" | "serviceable" | "not_serviceable" | "missing_zip">("idle");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
 
@@ -46,6 +55,26 @@ const HeroSection = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const validateZipFromAddress = (value: string) => {
+    const zip = extractUsZip(value);
+    if (!zip) {
+      setValidatedZip("");
+      setZipValidationStatus("missing_zip");
+      return;
+    }
+    setValidatedZip(zip);
+    if (!hasKitchens) {
+      setZipValidationStatus("idle");
+      return;
+    }
+    setZipValidationStatus(checkByZip(zip) ? "serviceable" : "not_serviceable");
+  };
+
+  useEffect(() => {
+    if (!validatedZip || !hasKitchens) return;
+    setZipValidationStatus(checkByZip(validatedZip) ? "serviceable" : "not_serviceable");
+  }, [validatedZip, hasKitchens, checkByZip]);
+
   const handleDetect = () => {
     if (!navigator.geolocation) return;
     setDetecting(true);
@@ -64,6 +93,7 @@ const HeroSection = () => {
             "Current Location";
           setAddress(locality);
           setAddressLabel("Current");
+          validateZipFromAddress(`${data.address?.postcode || ""} ${data.display_name || ""}`);
         } catch {
           setAddress("Current Location");
         }
@@ -79,6 +109,7 @@ const HeroSection = () => {
     if (trimmed.length > 0 && trimmed.length <= 100) {
       setAddress(trimmed);
       setAddressLabel("Other");
+      validateZipFromAddress(trimmed);
       setManualInput("");
       setShowManual(false);
       setShowDropdown(false);
@@ -218,6 +249,15 @@ const HeroSection = () => {
               <Mic className="w-5 h-5" />
             </button>
           </div>
+          {zipValidationStatus === "serviceable" && (
+            <p className="mt-2 text-xs text-primary">ZIP {validatedZip} is serviceable for delivery.</p>
+          )}
+          {zipValidationStatus === "not_serviceable" && (
+            <p className="mt-2 text-xs text-destructive">ZIP {validatedZip} is currently outside our delivery area.</p>
+          )}
+          {zipValidationStatus === "missing_zip" && (
+            <p className="mt-2 text-xs text-muted-foreground">Enter a 5-digit ZIP in the address input before searching.</p>
+          )}
         </div>
 
       {/* Right: mascot image */}
@@ -273,6 +313,15 @@ const HeroSection = () => {
             <Mic className="w-5 h-5" />
           </button>
         </div>
+        {zipValidationStatus === "serviceable" && (
+          <p className="mt-2 text-xs text-primary">ZIP {validatedZip} is serviceable for delivery.</p>
+        )}
+        {zipValidationStatus === "not_serviceable" && (
+          <p className="mt-2 text-xs text-destructive">ZIP {validatedZip} is currently outside our delivery area.</p>
+        )}
+        {zipValidationStatus === "missing_zip" && (
+          <p className="mt-2 text-xs text-muted-foreground">Enter a 5-digit ZIP in the address input before searching.</p>
+        )}
       </div>
     </section>
   );
