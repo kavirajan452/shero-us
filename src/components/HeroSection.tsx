@@ -1,14 +1,21 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { Search, Briefcase, ChevronDown, LocateFixed, Plus, X, Mic, MapPin, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import sheroLogo from "@/assets/shero-logo.png";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import heroMascot from "@/assets/shero-mascot-cooking.jpeg";
 import { useScreenContent, contentMap } from "@/hooks/useScreenContent";
+import { useAppConfig } from "@/hooks/useSupabaseData";
+import { useServiceability } from "@/hooks/useServiceability";
+import { useToast } from "@/hooks/use-toast";
 
 const HeroSection = () => {
   const { data: contentItems } = useScreenContent("home");
   const c = contentMap(contentItems || []);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { data: serviceableZipConfig } = useAppConfig("serviceable_zip_codes");
+  const { checkByZip } = useServiceability();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [address, setAddress] = useState("Midtown");
@@ -17,9 +24,29 @@ const HeroSection = () => {
   const [manualInput, setManualInput] = useState("");
   const [showManual, setShowManual] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [zipStatus, setZipStatus] = useState<"idle" | "serviceable" | "not_serviceable">("idle");
   const [listening, setListening] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+
+  const configuredZips = useMemo(() => {
+    if (Array.isArray(serviceableZipConfig)) {
+      return serviceableZipConfig.map((value) => String(value).trim()).filter(Boolean);
+    }
+    if (typeof serviceableZipConfig === "string") {
+      return serviceableZipConfig.split(",").map((value) => value.trim()).filter(Boolean);
+    }
+    if (
+      serviceableZipConfig &&
+      typeof serviceableZipConfig === "object" &&
+      "zips" in serviceableZipConfig &&
+      Array.isArray((serviceableZipConfig as { zips?: unknown[] }).zips)
+    ) {
+      return ((serviceableZipConfig as { zips?: unknown[] }).zips ?? []).map((value) => String(value).trim()).filter(Boolean);
+    }
+    return [];
+  }, [serviceableZipConfig]);
 
   // Hide language switcher if user has previously selected a language.
   // Initialize to false so server and client agree during hydration;
@@ -106,6 +133,26 @@ const HeroSection = () => {
     recognition.onerror = () => setListening(false);
     setListening(true);
     recognition.start();
+  };
+
+  const handleZipCheck = () => {
+    const normalizedZip = zipCode.trim();
+    if (!/^\d{5}$/.test(normalizedZip)) {
+      setZipStatus("idle");
+      toast({ title: "Enter a valid ZIP code", description: "ZIP code must be 5 digits.", variant: "destructive" });
+      return;
+    }
+
+    const serviceable = configuredZips.length > 0 ? configuredZips.includes(normalizedZip) : checkByZip(normalizedZip);
+    setZipStatus(serviceable ? "serviceable" : "not_serviceable");
+
+    if (serviceable) {
+      toast({ title: "Service available", description: `Shero is available in ZIP ${normalizedZip}.` });
+      navigate(`/instant-delivery?zip=${normalizedZip}`);
+      return;
+    }
+
+    toast({ title: "Not serviceable yet", description: `We are not yet available in ZIP ${normalizedZip}.`, variant: "destructive" });
   };
 
   return (
@@ -218,6 +265,35 @@ const HeroSection = () => {
               <Mic className="w-5 h-5" />
             </button>
           </div>
+          <div className="mt-3 bg-card rounded-2xl p-3 shadow-lg border border-border max-w-[520px]">
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={5}
+                value={zipCode}
+                onChange={(e) => {
+                  setZipCode(e.target.value.replace(/\D/g, "").slice(0, 5));
+                  if (zipStatus !== "idle") setZipStatus("idle");
+                }}
+                onKeyDown={(e) => e.key === "Enter" && handleZipCheck()}
+                placeholder="Check delivery ZIP code"
+                className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 outline-none border border-border rounded-xl px-4 py-2.5"
+              />
+              <button
+                onClick={handleZipCheck}
+                className="shrink-0 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
+              >
+                Check ZIP
+              </button>
+            </div>
+            {zipStatus === "serviceable" && (
+              <p className="mt-2 text-xs text-accent">ZIP code is serviceable. Redirecting to available kitchens.</p>
+            )}
+            {zipStatus === "not_serviceable" && (
+              <p className="mt-2 text-xs text-destructive">We are not currently serving this ZIP code.</p>
+            )}
+          </div>
         </div>
 
       {/* Right: mascot image */}
@@ -272,6 +348,35 @@ const HeroSection = () => {
           <button onClick={handleMic} className={`p-2 rounded-full shrink-0 transition-colors ${listening ? "bg-primary/10 text-primary animate-pulse" : "text-muted-foreground/50 hover:text-primary"}`} aria-label="Voice search">
             <Mic className="w-5 h-5" />
           </button>
+        </div>
+        <div className="mt-3 bg-card rounded-2xl p-3 shadow-lg border border-border">
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={5}
+              value={zipCode}
+              onChange={(e) => {
+                setZipCode(e.target.value.replace(/\D/g, "").slice(0, 5));
+                if (zipStatus !== "idle") setZipStatus("idle");
+              }}
+              onKeyDown={(e) => e.key === "Enter" && handleZipCheck()}
+              placeholder="Check delivery ZIP code"
+              className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 outline-none border border-border rounded-xl px-4 py-2.5"
+            />
+            <button
+              onClick={handleZipCheck}
+              className="shrink-0 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
+            >
+              Check
+            </button>
+          </div>
+          {zipStatus === "serviceable" && (
+            <p className="mt-2 text-xs text-accent">ZIP code is serviceable. Redirecting to available kitchens.</p>
+          )}
+          {zipStatus === "not_serviceable" && (
+            <p className="mt-2 text-xs text-destructive">We are not currently serving this ZIP code.</p>
+          )}
         </div>
       </div>
     </section>
