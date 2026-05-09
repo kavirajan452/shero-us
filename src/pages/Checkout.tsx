@@ -28,6 +28,14 @@ type PaymentIntentResponse = {
   clientSecret?: string;
   transactionId?: string;
 };
+type NominatimResult = {
+  display_name: string;
+  lat: string;
+  lon: string;
+  address?: {
+    state?: string;
+  };
+};
 
 const Checkout = () => {
   const { items, updateQuantity, removeItem, subtotal, clearCart, totalItems, appliedPromo, promoDiscount, applyPromoCode, removePromoCode, promoLoading } = useCart();
@@ -65,7 +73,7 @@ const Checkout = () => {
         const cfg = data.value as Record<string, string>;
         if (cfg.deliveryFee) setConfigDeliveryFee(parseFloat(cfg.deliveryFee) || DELIVERY_FEE_DEFAULT);
         if (cfg.tipPresets) {
-          try { setTipPresets(JSON.parse(cfg.tipPresets)); } catch (error) { console.error("Invalid tipPresets config", error); }
+          try { setTipPresets(JSON.parse(cfg.tipPresets)); } catch (error) { console.error("Invalid invoice_settings.tipPresets JSON", error); }
         }
       }
     });
@@ -191,7 +199,7 @@ const Checkout = () => {
       setSearchingAddress(true);
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addressQuery)}&format=json&limit=5&addressdetails=1&countrycodes=us`);
-        const data = await res.json() as Array<{ display_name: string; lat: string; lon: string; address?: { state?: string } }>;
+        const data = await res.json() as NominatimResult[];
         setAddressSuggestions(data.map((d) => ({ display: d.display_name, lat: d.lat, lon: d.lon, state: d.address?.state || "" })));
         setShowSuggestions(true);
       } catch { setAddressSuggestions([]); }
