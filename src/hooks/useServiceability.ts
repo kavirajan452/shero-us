@@ -106,7 +106,7 @@ export function useServiceability() {
           data.address?.state ||
           "Your location";
       } catch {
-        // keep default
+        // Reverse geocode failed; loc keeps the default 'Your location' value
       }
       setDetectedLocation(loc);
 

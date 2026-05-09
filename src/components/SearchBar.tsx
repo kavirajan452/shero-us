@@ -33,7 +33,7 @@ const popularSuggestions = [
   { label: "Chapati", icon: "🫓", category: "Dish" },
   { label: "Paneer Butter Masala", icon: "🍛", category: "Dish" },
   { label: "Chicken Curry", icon: "🍗", category: "Dish" },
-  { label: "Sambar Rice", icon: "��", category: "Dish" },
+  { label: "Sambar Rice", icon: "🍚", category: "Dish" },
   { label: "Curd Rice", icon: "🍚", category: "Dish" },
   { label: "Fried Rice", icon: "🍚", category: "Dish" },
   { label: "Pulihora", icon: "🍋", category: "Dish" },
