@@ -1,21 +1,38 @@
-import { useState, useMemo, useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Search, SlidersHorizontal, Leaf, X, Bike, AlertTriangle, MapPin, LocateFixed, Hash, Plus, ArrowUpRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
 import { useNearbyKitchenPartners, useInstantMenuCategories, useKitchenVisibilityRadius, useInstantMenuItems } from "@/hooks/useSupabaseData";
 import { Badge } from "@/components/ui/badge";
-import { useRegion } from "@/contexts/RegionContext";
 import { useCustomerLocation } from "@/contexts/CustomerLocationContext";
 import { applyLocationToSearchParams, getLocationSummary, isValidZip, normalizeZip, readLocationFromSearchParams } from "@/lib/customerLocation";
 import { trackEvent } from "@/lib/analyticsEvents";
 
 const sortOptions = ["Relevance", "Distance"];
+const suggestionTypeOrder = {
+  Dish: 0,
+  Kitchen: 1,
+  Cuisine: 2,
+  Location: 3,
+} as const;
+
+type SearchSuggestionType = keyof typeof suggestionTypeOrder;
+
+type SearchSuggestion = {
+  label: string;
+  type: SearchSuggestionType;
+};
 
 const InstantDelivery = () => {
+  const routeLocation = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState(searchParams.get("q") || "");
+  const initialSearch =
+    typeof (routeLocation.state as { initialSearch?: unknown } | null)?.initialSearch === "string"
+      ? ((routeLocation.state as { initialSearch?: string }).initialSearch || "").trim()
+      : (searchParams.get("q") || "").trim();
+  const [search, setSearch] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [vegOnly, setVegOnly] = useState(false);
   const [sortBy, setSortBy] = useState("Relevance");
@@ -26,8 +43,10 @@ const InstantDelivery = () => {
   const [zipInput, setZipInput] = useState("");
   const [locationError, setLocationError] = useState("");
   const [detecting, setDetecting] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const { location, setLocation, hydrated } = useCustomerLocation();
-  const { formatPrice } = useRegion();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
 
   const [customerLat, setCustomerLat] = useState<number | null>(null);
   const [customerLng, setCustomerLng] = useState<number | null>(null);
@@ -43,8 +62,25 @@ const InstantDelivery = () => {
   const { data: allKitchens, isLoading } = useNearbyKitchenPartners(customerLat, customerLng, customerZip || undefined);
 
   useEffect(() => {
-    setSearch(searchParams.get("q") || "");
-  }, [searchParams]);
+    if (initialSearch) {
+      setSearch(initialSearch);
+    }
+  }, [initialSearch]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        suggestionsRef.current &&
+        !suggestionsRef.current.contains(event.target as Node) &&
+        event.target !== searchInputRef.current
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const fromUrl = readLocationFromSearchParams(searchParams);
@@ -110,12 +146,8 @@ const InstantDelivery = () => {
     }
   }, [searchParams, setSearchParams, location, hydrated, setLocation]);
 
-  const updateUrl = (nextSearch: string, nextLoc?: { method: "gps" | "manual_address" | "manual_zip" | null; label: string; zip: string; lat: number | null; lng: number | null }) => {
+  const updateUrl = (nextLoc?: { method: "gps" | "manual_address" | "manual_zip" | null; label: string; zip: string; lat: number | null; lng: number | null }) => {
     const params = new URLSearchParams(searchParams);
-    const query = nextSearch.trim();
-
-    if (query) params.set("q", query);
-    else params.delete("q");
 
     const activeLocation = nextLoc || {
       method: location.method,
@@ -144,6 +176,55 @@ const InstantDelivery = () => {
 
   const livePartners = useMemo(() => (allKitchens || []).filter((k: any) => k.is_attendance_marked), [allKitchens]);
   const unavailablePartners = useMemo(() => (allKitchens || []).filter((k: any) => !k.is_attendance_marked), [allKitchens]);
+
+  const searchSuggestions = useMemo(() => {
+    const suggestions: SearchSuggestion[] = [];
+    const seen = new Set<string>();
+
+    const addSuggestion = (label: string, type: SearchSuggestionType) => {
+      const nextLabel = label.trim();
+      if (!nextLabel) return;
+      const key = `${type}:${nextLabel.toLowerCase()}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      suggestions.push({ label: nextLabel, type });
+    };
+
+    (allInstantMenuItems || []).forEach((item: any) => addSuggestion(String(item.name || ""), "Dish"));
+    livePartners.forEach((partner: any) => {
+      addSuggestion(String(partner.name || ""), "Kitchen");
+      (partner.cuisine || []).forEach((cuisine: string) => addSuggestion(cuisine, "Cuisine"));
+      addSuggestion(String(partner.location || ""), "Location");
+    });
+
+    return suggestions;
+  }, [allInstantMenuItems, livePartners]);
+
+  const visibleSuggestions = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    const source = query
+      ? searchSuggestions.filter((suggestion) => suggestion.label.toLowerCase().includes(query))
+      : searchSuggestions;
+
+    return source
+      .sort((a, b) => {
+        const aLabel = a.label.toLowerCase();
+        const bLabel = b.label.toLowerCase();
+        const aStartsWith = query ? aLabel.startsWith(query) : false;
+        const bStartsWith = query ? bLabel.startsWith(query) : false;
+
+        if (aStartsWith !== bStartsWith) {
+          return aStartsWith ? -1 : 1;
+        }
+
+        if (suggestionTypeOrder[a.type] !== suggestionTypeOrder[b.type]) {
+          return suggestionTypeOrder[a.type] - suggestionTypeOrder[b.type];
+        }
+
+        return a.label.localeCompare(b.label);
+      })
+      .slice(0, 8);
+  }, [search, searchSuggestions]);
 
   const filtered = useMemo(() => {
     let result = livePartners;
@@ -211,7 +292,7 @@ const InstantDelivery = () => {
     setLocationStatus("found");
     setLocationError("");
 
-    updateUrl(search, {
+    updateUrl({
       method: next.method,
       label: next.label,
       zip: normalized,
@@ -443,12 +524,21 @@ const InstantDelivery = () => {
         <div className="relative mb-4">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
+            ref={searchInputRef}
             type="text"
             value={search}
             onChange={(e) => {
-              const next = e.target.value;
-              setSearch(next);
-              updateUrl(next);
+              setSearch(e.target.value);
+              setShowSuggestions(true);
+            }}
+            onFocus={() => setShowSuggestions(true)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setShowSuggestions(false);
+              }
+              if (e.key === "Escape") {
+                setShowSuggestions(false);
+              }
             }}
             placeholder="Search kitchens, cuisines, locations, dishes..."
             className="w-full pl-11 pr-12 py-3 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground outline-none focus:border-primary transition-colors"
@@ -456,6 +546,35 @@ const InstantDelivery = () => {
           <button onClick={() => setShowFilters(!showFilters)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-secondary transition-colors">
             <SlidersHorizontal className="w-4 h-4 text-muted-foreground" />
           </button>
+
+          {showSuggestions && visibleSuggestions.length > 0 && (
+            <div
+              ref={suggestionsRef}
+              className="absolute left-0 right-0 top-full mt-2 rounded-xl border border-border bg-card shadow-lg z-20 overflow-hidden"
+            >
+              <div className="px-4 py-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground border-b border-border">
+                {search.trim() ? "Suggestions" : "Popular searches"}
+              </div>
+              <div className="max-h-72 overflow-y-auto py-1">
+                {visibleSuggestions.map((suggestion) => (
+                  <button
+                    key={`${suggestion.type}-${suggestion.label}`}
+                    onClick={() => {
+                      setSearch(suggestion.label);
+                      setShowSuggestions(false);
+                    }}
+                    className="w-full px-4 py-2.5 flex items-center justify-between gap-3 text-left hover:bg-secondary transition-colors"
+                  >
+                    <div>
+                      <p className="text-sm text-foreground">{suggestion.label}</p>
+                      <p className="text-[10px] text-muted-foreground">{suggestion.type}</p>
+                    </div>
+                    <Search className="w-3.5 h-3.5 text-muted-foreground/60 shrink-0" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="flex gap-2 overflow-x-auto pb-2 mb-2 scrollbar-hide">

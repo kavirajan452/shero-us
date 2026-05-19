@@ -70,7 +70,7 @@ const HeroSection = () => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const buildInstantDeliveryUrl = (queryText: string) => {
+  const buildInstantDeliveryUrl = () => {
     const params = new URLSearchParams();
     const nextParams = applyLocationToSearchParams(params, {
       method: location.method,
@@ -79,11 +79,6 @@ const HeroSection = () => {
       lat: location.lat,
       lng: location.lng,
     });
-
-    const trimmedQuery = queryText.trim();
-    if (trimmedQuery) {
-      nextParams.set("q", trimmedQuery);
-    }
 
     const qs = nextParams.toString();
     return `/instant-delivery${qs ? `?${qs}` : ""}`;
@@ -280,14 +275,17 @@ const HeroSection = () => {
 
   const handleSearchSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    const trimmedQuery = searchQuery.trim();
 
     trackEvent("search_submitted", {
       source: "home",
-      has_query: !!searchQuery.trim(),
+      has_query: !!trimmedQuery,
       has_location: !!(location.lat && location.lng) || !!location.zip,
     });
 
-    navigate(buildInstantDeliveryUrl(searchQuery));
+    navigate(buildInstantDeliveryUrl(), {
+      state: trimmedQuery ? { initialSearch: trimmedQuery } : null,
+    });
   };
 
   const locationSummary = getLocationSummary(
@@ -508,7 +506,7 @@ const HeroSection = () => {
           </p>
 
           <Link
-            to={buildInstantDeliveryUrl("")}
+            to={buildInstantDeliveryUrl()}
             className="mt-4 inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-full text-sm font-semibold hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] w-fit"
           >
             {c["home.hero_cta"] || "Order Now"}
