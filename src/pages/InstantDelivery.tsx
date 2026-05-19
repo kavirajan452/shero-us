@@ -18,7 +18,7 @@ const suggestionTypeOrder = {
   Location: 3,
 } as const;
 
-type SearchSuggestionType = keyof typeof suggestionTypeOrder;
+type SearchSuggestionType = "Dish" | "Kitchen" | "Cuisine" | "Location";
 
 type SearchSuggestion = {
   label: string;
@@ -32,7 +32,7 @@ const InstantDelivery = () => {
   const initialSearch =
     typeof navigationState?.initialSearch === "string"
       ? (navigationState.initialSearch || "").trim()
-      : (searchParams.get("q") || "").trim();
+      : "";
   const [search, setSearch] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [vegOnly, setVegOnly] = useState(false);

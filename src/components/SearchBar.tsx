@@ -75,14 +75,14 @@ const SearchBar = () => {
     const item = popularSuggestions.find(s => s.label === label);
     if (item?.category === "Service" && label === "Party Orders") navigate("/party-orders");
     else if (item?.category === "Service" && label === "Subscriptions") navigate("/subscriptions");
-    else navigate("/instant-delivery");
+    else navigate("/instant-delivery", { state: { initialSearch: label } });
   };
 
   const handleSearchSubmit = () => {
     const q = searchQuery.trim();
     if (!q) return;
     setShowSuggestions(false);
-    navigate(`/instant-delivery?q=${encodeURIComponent(q)}`);
+    navigate("/instant-delivery", { state: { initialSearch: q } });
   };
 
   const handleDetect = () => {
