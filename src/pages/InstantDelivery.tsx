@@ -28,9 +28,10 @@ type SearchSuggestion = {
 const InstantDelivery = () => {
   const routeLocation = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigationState = routeLocation.state as { initialSearch?: string } | null;
   const initialSearch =
-    typeof (routeLocation.state as { initialSearch?: unknown } | null)?.initialSearch === "string"
-      ? ((routeLocation.state as { initialSearch?: string }).initialSearch || "").trim()
+    typeof navigationState?.initialSearch === "string"
+      ? (navigationState.initialSearch || "").trim()
       : (searchParams.get("q") || "").trim();
   const [search, setSearch] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -161,7 +162,7 @@ const InstantDelivery = () => {
     setSearchParams(withLocation, { replace: true });
   };
 
-  const dishNameIndex = useMemo(() => {
+  const dishNamesByKitchen = useMemo(() => {
     const map = new Map<string, string[]>();
     (allInstantMenuItems || []).forEach((item: any) => {
       const key = String(item.kitchen_id || "");
@@ -232,7 +233,7 @@ const InstantDelivery = () => {
     if (search.trim()) {
       const q = search.trim().toLowerCase();
       result = result.filter((k: any) => {
-        const dishNames = dishNameIndex.get(String(k.id)) || [];
+        const dishNames = dishNamesByKitchen.get(String(k.id)) || [];
         const matchesKitchen =
           k.name.toLowerCase().includes(q) ||
           (k.cuisine || []).some((c: string) => c.toLowerCase().includes(q)) ||
@@ -256,7 +257,7 @@ const InstantDelivery = () => {
     }
 
     return result;
-  }, [search, selectedCategory, vegOnly, sortBy, livePartners, dishNameIndex]);
+  }, [search, selectedCategory, vegOnly, sortBy, livePartners, dishNamesByKitchen]);
 
   useEffect(() => {
     if (!isLoading && filtered.length === 0) {
